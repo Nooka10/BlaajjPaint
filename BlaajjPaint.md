@@ -4,8 +4,8 @@
 
 ## Organisation:
 
-- Pendant PRO les lundis: organisation et discussion et répartition des tâches entre nous
-- Les mardis et/ou les vendredi aprèm de libre, codage ensemble.
+- Pendant PRO les lundis: organisatio, discussion et répartition des tâches entre nous
+- Les mardis et /ou les vendredi aprèm de libre, codage ensemble.
 
 
 
@@ -22,7 +22,7 @@
   - Pouvoir déplacer les objets
 - Benoît:
   - Outil de sélection -> carrée / ajouter à la selection / soustraire à la sélection
-  - Raccourci clavier pinceau + tab —> trait droit du 1er au 2ème clic
+  - (Raccourci clavier pinceau + tab —> trait droit du 1er au 2ème clic)
 - Antoine:
   - Zoom dans notre image
   - Historique des modifications
@@ -48,6 +48,7 @@
     - (Pipette)
     - (Symétrie)
     - Zoom dans l'image
+      - **Fenêtre de navigation ?**
 
   - Formes prédéfinies:
 
@@ -80,7 +81,8 @@
       - Sélection de rectangle
       - (lasso polygonal)
     - Sélection de couleur
-      - ​
+      - **Nuancier de couleur avec possibilité d'enregistrer ses couleurs**
+      - **Deux couleurs de base N&B mais modifiable -> possibilité de passer de l'un à l'autre rapidement (hyyyper utile!) et via raccourci clavier**
 
   - Transformations:
 
@@ -90,6 +92,7 @@
     - Saturation
     - Contraste
     - (autres algos sur l'image)
+    - **Recadrer l'image**
 
   - Général:
 
