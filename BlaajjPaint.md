@@ -1,37 +1,114 @@
 # Projet 2018  -  BlaajjPaint
 
+#Discu 27.02.18:
+
+## Organisation:
+
+- Pendant PRO les lundis: organisation et discussion et répartition des tâches entre nous
+- Les mardis et/ou les vendredi aprèm de libre, codage ensemble.
 
 
-## Liste des fonctionnalités
 
-### Interface
+## Attentes de chacun:
 
-### Fonctionnalités
+- Adrien veut : 
+  - pouvoir gérer transparence calque
+  - gérer les calques de fusion
+  - fonctionnalité viennent ensuite: smudge tool —> doigt qui flotte les pixels..
+- James:
+  - Raccourics claviers
+- Jerem:
+  - Copié-collé
+  - Pouvoir déplacer les objets
+- Benoît:
+  - Outil de sélection -> carrée / ajouter à la selection / soustraire à la sélection
+  - Raccourci clavier pinceau + tab —> trait droit du 1er au 2ème clic
+- Antoine:
+  - Zoom dans notre image
+  - Historique des modifications
 
-#### Dessin
+## Outils qu'on utilisera:
 
-- crayon: 
+- Java et JavaFX
+- Maven ?
+- IntelliJ
+- GitKraken + Github
+- Typora
 
-- gomme:
+## Fonctionnalités globale du projet:
 
-- pot de peinture: concerne
+- Outils:
 
-  - calque 
-  - selection
-  - déteminé par la couleur des pixels
+  - Dessins:
 
-  ​
+    - (Crayon)
+    - Pinceau
+    - pot de peinture
+    - Gomme
+    - (Pipette)
+    - (Symétrie)
+    - Zoom dans l'image
 
-- formes (vectorielles)
+  - Formes prédéfinies:
 
-  - sur calque
-  - modifiable 
+    - Trait
+    - Rectangle
+    - Cercle
+    - (Polygone)
+    - (Texte)
+    - Ellipse
 
-#### Selection
+  - Calques:
 
-#### Manipulation
+    - ajouter
+    - supprimer
+    - dupliquer
+    - déplacer
+    - fusionner
+    - redimentionner
+    - afficher / masquer
+    - transparence
+    - ordre
+    - (centrer (vertical / horizontal) sur le canevas)
+    - (Calques de fusion)
 
-#### Calque
+  - Sélection:
 
+    - Main
+    - Copiés / Collés
+    - Sélection de pixels:
+      - Sélection de rectangle
+      - (lasso polygonal)
+    - Sélection de couleur
+      - ​
 
+  - Transformations:
+
+    - (Miroir (renversement de l'image entière) horizontale / verticale)
+    - Rotation
+    - Homothétie
+    - Saturation
+    - Contraste
+    - (autres algos sur l'image)
+
+  - Général:
+
+    - Création de ficher (choix de la taille du canevas)
+    - Importer des images (.jpg et .png) en tant que calques
+    - Ouvrir un projet .blaajj 
+    - Sauvegarde du fichier:
+      - Sauvegarde en .jpg, .png
+      - Sauvegarde du projet en .blaajj
+    - (Raccourcis claviers)
+    - (Historique)
+
+  - (Fichier de configuration:)
+
+    - Raccourcis claviers
+
+    - Nombre max d'historique
+
+    - Nombre max de calques
+
+      ​
 
