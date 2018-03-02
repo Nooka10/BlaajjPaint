@@ -48,7 +48,6 @@
     - (Pipette)
     - (Symétrie)
     - Zoom dans l'image
-      - **Fenêtre de navigation ?**
 
   - Formes prédéfinies:
 
