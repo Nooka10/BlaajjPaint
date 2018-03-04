@@ -8,5 +8,3 @@ Logiciel d'édition d'image réalisé durant le cours de PRO 2018 par l'équipe 
 - JavaFX
 - Maven
 - JUnit 5
-
-## Fonctionnalités
