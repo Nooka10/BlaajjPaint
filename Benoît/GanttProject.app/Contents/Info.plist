@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDocumentTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeName</key>
+      <string>GanttProject</string>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>CFBundleTypeIconFile</key>
+      <string>ganttproject.icns</string>
+      <key>LSItemContentTypes</key>
+      <array><string>com.bardsoftware.ganttproject</string></array>
+    </dict>
+  </array>
+  <key>UTExportedTypeDeclarations</key>
+  <array>
+    <dict>
+      <key>UTTypeIdentifier</key>
+      <string>com.bardsoftware.ganttproject</string>
+      <key>UTTypeDescription</key>
+      <string>GanttProject document</string>
+      <key>UTTypeIconFile</key>
+      <string>ganttproject.icns</string>
+      <key>UTTypeConformsTo</key>
+      <array>
+        <string>public.xml</string>
+      </array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>com.apple.ostype</key>
+        <string>GAN</string>
+        <key>public.filename-extension</key>
+        <array>
+          <string>gan</string>
+          <string>GAN</string>
+        </array>
+      </dict>
+    </dict>
+  </array>
+<key>NSHighResolutionCapable</key>
+<true/>
+<key>CFBundleDevelopmentRegion</key>
+<string>English</string>
+<key>CFBundleExecutable</key>
+<string>JavaAppLauncher</string>
+<key>CFBundleIconFile</key>
+<string>ganttproject.icns</string>
+<key>CFBundleIdentifier</key>
+<string>net.sourceforge.ganttproject</string>
+<key>CFBundleDisplayName</key>
+<string>GanttProject</string>
+<key>CFBundleInfoDictionaryVersion</key>
+<string>6.0</string>
+<key>CFBundleName</key>
+<string>GanttProject</string>
+<key>CFBundlePackageType</key>
+<string>APPL</string>
+<key>CFBundleShortVersionString</key>
+<string>2.8.6</string>
+<key>CFBundleSignature</key>
+<string>????</string>
+<key>CFBundleVersion</key>
+<string>1</string>
+<key>NSHumanReadableCopyright</key>
+<string>Copyright 2018 BarD Software s.r.o. Distributed under GPL3</string>
+<key>LSApplicationCategoryType</key>
+<string>public.app-category.productivity</string>
+<key>JVMMainClassName</key>
+<string>org.bardsoftware.eclipsito.Boot</string>
+<key>JVMOptions</key>
+<array>
+<string>-Dapple.laf.useScreenMenuBar=true</string>
+<string>-Dcom.apple.mrj.application.apple.menu.about.name=GanttProject</string>
+<string>-Xdock:name=GanttProject</string>
+<string>-Xmx512m</string>
+<string>-ea</string>
+</array>
+<key>JVMArguments</key>
+<array>
+<string>-app</string>
+<string>net.sourceforge.ganttproject.GanttProject</string>
+<string>-plugins-dir</string>
+<string>$APP_ROOT/Contents/Java/plugins-2.8.6</string>
+<string>-log</string>
+<string>true</string>
+</array>
+</dict>
+</plist>
+
