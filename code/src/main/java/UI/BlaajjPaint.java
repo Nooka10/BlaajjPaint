@@ -1,5 +1,6 @@
 package UI;
 
+import UI.ToolsBar.ToolsBar;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,6 +20,9 @@ public class BlaajjPaint extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, Color.rgb(75, 75, 75));
 
+        ToolsBar toolsBar = new ToolsBar();
+
+        root.getChildren().add(toolsBar);
 
 
         // À placer à la fin
