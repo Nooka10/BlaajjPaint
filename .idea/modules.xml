@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/BlaajjPaint.iml" filepath="$PROJECT_DIR$/.idea/BlaajjPaint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/blaajjpaintcore/blaajjpaintcore.iml" filepath="$PROJECT_DIR$/blaajjpaintcore/blaajjpaintcore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/blaajjpainttest/blaajjpainttest.iml" filepath="$PROJECT_DIR$/blaajjpainttest/blaajjpainttest.iml" />
+    </modules>
+  </component>
+</project>

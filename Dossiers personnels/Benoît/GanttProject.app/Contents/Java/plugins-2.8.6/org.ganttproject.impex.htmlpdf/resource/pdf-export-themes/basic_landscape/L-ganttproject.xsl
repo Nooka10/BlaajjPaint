@@ -118,7 +118,7 @@
 </xsl:template>
 
 
-<!-- ========================================== Project settings ========================================== -->
+<!-- ========================================== model.Project settings ========================================== -->
 <xsl:template match="ganttproject:project">
 
     <fo:block font-size="20pt"

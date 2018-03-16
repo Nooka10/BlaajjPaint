@@ -1,7 +1,7 @@
 # BlaajjPaint
 
 ## Description
-Logiciel d'édition d'image réalisé durant le cours de PRO 2018 par l'équipe Blaajj de l'HEIG-VD.
+Logiciel d'édition d'image réalisé durant le cours de PRO 2018 par l'équipe model.Blaajj de l'HEIG-VD.
 
 ## Technologies utilisées
 - Java
