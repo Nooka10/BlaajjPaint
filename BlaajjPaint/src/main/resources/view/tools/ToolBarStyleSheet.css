@@ -1,0 +1,95 @@
+#moveTool {
+	-fx-background-image    :url('../../outils/deplacement.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#selectionTool {
+	-fx-background-image    :url('../../outils/selectionRectangulaire.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+
+}
+
+#lassoTool {
+	-fx-background-image    :url('../../outils/lassoPolygonal.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+
+}
+
+#cropTool {
+	-fx-background-image    :url('../../outils/recadrer.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+
+}
+
+#pipetteTool {
+	-fx-background-image    :url('../../outils/pipette.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#brushTool {
+	-fx-background-image    :url('../../outils/pinceau.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#eraseTool {
+	-fx-background-image    :url('../../outils/gomme.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#fingerTool {
+	-fx-background-image    :url('../../outils/doigt.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#textTool {
+	-fx-background-image    :url('../../outils/texte.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#pointerTool {
+	-fx-background-image    :url('../../outils/curseur.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#shapesTool {
+	-fx-background-image    :url('../../outils/formesPredefinies.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#handTool {
+	-fx-background-image    :url('../../outils/main.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+#zoomTool {
+	-fx-background-image    :url('../../outils/zoom.png');
+	-fx-background-position :center;
+	-fx-background-repeat   :stretch;
+}
+
+.button:focused {
+	-fx-background-color :#797979;
+	-fx-border-color     :#4f4f4f;
+	-fx-border-radius    :5;
+}
+
+.button:hover {
+	-fx-background-color :#707070;
+	-fx-effect           :dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.button {
+	-fx-background-color :#707070;
+}

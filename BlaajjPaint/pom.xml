@@ -11,39 +11,9 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<sources.dir>src/main/</sources.dir>
-		<tests.dir>src/test/</tests.dir>
-		<ressources.dir>src/ressources</ressources.dir>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>javafx</artifactId>
-			<version>2018.3.3</version>
-		</dependency>
-	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>central</id>
-			<url>http://repo1.maven.org/maven2/</url>
-		</repository>
-	</repositories>
-
 	<build>
-		<sourceDirectory>${sources.dir}</sourceDirectory>
-		<testSourceDirectory>${tests.dir}</testSourceDirectory>
-		<resources>
-			<resource>
-				<directory>${ressources.dir}</directory>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>${ressources.dir}</directory>
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
