@@ -1,10 +1,7 @@
 package model;
 
-<<<<<<< HEAD:BlaajjPaint/src/main/java/model/RecordCmd.java
 import controller.ICmd;
-=======
 import controller.Cmd;
->>>>>>> code:blaajjpaintcore/src/main/java/model/RecordCmd.java
 import utils.UndoException;
 
 import java.util.Stack;
