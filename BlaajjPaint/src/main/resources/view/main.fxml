@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane fx:id="borderpane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.MainController">
+<?import javafx.scene.layout.AnchorPane?>
+<BorderPane fx:id="borderpane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 	<top>
 		<VBox BorderPane.alignment="CENTER">
 			<children>
 
 				<fx:include fx:id="consoleTab" source="menubar/menubar.fxml" />
 
-				<HBox>
-					<children>
-						<ColorPicker fx:id="colorPicker" prefHeight="24.0" prefWidth="82.0"/>
-					</children>
-				</HBox>
+				<HBox />
 			</children>
 		</VBox>
 	</top>
 	<center>
 
-		<Canvas fx:id="canvas" height="400.0" width="600"/>
+		<Canvas fx:id="canvas" height="400.0" width="600" />
 
 	</center>
 	<left>
-		<fx:include source="tools/toolbar.fxml"/>
+		<AnchorPane>
+			<fx:include source="tools/toolbar.fxml" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+		</AnchorPane>
 	</left>
+	<right>
+		<AnchorPane>
+			<fx:include source="rightMenu/rightMenu.fxml" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+		</AnchorPane>
+	</right>
 </BorderPane>
