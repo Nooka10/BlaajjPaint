@@ -79,17 +79,17 @@
 	-fx-background-repeat   :stretch;
 }
 
-.button:focused {
+.ToolBarButtons:focused {
 	-fx-background-color :#797979;
 	-fx-border-color     :#4f4f4f;
 	-fx-border-radius    :5;
 }
 
-.button:hover {
+.ToolBarButtons:hover {
 	-fx-background-color :#707070;
 	-fx-effect           :dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
 
-.button {
+.ToolBarButtons {
 	-fx-background-color :#707070;
 }
