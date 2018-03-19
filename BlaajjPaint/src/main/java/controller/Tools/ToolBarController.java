@@ -1,12 +1,15 @@
 package controller.tools;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ToggleGroup;
 
 /**
  * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
  * resizing, deleting and so on.
  */
 public class ToolBarController {
+	
+	public ToggleGroup ToolBarButtons;
 	
 	/**
 	 * Starts pencil sketching mode.
