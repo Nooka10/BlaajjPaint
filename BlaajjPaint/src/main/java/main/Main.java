@@ -13,6 +13,7 @@ public class Main extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
 		root.getStylesheets().add("/view/tools/ToolBarStyleSheet.css");
 		primaryStage.setTitle("BlaajjPaint");
+		primaryStage.setMaximized(true);
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

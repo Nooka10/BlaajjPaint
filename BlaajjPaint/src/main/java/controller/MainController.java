@@ -1,4 +1,4 @@
-package controller.menubar;
+package controller;
 
 
 import javafx.embed.swing.SwingFXUtils;
