@@ -1,5 +1,6 @@
 package controller.tools;
 
+import controller.MainViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
 
@@ -10,6 +11,18 @@ import javafx.scene.control.ToggleGroup;
 public class ToolBarController {
 	
 	public ToggleGroup ToolBarButtons;
+	
+	// Reference to the mainViewController
+	private MainViewController mainViewController;
+	
+	/**
+	 * Is called by the main application to give a reference back to itself.
+	 *
+	 * @param mainViewController
+	 */
+	public void setMainViewController(MainViewController mainViewController) {
+		this.mainViewController = mainViewController;
+	}
 	
 	/**
 	 * Starts pencil sketching mode.
