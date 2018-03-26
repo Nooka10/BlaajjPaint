@@ -1,22 +1,15 @@
-package controller.Tools;
+package controller.tools;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.ToggleGroup;
 
 /**
  * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
  * resizing, deleting and so on.
  */
 public class ToolBarController {
+	
+	public ToggleGroup ToolBarButtons;
 	
 	/**
 	 * Starts pencil sketching mode.
