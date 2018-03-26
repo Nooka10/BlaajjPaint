@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.layout.AnchorPane?>
-<BorderPane fx:id="borderpane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+
+<BorderPane fx:id="borderpane" prefHeight="400.0" prefWidth="600.0" stylesheets="@mainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 	<top>
 		<VBox BorderPane.alignment="CENTER">
 			<children>
@@ -15,6 +19,9 @@
 
 				<HBox />
 			</children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
 		</VBox>
 	</top>
 	<center>
@@ -24,12 +31,16 @@
 	</center>
 	<left>
 		<AnchorPane>
-			<fx:include source="tools/toolbar.fxml" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+   <children>
+   			<fx:include source="tools/toolbar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
 		</AnchorPane>
 	</left>
 	<right>
 		<AnchorPane>
-			<fx:include source="rightMenu/rightMenu.fxml" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+   <children>
+   			<fx:include source="rightMenu/rightMenu.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
 		</AnchorPane>
 	</right>
 </BorderPane>

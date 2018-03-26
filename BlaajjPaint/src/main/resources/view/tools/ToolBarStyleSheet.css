@@ -78,18 +78,3 @@
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
-
-.ToolBarButtons:focused {
-	-fx-background-color :#797979;
-	-fx-border-color     :#4f4f4f;
-	-fx-border-radius    :5;
-}
-
-.ToolBarButtons:hover {
-	-fx-background-color :#707070;
-	-fx-effect           :dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
-}
-
-.ToolBarButtons {
-	-fx-background-color :#707070;
-}
