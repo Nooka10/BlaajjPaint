@@ -1,10 +1,6 @@
 package model;
 
 import controller.ICmd;
-<<<<<<< HEAD
-=======
-import controller.Cmd;
->>>>>>> UI
 import utils.UndoException;
 
 import java.util.LinkedList;
