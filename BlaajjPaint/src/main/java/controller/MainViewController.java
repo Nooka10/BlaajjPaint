@@ -5,11 +5,12 @@ import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import main.Main;
 
 public class MainViewController {
+
+	public SaveProjects saveBlaajj;
 	// Reference to the main application
 	private Main main;
 	
