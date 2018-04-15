@@ -2,34 +2,40 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.layout.*?>
-<BorderPane fx:id="mainView" prefHeight="400.0" prefWidth="600.0" stylesheets="@mainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.MainViewController">
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainView" prefHeight="400.0" prefWidth="600.0" stylesheets="@mainStyleSheet.css" xmlns="http://javafx.com/javafx/9.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
 	<top>
 		<VBox BorderPane.alignment="CENTER">
 			<children>
 				<fx:include fx:id="menuBar" source="menubar/menubar.fxml"/>
 			</children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+			<BorderPane.margin>
+				<Insets/>
+			</BorderPane.margin>
 		</VBox>
 	</top>
 	<center>
-		<Canvas fx:id="canvas" height="400.0" width="600" />
+		<ScrollPane fx:id="scrollPane">
+		</ScrollPane>
 	</center>
 	<left>
 		<AnchorPane>
-   <children>
-	   <fx:include fx:id="toolBar" source="tools/toolbar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-   </children>
+			<children>
+				<fx:include fx:id="toolBar" source="tools/toolbar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+			</children>
 		</AnchorPane>
 	</left>
 	<right>
 		<AnchorPane>
-   <children>
-	   <fx:include fx:id="rightMenu" source="rightMenu/rightMenu.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-   </children>
+			<children>
+				<fx:include fx:id="rightMenu" source="rightMenu/rightMenu.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+			</children>
 		</AnchorPane>
 	</right>
 </BorderPane>

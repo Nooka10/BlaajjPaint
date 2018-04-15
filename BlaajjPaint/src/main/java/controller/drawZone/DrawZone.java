@@ -1,5 +1,11 @@
 package controller.drawZone;
 
-public class DrawZone {
+import model.Canvas;
 
+public class DrawZone {
+	
+	Canvas layer;
+	
+	public DrawZone(int width, int height){
+	}
 }

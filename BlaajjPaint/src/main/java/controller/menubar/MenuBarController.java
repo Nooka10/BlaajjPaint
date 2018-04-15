@@ -2,12 +2,21 @@ package controller.menubar;
 
 import controller.MainViewController;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import main.Main;
 import model.menuBar.WindowsNewProject;
-
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
+import javafx.stage.Stage;
 import java.io.File;
+import javafx.scene.paint.*;
+import javafx.scene.canvas.*;
 
 public class MenuBarController {
 	// Reference to the mainViewController
@@ -29,7 +38,10 @@ public class MenuBarController {
 	 */
 	@FXML
 	private void handleNew() {
-		WindowsNewProject.display();
+		
+		
+		mainViewController.createDrawZone(1200 ,2500);
+		
 	}
 	
 	/**

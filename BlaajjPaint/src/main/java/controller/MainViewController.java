@@ -5,14 +5,24 @@ import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import main.Main;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainViewController {
 
 	public SaveProjects saveBlaajj;
 	// Reference to the main application
 	private Main main;
+	
 	
 	@FXML
 	private Parent menuBar;
@@ -32,6 +42,8 @@ public class MainViewController {
 	@FXML
 	private RightMenuController rightMenuController; // le lien vers le rightMenuController est fait automatiquement.
 	
+	@FXML
+	private ScrollPane scrollPane;
 	
 	
 	/**
@@ -48,6 +60,22 @@ public class MainViewController {
 	
 	public Main getMain() {
 		return main;
+	}
+	
+	public void createDrawZone(int width, int height){
+		Canvas canvas = new Canvas(width,height);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		
+		gc.setFill(Color.BLUE);
+		
+		gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
+		System.out.println(canvas.getWidth() + " " + canvas.getHeight());
+		Pane pane = new Pane();
+		pane.getChildren().add(canvas);
+		canvas.toFront();
+		scrollPane.setContent(pane);
+		
+		
 	}
 	
 	/*
