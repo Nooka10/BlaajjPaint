@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="#mainPaneId" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="70.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolBarController">
+	<children>
+		<ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" style="-fx-background-color: #707070;" stylesheets="@ToolBarStyleSheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<items>
+				<ToggleButton id="moveTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#pencilSketching" styleClass="menuButton" textAlignment="CENTER">
+					<toggleGroup>
+						<ToggleGroup fx:id="ToolBarButtons" />
+					</toggleGroup>
+				</ToggleButton>
+				<ToggleButton id="selectionTool" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#brushSketching" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="lassoTool" layoutX="55.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#fillingTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="cropTool" layoutX="100.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#eraserTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="pipetteTool" layoutX="145.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#draggingTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="brushTool" layoutX="190.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#resizingTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="eraseTool" layoutX="235.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#undoTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="fingerTool" layoutX="280.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#redoTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="textTool" layoutX="325.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#deletingTool" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="pointerTool" layoutX="235.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#drawLine" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="shapesTool" layoutX="235.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#drawRectangle" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="handTool" layoutX="235.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#drawSquare" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="zoomTool" layoutX="235.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#drawTriangle" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+			</items>
+		</ToolBar>
+	</children>
+   <stylesheets>
+      <URL value="@ToolBarStyleSheet.css" />
+      <URL value="@../mainStyleSheet.css" />
+   </stylesheets>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

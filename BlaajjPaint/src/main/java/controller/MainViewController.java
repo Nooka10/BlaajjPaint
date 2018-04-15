@@ -32,6 +32,8 @@ public class MainViewController {
 	@FXML
 	private RightMenuController rightMenuController; // le lien vers le rightMenuController est fait automatiquement.
 	
+	
+	
 	/**
 	 * Appelé par le main. Permet de récupérer une référence vers le main.
 	 *

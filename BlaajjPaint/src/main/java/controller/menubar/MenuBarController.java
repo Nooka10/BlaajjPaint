@@ -3,7 +3,9 @@ package controller.menubar;
 import controller.MainViewController;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import main.Main;
+import model.menuBar.WindowsNewProject;
 
 import java.io.File;
 
@@ -27,8 +29,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	private void handleNew() {
-		System.out.println("appeler la fonction pour créer un nouveau projet!");
-		// FIXME: appeler fonction nouveau
+		WindowsNewProject.display();
 	}
 	
 	/**
