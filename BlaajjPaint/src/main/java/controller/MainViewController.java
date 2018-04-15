@@ -3,13 +3,16 @@ package controller;
 
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
+import controller.tools.Pencil;
 import controller.tools.ToolBarController;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import main.Main;
@@ -66,7 +69,7 @@ public class MainViewController {
 		Canvas canvas = new Canvas(width,height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		gc.setFill(Color.BLUE);
+		gc.setFill(Color.WHITE);
 		
 		gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
 		System.out.println(canvas.getWidth() + " " + canvas.getHeight());
@@ -75,7 +78,14 @@ public class MainViewController {
 		canvas.toFront();
 		scrollPane.setContent(pane);
 		
-		
+		javafx.event.EventHandler<javafx.scene.input.MouseEvent> cliqHandle = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				System.out.println("lol");
+				new Pencil(canvas);
+			}
+		};
+		canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, cliqHandle);
 	}
 	
 	/*

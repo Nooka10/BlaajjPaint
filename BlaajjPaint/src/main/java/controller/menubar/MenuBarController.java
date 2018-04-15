@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import main.Main;
+import model.RecordCmd;
 import model.menuBar.WindowsNewProject;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -98,6 +99,17 @@ public class MenuBarController {
 			//mainApp.savePersonDataToFile(file);
 			System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
 		}
+	}
+	
+	@FXML
+	private void undo(){
+		System.out.println("undo");
+		RecordCmd.getInstance().undo();
+	}
+	
+	@FXML
+	private void redo(){
+		RecordCmd.getInstance().redo();
 	}
 	
 }
