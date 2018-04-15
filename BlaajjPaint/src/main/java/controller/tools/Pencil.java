@@ -23,6 +23,7 @@ public class Pencil extends LayerController implements ICmd {
 	
 	EventHandler<MouseEvent> mousedrag;
 	EventHandler<MouseEvent> mouserelease;
+	EventHandler<MouseEvent> mousePressed;
 	
 	
 	public Pencil(Canvas canvas) {
@@ -49,7 +50,16 @@ public class Pencil extends LayerController implements ICmd {
 				canvas.getGraphicsContext2D().stroke();
 			}
 		};
+		mousePressed = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				canvas.getGraphicsContext2D().beginPath();
+				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
+				canvas.getGraphicsContext2D().stroke();
+			}
+		};
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
+		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
 		
 		// definit un event qui est utilisé pour gérer le release du bouton de la souric sur le canvas
 		mouserelease = new EventHandler<MouseEvent>() {
