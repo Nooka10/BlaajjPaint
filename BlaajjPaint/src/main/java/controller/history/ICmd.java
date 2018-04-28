@@ -1,4 +1,4 @@
-package controller;
+package controller.history;
 
 import utils.UndoException;
 

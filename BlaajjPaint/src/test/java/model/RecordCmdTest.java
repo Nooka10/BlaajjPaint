@@ -1,6 +1,7 @@
 package model;
 
-import controller.ICmd;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

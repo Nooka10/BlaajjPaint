@@ -1,18 +1,25 @@
 package controller;
 
-
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import main.Main;
 
 public class MainViewController {
-
+	
 	public SaveProjects saveBlaajj;
-	// Reference to the main application
-	private Main main;
+	
+	private Main main; // Reference to the main application
+	
+	private Project project;
+	
+	@FXML
+	private javafx.scene.canvas.Canvas canvas;
 	
 	@FXML
 	private Parent menuBar;
@@ -32,92 +39,31 @@ public class MainViewController {
 	@FXML
 	private RightMenuController rightMenuController; // le lien vers le rightMenuController est fait automatiquement.
 	
-	/**
-	 * Appelé par le main. Permet de récupérer une référence vers le main.
-	 *
-	 * @param main
-	 */
-	public void setMain(Main main) {
-		this.main = main;
+	@FXML
+	private ScrollPane scrollPane;
+	
+	private EventHandler<MouseEvent> eventHandler;
+	
+	@FXML
+	private void initialize() {
 		menuBarController.setMainViewController(this);
 		toolBarController.setMainViewController(this);
 		rightMenuController.setMainViewController(this);
+		
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
 	}
 	
 	public Main getMain() {
 		return main;
 	}
 	
-	/*
-	@FXML
-	private MenuBar menuBar;
-	
-	
-	@FXML
-	private BorderPane borderPane;
-	
-	
-	@FXML
-	
-	private Canvas canvas;
-	
-	
-	@FXML
-	
-	private ColorPicker colorPicker;
-	
-	
-	@FXML
-	
-	private TextField brushSize;
-	
-	
-	@FXML
-	
-	private CheckBox gomme;
-	
-	public void initialize() {
-		
-		GraphicsContext g = canvas.getGraphicsContext2D();
-		
-		canvas.setOnMouseDragged(e -> {
-			
-			double size = Double.parseDouble(brushSize.getText());
-			
-			double x = e.getX() - size;
-			
-			double y = e.getY() - size;
-			
-			
-			if (gomme.isSelected()) {
-				
-				g.clearRect(x, y, size, size);
-				
-			} else {
-				
-				g.setFill(colorPicker.getValue());
-				
-				g.fillRect(x, y, size, size);
-				
-			}
-			
-		});
-		
+	public void newCanevas(int width, int height) {
+		project = Project.getInstance();
+		project.setData(width, height);
 	}
 	
-	public void onSave() {
-		
-		try {
-			
-			Image snapshot = canvas.snapshot(null, null);
-			
-			ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("paint.png"));
-			
-		} catch (Exception e) {
-			
-			System.out.println("Failed to save image: " + e);
-			
-		}
+	public Project getCanvas() {
+		return project;
 	}
-	*/
 }

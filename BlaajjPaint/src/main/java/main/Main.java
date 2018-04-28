@@ -1,6 +1,5 @@
 package main;
 
-import controller.MainViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,17 +30,12 @@ public class Main extends Application {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("/view/mainView.fxml"));
-			rootLayout = (BorderPane) loader.load();
+			rootLayout = loader.load();
 			
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setMaximized(true);
 			primaryStage.setScene(scene);
-			
-			// Give the mainViewController access to the main app.
-			MainViewController mainViewController = loader.getController();
-			
-			mainViewController.setMain(this);
 			
 			primaryStage.show();
 		} catch (IOException e) {

@@ -1,8 +1,14 @@
 package controller.tools;
 
 import controller.MainViewController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
@@ -10,109 +16,156 @@ import javafx.scene.control.ToggleGroup;
  */
 public class ToolBarController {
 	
-	public ToggleGroup ToolBarButtons;
+	@FXML
+	private ToggleButton brushTool;
 	
-	// Reference to the mainViewController
-	private MainViewController mainViewController;
+	@FXML
+	private ToggleButton eraseTool;
+	
+	@FXML
+	private ToggleButton textTool;
+	
+	@FXML
+	private ToggleButton lassoTool;
+	
+	@FXML
+	private ToggleButton mouseTool;
+	
+	@FXML
+	private ToggleButton moveTool;
+	
+	@FXML
+	private AnchorPane toolBar;
+	
+	@FXML
+	private ToggleGroup ToolBarButtons;
+	
+	@FXML
+	private ToggleButton shapeTool;
+	
+	@FXML
+	private ToggleButton handTool;
+	
+	@FXML
+	private ToggleButton blurTool;
+	
+	@FXML
+	private ToggleButton selectTool;
+	
+	@FXML
+	private ToggleButton cropTool;
+	
+	@FXML
+	private ToggleButton pipetteTool;
+	
+	@FXML
+	private ToggleButton zoomTool;
+	
+	private MainViewController mainViewController; // Reference to the mainViewController
 	
 	/**
-	 * Is called by the main application to give a reference back to itself.
+	 * Appelé par le MainViewController pour donner une référence vers lui-même.
 	 *
-	 * @param mainViewController
+	 * @param mainViewController, une référence vers le mainViewController
+	 *
+	 * Créé par Benoît Schopfer
 	 */
 	public void setMainViewController(MainViewController mainViewController) {
 		this.mainViewController = mainViewController;
 	}
 	
-	/**
-	 * Starts pencil sketching mode.
-	 */
 	@FXML
-	private void pencilSketching() {
+	void mainPaneId(ActionEvent event) {
 	
 	}
 	
-	/**
-	 * Starts brush sketching mode.
-	 */
 	@FXML
-	private void brushSketching() {
+	void moveView(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Starts erasing mode.
-	 */
 	@FXML
-	private void eraserTool() {
+	void select(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Draws a rectangle.
-	 */
 	@FXML
-	private void drawRectangle() {
+	void lasso(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Draws a square.
-	 */
 	@FXML
-	private void drawSquare() {
+	void crop(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Draws a line segment.
-	 */
 	@FXML
-	private void drawLine() {
+	void pipette(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Draws a triangle.
-	 */
 	@FXML
-	private void drawTriangle() {
+	void drawBrush(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Starts dragging/moving mode.
-	 */
 	@FXML
-	private void draggingTool() {
+	void brushTool(ActionEvent event) {
+		
+		
+		/*
+		javafx.scene.canvas.Project c = mainViewController.getCanvas().getCanvas();
+		javafx.event.EventHandler<javafx.scene.input.MouseEvent> clicHandle = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				new Pencil(c);
+			}
+		};
+		c.addEventHandler(MouseEvent.MOUSE_CLICKED, clicHandle);
+		*/
 	}
 	
-	/**
-	 * Starts resizing mode.
-	 */
 	@FXML
-	private void resizingTool() {
+	void erase(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Undoes an operation.
-	 */
 	@FXML
-	private void undoTool() {
+	void blur(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Redoes an operation.
-	 */
 	@FXML
-	private void redoTool() {
+	void addText(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Starts filling mode.
-	 */
 	@FXML
-	private void fillingTool() {
+	void mouse(ActionEvent event) {
+	
 	}
 	
-	/**
-	 * Starts deleting mode.
-	 */
 	@FXML
-	private void deletingTool() {
+	void addShape(ActionEvent event) {
+	
+	}
+	
+	@FXML
+	void hand(ActionEvent event) {
+	
+	}
+	
+	@FXML
+	void zoom(ActionEvent event) {
+	
+	}
+	
+	public static void displayError() {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Erreur, aucune image n'est ouverte!");
+		alert.setHeaderText(null);
+		alert.setContentText("Commencez par créer un nouveau projet ou ouvrir un projet existant.");
+		
+		alert.showAndWait();
 	}
 }

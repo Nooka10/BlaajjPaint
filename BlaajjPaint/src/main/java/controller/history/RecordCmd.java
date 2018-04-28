@@ -1,6 +1,5 @@
-package model;
+package controller.history;
 
-import controller.ICmd;
 import utils.UndoException;
 
 import java.util.LinkedList;
@@ -69,6 +68,10 @@ public class RecordCmd {
             LOG.log(Level.INFO, "Nothing to undo.");
         }
     }
+    
+    public void clearRedo(){
+        redoStack.clear();
+    }
 
 
     /** Apelle la fonction <b>redo()</b> sur le dernier <b>Cmd</b> de la pile de redo.
@@ -76,26 +79,28 @@ public class RecordCmd {
      * le redo lèves une exception celle-ci est capturée et consignée dans les logs
      * et l'<b>Cmd</b> concernée retourne sur la pile.*/
     public void redo(){
-
+        System.out.println("redo");
         // si la pile de redo n'est pas vide
         if(!redoStack.isEmpty()){
             // on essaie de undo
             ICmd cmdToRedo = redoStack.pop();
             try {
                 cmdToRedo.redo();
+    
+                undoStack.push(cmdToRedo);
             }
             // Si ça ne passe pas on remet la commande sur la pile de undo
             catch (UndoException e){
                 LOG.log(Level.SEVERE, "Can't redo commande !");
-                redoStack.push(cmdToRedo);
+                //redoStack.push(cmdToRedo);
             }
         }
         else {
             LOG.log(Level.INFO, "Nothing to redo.");
 
             // vider les deux piles
-            undoStack.clear();
-            redoStack.clear();
+          //  undoStack.clear();
+            //redoStack.clear();
         }
     }
 

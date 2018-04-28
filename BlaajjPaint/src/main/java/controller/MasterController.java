@@ -1,7 +1,6 @@
 package controller;
 
-import model.Project;
-import model.RecordCmd;
+import controller.history.RecordCmd;
 
 import java.io.File;
 
@@ -22,7 +21,7 @@ public class MasterController {
     }
 
     public void newModel() {
-        modelProject = new Project();
+        modelProject = Project.getInstance();
     }
 
     public void openModel(File f) {

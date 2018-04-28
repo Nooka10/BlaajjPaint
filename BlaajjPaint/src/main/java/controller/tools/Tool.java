@@ -1,19 +1,15 @@
 package controller.tools;
 
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import model.Layer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class LayerController {
+public abstract class Tool {
 
-    protected Canvas canvas;
+    private Canvas canvas;
 
-    public LayerController(Canvas canvas){
+    public Tool(Canvas canvas){
         this.canvas = canvas;
     }
 
@@ -21,7 +17,7 @@ public class LayerController {
         throw new NotImplementedException();
     }
 
-    protected GraphicsContext getGraphics(){
+    public GraphicsContext getGraphics(){
 
         throw new NotImplementedException();
     }
