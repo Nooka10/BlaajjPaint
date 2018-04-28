@@ -35,12 +35,12 @@ public class Project {
 		draw();
 	}
 	
-	public Canvas getCanvas(){
+	public Canvas getCurrentCanvas(){
 		return currentLayer;
 	}
 	
 	private void draw() {
-		gc.setFill(Color.BLACK);
+		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
 		currentLayer.toFront();
 		currentLayer.setVisible(true);

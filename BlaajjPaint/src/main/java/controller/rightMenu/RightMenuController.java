@@ -33,6 +33,6 @@ public class RightMenuController {
 	
 	@FXML
 	void addNewLayer(ActionEvent event) {
-		//mainViewController.getCanvas().addLayer(new Layer(mainViewController));
+		//mainViewController.getCurrentCanvas().addLayer(new Layer(mainViewController));
 	}
 }

@@ -108,7 +108,6 @@ public class RecordCmd {
      * @param cmd   la <b>ICmd</b> qui doit être ajoutée à la pile
      */
     public void saveCmd(ICmd cmd){
-
         if(undoStack.size() > MAX_CMD_HISTORY){
             undoStack.removeLast();
         }

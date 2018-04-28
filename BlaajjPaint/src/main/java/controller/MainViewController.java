@@ -16,11 +16,11 @@ import java.io.File;
 
 public class MainViewController {
 	
+	private Project project; // FIXME: laissé pour code Jerem... Voir si il peut utililser le Singleton de Project
+	
 	public SaveProjects saveBlaajj;
 	
 	private Main main; // Reference to the main application
-	
-	private Project project;
 	
 	@FXML
 	private javafx.scene.canvas.Canvas canvas;
@@ -46,7 +46,7 @@ public class MainViewController {
 	@FXML
 	private ScrollPane scrollPane;
 	
-	private EventHandler<MouseEvent> eventHandler;
+	private EventHandler<MouseEvent> eventHandler = null;
 	
 	@FXML
 	private void initialize() {
@@ -66,14 +66,14 @@ public class MainViewController {
 		return main;
 	}
 	
-	public Project getCanvas() {
-		return project;
+	public void setEventHandler(EventHandler<MouseEvent> eventHandler) {
+		if (this.eventHandler != null) {
+			Project.getInstance().getCurrentCanvas().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+		}
+		this.eventHandler = eventHandler;
+		Project.getInstance().getCurrentCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+		
 	}
-	
-	
-	
-	
-	
 	
 	// --------------------------------------Partie Jerem. Était contenu dans MasterController--------------------------------------------------
 	private RecordCmd instance = RecordCmd.getInstance();

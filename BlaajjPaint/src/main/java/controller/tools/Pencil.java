@@ -15,16 +15,15 @@ import utils.UndoException;
 
 public class Pencil extends Tool implements ICmd {
 	
-	Image undosave = null;
+	Image undosave;
 	Image redosave = null;
 	SnapshotParameters params;
 	
-	WritableImage pencil = null;
+	WritableImage pencil;
 	
 	EventHandler<MouseEvent> mousedrag;
 	EventHandler<MouseEvent> mouserelease;
 	EventHandler<MouseEvent> mousePressed;
-	
 	
 	public Pencil(Canvas canvas) {
 		// stock le cnaevas dans le parent
@@ -73,7 +72,6 @@ public class Pencil extends Tool implements ICmd {
 		canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouserelease);
 	}
 	
-	
 	@Override
 	public void execute() {
 		RecordCmd.getInstance().saveCmd(this);
@@ -85,8 +83,8 @@ public class Pencil extends Tool implements ICmd {
 		if (undosave == null) {
 			throw new UndoException();
 		}
-		redosave = Project.getInstance().getCanvas().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCanvas().getGraphicsContext2D();
+		redosave = Project.getInstance().getCurrentCanvas().snapshot(params, null);
+		GraphicsContext gc = Project.getInstance().getCurrentCanvas().getGraphicsContext2D();
 		gc.drawImage(undosave, 0, 0);
 		undosave = null;
 
@@ -97,9 +95,9 @@ public class Pencil extends Tool implements ICmd {
 		if (redosave == null) {
 			throw new UndoException();
 		}
-		undosave = Project.getInstance().getCanvas().snapshot(params, null);
+		undosave = Project.getInstance().getCurrentCanvas().snapshot(params, null);
 		
-		GraphicsContext gc = Project.getInstance().getCanvas().getGraphicsContext2D();
+		GraphicsContext gc = Project.getInstance().getCurrentCanvas().getGraphicsContext2D();
 		gc.drawImage(redosave, 0, 0);
 		redosave = null;
 	}

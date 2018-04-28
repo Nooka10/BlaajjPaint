@@ -1,6 +1,7 @@
 package controller.tools;
 
 import controller.MainViewController;
+import controller.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -106,23 +107,17 @@ public class ToolBarController {
 	
 	@FXML
 	void drawBrush(ActionEvent event) {
-	
+		Project project = Project.getInstance();
+		mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				new Pencil(project.getCurrentCanvas());
+			}
+		});
 	}
 	
 	@FXML
 	void brushTool(ActionEvent event) {
-		
-		
-		/*
-		javafx.scene.canvas.Project c = mainViewController.getCanvas().getCanvas();
-		javafx.event.EventHandler<javafx.scene.input.MouseEvent> clicHandle = new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				new Pencil(c);
-			}
-		};
-		c.addEventHandler(MouseEvent.MOUSE_CLICKED, clicHandle);
-		*/
 	}
 	
 	@FXML
