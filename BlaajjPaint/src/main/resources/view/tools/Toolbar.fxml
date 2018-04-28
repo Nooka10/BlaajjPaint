@@ -38,7 +38,7 @@
 	</children>
    <stylesheets>
       <URL value="@ToolBarStyleSheet.css" />
-      <URL value="@../mainStyleSheet.css" />
+      <URL value="@../MainStyleSheet.css" />
    </stylesheets>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

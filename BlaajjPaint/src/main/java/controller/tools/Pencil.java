@@ -1,5 +1,6 @@
 package controller.tools;
 
+import controller.Project;
 import controller.history.ICmd;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
@@ -84,8 +85,8 @@ public class Pencil extends Tool implements ICmd {
 		if (undosave == null) {
 			throw new UndoException();
 		}
-		redosave = canvas.snapshot(params, null);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		redosave = Project.getInstance().getCanvas().snapshot(params, null);
+		GraphicsContext gc = Project.getInstance().getCanvas().getGraphicsContext2D();
 		gc.drawImage(undosave, 0, 0);
 		undosave = null;
 
@@ -96,9 +97,9 @@ public class Pencil extends Tool implements ICmd {
 		if (redosave == null) {
 			throw new UndoException();
 		}
-		undosave = canvas.snapshot(params, null);
+		undosave = Project.getInstance().getCanvas().snapshot(params, null);
 		
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		GraphicsContext gc = Project.getInstance().getCanvas().getGraphicsContext2D();
 		gc.drawImage(redosave, 0, 0);
 		redosave = null;
 	}

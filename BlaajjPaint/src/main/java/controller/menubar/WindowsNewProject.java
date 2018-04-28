@@ -1,6 +1,7 @@
 package controller.menubar;
 
 import controller.MainViewController;
+import controller.Project;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -70,9 +71,13 @@ public class WindowsNewProject {
 	
 	@FXML
 	void createNewProject(ActionEvent event) {
-		mainViewController.newCanevas(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()));
+		int width = Integer.parseInt(this.width.getText());
+		int height = Integer.parseInt(this.height.getText());
+		
+		Project project = Project.getInstance();
+		project.setData(width, height, mainViewController);
+		
 		Stage stage = (Stage) createButton.getScene().getWindow();
-		// do what you have to do
 		stage.close();
 	}
 	

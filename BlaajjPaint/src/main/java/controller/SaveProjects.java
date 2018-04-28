@@ -12,8 +12,7 @@ import java.io.*;
 
 
 public class SaveProjects {
-
-
+    
     private static SaveProjects ourInstance = new SaveProjects();
 
     public static SaveProjects getInstance() {

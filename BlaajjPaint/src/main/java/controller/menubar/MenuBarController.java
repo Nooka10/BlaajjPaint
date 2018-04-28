@@ -1,6 +1,7 @@
 package controller.menubar;
 
 import controller.MainViewController;
+import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +11,6 @@ import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Main;
-import controller.history.RecordCmd;
 
 import java.io.File;
 
@@ -96,13 +96,13 @@ public class MenuBarController {
 		*/
 		
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/windowsNewProject.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/WindowsNewProject.fxml"));
 			Parent newProjectWindow = fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.setScene(new Scene(newProjectWindow));
 			stage.show();
 			
-			// Give the WindowsNesProject access to the menuBarController.
+			// Give the windowsNeWProject access to the menuBarController.
 			WindowsNewProject windowsNewProject= fxmlLoader.getController();
 			windowsNewProject.setMainViewController(mainViewController);
 			
