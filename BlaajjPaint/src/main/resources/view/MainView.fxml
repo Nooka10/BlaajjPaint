@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="mainView" prefHeight="400.0" prefWidth="600.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
-	<top>
-		<VBox BorderPane.alignment="CENTER">
-			<children>
-				<fx:include fx:id="menuBar" source="menubar/Menubar.fxml" />
-			</children>
-			<BorderPane.margin>
-				<Insets />
-			</BorderPane.margin>
-		</VBox>
-	</top>
-	<center>
-		<ScrollPane fx:id="scrollPane" />
-	</center>
+<BorderPane fx:id="mainView" prefHeight="400.0" prefWidth="600.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
 	<left>
 		<AnchorPane prefWidth="70.0">
 			<children>
@@ -36,4 +19,15 @@
 			</children>
 		</AnchorPane>
 	</right>
+   <top>
+	  <fx:include fx:id="menuBar" source="menubar/Menubar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane minHeight="40.0" prefHeight="40.0" styleClass="menuBackground" stylesheets="@MainStyleSheet.css" AnchorPane.bottomAnchor="359.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
