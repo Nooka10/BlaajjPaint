@@ -64,12 +64,14 @@ public class ToolBarController {
 	
 	private MainViewController mainViewController; // Reference to the mainViewController
 	
+	private Tool currentTool; // contient une référence vers le tool actuellement sélectionné
+	
 	/**
 	 * Appelé par le MainViewController pour donner une référence vers lui-même.
 	 *
 	 * @param mainViewController, une référence vers le mainViewController
 	 *
-	 * Créé par Benoît Schopfer
+	 *                            Créé par Benoît Schopfer
 	 */
 	public void setMainViewController(MainViewController mainViewController) {
 		this.mainViewController = mainViewController;
@@ -107,13 +109,19 @@ public class ToolBarController {
 	
 	@FXML
 	void drawBrush(ActionEvent event) {
-		Project project = Project.getInstance();
-		mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				new Pencil(project.getCurrentCanvas());
+		if (currentTool == null || currentTool.toolType != Tool.ToolType.PENCIL) {
+			if(currentTool != null) {
+				currentTool.unregisterEventHandlers();
 			}
-		});
+			Project project = Project.getInstance();
+			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					currentTool = new Pencil(project.getCurrentCanvas());
+				}
+			});
+			currentTool = new Pencil(project.getCurrentCanvas());
+		}
 	}
 	
 	@FXML
@@ -122,7 +130,19 @@ public class ToolBarController {
 	
 	@FXML
 	void erase(ActionEvent event) {
-	
+		if (currentTool == null || currentTool.toolType != Tool.ToolType.ERASER) {
+			if(currentTool != null) {
+				currentTool.unregisterEventHandlers();
+			}
+			Project project = Project.getInstance();
+			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					currentTool = new Eraser(project.getCurrentCanvas());
+				}
+			});
+			currentTool = new Eraser(project.getCurrentCanvas());
+		}
 	}
 	
 	@FXML

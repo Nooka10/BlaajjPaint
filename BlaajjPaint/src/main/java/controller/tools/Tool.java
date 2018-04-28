@@ -8,7 +8,13 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public abstract class Tool {
 
     private Canvas canvas;
-
+    public enum ToolType {PENCIL, ERASER, OTHER};
+    public ToolType toolType = ToolType.OTHER;
+    
+    public Canvas getCanvas() {
+        return canvas;
+    }
+    
     public Tool(Canvas canvas){
         this.canvas = canvas;
     }
@@ -21,6 +27,7 @@ public abstract class Tool {
 
         throw new NotImplementedException();
     }
-
+    
+    public abstract void unregisterEventHandlers();
 
 }
