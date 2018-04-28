@@ -1,16 +1,21 @@
 package controller;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 import java.awt.*;
 import java.util.LinkedList;
-
+import javafx.scene.paint.Color;
 //import javafx.scene.layout.StackPane;
 
 public class Project {
 	private Dimension dimension;
 	private LinkedList<Canvas> layers = new LinkedList<>();
 	private Canvas currentLayer;
+	private MainViewController mainViewController;
+	
+	private GraphicsContext gc;
+	//private StackPane pane = new StackPane();
 	
 	private static Project projectInstance = new Project();
 	
@@ -21,73 +26,25 @@ public class Project {
 	private Project() {
 	}
 	
-	public void setData (int width, int height){
+	public void setData (int width, int height, MainViewController mainViewController){
+		this.mainViewController = mainViewController;
 		dimension = new Dimension(width, height);
 		currentLayer = new Canvas(width, height);
+		gc = currentLayer.getGraphicsContext2D();
 		layers.add(currentLayer);
+		draw();
 	}
 	
-	/*
-	private javafx.scene.canvas.Canvas canvas;
-	private GraphicsContext gc;
-	//private StackPane pane = new StackPane();
-	
-	public javafx.scene.canvas.Canvas getCanvas() {
-		if (canvas == null) {
-			// FIXME: lancer une erreur...?
-		}
-		return canvas;
+	public Canvas getCanvas(){
+		return currentLayer;
 	}
 	
 	private void draw() {
 		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, width, height);
-		this.canvas.toFront();
-		this.canvas.setVisible(true);
+		gc.fillRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
+		currentLayer.toFront();
+		currentLayer.setVisible(true);
 		
-		for (Layer l: layers) {
-			gc.setFill(Color.GREEN);
-			gc.fillRect(0, 0, width, height);
-			this.canvas.toFront();
-			this.canvas.setVisible(true);
-		}
+		mainViewController.showCanvas(currentLayer);
 	}
-	
-	public void setCanvas(javafx.scene.canvas.Canvas canvas) {
-		this.canvas = canvas;
-		height = this.canvas.getHeight();
-		width = this.canvas.getWidth();
-		gc = this.canvas.getGraphicsContext2D();
-		gc.setFill(Color.BLACK); //FIXME: À remettre en blanc!
-		gc.fillRect(0, 0, width, height);
-		//pane = new StackPane();
-		//pane.getChildren().add(canvas);
-	}
-	
-	//public StackPane getPane() { return pane; }
-	
-	public void setHeight(double height) {
-		this.height = height;
-		this.canvas.setHeight(height);
-		draw();
-	}
-	
-	public double getHeight() {
-		return height;
-	}
-	
-	public void setWidth(double width) {
-		this.width = width;
-		this.canvas.setWidth(width);
-		draw();
-	}
-	
-	public double getWidth() {
-		return width;
-	}
-	
-	public void addLayer(Layer layer) {
-		layers.add(layer); // FIXME: Est-ce qu'on check que le layer à ajouter ne soit pas déjà dans la liste...?
-	}
-	*/
 }

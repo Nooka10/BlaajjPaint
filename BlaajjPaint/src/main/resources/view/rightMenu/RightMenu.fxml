@@ -15,7 +15,7 @@
          <children>
             <Pane>
                <children>
-                  <ColorPicker onAction="#selectColor" stylesheets="@rightMenuStyleSheet.css">
+                  <ColorPicker onAction="#selectColor" stylesheets="@RightMenuStyleSheet.css">
                      <styleClass>
                         <String fx:value="menuButton" />
                         <String fx:value="colorPicker" />
