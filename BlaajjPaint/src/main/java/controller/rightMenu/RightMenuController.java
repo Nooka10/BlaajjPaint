@@ -73,16 +73,16 @@ public class RightMenuController {
 
 		container.setOnMouseClicked( ( e ) ->
 		{
-			container.requestFocus();
 			Project.getInstance().setCurrentLayer(layer);
+			updateLayerList();
 		} );
 
         // use different backgrounds for focused and unfocused states
-        container.backgroundProperty().bind( Bindings
+        /*container.backgroundProperty().bind( Bindings
                 .when( container.focusedProperty() )
                 .then( focusBackground )
                 .otherwise( unfocusBackground )
-        );
+        );*/
 
 		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
@@ -103,7 +103,10 @@ public class RightMenuController {
 		    HBox newEl = createLayoutUI(layer);
             LayersList.getChildren().add(newEl);
             if(layer.equals(Project.getInstance().getCurrentLayer())){
-                newEl.requestFocus();
+                newEl.setBackground(focusBackground);
+                System.out.println("current Layer: " + layer.toString());
+            } else {
+                newEl.setBackground(unfocusBackground);
             }
 		}
 	}

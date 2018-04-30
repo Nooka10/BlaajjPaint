@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javafx.scene.image.Image;
@@ -70,9 +71,13 @@ public class Project {
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
-		for (Layer layer : layers)
-			if (layersGroup.isVisible())
-				layersGroup.getChildren().add(layer);
+        Iterator it = layers.descendingIterator();
+		while(it.hasNext()) {
+		    Layer layer = (Layer)it.next();
+            if (layer.isVisible()) {
+                layersGroup.getChildren().add(layer);
+            }
+        }
 		
 		mainViewController.drawLayers(layersGroup);
 	}
@@ -87,10 +92,7 @@ public class Project {
 	
 	public void addLayer(Layer newLayer) {
 		currentLayer = newLayer;
-		layers.add(newLayer);
-		gc = currentLayer.getGraphicsContext2D(); // TODO test a enlever
-		gc.setFill(Color.GREEN);
-		gc.fillOval(30, 30, 9, 5);
+		layers.addFirst(newLayer);
 		drawWorkspace();
 	}
 	
