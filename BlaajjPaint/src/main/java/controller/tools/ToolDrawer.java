@@ -13,13 +13,11 @@ import javafx.scene.canvas.Canvas;
  * @Author Adrien
  */
 public abstract class ToolDrawer extends Tool {
-
-
     protected double opacity;
     protected double thickness;
 
-    public ToolDrawer(Canvas canvas, double opacity, double thickness) {
-        super(canvas);
+    public ToolDrawer(double opacity, double thickness) {
+        super();
         this.opacity = opacity;
         this.thickness = thickness;
     }

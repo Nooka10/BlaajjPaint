@@ -28,9 +28,9 @@ public class Pencil extends ToolDrawer implements ICmd {
 	private EventHandler<MouseEvent> mouserelease;
 	private EventHandler<MouseEvent> mousePressed;
 	
-	public Pencil(Canvas canvas, double thickness, double opacity) {
+	public Pencil(double thickness, double opacity) {
 		// stock le canvas dans le parent
-		super(canvas, thickness, opacity);
+		super(thickness, opacity);
 		
 		//realid = id++; // FIXME: à virer -> juste pour tests
 		//System.out.println("create : " + realid); // FIXME: à virer -> juste pour tests
