@@ -12,7 +12,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -66,6 +65,8 @@ public class ToolBarController {
 	
 	@FXML
 	private ToggleButton zoomTool;
+	
+	private ParamDrawToolControler paramDrawToolControler;
 	
 	private Parent paramBar;
 	
@@ -122,7 +123,7 @@ public class ToolBarController {
 				}
 			});
 			currentTool = new Pencil(Project.getInstance().getCurrentCanvas());
-			addParamBar("/view/tools/ParamDrawTool.fxml");
+			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
 		}
 	}
 	
@@ -139,7 +140,7 @@ public class ToolBarController {
 				}
 			});
 			currentTool = new Eraser(Project.getInstance().getCurrentCanvas());
-			addParamBar("/view/tools/ParamDrawTool.fxml");
+			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
 		}
 	}
 	
@@ -182,14 +183,21 @@ public class ToolBarController {
 		alert.showAndWait();
 	}
 
-	private void addParamBar(String FXMLpath){
+	private void addParamDrawBar(String FXMLpath){
+		double thicknessValue = 10; // FIXME: valeur par défaut pour l'épaisseur
+		double opacityValue = 10; // FIXME: valeur par défat pour l'opacité
 		if(paramBar != null){
+			thicknessValue = paramDrawToolControler.getThicknessValue();
+			opacityValue = paramDrawToolControler.getOpacityValue();
 			mainViewController.getParamBar().getChildren().remove(paramBar);
 		}
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
 			paramBar = fxmlLoader.load();
+			paramDrawToolControler = fxmlLoader.getController();
 			mainViewController.getParamBar().getChildren().add(paramBar);
+			paramDrawToolControler.setThicknessValue(thicknessValue);
+			paramDrawToolControler.setOpacityValue(opacityValue);
 		} catch(IOException e){
 			e.printStackTrace();
 		}
