@@ -66,6 +66,10 @@ public class MainViewController {
 		scrollPane.setContent(canvas);
 	}
 	
+	public void setMain(Main main){
+		this.main = main;
+	}
+	
 	public Main getMain() {
 		return main;
 	}

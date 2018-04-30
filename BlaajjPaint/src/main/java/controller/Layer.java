@@ -37,7 +37,7 @@ public class Layer extends Canvas{
 	}
 	
 	// TODO : Antoine
-	private Image createImageFromCanvas(int scale) {
+	public Image createImageFromCanvas(int scale) {
 		final Bounds bounds = getLayoutBounds();
 		
 		final WritableImage image = new WritableImage(
@@ -58,7 +58,7 @@ public class Layer extends Canvas{
 	 * Permet de fusionner deux calques
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
-	private void mergeLayers(Layer backgroundLayer) {
+	public void mergeLayers(Layer backgroundLayer) {
 		Image image = createImageFromCanvas(4);
 		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
 		// Project.getInstance().getLayers().remove(this); // TODO : enlever ca maybe

@@ -1,6 +1,7 @@
 package controller.menubar;
 
 import controller.MainViewController;
+import controller.Project;
 import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -178,7 +179,7 @@ public class MenuBarController {
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj");
         fileChooser.getExtensionFilters().add(extFilter);
 
         Main mainApp = mainViewController.getMain();
@@ -195,4 +196,23 @@ public class MenuBarController {
             System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
         }
     }
+	
+	public void export(){
+		FileChooser fileChooser = new FileChooser();
+		
+		FileChooser.ExtensionFilter extPNG =
+				new FileChooser.ExtensionFilter("PNG (*.png)", "*.png");
+		FileChooser.ExtensionFilter extJPG =
+				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg");
+		fileChooser.getExtensionFilters().addAll(extPNG, extJPG);
+		
+		Main mainApp = mainViewController.getMain();
+		
+		// Show save file dialog
+		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+		
+		Project.getInstance().export(file);
+	
+	}
+ 
 }

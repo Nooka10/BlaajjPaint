@@ -1,11 +1,20 @@
 package controller;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
+
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+
+import javax.imageio.ImageIO;
 //import javafx.scene.layout.StackPane;
 
 public class Project {
@@ -46,8 +55,6 @@ public class Project {
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
 		currentLayer.toFront();
-		currentLayer.setVisible(true);
-		
 		mainViewController.showCanvas(currentLayer);
 	}
 
@@ -57,5 +64,47 @@ public class Project {
 
 	public Color getCurrentColor(){
 		return currentColor;
+	}
+
+	public LinkedList<Layer> getLayers() {
+		return layers;
+	}
+	
+	
+	public void export(File file) {
+		if (file != null) {
+			Layer resultLayer = new Layer(dimension.width,dimension.height);
+			for (Layer layer : layers) {
+				resultLayer.mergeLayers(layer);
+				resultLayer = layer;
+			}
+			
+			SnapshotParameters params = new SnapshotParameters();
+			String chosenExtension = "";
+			
+			int i = file.getPath().lastIndexOf('.');
+			if (i > 0) {
+				chosenExtension = file.getPath().substring(i + 1);
+			}
+			if (chosenExtension.equals("png")) {
+				params.setFill(Color.TRANSPARENT);
+			} else if (chosenExtension.equals("jpg")) {
+				params.setFill(Color.WHITE);
+			}
+			
+			try {
+				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+			}catch (IOException ex){
+				ex.printStackTrace();
+			}
+			
+			
+			
+			
+			//ImageIO.write(renderedImage, chosenExtension, file);
+			
+			
+			
+		}
 	}
 }
