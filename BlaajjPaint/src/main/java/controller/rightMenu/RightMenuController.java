@@ -60,8 +60,7 @@ public class RightMenuController {
 	
 	@FXML
 	void addNewLayer() {
-		Project.getInstance().addLayer(new Layer(Project.getInstance().getDimension()));
-		updateLayerList();
+		Project.getInstance().addNewLayer();
 	}
 
 	private HBox createLayoutUI(Layer layer){
