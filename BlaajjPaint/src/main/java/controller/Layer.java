@@ -15,7 +15,7 @@ public class Layer extends Canvas{
 	
 	private boolean visibility;
 	final private int id;
-	private static int count = 0;
+	private static int count = 1;
 	
 	/**
 	 * Constructeur
@@ -78,10 +78,11 @@ public class Layer extends Canvas{
 		System.out.println(visibility);
 		this.visibility = visibility;
 	}
-
-	public boolean getVisibility(){
+	
+	public boolean getVisibility() {
 		return visibility;
 	}
+	
 	
 	@Override
 	public String toString(){

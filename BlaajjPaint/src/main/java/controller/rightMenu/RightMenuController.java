@@ -9,13 +9,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
-import java.awt.*;
 
 public class RightMenuController {
 	@FXML
@@ -49,14 +46,14 @@ public class RightMenuController {
 	}
 
 	@FXML
-	void selectColor(ActionEvent event) {
+	void selectColor() {
 		System.out.println("Changed color!");
 		Project project = Project.getInstance();
 		project.setCurrentColor(colorPicker.getValue());
 	}
 	
 	@FXML
-	void addNewLayer(ActionEvent event) {
+	void addNewLayer() {
 		Project.getInstance().addLayer(new Layer(Project.getInstance().getDimension()));
 		updateLayerList();
 	}
@@ -70,6 +67,7 @@ public class RightMenuController {
 		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
 				layer.setVisibility(new_val);
+				Project.getInstance().drawWorkspace();
 			}
 		});
 

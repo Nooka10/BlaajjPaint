@@ -112,7 +112,7 @@ public class ToolBarController {
 	
 	@FXML
 	void handlePencil(ActionEvent event) {
-		if (currentTool == null || currentTool.toolType != Tool.ToolType.PENCIL) {
+		//if (currentTool == null) {
 			if (currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}
@@ -124,7 +124,7 @@ public class ToolBarController {
 				}
 			});
 			currentTool = new Pencil(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
-		}
+		//}
 	}
 	
 	@FXML

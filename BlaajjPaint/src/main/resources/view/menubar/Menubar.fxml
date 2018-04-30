@@ -14,6 +14,7 @@
 				<MenuItem id="menuBar_enregistrer" mnemonicParsing="false" onAction="#handleSave" text="Enregistrer" />
 				<MenuItem id="menuBar_enregistrerSous" mnemonicParsing="false" onAction="#handleSaveAs" text="Enregister sous" />
 				<MenuItem id="menuBar_exporter" mnemonicParsing="false" onAction="#export" text="Exporter" />
+				<MenuItem id="menuBar_importer" mnemonicParsing="false" onAction="#importImage" text="Importer une image" />
 				<MenuItem id="menuBar_fermer" mnemonicParsing="false" text="Fermer" />
 			</items>
 		</Menu>

@@ -6,6 +6,7 @@ import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
@@ -14,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import main.Main;
 
 import java.io.File;
+import java.util.LinkedList;
 
 public class MainViewController {
 	
@@ -62,8 +64,9 @@ public class MainViewController {
 		scrollPane.setFitToWidth(true);
 	}
 	
-	public void showCanvas(Canvas canvas){
-		scrollPane.setContent(canvas);
+	// TODO : mais Benoit cette fonction ne doit pas être la..
+	public void drawLayers(Group group){
+		scrollPane.setContent(group);
 	}
 	
 	public void setMain(Main main){

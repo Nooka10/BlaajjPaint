@@ -214,5 +214,23 @@ public class MenuBarController {
 		Project.getInstance().export(file);
 	
 	}
+	
+	public void importImage(){
+		
+		FileChooser fileChooser = new FileChooser();
+		
+		fileChooser.setTitle("Import an image");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("All images files", "*.png", "*.jpg"),
+				new FileChooser.ExtensionFilter("PNG (*.png)", "*.png"),
+				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
+		
+		Main mainApp = mainViewController.getMain();
+		
+		// Show save file dialog
+		File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+		
+		Project.getInstance().importImage(file);
+	}
  
 }
