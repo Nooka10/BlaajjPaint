@@ -51,8 +51,7 @@ public class Pencil extends Tool implements ICmd {
 				//canvas.getGraphicsContext2D().drawImage(pencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le pencil définit plus haut
 				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
 				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
-				//Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity / 100);
-				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du pencil
+				canvas.getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
 				canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
 				canvas.getGraphicsContext2D().stroke();
 				//System.out.println("drag : " + realid); // FIXME: à virer -> juste pour tests
@@ -66,8 +65,7 @@ public class Pencil extends Tool implements ICmd {
 				canvas.getGraphicsContext2D().beginPath();
 				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
-				//Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity / 100);
-				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du pencil
+				canvas.getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
 				canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
 				canvas.getGraphicsContext2D().stroke();
 				//System.out.println("pressed : " + realid); // FIXME: à virer -> juste pour tests

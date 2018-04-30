@@ -112,7 +112,7 @@ public class MainViewController {
 		KeyCombination cntrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlMajZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
-
+		KeyCombination cntrlMajS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
 		// New
 		if(cntrlN.match(event)){
 			menuBarController.openNewProjectWindows();
@@ -131,6 +131,11 @@ public class MainViewController {
 		// Redo
 		if(cntrlMajZ.match(event)){
 			menuBarController.redoAction();
+		}
+
+		//Save As
+		if(cntrlMajS.match(event)){
+			menuBarController.saveAs();
 		}
 	}
 }

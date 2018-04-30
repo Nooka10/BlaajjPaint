@@ -151,7 +151,7 @@ public class ToolBarController {
 	
 	@FXML
 	void handleAddText(ActionEvent event) {
-	
+	    
 	}
 	
 	@FXML

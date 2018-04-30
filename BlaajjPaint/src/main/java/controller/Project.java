@@ -16,6 +16,8 @@ public class Project {
 	
 	private GraphicsContext gc;
 	//private StackPane pane = new StackPane();
+
+	private Color currentColor;
 	
 	private static Project projectInstance = new Project();
 	
@@ -24,6 +26,7 @@ public class Project {
 	}
 	
 	private Project() {
+		currentColor = Color.BLACK;
 	}
 	
 	public void setData (int width, int height, MainViewController mainViewController){
@@ -46,5 +49,13 @@ public class Project {
 		currentLayer.setVisible(true);
 		
 		mainViewController.showCanvas(currentLayer);
+	}
+
+	public void setCurrentColor(Color color){
+		currentColor = color;
+	}
+
+	public Color getCurrentColor(){
+		return currentColor;
 	}
 }

@@ -105,25 +105,7 @@ public class MenuBarController {
 	
 	@FXML
 	void handleSaveAs(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		Main mainApp = mainViewController.getMain();
-		
-		// Show save file dialog
-		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-		
-		if (file != null) {
-			// Make sure it has the correct extension
-			if (!file.getPath().endsWith(".blaajj")) {
-				file = new File(file.getPath() + ".blaajj");
-			}
-			//mainApp.savePersonDataToFile(file);
-			System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
-		}
+		saveAs();
 	}
 	
 	@FXML
@@ -190,5 +172,27 @@ public class MenuBarController {
 
     public void redoAction(){
         RecordCmd.getInstance().redo();
+    }
+
+    public void saveAs(){
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        Main mainApp = mainViewController.getMain();
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".blaajj")) {
+                file = new File(file.getPath() + ".blaajj");
+            }
+            //mainApp.savePersonDataToFile(file);
+            System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
+        }
     }
 }
