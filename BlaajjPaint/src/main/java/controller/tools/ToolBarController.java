@@ -119,14 +119,7 @@ public class ToolBarController {
 				}
 			});
 			currentTool = new Pencil(Project.getInstance().getCurrentCanvas());
-			try {
-				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/tools/ParamDrawTool.fxml"));
-				Parent param = fxmlLoader.load();
-				AnchorPane paramBar = mainViewController.getParamBar();
-				paramBar.getChildren().add(param);
-			} catch(IOException e){
-				e.printStackTrace();
-			}
+			addParamBar("/view/tools/ParamDrawTool.fxml");
 		}
 	}
 	
@@ -143,13 +136,7 @@ public class ToolBarController {
 				}
 			});
 			currentTool = new Eraser(Project.getInstance().getCurrentCanvas());
-			try {
-				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/tools/ParamDrawTool.fxml"));
-				Parent param = fxmlLoader.load();
-				mainViewController.getParamBar().getChildren().add(param);
-			} catch(IOException e){
-				e.printStackTrace();
-			}
+			addParamBar("/view/tools/ParamDrawTool.fxml");
 		}
 	}
 	
@@ -190,5 +177,15 @@ public class ToolBarController {
 		alert.setContentText("Commencez par créer un nouveau projet ou ouvrir un projet existant.");
 		
 		alert.showAndWait();
+	}
+
+	private void addParamBar(String FXMLpath){
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
+			Parent param = fxmlLoader.load();
+			mainViewController.getParamBar().getChildren().add(param);
+		} catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 }

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="ParamDrawTools" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamDrawToolControler">
+<HBox fx:id="ParamDrawTools" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamDrawToolControler">
    <children>
       <Label text="Épaisseur">
          <font>
