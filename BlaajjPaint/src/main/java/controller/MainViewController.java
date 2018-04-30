@@ -3,8 +3,6 @@ package controller;
 import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
-import controller.tools.ParamCropControler;
-import controller.tools.ParamDrawToolControler;
 import controller.tools.ToolBarController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

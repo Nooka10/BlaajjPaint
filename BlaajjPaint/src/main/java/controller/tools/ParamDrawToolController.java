@@ -5,7 +5,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
-public class ParamDrawToolControler {
+public class ParamDrawToolController {
 	@FXML
 	private Slider ThicknessSlider;
 	
