@@ -15,20 +15,18 @@ import utils.UndoException;
 
 public class Eraser extends Tool implements ICmd {
 	
-	static Color transparent = new Color(0, 0, 0, 0);
+	private static Color transparent = new Color(0, 0, 0, 0);
 	
 	
-	static int id; // FIXME: à virer -> juste pour tests
-	int realid; // FIXME: à virer -> juste pour tests
-	Image undosave;
-	Image redosave = null;
-	SnapshotParameters params;
+	private static int id; // FIXME: à virer -> juste pour tests
+	private int realid; // FIXME: à virer -> juste pour tests
+	private Image undosave;
+	private Image redosave = null;
+	private SnapshotParameters params;
 	
-	WritableImage eraser;
-	
-	EventHandler<MouseEvent> mousedrag;
-	EventHandler<MouseEvent> mouserelease;
-	EventHandler<MouseEvent> mousePressed;
+	private EventHandler<MouseEvent> mousedrag;
+	private EventHandler<MouseEvent> mouserelease;
+	private EventHandler<MouseEvent> mousePressed;
 	
 	public Eraser(Canvas canvas) {
 		// stock le cnaevas dans le parent

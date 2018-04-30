@@ -82,37 +82,32 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	void mainPaneId(ActionEvent event) {
+	void handleMoveView(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void moveView(ActionEvent event) {
+	void handleSelect(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void select(ActionEvent event) {
+	void handleLasso(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void lasso(ActionEvent event) {
+	void handleCrop(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void crop(ActionEvent event) {
+	void handlePipette(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void pipette(ActionEvent event) {
-	
-	}
-	
-	@FXML
-	void drawBrush(ActionEvent event) {
+	void handlePencil(ActionEvent event) {
 		if (currentTool == null || currentTool.toolType != Tool.ToolType.PENCIL) {
 			if(currentTool != null) {
 				currentTool.unregisterEventHandlers();
@@ -136,11 +131,7 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	void brushTool(ActionEvent event) {
-	}
-	
-	@FXML
-	void erase(ActionEvent event) {
+	void handleEraser(ActionEvent event) {
 		if (currentTool == null || currentTool.toolType != Tool.ToolType.ERASER) {
 			if(currentTool != null) {
 				currentTool.unregisterEventHandlers();
@@ -163,32 +154,32 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	void blur(ActionEvent event) {
+	void handleBlur(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void addText(ActionEvent event) {
+	void handleAddText(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void mouse(ActionEvent event) {
+	void handleMouse(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void addShape(ActionEvent event) {
+	void handleAddShape(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void hand(ActionEvent event) {
+	void handleHand(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void zoom(ActionEvent event) {
+	void handleZoom(ActionEvent event) {
 	
 	}
 	
