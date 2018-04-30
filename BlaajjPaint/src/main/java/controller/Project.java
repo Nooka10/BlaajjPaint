@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
 
 public class Project {
 	private Dimension dimension;
-	private LinkedList<Canvas> layers = new LinkedList<>();
-	private Canvas currentLayer;
+	private LinkedList<Layer> layers = new LinkedList<>();
+	private Layer currentLayer;
 	private MainViewController mainViewController;
 	
 	private GraphicsContext gc;
@@ -32,7 +32,7 @@ public class Project {
 	public void setData (int width, int height, MainViewController mainViewController){
 		this.mainViewController = mainViewController;
 		dimension = new Dimension(width, height);
-		currentLayer = new Canvas(width, height);
+		currentLayer = new Layer(width, height);
 		gc = currentLayer.getGraphicsContext2D();
 		layers.add(currentLayer);
 		draw();
