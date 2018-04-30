@@ -12,8 +12,7 @@ import javafx.scene.paint.Color;
 import java.awt.*;
 
 public class Layer extends Canvas{
-	
-	private boolean visibility;
+
 	final private int id;
 	private static int count = 1;
 	
@@ -24,7 +23,6 @@ public class Layer extends Canvas{
 	 */
 	public Layer(int width, int height){
 		super(width,height);
-		visibility = true;
 		id = count++;
 	}
 
@@ -38,7 +36,6 @@ public class Layer extends Canvas{
 	 */
 	public Layer(Layer toCopy){
 		super(toCopy.getWidth(),toCopy.getHeight());
-		visibility = toCopy.visibility;
 		id = count++;
 	}
 	
