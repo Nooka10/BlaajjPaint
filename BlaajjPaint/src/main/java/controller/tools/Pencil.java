@@ -15,17 +15,15 @@ import utils.UndoException;
 
 public class Pencil extends Tool implements ICmd {
 	
-	static int id; // FIXME: à virer -> juste pour tests
-	int realid; // FIXME: à virer -> juste pour tests
-	Image undosave;
-	Image redosave = null;
-	SnapshotParameters params;
+	private static int id; // FIXME: à virer -> juste pour tests
+	private int realid; // FIXME: à virer -> juste pour tests
+	private Image undosave;
+	private Image redosave = null;
+	private SnapshotParameters params;
 	
-	WritableImage pencil;
-	
-	EventHandler<MouseEvent> mousedrag;
-	EventHandler<MouseEvent> mouserelease;
-	EventHandler<MouseEvent> mousePressed;
+	private EventHandler<MouseEvent> mousedrag;
+	private EventHandler<MouseEvent> mouserelease;
+	private EventHandler<MouseEvent> mousePressed;
 	
 	public Pencil(Canvas canvas) {
 		// stock le cnaevas dans le parent
@@ -37,8 +35,8 @@ public class Pencil extends Tool implements ICmd {
 		toolType = ToolType.PENCIL;
 		
 		// définit le pinceau qui sera utilisé par l'évènement de drag pour colorier le canvas
-		// pencil = new WritableImage(1, 1); //FIXME: permet de définir un pinceau (taille, couleur etc) mais lag énromément au drag...
-		// pencil.getPixelWriter().setColor(0, 0, Color.BLACK);
+		// handlePencil = new WritableImage(1, 1); //FIXME: permet de définir un pinceau (taille, couleur etc) mais lag énromément au drag...
+		// handlePencil.getPixelWriter().setColor(0, 0, Color.BLACK);
 		
 		// configuration des paramètres utilisés pour la sauvegarde du canevas
 		params = new SnapshotParameters();
@@ -51,10 +49,10 @@ public class Pencil extends Tool implements ICmd {
 		mousedrag = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//canvas.getGraphicsContext2D().drawImage(pencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le pencil définit plus haut
+				//canvas.getGraphicsContext2D().drawImage(handlePencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le handlePencil définit plus haut
 				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur du pencil
-				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du pencil
+				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur du handlePencil
+				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du handlePencil
 				canvas.getGraphicsContext2D().stroke();
 				System.out.println("drag : " + realid);
 			}
@@ -66,8 +64,8 @@ public class Pencil extends Tool implements ICmd {
 			public void handle(MouseEvent event) {
 				canvas.getGraphicsContext2D().beginPath();
 				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur du pencil
-				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du pencil
+				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur du handlePencil
+				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du handlePencil
 				canvas.getGraphicsContext2D().stroke();
 				System.out.println("pressed : " + realid);
 			}
