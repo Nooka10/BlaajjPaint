@@ -12,6 +12,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -65,6 +66,8 @@ public class ToolBarController {
 	
 	@FXML
 	private ToggleButton zoomTool;
+	
+	private Parent paramBar;
 	
 	private MainViewController mainViewController; // Reference to the mainViewController
 	
@@ -180,10 +183,13 @@ public class ToolBarController {
 	}
 
 	private void addParamBar(String FXMLpath){
+		if(paramBar != null){
+			mainViewController.getParamBar().getChildren().remove(paramBar);
+		}
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
-			Parent param = fxmlLoader.load();
-			mainViewController.getParamBar().getChildren().add(param);
+			paramBar = fxmlLoader.load();
+			mainViewController.getParamBar().getChildren().add(paramBar);
 		} catch(IOException e){
 			e.printStackTrace();
 		}
