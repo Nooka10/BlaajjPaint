@@ -13,7 +13,8 @@
 				<MenuItem id="menuBar_ouvrir" mnemonicParsing="false" onAction="#handleOpen" text="Ouvrir" />
 				<MenuItem id="menuBar_enregistrer" mnemonicParsing="false" onAction="#handleSave" text="Enregistrer" />
 				<MenuItem id="menuBar_enregistrerSous" mnemonicParsing="false" onAction="#handleSaveAs" text="Enregister sous" />
-				<MenuItem id="menuBar_exporter" mnemonicParsing="false" text="Exporter" />
+				<MenuItem id="menuBar_exporter" mnemonicParsing="false" onAction="#export" text="Exporter" />
+				<MenuItem id="menuBar_importer" mnemonicParsing="false" onAction="#importImage" text="Importer une image" />
 				<MenuItem id="menuBar_fermer" mnemonicParsing="false" text="Fermer" />
 			</items>
 		</Menu>
@@ -29,7 +30,7 @@
 				<MenuItem id="menuBar_dupliquerCalque" mnemonicParsing="false" text="Dupliquer" />
 				<MenuItem id="menuBar_supprimerCalque" mnemonicParsing="false" text="Supprimer" />
 				<MenuItem id="menuBar_fusionnerCalques" mnemonicParsing="false" text="Fusionner les calques séléctionnés" />
-				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" text="Aplatir les calques" />
+				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques" />
 				<MenuItem id="menuBar_masquerCalques" mnemonicParsing="false" text="Masquer les calques séléctionnés" />
 			</items>
 		</Menu>

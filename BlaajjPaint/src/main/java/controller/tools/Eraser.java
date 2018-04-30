@@ -8,7 +8,6 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
@@ -105,8 +104,8 @@ public class Eraser extends ToolDrawer implements ICmd {
 		if (undosave == null) {
 			throw new UndoException();
 		}
-		redosave = Project.getInstance().getCurrentCanvas().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCurrentCanvas().getGraphicsContext2D();
+		redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
 		gc.drawImage(undosave, 0, 0);
 		undosave = null;
 		
@@ -117,9 +116,9 @@ public class Eraser extends ToolDrawer implements ICmd {
 		if (redosave == null) {
 			throw new UndoException();
 		}
-		undosave = Project.getInstance().getCurrentCanvas().snapshot(params, null);
+		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 		
-		GraphicsContext gc = Project.getInstance().getCurrentCanvas().getGraphicsContext2D();
+		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
 		gc.drawImage(redosave, 0, 0);
 		redosave = null;
 	}

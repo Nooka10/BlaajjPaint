@@ -1,6 +1,8 @@
 package controller.menubar;
 
+import controller.Layer;
 import controller.MainViewController;
+import controller.Project;
 import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -178,7 +180,7 @@ public class MenuBarController {
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj");
         fileChooser.getExtensionFilters().add(extFilter);
 
         Main mainApp = mainViewController.getMain();
@@ -195,4 +197,55 @@ public class MenuBarController {
             System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
         }
     }
+	
+    public void mergeAllLayer(){
+	    Layer layer = Project.getInstance().getLayers().getLast();
+	    for(int i = Project.getInstance().getLayers().size() - 2; i >= 0 ; --i)
+		
+		    Project.getInstance().getLayers().get(i).mergeLayers(layer);
+	
+	    Project.getInstance().getLayers().clear();
+	    Project.getInstance().getLayers().add(layer);
+		   
+	    
+	    Project.getInstance().drawWorkspace();
+	    mainViewController.getRightMenuController().updateLayerList();
+    }
+    
+	public void export(){
+		FileChooser fileChooser = new FileChooser();
+		
+		FileChooser.ExtensionFilter extPNG =
+				new FileChooser.ExtensionFilter("PNG (*.png)", "*.png");
+		FileChooser.ExtensionFilter extJPG =
+				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg");
+		fileChooser.getExtensionFilters().addAll(extPNG, extJPG);
+		
+		Main mainApp = mainViewController.getMain();
+		
+		// Show save file dialog
+		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+		
+		Project.getInstance().export(file);
+	
+	}
+	
+	public void importImage(){
+		
+		FileChooser fileChooser = new FileChooser();
+		
+		fileChooser.setTitle("Import an image");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("All images files", "*.png", "*.jpg"),
+				new FileChooser.ExtensionFilter("PNG (*.png)", "*.png"),
+				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
+		
+		Main mainApp = mainViewController.getMain();
+		
+		// Show save file dialog
+		File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+		
+		Project.getInstance().importImage(file);
+	}
+ 
 }

@@ -116,7 +116,7 @@ public class ToolBarController {
 	
 	@FXML
 	void handlePencil(ActionEvent event) {
-		if (currentTool == null || currentTool.toolType != Tool.ToolType.PENCIL) {
+		//if (currentTool == null) { // TODO : remettre ca
 			if (currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}
@@ -124,11 +124,11 @@ public class ToolBarController {
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Pencil(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
+					currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
 				}
 			});
-			currentTool = new Pencil(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
-		}
+			currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
+		//}
 	}
 	
 	@FXML
@@ -141,10 +141,10 @@ public class ToolBarController {
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(),paramDrawToolControler.getOpacityValue());
+					currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
 				}
 			});
-			currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(),paramDrawToolControler.getOpacityValue());
+			currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
 		}
 	}
 	
