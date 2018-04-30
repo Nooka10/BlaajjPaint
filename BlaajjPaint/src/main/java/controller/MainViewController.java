@@ -8,14 +8,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import main.Main;
 
 import java.io.File;
-import java.util.LinkedList;
 
 public class MainViewController {
 	

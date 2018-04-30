@@ -64,7 +64,7 @@ public class Project {
 		drawWorkspace();
 	}
 	
-	public Canvas getCurrentLayer() {
+	public Layer getCurrentLayer() {
 		return currentLayer;
 	}
 	

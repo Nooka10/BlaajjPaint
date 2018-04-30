@@ -112,7 +112,7 @@ public class ToolBarController {
 	
 	@FXML
 	void handlePencil(ActionEvent event) {
-		//if (currentTool == null) {
+		//if (currentTool == null) { // TODO : remettre ca
 			if (currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}

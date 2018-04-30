@@ -1,5 +1,6 @@
 package controller.menubar;
 
+import controller.Layer;
 import controller.MainViewController;
 import controller.Project;
 import controller.history.RecordCmd;
@@ -197,6 +198,20 @@ public class MenuBarController {
         }
     }
 	
+    public void mergeAllLayer(){
+	    Layer layer = Project.getInstance().getLayers().getLast();
+	    for(int i = Project.getInstance().getLayers().size() - 2; i >= 0 ; --i)
+		
+		    Project.getInstance().getLayers().get(i).mergeLayers(layer);
+	
+	    Project.getInstance().getLayers().clear();
+	    Project.getInstance().getLayers().add(layer);
+		   
+	    
+	    Project.getInstance().drawWorkspace();
+	    mainViewController.getRightMenuController().updateLayerList();
+    }
+    
 	public void export(){
 		FileChooser fileChooser = new FileChooser();
 		

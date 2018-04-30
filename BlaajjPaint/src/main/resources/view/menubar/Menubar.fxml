@@ -30,7 +30,7 @@
 				<MenuItem id="menuBar_dupliquerCalque" mnemonicParsing="false" text="Dupliquer" />
 				<MenuItem id="menuBar_supprimerCalque" mnemonicParsing="false" text="Supprimer" />
 				<MenuItem id="menuBar_fusionnerCalques" mnemonicParsing="false" text="Fusionner les calques séléctionnés" />
-				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" text="Aplatir les calques" />
+				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques" />
 				<MenuItem id="menuBar_masquerCalques" mnemonicParsing="false" text="Masquer les calques séléctionnés" />
 			</items>
 		</Menu>
