@@ -155,4 +155,8 @@ public class Project {
 		
 		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
+
+	public Canvas getBackgroungImage() {
+		return backgroungImage;
+	}
 }
