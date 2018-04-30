@@ -110,6 +110,10 @@ public class MainViewController {
 		return paramBar;
 	}
 
+	public RightMenuController getRightMenuController(){
+		return rightMenuController;
+	}
+
 	@FXML
 	private void KeyPressed(KeyEvent event){
 		KeyCombination cntrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN);
