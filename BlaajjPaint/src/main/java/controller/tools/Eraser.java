@@ -29,7 +29,7 @@ public class Eraser extends ToolDrawer implements ICmd {
 
 	public Eraser(Canvas canvas, double thickness, double opacity) {
 		// stock le cnaevas dans le parent
-		super(canvas, thickness, opacity);
+		super(thickness, opacity);
 		
 		realid = id++;
 		System.out.println("create : " + realid);
@@ -86,17 +86,11 @@ public class Eraser extends ToolDrawer implements ICmd {
 		canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouserelease);
 	}
 	
-	@Override
-	public void unregisterEventHandlers() {
-		getCanvas().removeEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
-		getCanvas().removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
-		getCanvas().removeEventHandler(MouseEvent.MOUSE_RELEASED, mouserelease);
-	}
 	
 	@Override
 	public void execute() {
 		RecordCmd.getInstance().saveCmd(this);
-		// RecordCmd.getInstance().clearRedo();
+		// RecordCmd.getCurrentTool().clearRedo();
 	}
 	
 	@Override
@@ -125,12 +119,24 @@ public class Eraser extends ToolDrawer implements ICmd {
 
 	@Override
 	protected void onOpacitySet(){
-		canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
 	}
 
 	@Override
 	protected void onThicknessSet(){
-		canvas.getGraphicsContext2D().setLineWidth(thickness);
 	}
 	
+	@Override
+	public EventHandler<MouseEvent> addMousePressedEventHandlers() {
+		return null;
+	}
+	
+	@Override
+	public EventHandler<MouseEvent> addMouseDraggedEventHandlers() {
+		return null;
+	}
+	
+	@Override
+	public EventHandler<MouseEvent> addMouseReleasedEventHandlers() {
+		return null;
+	}
 }

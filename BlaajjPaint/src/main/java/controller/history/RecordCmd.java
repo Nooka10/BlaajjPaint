@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getInstance(), le constructeur est publique*/
+/** Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getCurrentTool(), le constructeur est publique*/
 public class RecordCmd {
 
     /** La taille max de chaque pile */

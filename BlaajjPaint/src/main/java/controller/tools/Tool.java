@@ -1,8 +1,8 @@
 package controller.tools;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 public abstract class Tool {
 	
@@ -10,21 +10,22 @@ public abstract class Tool {
 	
 	protected ToolType toolType = ToolType.OTHER;
 	
-	public
-	
-	private Tool() {
-	
+	public Tool() {
 	}
 	
-	public void setPixel(int x, int y, Color color) {
-		throw new NotImplementedException();
+	private static Tool currentTool = Pencil.getInstance();
+	
+	public static Tool getCurrentTool() {
+		return currentTool;
 	}
 	
-	public GraphicsContext getGraphics() {
-		
-		throw new NotImplementedException();
+	public static void setCurrentTool(Tool currentTool) {
+		Tool.currentTool = currentTool;
 	}
 	
-	public abstract void unregisterEventHandlers();
+	public abstract EventHandler<MouseEvent> addMousePressedEventHandlers();
 	
+	public abstract EventHandler<MouseEvent> addMouseDraggedEventHandlers();
+
+	public abstract EventHandler<MouseEvent> addMouseReleasedEventHandlers();
 }

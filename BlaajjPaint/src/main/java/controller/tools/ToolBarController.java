@@ -28,8 +28,6 @@ public class ToolBarController {
 
 	private MainViewController mainViewController; // Reference to the mainViewController
 
-	private Tool currentTool; // contient une référence vers le tool actuellement sélectionné
-
 	/* attributs pour FXML */
 
 	@FXML
@@ -116,36 +114,15 @@ public class ToolBarController {
 	
 	@FXML
 	void handlePencil(ActionEvent event) {
-		//if (currentTool == null) { // TODO : remettre ca
-			if (currentTool != null) {
-				currentTool.unregisterEventHandlers();
-			}
+		if (Tool.getCurrentTool() == null || Tool.getCurrentTool().toolType != Tool.ToolType.PENCIL) {
+		 Tool.setCurrentTool(Pencil.getInstance());
 			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
-			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
-				}
-			});
-			currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
-		//}
+		}
 	}
 	
 	@FXML
 	void handleEraser(ActionEvent event) {
-		if (currentTool == null || currentTool.toolType != Tool.ToolType.ERASER) {
-			if (currentTool != null) {
-				currentTool.unregisterEventHandlers();
-			}
-			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
-			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
-				}
-			});
-			currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
-		}
+	
 	}
 	
 	@FXML

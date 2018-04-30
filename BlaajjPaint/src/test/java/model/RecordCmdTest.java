@@ -54,7 +54,7 @@ public class RecordCmdTest {
     @Test
     public void getInstanceIsNotNull() {
 
-        // test que getInstance() crée l'objet
+        // test que getCurrentTool() crée l'objet
         RecordCmd recordCmd = RecordCmd.getInstance();
 
         assertNotNull(recordCmd);
@@ -63,7 +63,7 @@ public class RecordCmdTest {
     @Test
     public void getInstanceIsAlwaysSame() {
 
-        // test que getInstance retournes toujours la même référence
+        // test que getCurrentTool retournes toujours la même référence
         RecordCmd recordCmd1 = RecordCmd.getInstance();
         RecordCmd recordCmd2 = RecordCmd.getInstance();
 

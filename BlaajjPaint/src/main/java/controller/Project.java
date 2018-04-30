@@ -1,5 +1,6 @@
 package controller;
 
+import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
@@ -91,7 +93,7 @@ public class Project {
 	}
 	
 	public void addLayer(Layer newLayer) {
-		currentLayer = newLayer;
+		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		drawWorkspace();
 	}
@@ -101,7 +103,19 @@ public class Project {
 	}
 	
 	public void setCurrentLayer(Layer currentLayer) {
+		try {
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, Tool.getCurrentTool().addMousePressedEventHandlers());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, Tool.getCurrentTool().addMouseReleasedEventHandlers());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, Tool.getCurrentTool().addMouseDraggedEventHandlers());
+		} catch(NullPointerException e){
+			System.out.println("Il n'y a pas de EventHandler à remove.");
+			System.out.println(e.getMessage());
+		}
+		
 		this.currentLayer = currentLayer;
+		this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, Tool.getCurrentTool().addMousePressedEventHandlers());
+		this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, Tool.getCurrentTool().addMouseReleasedEventHandlers());
+		this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, Tool.getCurrentTool().addMouseDraggedEventHandlers());
 	}
 	
 	public Dimension getDimension() {
