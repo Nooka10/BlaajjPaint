@@ -5,11 +5,15 @@ import controller.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 /**
  * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
@@ -113,14 +117,21 @@ public class ToolBarController {
 			if(currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}
-			Project project = Project.getInstance();
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Pencil(project.getCurrentCanvas());
+					currentTool = new Pencil(Project.getInstance().getCurrentCanvas());
 				}
 			});
-			currentTool = new Pencil(project.getCurrentCanvas());
+			currentTool = new Pencil(Project.getInstance().getCurrentCanvas());
+			try {
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/tools/ParamDrawTool.fxml"));
+				Parent param = fxmlLoader.load();
+				AnchorPane paramBar = mainViewController.getParamBar();
+				paramBar.getChildren().add(param);
+			} catch(IOException e){
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -134,14 +145,20 @@ public class ToolBarController {
 			if(currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}
-			Project project = Project.getInstance();
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Eraser(project.getCurrentCanvas());
+					currentTool = new Eraser(Project.getInstance().getCurrentCanvas());
 				}
 			});
-			currentTool = new Eraser(project.getCurrentCanvas());
+			currentTool = new Eraser(Project.getInstance().getCurrentCanvas());
+			try {
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/tools/ParamDrawTool.fxml"));
+				Parent param = fxmlLoader.load();
+				mainViewController.getParamBar().getChildren().add(param);
+			} catch(IOException e){
+				e.printStackTrace();
+			}
 		}
 	}
 	

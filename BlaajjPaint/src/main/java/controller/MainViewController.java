@@ -3,6 +3,8 @@ package controller;
 import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
+import controller.tools.ParamCropControler;
+import controller.tools.ParamDrawToolControler;
 import controller.tools.ToolBarController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import main.Main;
 
 import java.io.File;
@@ -42,6 +45,9 @@ public class MainViewController {
 	
 	@FXML
 	private RightMenuController rightMenuController; // le lien vers le rightMenuController est fait automatiquement.
+
+	@FXML
+	private AnchorPane paramBar;
 	
 	@FXML
 	private ScrollPane scrollPane;
@@ -95,4 +101,10 @@ public class MainViewController {
 		saveProjects.generateCompact(f, project);
 	}
 	// -------------------------------------- Fin partie Jerem. Était contenu dans MasterController--------------------------------------------------
+
+	// James
+
+	public AnchorPane getParamBar() {
+		return paramBar;
+	}
 }
