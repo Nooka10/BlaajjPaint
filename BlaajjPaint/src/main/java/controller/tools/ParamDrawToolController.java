@@ -1,3 +1,7 @@
+/*
+Author : Benoit
+Modified by : Adrien
+ */
 package controller.tools;
 
 import javafx.fxml.FXML;
@@ -65,4 +69,10 @@ public class ParamDrawToolController {
 	public void setOpacityValue(Double opacityValue) {
 		this.opacityValue = opacityValue;
 	}
+
+	// by Adrien
+
+
+
+	// end by Adrien
 }

@@ -7,7 +7,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public abstract class Tool {
 
-    private Canvas canvas;
+    protected Canvas canvas;
     public enum ToolType {PENCIL, ERASER, OTHER};
     public ToolType toolType = ToolType.OTHER;
     

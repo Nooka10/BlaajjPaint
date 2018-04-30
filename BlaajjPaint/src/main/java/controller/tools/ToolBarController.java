@@ -20,7 +20,18 @@ import java.io.IOException;
  * resizing, deleting and so on.
  */
 public class ToolBarController {
-	
+
+
+	private ParamDrawToolController paramDrawToolControler;
+
+	private Parent paramBar;
+
+	private MainViewController mainViewController; // Reference to the mainViewController
+
+	private Tool currentTool; // contient une référence vers le tool actuellement sélectionné
+
+	/* attributs pour FXML */
+
 	@FXML
 	private ToggleButton brushTool;
 	
@@ -65,14 +76,7 @@ public class ToolBarController {
 	
 	@FXML
 	private ToggleButton zoomTool;
-	
-	private ParamDrawToolController paramDrawToolControler;
-	
-	private Parent paramBar;
-	
-	private MainViewController mainViewController; // Reference to the mainViewController
-	
-	private Tool currentTool; // contient une référence vers le tool actuellement sélectionné
+
 	
 	/**
 	 * Appelé par le MainViewController pour donner une référence vers lui-même.
@@ -137,10 +141,10 @@ public class ToolBarController {
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue());
+					currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(),paramDrawToolControler.getOpacityValue());
 				}
 			});
-			currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue());
+			currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(),paramDrawToolControler.getOpacityValue());
 		}
 	}
 	
@@ -202,4 +206,10 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
+
+	// Added by Adrien
+	public void SetOpacity(){
+
+	}
+	// End Added by Adrien
 }

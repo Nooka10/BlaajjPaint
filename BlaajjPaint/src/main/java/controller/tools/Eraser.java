@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
-public class Eraser extends Tool implements ICmd {
+public class Eraser extends ToolDrawer implements ICmd {
 	
 	private static Color transparent = new Color(0, 0, 0, 0);
 	
@@ -27,10 +27,10 @@ public class Eraser extends Tool implements ICmd {
 	private EventHandler<MouseEvent> mousedrag;
 	private EventHandler<MouseEvent> mouserelease;
 	private EventHandler<MouseEvent> mousePressed;
-	
-	public Eraser(Canvas canvas, double thickness) {
+
+	public Eraser(Canvas canvas, double thickness, double opacity) {
 		// stock le cnaevas dans le parent
-		super(canvas);
+		super(canvas, thickness, opacity);
 		
 		realid = id++;
 		System.out.println("create : " + realid);
@@ -123,6 +123,15 @@ public class Eraser extends Tool implements ICmd {
 		gc.drawImage(redosave, 0, 0);
 		redosave = null;
 	}
-	
+
+	@Override
+	protected void onOpacitySet(){
+		canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
+	}
+
+	@Override
+	protected void onThicknessSet(){
+		canvas.getGraphicsContext2D().setLineWidth(thickness);
+	}
 	
 }

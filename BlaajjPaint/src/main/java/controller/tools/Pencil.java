@@ -1,3 +1,7 @@
+/*
+Author: Adrien
+Modified by: Benoit
+ */
 package controller.tools;
 
 import controller.Project;
@@ -12,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
-public class Pencil extends Tool implements ICmd {
+public class Pencil extends ToolDrawer implements ICmd {
 	
 	//private static int id; // FIXME: à virer -> juste pour tests
 	//private int realid; // FIXME: à virer -> juste pour tests
@@ -26,7 +30,7 @@ public class Pencil extends Tool implements ICmd {
 	
 	public Pencil(Canvas canvas, double thickness, double opacity) {
 		// stock le canvas dans le parent
-		super(canvas);
+		super(canvas, thickness, opacity);
 		
 		//realid = id++; // FIXME: à virer -> juste pour tests
 		//System.out.println("create : " + realid); // FIXME: à virer -> juste pour tests
@@ -125,5 +129,13 @@ public class Pencil extends Tool implements ICmd {
 		redosave = null;
 	}
 	
-	
+	@Override
+	protected void onOpacitySet(){
+        canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
+	}
+
+	@Override
+	protected void onThicknessSet(){
+        canvas.getGraphicsContext2D().setLineWidth(thickness);
+	}
 }
