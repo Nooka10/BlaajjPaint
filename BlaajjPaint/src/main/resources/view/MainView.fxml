@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="mainView" prefHeight="400.0" prefWidth="600.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<BorderPane fx:id="mainView" onKeyPressed="#KeyPressed" prefHeight="400.0" prefWidth="600.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
 	<left>
 		<AnchorPane prefWidth="70.0">
 			<children>
@@ -25,9 +27,16 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane minHeight="40.0" prefHeight="40.0" styleClass="menuBackground" stylesheets="@MainStyleSheet.css" AnchorPane.bottomAnchor="359.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="paramBar" minHeight="40.0" prefHeight="40.0" styleClass="menuBackground" stylesheets="@MainStyleSheet.css" AnchorPane.bottomAnchor="359.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
          </children>
       </AnchorPane>
    </center>
+   <bottom>
+      <HBox>
+         <children>
+            <Slider nodeOrientation="LEFT_TO_RIGHT" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>

@@ -5,11 +5,15 @@ import controller.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 /**
  * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
@@ -62,6 +66,10 @@ public class ToolBarController {
 	@FXML
 	private ToggleButton zoomTool;
 	
+	private ParamDrawToolController paramDrawToolControler;
+	
+	private Parent paramBar;
+	
 	private MainViewController mainViewController; // Reference to the mainViewController
 	
 	private Tool currentTool; // contient une référence vers le tool actuellement sélectionné
@@ -104,35 +112,35 @@ public class ToolBarController {
 	
 	@FXML
 	void handlePencil(ActionEvent event) {
-		if (currentTool == null || currentTool.toolType != Tool.ToolType.PENCIL) {
-			if(currentTool != null) {
+		//if (currentTool == null) { // TODO : remettre ca
+			if (currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}
-			Project project = Project.getInstance();
+			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Pencil(project.getCurrentCanvas());
+					currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
 				}
 			});
-			currentTool = new Pencil(project.getCurrentCanvas());
-		}
+			currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
+		//}
 	}
 	
 	@FXML
 	void handleEraser(ActionEvent event) {
 		if (currentTool == null || currentTool.toolType != Tool.ToolType.ERASER) {
-			if(currentTool != null) {
+			if (currentTool != null) {
 				currentTool.unregisterEventHandlers();
 			}
-			Project project = Project.getInstance();
+			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Eraser(project.getCurrentCanvas());
+					currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
 				}
 			});
-			currentTool = new Eraser(project.getCurrentCanvas());
+			currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
 		}
 	}
 	
@@ -143,7 +151,7 @@ public class ToolBarController {
 	
 	@FXML
 	void handleAddText(ActionEvent event) {
-	
+	    
 	}
 	
 	@FXML
@@ -173,5 +181,25 @@ public class ToolBarController {
 		alert.setContentText("Commencez par créer un nouveau projet ou ouvrir un projet existant.");
 		
 		alert.showAndWait();
+	}
+	
+	private void addParamDrawBar(String FXMLpath) {
+		double thicknessValue = 1; // FIXME: valeur par défaut pour l'épaisseur
+		double opacityValue = 100; // FIXME: valeur par défat pour l'opacité
+		if (paramBar != null) {
+			thicknessValue = paramDrawToolControler.getThicknessValue();
+			opacityValue = paramDrawToolControler.getOpacityValue();
+			mainViewController.getParamBar().getChildren().remove(paramBar);
+		}
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
+			paramBar = fxmlLoader.load();
+			paramDrawToolControler = fxmlLoader.getController();
+			mainViewController.getParamBar().getChildren().add(paramBar);
+			paramDrawToolControler.setThicknessValue(thicknessValue);
+			paramDrawToolControler.setOpacityValue(opacityValue);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

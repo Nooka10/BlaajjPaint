@@ -8,7 +8,6 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
@@ -28,7 +27,7 @@ public class Eraser extends Tool implements ICmd {
 	private EventHandler<MouseEvent> mouserelease;
 	private EventHandler<MouseEvent> mousePressed;
 	
-	public Eraser(Canvas canvas) {
+	public Eraser(Canvas canvas, double thickness) {
 		// stock le cnaevas dans le parent
 		super(canvas);
 		
@@ -48,9 +47,11 @@ public class Eraser extends Tool implements ICmd {
 		mousedrag = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//canvas.getGraphicsContext2D().clearRect(event.getX(), event.getY(), thickness, thickness);
 				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur de la gomme
-				canvas.getGraphicsContext2D().setStroke(Color.RED); // définit la couleur de la gomme à transparent
+				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur de la gomme
+				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 0);
+				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur de la gomme
 				canvas.getGraphicsContext2D().stroke();
 				System.out.println("drag : " + realid);
 			}
@@ -62,8 +63,9 @@ public class Eraser extends Tool implements ICmd {
 			public void handle(MouseEvent event) {
 				canvas.getGraphicsContext2D().beginPath();
 				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur de la gomme
-				canvas.getGraphicsContext2D().setStroke(Color.RED); // définit la couleur de la gomme
+				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur de la gomme
+				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 0);
+				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur de la gomme
 				canvas.getGraphicsContext2D().stroke();
 				System.out.println("pressed : " + realid);
 			}
@@ -102,8 +104,8 @@ public class Eraser extends Tool implements ICmd {
 		if (undosave == null) {
 			throw new UndoException();
 		}
-		redosave = Project.getInstance().getCurrentCanvas().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCurrentCanvas().getGraphicsContext2D();
+		redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
 		gc.drawImage(undosave, 0, 0);
 		undosave = null;
 		
@@ -114,9 +116,9 @@ public class Eraser extends Tool implements ICmd {
 		if (redosave == null) {
 			throw new UndoException();
 		}
-		undosave = Project.getInstance().getCurrentCanvas().snapshot(params, null);
+		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 		
-		GraphicsContext gc = Project.getInstance().getCurrentCanvas().getGraphicsContext2D();
+		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
 		gc.drawImage(redosave, 0, 0);
 		redosave = null;
 	}

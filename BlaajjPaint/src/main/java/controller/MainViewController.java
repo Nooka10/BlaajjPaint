@@ -6,10 +6,11 @@ import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import main.Main;
 
 import java.io.File;
@@ -42,6 +43,9 @@ public class MainViewController {
 	
 	@FXML
 	private RightMenuController rightMenuController; // le lien vers le rightMenuController est fait automatiquement.
+
+	@FXML
+	private AnchorPane paramBar;
 	
 	@FXML
 	private ScrollPane scrollPane;
@@ -58,8 +62,13 @@ public class MainViewController {
 		scrollPane.setFitToWidth(true);
 	}
 	
-	public void showCanvas(Canvas canvas){
-		scrollPane.setContent(canvas);
+	// TODO : mais Benoit cette fonction ne doit pas être la..
+	public void drawLayers(Group group){
+		scrollPane.setContent(group);
+	}
+	
+	public void setMain(Main main){
+		this.main = main;
 	}
 	
 	public Main getMain() {
@@ -68,10 +77,10 @@ public class MainViewController {
 	
 	public void setEventHandler(EventHandler<MouseEvent> eventHandler) {
 		if (this.eventHandler != null) {
-			Project.getInstance().getCurrentCanvas().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+			Project.getInstance().getCurrentLayer().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
 		}
 		this.eventHandler = eventHandler;
-		Project.getInstance().getCurrentCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+		Project.getInstance().getCurrentLayer().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
 		
 	}
 	
@@ -95,4 +104,47 @@ public class MainViewController {
 		saveProjects.generateCompact(f, project);
 	}
 	// -------------------------------------- Fin partie Jerem. Était contenu dans MasterController--------------------------------------------------
+
+	// James
+
+	public AnchorPane getParamBar() {
+		return paramBar;
+	}
+
+	public RightMenuController getRightMenuController(){
+		return rightMenuController;
+	}
+
+	@FXML
+	private void KeyPressed(KeyEvent event){
+		KeyCombination cntrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlMajZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlMajS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
+		// New
+		if(cntrlN.match(event)){
+			menuBarController.openNewProjectWindows();
+		}
+
+		// Open
+		if(cntrlO.match(event)){
+			menuBarController.openProject();
+		}
+
+		// Undo
+		if(cntrlZ.match(event)){
+			menuBarController.undoAction();
+		}
+
+		// Redo
+		if(cntrlMajZ.match(event)){
+			menuBarController.redoAction();
+		}
+
+		//Save As
+		if(cntrlMajS.match(event)){
+			menuBarController.saveAs();
+		}
+	}
 }
