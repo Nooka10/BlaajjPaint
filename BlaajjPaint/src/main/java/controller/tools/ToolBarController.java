@@ -184,8 +184,8 @@ public class ToolBarController {
 	}
 	
 	private void addParamDrawBar(String FXMLpath) {
-		double thicknessValue = 10; // FIXME: valeur par défaut pour l'épaisseur
-		double opacityValue = 10; // FIXME: valeur par défat pour l'opacité
+		double thicknessValue = 1; // FIXME: valeur par défaut pour l'épaisseur
+		double opacityValue = 100; // FIXME: valeur par défat pour l'opacité
 		if (paramBar != null) {
 			thicknessValue = paramDrawToolControler.getThicknessValue();
 			opacityValue = paramDrawToolControler.getOpacityValue();

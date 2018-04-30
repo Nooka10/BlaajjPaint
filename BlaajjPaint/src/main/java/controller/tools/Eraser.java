@@ -48,6 +48,7 @@ public class Eraser extends Tool implements ICmd {
 		mousedrag = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//canvas.getGraphicsContext2D().clearRect(event.getX(), event.getY(), thickness, thickness);
 				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
 				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur de la gomme
 				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 0);

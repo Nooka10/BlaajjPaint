@@ -8,7 +8,6 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
@@ -49,11 +48,12 @@ public class Pencil extends Tool implements ICmd {
 		mousedrag = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//canvas.getGraphicsContext2D().drawImage(handlePencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le pencil définit plus haut
+				//canvas.getGraphicsContext2D().drawImage(pencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le pencil définit plus haut
 				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
 				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
-				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity);
-				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur du pencil
+				//Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity / 100);
+				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du pencil
+				canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
 				canvas.getGraphicsContext2D().stroke();
 				//System.out.println("drag : " + realid); // FIXME: à virer -> juste pour tests
 			}
@@ -66,8 +66,9 @@ public class Pencil extends Tool implements ICmd {
 				canvas.getGraphicsContext2D().beginPath();
 				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
-				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity);
-				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur du pencil
+				//Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity / 100);
+				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du pencil
+				canvas.getGraphicsContext2D().setGlobalAlpha(opacity/100);
 				canvas.getGraphicsContext2D().stroke();
 				//System.out.println("pressed : " + realid); // FIXME: à virer -> juste pour tests
 			}
@@ -78,6 +79,7 @@ public class Pencil extends Tool implements ICmd {
 		mouserelease = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				canvas.getGraphicsContext2D().closePath();
 				// System.out.println("release : " + realid); // FIXME: à virer -> juste pour tests
 				execute();
 				canvas.removeEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
