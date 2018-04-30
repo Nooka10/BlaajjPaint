@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rightMenu" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
+<AnchorPane fx:id="rightMenu" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="menuBackground" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,13 +32,9 @@
                      </font>
                   </Label>
                   <ScrollPane fitToWidth="true" minHeight="50.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
-                           <children>
-                              <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                    </content>
+                     <content>
+                        <VBox />
+                     </content>
                   </ScrollPane>
                </children>
                <VBox.margin>
@@ -53,11 +49,7 @@
                      </font></Label>
                   <ScrollPane fitToWidth="true" minHeight="50.0">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
-                           <children>
-                              <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
+                        <VBox fx:id="LayersList" />
                      </content>
                   </ScrollPane>
                </children>

@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+import java.awt.*;
+
 public class Layer extends Canvas{
 	
 	private boolean visibility;
@@ -24,6 +26,10 @@ public class Layer extends Canvas{
 		super(width,height);
 		visibility = true;
 		id = count++;
+	}
+
+	public Layer(Dimension dimension){
+		this(dimension.width, dimension.height);
 	}
 	
 	/**
@@ -69,7 +75,12 @@ public class Layer extends Canvas{
 	 * @param visibility
 	 */
 	public void setVisibility(boolean visibility) {
+		System.out.println(visibility);
 		this.visibility = visibility;
+	}
+
+	public boolean getVisibility(){
+		return visibility;
 	}
 	
 	@Override

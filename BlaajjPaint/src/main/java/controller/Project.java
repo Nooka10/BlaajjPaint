@@ -35,6 +35,7 @@ public class Project {
 		currentLayer = new Layer(width, height);
 		gc = currentLayer.getGraphicsContext2D();
 		layers.add(currentLayer);
+		mainViewController.getRightMenuController().updateLayerList();
 		draw();
 	}
 	
@@ -57,5 +58,21 @@ public class Project {
 
 	public Color getCurrentColor(){
 		return currentColor;
+	}
+
+	public void addLayer(Layer newLayer){
+		layers.add(newLayer);
+	}
+
+	public LinkedList<Layer> getLayers(){
+		return layers;
+	}
+
+	public void setCurrentLayer(Layer currentLayer) {
+		this.currentLayer = currentLayer;
+	}
+
+	public Dimension getDimension(){
+		return dimension;
 	}
 }
