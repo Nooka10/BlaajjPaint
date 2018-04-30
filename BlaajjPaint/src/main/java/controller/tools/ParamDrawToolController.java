@@ -7,43 +7,46 @@ import javafx.scene.layout.HBox;
 
 public class ParamDrawToolController {
 	@FXML
-	private Slider ThicknessSlider;
+	private Slider thicknessSlider;
 	
 	@FXML
-	private TextField ThicknessTextField;
+	private TextField thicknessTextField;
 	
 	@FXML
-	private HBox ParamDrawTools;
+	private HBox paramDrawTools;
 	
 	@FXML
-	private Slider OpacitySlider;
+	private Slider opacitySlider;
 	
 	@FXML
-	private TextField OpacityTextField;
+	private TextField opacityTextField;
 	
-	private Double thicknessValue = 10.0; // FIXME: valeur par défaut pour l'épaisseur;
+	private Double thicknessValue = 1.0; // FIXME: valeur par défaut pour l'épaisseur;
 	
-	private Double opacityValue = 10.0; // FIXME: valeur par défaut pour l'opacité
+	private Double opacityValue = 100.0; // FIXME: valeur par défaut pour l'opacité
 	
 	@FXML
 	private void initialize() {
+		thicknessTextField.setText(thicknessValue.toString());
+		opacityTextField.setText(opacityValue.toString());
+		
 		// Handle Slider value change events.
-		ThicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			thicknessValue = Double.parseDouble(newValue.toString());
-			ThicknessTextField.setText(thicknessValue.toString());
+			thicknessTextField.setText(thicknessValue.toString());
 		});
-		OpacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			opacityValue = Double.parseDouble(newValue.toString());
-			OpacityTextField.setText(opacityValue.toString());
+			opacityTextField.setText(opacityValue.toString());
 		});
 		// Handle TextField text changes.
-		ThicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+		thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			thicknessValue = Double.parseDouble(newValue);
-			ThicknessSlider.setValue(thicknessValue);
+			thicknessSlider.setValue(thicknessValue);
 		});
-		OpacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			opacityValue = Double.parseDouble(newValue);
-			OpacitySlider.setValue(opacityValue);
+			opacitySlider.setValue(opacityValue);
 		});
 	}
 	

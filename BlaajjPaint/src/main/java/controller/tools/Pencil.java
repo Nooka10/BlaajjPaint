@@ -15,8 +15,8 @@ import utils.UndoException;
 
 public class Pencil extends Tool implements ICmd {
 	
-	private static int id; // FIXME: à virer -> juste pour tests
-	private int realid; // FIXME: à virer -> juste pour tests
+	//private static int id; // FIXME: à virer -> juste pour tests
+	//private int realid; // FIXME: à virer -> juste pour tests
 	private Image undosave;
 	private Image redosave = null;
 	private SnapshotParameters params;
@@ -25,18 +25,18 @@ public class Pencil extends Tool implements ICmd {
 	private EventHandler<MouseEvent> mouserelease;
 	private EventHandler<MouseEvent> mousePressed;
 	
-	public Pencil(Canvas canvas) {
-		// stock le cnaevas dans le parent
+	public Pencil(Canvas canvas, double thickness, double opacity) {
+		// stock le canvas dans le parent
 		super(canvas);
 		
-		realid = id++;
-		System.out.println("create : " + realid);
+		//realid = id++; // FIXME: à virer -> juste pour tests
+		//System.out.println("create : " + realid); // FIXME: à virer -> juste pour tests
 		
 		toolType = ToolType.PENCIL;
 		
 		// définit le pinceau qui sera utilisé par l'évènement de drag pour colorier le canvas
-		// handlePencil = new WritableImage(1, 1); //FIXME: permet de définir un pinceau (taille, couleur etc) mais lag énromément au drag...
-		// handlePencil.getPixelWriter().setColor(0, 0, Color.BLACK);
+		// pencil = new WritableImage(1, 1); //FIXME: permet de définir un pinceau (taille, couleur etc) mais lag énromément au drag...
+		// pencil.getPixelWriter().setColor(0, 0, Color.BLACK);
 		
 		// configuration des paramètres utilisés pour la sauvegarde du canevas
 		params = new SnapshotParameters();
@@ -49,12 +49,13 @@ public class Pencil extends Tool implements ICmd {
 		mousedrag = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//canvas.getGraphicsContext2D().drawImage(handlePencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le handlePencil définit plus haut
+				//canvas.getGraphicsContext2D().drawImage(handlePencil, event.getX(), event.getY()); //FIXME: permet d'utiliser le pencil définit plus haut
 				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur du handlePencil
-				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du handlePencil
+				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
+				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity);
+				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur du pencil
 				canvas.getGraphicsContext2D().stroke();
-				System.out.println("drag : " + realid);
+				//System.out.println("drag : " + realid); // FIXME: à virer -> juste pour tests
 			}
 		};
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
@@ -64,10 +65,11 @@ public class Pencil extends Tool implements ICmd {
 			public void handle(MouseEvent event) {
 				canvas.getGraphicsContext2D().beginPath();
 				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(1); // définit l'épaisseur du handlePencil
-				canvas.getGraphicsContext2D().setStroke(Color.BLACK); // définit la couleur du handlePencil
+				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
+				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), opacity);
+				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur du pencil
 				canvas.getGraphicsContext2D().stroke();
-				System.out.println("pressed : " + realid);
+				//System.out.println("pressed : " + realid); // FIXME: à virer -> juste pour tests
 			}
 		};
 		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
@@ -76,7 +78,7 @@ public class Pencil extends Tool implements ICmd {
 		mouserelease = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("release : " + realid);
+				// System.out.println("release : " + realid); // FIXME: à virer -> juste pour tests
 				execute();
 				canvas.removeEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
 				canvas.removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
