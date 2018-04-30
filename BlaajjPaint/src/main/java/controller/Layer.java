@@ -66,21 +66,7 @@ public class Layer extends Canvas{
 		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
 		// Project.getInstance().getLayers().remove(this); // TODO : enlever ca maybe
 	}
-	
-	/**
-	 *
-	 * @param visibility
-	 */
-	public void setVisibility(boolean visibility) {
-		System.out.println(visibility);
-		this.visibility = visibility;
-	}
-	
-	public boolean getVisibility() {
-		return visibility;
-	}
-	
-	
+
 	@Override
 	public String toString(){
 		return "Calque " + id;

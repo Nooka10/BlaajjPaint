@@ -120,10 +120,10 @@ public class ToolBarController {
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Pencil(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
+					currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
 				}
 			});
-			currentTool = new Pencil(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
+			currentTool = new Pencil(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue(), paramDrawToolControler.getOpacityValue());
 		//}
 	}
 	
@@ -137,10 +137,10 @@ public class ToolBarController {
 			mainViewController.setEventHandler(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue());
+					currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
 				}
 			});
-			currentTool = new Eraser(Project.getInstance().getCurrentCanvas(), paramDrawToolControler.getThicknessValue());
+			currentTool = new Eraser(Project.getInstance().getCurrentLayer(), paramDrawToolControler.getThicknessValue());
 		}
 	}
 	

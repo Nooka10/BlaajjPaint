@@ -79,10 +79,10 @@ public class MainViewController {
 	
 	public void setEventHandler(EventHandler<MouseEvent> eventHandler) {
 		if (this.eventHandler != null) {
-			Project.getInstance().getCurrentCanvas().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+			Project.getInstance().getCurrentLayer().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
 		}
 		this.eventHandler = eventHandler;
-		Project.getInstance().getCurrentCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+		Project.getInstance().getCurrentLayer().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
 		
 	}
 	
