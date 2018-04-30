@@ -61,12 +61,11 @@ public class RightMenuController {
 	private HBox createLayoutUI(Layer layer){
 		HBox container = new HBox();
 		CheckBox visibility = new CheckBox(layer.toString());
-		visibility.setSelected(layer.getVisibility());
-
+		visibility.setSelected(layer.isVisible());
 
 		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				layer.setVisibility(new_val);
+				layer.setVisible(new_val);
 				Project.getInstance().drawWorkspace();
 			}
 		});

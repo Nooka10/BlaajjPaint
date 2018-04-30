@@ -70,19 +70,7 @@ public class Layer extends Canvas{
 		// Project.getInstance().getLayers().remove(this); // TODO : enlever ca maybe
 	}
 	
-	/**
-	 *
-	 * @param visibility
-	 */
-	public void setVisibility(boolean visibility) {
-		System.out.println(visibility);
-		this.visibility = visibility;
-	}
-	
-	public boolean getVisibility() {
-		return visibility;
-	}
-	
+
 	
 	@Override
 	public String toString(){

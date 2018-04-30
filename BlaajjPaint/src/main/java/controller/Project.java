@@ -63,7 +63,7 @@ public class Project {
 		drawWorkspace();
 	}
 	
-	public Canvas getCurrentCanvas() {
+	public Layer getCurrentLayer() {
 		return currentLayer;
 	}
 	
@@ -71,7 +71,7 @@ public class Project {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
 		for (Layer layer : layers)
-			if (layer.getVisibility())
+			if (layer.isVisible())
 				layersGroup.getChildren().add(layer);
 		
 		mainViewController.drawLayers(layersGroup);

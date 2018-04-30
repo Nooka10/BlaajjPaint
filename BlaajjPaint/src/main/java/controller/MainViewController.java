@@ -8,14 +8,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import main.Main;
 
 import java.io.File;
-import java.util.LinkedList;
 
 public class MainViewController {
 	
@@ -79,10 +77,10 @@ public class MainViewController {
 	
 	public void setEventHandler(EventHandler<MouseEvent> eventHandler) {
 		if (this.eventHandler != null) {
-			Project.getInstance().getCurrentCanvas().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+			Project.getInstance().getCurrentLayer().removeEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
 		}
 		this.eventHandler = eventHandler;
-		Project.getInstance().getCurrentCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
+		Project.getInstance().getCurrentLayer().addEventHandler(MouseEvent.MOUSE_CLICKED, this.eventHandler);
 		
 	}
 	
