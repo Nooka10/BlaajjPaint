@@ -12,14 +12,28 @@ import javafx.scene.paint.Color;
 public class Layer extends Canvas{
 	
 	private boolean visibility;
+	final private int id;
+	private static int count = 0;
 	
+	/**
+	 * Constructeur
+	 * @param width la largeur de notre calque
+	 * @param height la hauteur de notre calque
+	 */
 	public Layer(int width, int height){
 		super(width,height);
 		visibility = true;
+		id = count++;
 	}
 	
+	/**
+	 * Constructeur de copie, pour copier un calque
+	 * @param toCopy le calque à copier
+	 */
 	public Layer(Layer toCopy){
-	
+		super(toCopy.getWidth(),toCopy.getHeight());
+		visibility = toCopy.visibility;
+		id = count++;
 	}
 	
 	// TODO : Antoine
@@ -41,11 +55,25 @@ public class Layer extends Canvas{
 	}
 	
 	/**
-	 *
-	 * @param backgroundCanvas
+	 * Permet de fusionner deux calques
+	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
-	private void mergeLayers(Canvas backgroundCanvas) {
+	private void mergeLayers(Layer backgroundLayer) {
 		Image image = createImageFromCanvas(4);
-		backgroundCanvas.getGraphicsContext2D().drawImage(image, 0, 0, 300, 250);
+		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
+		// Project.getInstance().getLayers().remove(this); // TODO : enlever ca maybe
+	}
+	
+	/**
+	 *
+	 * @param visibility
+	 */
+	public void setVisibility(boolean visibility) {
+		this.visibility = visibility;
+	}
+	
+	@Override
+	public String toString(){
+		return "Calque " + id;
 	}
 }
