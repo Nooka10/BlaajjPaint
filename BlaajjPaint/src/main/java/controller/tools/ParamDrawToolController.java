@@ -10,7 +10,7 @@ public class ParamDrawToolController {
 	private Slider ThicknessSlider;
 	
 	@FXML
-	private TextField ThicknessValue;
+	private TextField ThicknessTextField;
 	
 	@FXML
 	private HBox ParamDrawTools;
@@ -19,24 +19,47 @@ public class ParamDrawToolController {
 	private Slider OpacitySlider;
 	
 	@FXML
-	private TextField OpacityValue;
+	private TextField OpacityTextField;
 	
+	private Double thicknessValue = 10.0; // FIXME: valeur par défaut pour l'épaisseur;
+	
+	private Double opacityValue = 10.0; // FIXME: valeur par défaut pour l'opacité
 	
 	@FXML
 	private void initialize() {
 		// Handle Slider value change events.
 		ThicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			ThicknessValue.setText(newValue.toString());
+			thicknessValue = Double.parseDouble(newValue.toString());
+			ThicknessTextField.setText(thicknessValue.toString());
 		});
 		OpacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			OpacityValue.setText(newValue.toString());
+			opacityValue = Double.parseDouble(newValue.toString());
+			OpacityTextField.setText(opacityValue.toString());
 		});
 		// Handle TextField text changes.
-		ThicknessValue.textProperty().addListener((observable, oldValue, newValue) -> {
-			ThicknessSlider.setValue(Double.parseDouble(newValue));
+		ThicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			thicknessValue = Double.parseDouble(newValue);
+			ThicknessSlider.setValue(thicknessValue);
 		});
-		OpacityValue.textProperty().addListener((observable, oldValue, newValue) -> {
-			OpacitySlider.setValue(Double.parseDouble(newValue));
+		OpacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			opacityValue = Double.parseDouble(newValue);
+			OpacitySlider.setValue(opacityValue);
 		});
+	}
+	
+	public Double getThicknessValue() {
+		return thicknessValue;
+	}
+	
+	public void setThicknessValue(Double thicknessValue) {
+		this.thicknessValue = thicknessValue;
+	}
+	
+	public Double getOpacityValue() {
+		return opacityValue;
+	}
+	
+	public void setOpacityValue(Double opacityValue) {
+		this.opacityValue = opacityValue;
 	}
 }
