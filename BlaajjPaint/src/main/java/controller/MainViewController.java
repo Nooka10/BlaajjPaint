@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import main.Main;
 
@@ -104,5 +104,33 @@ public class MainViewController {
 
 	public AnchorPane getParamBar() {
 		return paramBar;
+	}
+
+	@FXML
+	private void KeyPressed(KeyEvent event){
+		KeyCombination cntrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlMajZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
+
+		// New
+		if(cntrlN.match(event)){
+			menuBarController.openNewProjectWindows();
+		}
+
+		// Open
+		if(cntrlO.match(event)){
+			menuBarController.openProject();
+		}
+
+		// Undo
+		if(cntrlZ.match(event)){
+			menuBarController.undoAction();
+		}
+
+		// Redo
+		if(cntrlMajZ.match(event)){
+			menuBarController.redoAction();
+		}
 	}
 }

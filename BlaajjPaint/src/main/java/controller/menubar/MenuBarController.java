@@ -8,6 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Main;
@@ -85,49 +89,12 @@ public class MenuBarController {
 	
 	@FXML
 	void handleNew(ActionEvent event) {
-		/*
-		if (changesMade) {
-			changesWarning(false);
-		}
-		gc.clearRect(0, 0, drawingCanvasWidth, drawingCanvasHeight);
-		list = new ArrayList<>();
-		changesMade = false;
-		firstTimeSave = true;
-		*/
-		
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/WindowsNewProject.fxml"));
-			Parent newProjectWindow = fxmlLoader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(newProjectWindow));
-			stage.show();
-			
-			// Give the windowsNeWProject access to the menuBarController.
-			WindowsNewProject windowsNewProject= fxmlLoader.getController();
-			windowsNewProject.setMainViewController(mainViewController);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		//mainViewController.newCanvas(width, height);
+		openNewProjectWindows();
 	}
 	
 	@FXML
 	void handleOpen(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		// Show save file dialog
-		File file = fileChooser.showOpenDialog(mainViewController.getMain().getPrimaryStage());
-		
-		if (file != null) {
-			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
-			System.out.println("path fichier choisi: " + file.getPath());
-		}
+		openProject();
 	}
 	
 	@FXML
@@ -161,12 +128,67 @@ public class MenuBarController {
 	
 	@FXML
 	void undo(ActionEvent event) {
-		System.out.println("undo");
-		RecordCmd.getInstance().undo();
+	    undoAction();
 	}
 	
 	@FXML
 	void redo(ActionEvent event) {
-		RecordCmd.getInstance().redo();
+		redoAction();
 	}
+
+	// James do not work
+
+	public void openNewProjectWindows(){
+		/*
+		if (changesMade) {
+			changesWarning(false);
+		}
+		gc.clearRect(0, 0, drawingCanvasWidth, drawingCanvasHeight);
+		list = new ArrayList<>();
+		changesMade = false;
+		firstTimeSave = true;
+		*/
+
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/WindowsNewProject.fxml"));
+			Parent newProjectWindow = fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(newProjectWindow));
+			stage.show();
+
+			// Give the windowsNeWProject access to the menuBarController.
+			WindowsNewProject windowsNewProject= fxmlLoader.getController();
+			windowsNewProject.setMainViewController(mainViewController);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//mainViewController.newCanvas(width, height);
+	}
+
+	public void openProject() {
+		FileChooser fileChooser = new FileChooser();
+
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
+		fileChooser.getExtensionFilters().add(extFilter);
+
+		// Show save file dialog
+		File file = fileChooser.showOpenDialog(mainViewController.getMain().getPrimaryStage());
+
+		if (file != null) {
+			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
+			System.out.println("path fichier choisi: " + file.getPath());
+		}
+	}
+
+	public void undoAction(){
+        System.out.println("undo");
+        RecordCmd.getInstance().undo();
+    }
+
+    public void redoAction(){
+        RecordCmd.getInstance().redo();
+    }
 }
