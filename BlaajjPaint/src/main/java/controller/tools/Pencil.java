@@ -5,7 +5,9 @@ package controller.tools;
 
 import controller.Project;
 import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import utils.UndoException;
 
@@ -21,6 +23,8 @@ public class Pencil extends ToolDrawer implements ICmd {
 	private Pencil() {
 		super(1, 100);
 		toolType = ToolType.PENCIL;
+		
+		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 	}
 	
 	@Override
@@ -32,7 +36,7 @@ public class Pencil extends ToolDrawer implements ICmd {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity/100);
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};
@@ -46,7 +50,7 @@ public class Pencil extends ToolDrawer implements ICmd {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().lineTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity/100);
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};
@@ -58,54 +62,50 @@ public class Pencil extends ToolDrawer implements ICmd {
 			@Override
 			public void handle(MouseEvent event) {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().closePath();
-				// System.out.println("release : " + realid); // FIXME: à virer -> juste pour tests
 				execute();
 			}
 		};
 	}
 	
 	
-	/**
-	 * Execute la Cmd et la sauve dans le RecordCmd
-	 */
 	@Override
 	public void execute() {
-	
+		RecordCmd.getInstance().saveCmd(this);
 	}
 	
-	/**
-	 * Retourne le model à son état précédent l'exécution de la commande
-	 */
 	@Override
 	public void undo() throws UndoException {
-	
+		//undoRedo(undosave, redosave);
+		
+		if (undosave == null) {
+			throw new UndoException();
+		}
+		redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
+		gc.drawImage(undosave, 0, 0);
+		undosave = null;
 	}
 	
-	/**
-	 * Retourne le model à son état suivant l'exécution de la commande
-	 */
 	@Override
 	public void redo() throws UndoException {
-	
+		//undoRedo(undosave, redosave);
+		
+		if (redosave == null) {
+			throw new UndoException();
+		}
+		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
+		gc.drawImage(redosave, 0, 0);
+		redosave = null;
 	}
 	
-	/**
-	 * Evènement appelé sur les enfants au moment ou l'opacité est changée Doit être surchargé par les enfants
-	 *
-	 * @Author Adrien
-	 */
 	@Override
 	protected void onOpacitySet() {
-	
+		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 	}
 	
-	/**
-	 * Evènement appelé sur les enfants au moment ou l'épaisseur est changée Doit être surchargé par les enfants
-	 *
-	 * @Author Adrien
-	 */
 	@Override
 	protected void onThicknessSet() {
-	
+		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 }

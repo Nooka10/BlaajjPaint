@@ -1,16 +1,13 @@
 package controller.tools;
 
 import controller.MainViewController;
-import controller.Project;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -20,16 +17,16 @@ import java.io.IOException;
  * resizing, deleting and so on.
  */
 public class ToolBarController {
-
-
+	
+	
 	private ParamDrawToolController paramDrawToolControler;
-
+	
 	private Parent paramBar;
-
+	
 	private MainViewController mainViewController; // Reference to the mainViewController
-
+	
 	/* attributs pour FXML */
-
+	
 	@FXML
 	private ToggleButton brushTool;
 	
@@ -74,7 +71,7 @@ public class ToolBarController {
 	
 	@FXML
 	private ToggleButton zoomTool;
-
+	
 	
 	/**
 	 * Appelé par le MainViewController pour donner une référence vers lui-même.
@@ -114,9 +111,10 @@ public class ToolBarController {
 	
 	@FXML
 	void handlePencil(ActionEvent event) {
-		if (Tool.getCurrentTool() == null || Tool.getCurrentTool().toolType != Tool.ToolType.PENCIL) {
-		 Tool.setCurrentTool(Pencil.getInstance());
+		Tool.setCurrentTool(Pencil.getInstance());
+		if (Tool.getToolHasChanged()) {
 			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
+			Tool.setToolHasChanged(false);
 		}
 	}
 	
@@ -132,7 +130,7 @@ public class ToolBarController {
 	
 	@FXML
 	void handleAddText(ActionEvent event) {
-	    
+	
 	}
 	
 	@FXML
@@ -183,10 +181,10 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-
+	
 	// Added by Adrien
-	public void SetOpacity(){
-
+	public void SetOpacity() {
+	
 	}
 	// End Added by Adrien
 }

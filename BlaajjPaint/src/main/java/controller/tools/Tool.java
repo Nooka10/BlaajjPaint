@@ -8,9 +8,12 @@ public abstract class Tool {
 	
 	public enum ToolType {PENCIL, ERASER, OTHER}
 	
+	public static boolean toolHasChanged = false;
+	
 	protected ToolType toolType = ToolType.OTHER;
 	
 	public Tool() {
+		toolHasChanged = true;
 	}
 	
 	private static Tool currentTool = Pencil.getInstance();
@@ -21,6 +24,14 @@ public abstract class Tool {
 	
 	public static void setCurrentTool(Tool currentTool) {
 		Tool.currentTool = currentTool;
+	}
+	
+	public static boolean getToolHasChanged(){
+		return toolHasChanged;
+	}
+	
+	public static void setToolHasChanged(boolean value){
+		toolHasChanged = value;
 	}
 	
 	public abstract EventHandler<MouseEvent> addMousePressedEventHandlers();

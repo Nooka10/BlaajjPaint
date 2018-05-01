@@ -6,18 +6,16 @@ import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
 //import javafx.scene.layout.StackPane;
 
 public class Project {
@@ -45,7 +43,8 @@ public class Project {
 	public void setData(int width, int height, MainViewController mainViewController) {
 		this.mainViewController = mainViewController;
 		dimension = new Dimension(width, height);
-		currentLayer = new Layer(width, height);
+		//currentLayer = new Layer(width, height);
+		setCurrentLayer(new Layer(width, height));
 		backgroungImage = new Canvas(width, height);
 		gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
@@ -73,13 +72,13 @@ public class Project {
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
-        Iterator it = layers.descendingIterator();
-		while(it.hasNext()) {
-		    Layer layer = (Layer)it.next();
-            if (layer.isVisible()) {
-                layersGroup.getChildren().add(layer);
-            }
-        }
+		Iterator it = layers.descendingIterator();
+		while (it.hasNext()) {
+			Layer layer = (Layer) it.next();
+			if (layer.isVisible()) {
+				layersGroup.getChildren().add(layer);
+			}
+		}
 		
 		mainViewController.drawLayers(layersGroup);
 	}
@@ -103,13 +102,10 @@ public class Project {
 	}
 	
 	public void setCurrentLayer(Layer currentLayer) {
-		try {
+		if (this.currentLayer != null) {
 			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, Tool.getCurrentTool().addMousePressedEventHandlers());
 			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, Tool.getCurrentTool().addMouseReleasedEventHandlers());
 			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, Tool.getCurrentTool().addMouseDraggedEventHandlers());
-		} catch(NullPointerException e){
-			System.out.println("Il n'y a pas de EventHandler à remove.");
-			System.out.println(e.getMessage());
 		}
 		
 		this.currentLayer = currentLayer;
@@ -171,9 +167,9 @@ public class Project {
 		
 		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
-
-	public void addNewLayer(){
-	    addLayer(new Layer(dimension));
-	    mainViewController.getRightMenuController().updateLayerList();
-    }
+	
+	public void addNewLayer() {
+		addLayer(new Layer(dimension));
+		mainViewController.getRightMenuController().updateLayerList();
+	}
 }
