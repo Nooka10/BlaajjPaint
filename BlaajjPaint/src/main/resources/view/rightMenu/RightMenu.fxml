@@ -12,9 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.HBox?>
-<AnchorPane fx:id="rightMenu" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
+<AnchorPane fx:id="rightMenu" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="menuBackground" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
 	<children>
 		<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
@@ -67,9 +65,9 @@
 				</VBox>
 				<HBox spacing="5.0">
 					<Button fx:id="addNewLayer" mnemonicParsing="false" onAction="#addNewLayer" text="+" />
-					<Button fx:id="upLayer" mnemonicParsing="false" onAction="#addNewLayer" text="^" />
-					<Button fx:id="downLayer" mnemonicParsing="false" onAction="#addNewLayer" text="v" />
-					<Button fx:id="fusion" mnemonicParsing="false" onAction="#addNewLayer" text="fusion" />
+					<Button fx:id="upLayer" mnemonicParsing="false" onAction="#upLayer" text="^" />
+					<Button fx:id="downLayer" mnemonicParsing="false" onAction="#downLayer" text="v" />
+					<Button fx:id="fusion" mnemonicParsing="false" onAction="#fusionLayer" text="fusion" />
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>

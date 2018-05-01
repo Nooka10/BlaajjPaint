@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -94,6 +95,7 @@ public class Project {
 		currentLayer = newLayer;
 		layers.addFirst(newLayer);
 		drawWorkspace();
+        mainViewController.getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -102,10 +104,6 @@ public class Project {
 	
 	public void setCurrentLayer(Layer currentLayer) {
 		this.currentLayer = currentLayer;
-	}
-	
-	public Dimension getDimension() {
-		return dimension;
 	}
 	
 	
@@ -160,6 +158,36 @@ public class Project {
 
 	public void addNewLayer(){
 	    addLayer(new Layer(currentLayer));
+    }
+
+    public void deleteCurrentLayer(){
+	    if(layers.size() != 1) {
+            int index = layers.indexOf(currentLayer);
+            layers.remove(index);
+            if (index >= layers.size()) {
+                index--;
+            }
+            currentLayer = layers.get(index);
+            drawWorkspace();
+            mainViewController.getRightMenuController().updateLayerList();
+        }
+    }
+
+    public void currentLayerToFront(){
+	    int index = layers.indexOf(currentLayer);
+	    if(index != 0) {
+            Collections.swap(layers, index, index - 1);
+        }
+        drawWorkspace();
 	    mainViewController.getRightMenuController().updateLayerList();
+    }
+
+    public void currentLayerToBack(){
+        int index = layers.indexOf(currentLayer);
+        if(index < layers.size() -1) {
+            Collections.swap(layers, index, index + 1);
+        }
+        drawWorkspace();
+        mainViewController.getRightMenuController().updateLayerList();
     }
 }
