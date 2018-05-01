@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 //import javafx.scene.layout.StackPane;
@@ -95,6 +96,7 @@ public class Project {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		drawWorkspace();
+        mainViewController.getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -112,10 +114,6 @@ public class Project {
 		this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, Tool.getCurrentTool().addMousePressedEventHandlers());
 		this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, Tool.getCurrentTool().addMouseReleasedEventHandlers());
 		this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, Tool.getCurrentTool().addMouseDraggedEventHandlers());
-	}
-	
-	public Dimension getDimension() {
-		return dimension;
 	}
 	
 	
@@ -167,9 +165,39 @@ public class Project {
 		
 		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
-	
-	public void addNewLayer() {
-		addLayer(new Layer(dimension));
-		mainViewController.getRightMenuController().updateLayerList();
-	}
+
+	public void addNewLayer(){
+	    addLayer(new Layer(currentLayer));
+    }
+
+    public void deleteCurrentLayer(){
+	    if(layers.size() != 1) {
+            int index = layers.indexOf(currentLayer);
+            layers.remove(index);
+            if (index >= layers.size()) {
+                index--;
+            }
+            currentLayer = layers.get(index);
+            drawWorkspace();
+            mainViewController.getRightMenuController().updateLayerList();
+        }
+    }
+
+    public void currentLayerToFront(){
+	    int index = layers.indexOf(currentLayer);
+	    if(index != 0) {
+            Collections.swap(layers, index, index - 1);
+        }
+        drawWorkspace();
+	    mainViewController.getRightMenuController().updateLayerList();
+    }
+
+    public void currentLayerToBack(){
+        int index = layers.indexOf(currentLayer);
+        if(index < layers.size() -1) {
+            Collections.swap(layers, index, index + 1);
+        }
+        drawWorkspace();
+        mainViewController.getRightMenuController().updateLayerList();
+    }
 }
