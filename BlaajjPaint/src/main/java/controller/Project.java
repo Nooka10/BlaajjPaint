@@ -159,7 +159,7 @@ public class Project {
 	}
 
 	public void addNewLayer(){
-	    addLayer(new Layer(dimension));
+	    addLayer(new Layer(currentLayer));
 	    mainViewController.getRightMenuController().updateLayerList();
     }
 }
