@@ -173,7 +173,7 @@ public class MainViewController {
 			layer.setScaleX(zoom);
 			layer.setScaleY(zoom);
 		}
-		zoomLabel = new Label(zoom*100 +"%");
+		zoomLabel.setText(zoom*100 +"%");
 		
 	}
 	
@@ -187,6 +187,6 @@ public class MainViewController {
 			layer.setScaleY(zoom);
 			
 		}
-		zoomLabel = new Label(zoom*100 +"%");
+		zoomLabel.setText(zoom*100 +"%");
 	}
 }

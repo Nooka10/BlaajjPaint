@@ -44,7 +44,7 @@
                </padding>
             </Pane>
             <Button mnemonicParsing="false" onAction="#zoomOut" text="-" />
-            <Label fx:id="zoomLabel" text="Label" />
+            <Label fx:id="zoomLabel" text="100%" />
             <Button mnemonicParsing="false" onAction="#zoomIn" text="+" />
          </children>
       </HBox>

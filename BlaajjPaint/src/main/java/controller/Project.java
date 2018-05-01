@@ -79,7 +79,6 @@ public class Project {
                 layersGroup.getChildren().add(layer);
             }
         }
-		
 		mainViewController.drawLayers(layersGroup);
 	}
 	
@@ -190,4 +189,8 @@ public class Project {
         drawWorkspace();
         mainViewController.getRightMenuController().updateLayerList();
     }
+	
+	public Canvas getBackgroungImage() {
+		return backgroungImage;
+	}
 }
