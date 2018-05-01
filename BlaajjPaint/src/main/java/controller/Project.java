@@ -157,4 +157,9 @@ public class Project {
 		
 		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
+
+	public void addNewLayer(){
+	    addLayer(new Layer(currentLayer));
+	    mainViewController.getRightMenuController().updateLayerList();
+    }
 }

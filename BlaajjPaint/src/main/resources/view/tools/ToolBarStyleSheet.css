@@ -78,3 +78,7 @@
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
+
+.toggle-button:selected {
+	-fx-background-color: grey;
+}
