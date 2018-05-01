@@ -84,6 +84,8 @@ public class MenuBarController {
 	 * @param mainViewController, une référence vers le mainViewController
 	 *
 	 * Créé par Benoît Schopfer
+	 *
+	 * Modifier par James Smith
 	 */
 	public void setMainViewController(MainViewController mainViewController) {
 		this.mainViewController = mainViewController;
@@ -118,6 +120,31 @@ public class MenuBarController {
 	@FXML
 	void redo(ActionEvent event) {
 		redoAction();
+	}
+
+	@FXML
+	void newLayer(ActionEvent event){
+		Project.getInstance().addNewLayer();
+	}
+
+	@FXML
+	void duplicateLayer(ActionEvent event){
+		//to do
+	}
+
+	@FXML
+	void deleteLayer(ActionEvent event){
+		Project.getInstance().deleteCurrentLayer();
+	}
+
+	@FXML
+	void fusionLayer(ActionEvent event){
+		// to do
+	}
+
+	@FXML
+	void hideCurrentLayer(ActionEvent event){
+		Project.getInstance().getCurrentLayer().setVisible(false);
 	}
 
 	// James do not work

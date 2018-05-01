@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -52,16 +53,32 @@ public class RightMenuController {
 	}
 
 	@FXML
-	void selectColor() {
+	void selectColor(ActionEvent event) {
 		System.out.println("Changed color!");
 		Project project = Project.getInstance();
 		project.setCurrentColor(colorPicker.getValue());
 	}
 	
 	@FXML
-	void addNewLayer() {
+	void addNewLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
 	}
+
+	@FXML
+    void upLayer(ActionEvent event){
+	    Project.getInstance().currentLayerToFront();
+    }
+
+    @FXML
+    void downLayer(ActionEvent event){
+        Project.getInstance().currentLayerToBack();
+    }
+
+    @FXML
+    void fusionLayer(ActionEvent event){
+	    // to do
+    }
+
 
 	private HBox createLayoutUI(Layer layer){
 		HBox container = new HBox();

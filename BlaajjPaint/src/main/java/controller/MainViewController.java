@@ -123,6 +123,7 @@ public class MainViewController {
 		KeyCombination cntrlMajZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlMajS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlMajC = new KeyCodeCombination(KeyCode.C, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination delete = new KeyCodeCombination(KeyCode.DELETE);
 		// New
 		if(cntrlN.match(event)){
 			menuBarController.openNewProjectWindows();
@@ -150,6 +151,10 @@ public class MainViewController {
 
 		if(cntrlMajC.match(event)){
 		    Project.getInstance().addNewLayer();
+        }
+
+        if(delete.match(event)){
+		    Project.getInstance().deleteCurrentLayer();
         }
 	}
 }
