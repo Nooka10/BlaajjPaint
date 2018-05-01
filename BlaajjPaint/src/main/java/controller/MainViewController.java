@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
@@ -50,7 +51,12 @@ public class MainViewController {
 	@FXML
 	private ScrollPane scrollPane;
 	
+	@FXML
+	private Label zoomLabel;
+	
 	private EventHandler<MouseEvent> eventHandler = null;
+	
+	private double zoom = 1.0;
 	
 	@FXML
 	private void initialize() {
@@ -156,5 +162,31 @@ public class MainViewController {
         if(delete.match(event)){
 		    Project.getInstance().deleteCurrentLayer();
         }
+	}
+	
+	@FXML
+	private void zoomIn(){
+		zoom *= 2;
+		Project.getInstance().getBackgroungImage().setScaleX(zoom);
+		Project.getInstance().getBackgroungImage().setScaleY(zoom);
+		for (Layer layer : Project.getInstance().getLayers()){
+			layer.setScaleX(zoom);
+			layer.setScaleY(zoom);
+		}
+		zoomLabel.setText(zoom*100 +"%");
+		
+	}
+	
+	@FXML
+	private void zoomOut(){
+		zoom /= 2;
+		Project.getInstance().getBackgroungImage().setScaleX(zoom);
+		Project.getInstance().getBackgroungImage().setScaleY(zoom);
+		for (Layer layer : Project.getInstance().getLayers()){
+			layer.setScaleX(zoom);
+			layer.setScaleY(zoom);
+			
+		}
+		zoomLabel.setText(zoom*100 +"%");
 	}
 }

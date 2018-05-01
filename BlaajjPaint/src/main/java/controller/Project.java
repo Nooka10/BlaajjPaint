@@ -73,14 +73,13 @@ public class Project {
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
-		Iterator it = layers.descendingIterator();
-		while (it.hasNext()) {
-			Layer layer = (Layer) it.next();
-			if (layer.isVisible()) {
-				layersGroup.getChildren().add(layer);
-			}
-		}
-		
+        Iterator it = layers.descendingIterator();
+		while(it.hasNext()) {
+		    Layer layer = (Layer)it.next();
+            if (layer.isVisible()) {
+                layersGroup.getChildren().add(layer);
+            }
+        }
 		mainViewController.drawLayers(layersGroup);
 	}
 	
@@ -200,4 +199,8 @@ public class Project {
         drawWorkspace();
         mainViewController.getRightMenuController().updateLayerList();
     }
+	
+	public Canvas getBackgroungImage() {
+		return backgroungImage;
+	}
 }
