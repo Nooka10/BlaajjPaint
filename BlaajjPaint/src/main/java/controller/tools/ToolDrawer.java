@@ -7,6 +7,8 @@ Author: Adrien
 package controller.tools;
 
 import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,19 +26,11 @@ import java.io.IOException;
 public abstract class ToolDrawer extends Tool {
 	protected double opacity;
 	protected double thickness;
-	
-	
-	protected Image undosave;
-	protected Image redosave = null;
-	protected SnapshotParameters params;
+	protected Trait currentTrait;
 	
 	public ToolDrawer(double thickness, double opacity) {
 		this.thickness = thickness;
 		this.opacity = opacity;
-		
-		// configuration des paramètres utilisés pour la sauvegarde du canevas
-		params = new SnapshotParameters();
-		params.setFill(Color.TRANSPARENT);
 	}
 	
 	public void setOpacity(double opacity) {
@@ -63,16 +57,43 @@ public abstract class ToolDrawer extends Tool {
 	 */
 	abstract protected void onThicknessSet();
 	
-	protected void undoRedo(Image undo, Image redo) throws UndoException {
-		if (undo == null) {
-			// exécute le snapshot de l'état actuel du canvas
-			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+	
+	class Trait implements ICmd {
+		private Image undosave;
+		private Image redosave = null;
+		private SnapshotParameters params;
+		
+		public Trait() {
+			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 			
-			//throw new UndoException();
+			// configuration des paramètres utilisés pour la sauvegarde du canevas
+			params = new SnapshotParameters();
+			params.setFill(Color.TRANSPARENT);
 		}
-		redo = Project.getInstance().getCurrentLayer().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
-		gc.drawImage(undo, 0, 0);
-		undo = null;
+		
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			if (undosave == null) {
+				throw new UndoException();
+			}
+			redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
+			undosave = null;
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			if (redosave == null) {
+				throw new UndoException();
+			}
+			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+			redosave = null;
+		}
 	}
 }

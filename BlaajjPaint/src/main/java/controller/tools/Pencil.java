@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import utils.UndoException;
 
 
-public class Pencil extends ToolDrawer implements ICmd {
+public class Pencil extends ToolDrawer {
 	
 	private static Pencil toolInstance = new Pencil();
 	
@@ -23,8 +23,6 @@ public class Pencil extends ToolDrawer implements ICmd {
 	private Pencil() {
 		super(1, 100);
 		toolType = ToolType.PENCIL;
-		
-		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 	}
 	
 	@Override
@@ -32,6 +30,8 @@ public class Pencil extends ToolDrawer implements ICmd {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				currentTrait = new Trait();
+				
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().beginPath();
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
@@ -62,41 +62,9 @@ public class Pencil extends ToolDrawer implements ICmd {
 			@Override
 			public void handle(MouseEvent event) {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().closePath();
-				execute();
+				currentTrait.execute();
 			}
 		};
-	}
-	
-	
-	@Override
-	public void execute() {
-		RecordCmd.getInstance().saveCmd(this);
-	}
-	
-	@Override
-	public void undo() throws UndoException {
-		//undoRedo(undosave, redosave);
-		
-		if (undosave == null) {
-			throw new UndoException();
-		}
-		redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
-		gc.drawImage(undosave, 0, 0);
-		undosave = null;
-	}
-	
-	@Override
-	public void redo() throws UndoException {
-		//undoRedo(undosave, redosave);
-		
-		if (redosave == null) {
-			throw new UndoException();
-		}
-		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
-		gc.drawImage(redosave, 0, 0);
-		redosave = null;
 	}
 	
 	@Override
