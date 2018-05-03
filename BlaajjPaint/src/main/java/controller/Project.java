@@ -73,13 +73,13 @@ public class Project {
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
-        Iterator it = layers.descendingIterator();
-		while(it.hasNext()) {
-		    Layer layer = (Layer)it.next();
-            if (layer.isVisible()) {
-                layersGroup.getChildren().add(layer);
-            }
-        }
+		Iterator it = layers.descendingIterator();
+		while (it.hasNext()) {
+			Layer layer = (Layer) it.next();
+			if (layer.isVisible()) {
+				layersGroup.getChildren().add(layer);
+			}
+		}
 		mainViewController.drawLayers(layersGroup);
 	}
 	
@@ -95,7 +95,7 @@ public class Project {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		drawWorkspace();
-        mainViewController.getRightMenuController().updateLayerList();
+		mainViewController.getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -103,18 +103,26 @@ public class Project {
 	}
 	
 	public void setCurrentLayer(Layer currentLayer) {
-		if (this.currentLayer != null) {
-			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, Tool.getCurrentTool().addMousePressedEventHandlers());
-			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, Tool.getCurrentTool().addMouseReleasedEventHandlers());
-			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, Tool.getCurrentTool().addMouseDraggedEventHandlers());
-		}
-		
+		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
-		this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, Tool.getCurrentTool().addMousePressedEventHandlers());
-		this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, Tool.getCurrentTool().addMouseReleasedEventHandlers());
-		this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, Tool.getCurrentTool().addMouseDraggedEventHandlers());
+		addEventHandlers(Tool.getCurrentTool());
 	}
 	
+	public void addEventHandlers(Tool tool) {
+		if (this.currentLayer != null && tool != null) {
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		}
+	}
+	
+	public void removeEventHandler(Tool tool) {
+		if (this.currentLayer != null && tool != null) {
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		}
+	}
 	
 	public void export(File file) {
 		if (file != null) {
@@ -164,41 +172,41 @@ public class Project {
 		
 		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
-
-	public void addNewLayer(){
-	    addLayer(new Layer(currentLayer));
-    }
-
-    public void deleteCurrentLayer(){
-	    if(layers.size() != 1) {
-            int index = layers.indexOf(currentLayer);
-            layers.remove(index);
-            if (index >= layers.size()) {
-                index--;
-            }
-            currentLayer = layers.get(index);
-            drawWorkspace();
-            mainViewController.getRightMenuController().updateLayerList();
-        }
-    }
-
-    public void currentLayerToFront(){
-	    int index = layers.indexOf(currentLayer);
-	    if(index != 0) {
-            Collections.swap(layers, index, index - 1);
-        }
-        drawWorkspace();
-	    mainViewController.getRightMenuController().updateLayerList();
-    }
-
-    public void currentLayerToBack(){
-        int index = layers.indexOf(currentLayer);
-        if(index < layers.size() -1) {
-            Collections.swap(layers, index, index + 1);
-        }
-        drawWorkspace();
-        mainViewController.getRightMenuController().updateLayerList();
-    }
+	
+	public void addNewLayer() {
+		addLayer(new Layer(currentLayer));
+	}
+	
+	public void deleteCurrentLayer() {
+		if (layers.size() != 1) {
+			int index = layers.indexOf(currentLayer);
+			layers.remove(index);
+			if (index >= layers.size()) {
+				index--;
+			}
+			currentLayer = layers.get(index);
+			drawWorkspace();
+			mainViewController.getRightMenuController().updateLayerList();
+		}
+	}
+	
+	public void currentLayerToFront() {
+		int index = layers.indexOf(currentLayer);
+		if (index != 0) {
+			Collections.swap(layers, index, index - 1);
+		}
+		drawWorkspace();
+		mainViewController.getRightMenuController().updateLayerList();
+	}
+	
+	public void currentLayerToBack() {
+		int index = layers.indexOf(currentLayer);
+		if (index < layers.size() - 1) {
+			Collections.swap(layers, index, index + 1);
+		}
+		drawWorkspace();
+		mainViewController.getRightMenuController().updateLayerList();
+	}
 	
 	public Canvas getBackgroungImage() {
 		return backgroungImage;

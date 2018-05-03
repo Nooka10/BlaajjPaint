@@ -4,12 +4,9 @@ Author: Benoît
 package controller.tools;
 
 import controller.Project;
-import controller.history.ICmd;
-import controller.history.RecordCmd;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
-import utils.UndoException;
 
 
 public class Pencil extends ToolDrawer {
@@ -21,43 +18,42 @@ public class Pencil extends ToolDrawer {
 	}
 	
 	private Pencil() {
-		super(1, 100);
 		toolType = ToolType.PENCIL;
 	}
 	
 	@Override
-	public EventHandler<MouseEvent> addMousePressedEventHandlers() {
+	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				currentTrait = new Trait();
-				
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalBlendMode(BlendMode.SCREEN);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().beginPath();
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
+				//Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};
 	}
 	
 	@Override
-	public EventHandler<MouseEvent> addMouseDraggedEventHandlers() {
+	protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().lineTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
+				//Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};
 	}
 	
 	@Override
-	public EventHandler<MouseEvent> addMouseReleasedEventHandlers() {
+	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

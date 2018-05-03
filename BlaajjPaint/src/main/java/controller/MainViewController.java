@@ -129,6 +129,10 @@ public class MainViewController {
 		KeyCombination cntrlMajZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlMajS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlMajC = new KeyCodeCombination(KeyCode.C, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination b = new KeyCodeCombination(KeyCode.B); // sélectionne le pencil (brush)
+		KeyCombination e = new KeyCodeCombination(KeyCode.E); // sélectionne la gomme (eraser)
+		
+		
 		KeyCombination delete = new KeyCodeCombination(KeyCode.DELETE);
 		// New
 		if(cntrlN.match(event)){
@@ -162,6 +166,14 @@ public class MainViewController {
         if(delete.match(event)){
 		    Project.getInstance().deleteCurrentLayer();
         }
+		
+		if(b.match(event)){
+			toolBarController.handlePencil(null);
+		}
+		
+		if(e.match(event)){
+			toolBarController.handleEraser(null);
+		}
 	}
 	
 	@FXML

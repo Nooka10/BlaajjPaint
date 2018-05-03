@@ -4,6 +4,7 @@ Modified by : Adrien
  */
 package controller.tools;
 
+import controller.Project;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -25,49 +26,34 @@ public class ParamDrawToolController {
 	@FXML
 	private TextField opacityTextField;
 	
-	private Double thicknessValue = 1.0; // FIXME: valeur par défaut pour l'épaisseur;
-	
-	private Double opacityValue = 100.0; // FIXME: valeur par défaut pour l'opacité
-	
+	private ToolDrawer tool = (ToolDrawer) Tool.getCurrentTool();
 	@FXML
 	private void initialize() {
-		thicknessTextField.setText(thicknessValue.toString());
-		opacityTextField.setText(opacityValue.toString());
+		thicknessTextField.setText(String.valueOf(tool.thickness));
+		opacityTextField.setText(String.valueOf(tool.opacity));
 		
 		// Handle Slider value change events.
 		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			thicknessValue = Double.parseDouble(newValue.toString());
-			thicknessTextField.setText(thicknessValue.toString());
+			tool.thickness = Double.parseDouble(newValue.toString());
+			thicknessTextField.setText(String.valueOf(tool.thickness));
+			((ToolDrawer) Tool.getCurrentTool()).onThicknessSet();
 		});
 		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			opacityValue = Double.parseDouble(newValue.toString());
-			opacityTextField.setText(opacityValue.toString());
+			tool.opacity = Double.parseDouble(newValue.toString());
+			opacityTextField.setText(String.valueOf(tool.opacity));
+			((ToolDrawer) Tool.getCurrentTool()).onOpacitySet();
 		});
 		// Handle TextField text changes.
 		thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			thicknessValue = Double.parseDouble(newValue);
-			thicknessSlider.setValue(thicknessValue);
+			tool.thickness = Double.parseDouble(newValue);
+			thicknessSlider.setValue(tool.thickness);
+			((ToolDrawer) Tool.getCurrentTool()).onThicknessSet();
 		});
 		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			opacityValue = Double.parseDouble(newValue);
-			opacitySlider.setValue(opacityValue);
+			tool.opacity = Double.parseDouble(newValue);
+			opacitySlider.setValue(tool.opacity);
+			((ToolDrawer) Tool.getCurrentTool()).onOpacitySet();
 		});
-	}
-	
-	public Double getThicknessValue() {
-		return thicknessValue;
-	}
-	
-	public void setThicknessValue(Double thicknessValue) {
-		this.thicknessValue = thicknessValue;
-	}
-	
-	public Double getOpacityValue() {
-		return opacityValue;
-	}
-	
-	public void setOpacityValue(Double opacityValue) {
-		this.opacityValue = opacityValue;
 	}
 
 	// by Adrien

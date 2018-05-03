@@ -9,10 +9,12 @@ package controller.tools;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
@@ -24,9 +26,12 @@ import java.io.IOException;
  * @Author Adrien
  */
 public abstract class ToolDrawer extends Tool {
-	protected double opacity;
-	protected double thickness;
+	protected double opacity = 100;
+	protected double thickness = 1;
 	protected Trait currentTrait;
+	
+	public ToolDrawer() {
+	}
 	
 	public ToolDrawer(double thickness, double opacity) {
 		this.thickness = thickness;
@@ -56,7 +61,6 @@ public abstract class ToolDrawer extends Tool {
 	 * @Author Adrien
 	 */
 	abstract protected void onThicknessSet();
-	
 	
 	class Trait implements ICmd {
 		private Image undosave;

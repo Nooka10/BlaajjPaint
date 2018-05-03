@@ -1,10 +1,15 @@
 package controller.tools;
 
 
+import controller.Project;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 public abstract class Tool {
+	
+	protected final EventHandler<MouseEvent> currentOnMousePressedEventHandler = createMousePressedEventHandlers();
+	protected final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers();
+	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers();
 	
 	public enum ToolType {PENCIL, ERASER, OTHER}
 	
@@ -12,18 +17,22 @@ public abstract class Tool {
 	
 	protected ToolType toolType = ToolType.OTHER;
 	
-	public Tool() {
-		toolHasChanged = true;
-	}
+	public Tool() { }
 	
-	private static Tool currentTool = Pencil.getInstance();
+	private static Tool currentTool;// = Pencil.getInstance(); // TODO: pencil est l'outil sélectionné par défaut
 	
 	public static Tool getCurrentTool() {
 		return currentTool;
 	}
 	
 	public static void setCurrentTool(Tool currentTool) {
-		Tool.currentTool = currentTool;
+		if(Tool.currentTool != currentTool){
+			toolHasChanged = true;
+			
+			Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuel
+			Tool.currentTool = currentTool;
+			Project.getInstance().addEventHandlers(Tool.currentTool); // on met les EventHandler du nouvel outil
+		}
 	}
 	
 	public static boolean getToolHasChanged(){
@@ -34,9 +43,21 @@ public abstract class Tool {
 		toolHasChanged = value;
 	}
 	
-	public abstract EventHandler<MouseEvent> addMousePressedEventHandlers();
+	public EventHandler<MouseEvent> getCurrentOnMousePressedEventHandler() {
+		return currentOnMousePressedEventHandler;
+	}
 	
-	public abstract EventHandler<MouseEvent> addMouseDraggedEventHandlers();
-
-	public abstract EventHandler<MouseEvent> addMouseReleasedEventHandlers();
+	public EventHandler<MouseEvent> getCurrentOnMouseDraggedEventHandler() {
+		return currentOnMouseDraggedEventHandler;
+	}
+	
+	public EventHandler<MouseEvent> getCurrentOnMouseRelesedEventHandler() {
+		return currentOnMouseRelesedEventHandler;
+	}
+	
+	protected abstract EventHandler<MouseEvent> createMousePressedEventHandlers();
+	
+	protected abstract EventHandler<MouseEvent> createMouseDraggedEventHandlers();
+	
+	protected abstract EventHandler<MouseEvent> createMouseReleasedEventHandlers();
 }

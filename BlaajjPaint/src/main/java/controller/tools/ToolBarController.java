@@ -110,7 +110,7 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	void handlePencil(ActionEvent event) {
+	public void handlePencil(ActionEvent event) {
 		Tool.setCurrentTool(Pencil.getInstance());
 		if (Tool.getToolHasChanged()) {
 			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
@@ -119,8 +119,12 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	void handleEraser(ActionEvent event) {
-	
+	public void handleEraser(ActionEvent event) {
+		Tool.setCurrentTool(Eraser.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -163,11 +167,7 @@ public class ToolBarController {
 	}
 	
 	private void addParamDrawBar(String FXMLpath) {
-		double thicknessValue = 1; // FIXME: valeur par défaut pour l'épaisseur
-		double opacityValue = 100; // FIXME: valeur par défat pour l'opacité
 		if (paramBar != null) {
-			thicknessValue = paramDrawToolControler.getThicknessValue();
-			opacityValue = paramDrawToolControler.getOpacityValue();
 			mainViewController.getParamBar().getChildren().remove(paramBar);
 		}
 		try {
@@ -175,8 +175,6 @@ public class ToolBarController {
 			paramBar = fxmlLoader.load();
 			paramDrawToolControler = fxmlLoader.getController();
 			mainViewController.getParamBar().getChildren().add(paramBar);
-			paramDrawToolControler.setThicknessValue(thicknessValue);
-			paramDrawToolControler.setOpacityValue(opacityValue);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
