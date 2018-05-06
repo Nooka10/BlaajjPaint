@@ -21,9 +21,6 @@ public class MenuBarController {
 	@FXML
 	private MenuBar menuBar;
 	
-	@FXML
-	private MainViewController mainViewController; // Reference to the mainViewController
-	
 	/*
 	@FXML
 	private MenuItem menuBar_nouveau; // bouton "Nouveau" de la MenuBar
@@ -73,19 +70,6 @@ public class MenuBarController {
 	@FXML
 	private MenuItem menuBar_manuel; // bouton "Manuel" de la MenuBar
 	*/
-	
-	/**
-	 * Appelé par le MainViewController pour donner une référence vers lui-même.
-	 *
-	 * @param mainViewController, une référence vers le mainViewController
-	 *
-	 *                            Créé par Benoît Schopfer
-	 *
-	 *                            Modifier par James Smith
-	 */
-	public void setMainViewController(MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
-	}
 	
 	@FXML
 	void handleNew(ActionEvent event) {
@@ -162,16 +146,9 @@ public class MenuBarController {
 			Stage stage = new Stage();
 			stage.setScene(new Scene(newProjectWindow));
 			stage.show();
-			
-			// Give the windowsNeWProject access to the menuBarController.
-			WindowsNewProject windowsNewProject = fxmlLoader.getController();
-			windowsNewProject.setMainViewController(mainViewController);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		//mainViewController.newCanvas(width, height);
 	}
 	
 	public void openProject() {
@@ -182,7 +159,7 @@ public class MenuBarController {
 		fileChooser.getExtensionFilters().add(extFilter);
 		
 		// Show save file dialog
-		File file = fileChooser.showOpenDialog(mainViewController.getMain().getPrimaryStage());
+		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
 		
 		if (file != null) {
 			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
@@ -206,7 +183,7 @@ public class MenuBarController {
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj");
 		fileChooser.getExtensionFilters().add(extFilter);
 		
-		Main mainApp = mainViewController.getMain();
+		Main mainApp = MainViewController.getInstance().getMain();
 		
 		// Show save file dialog
 		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
@@ -232,7 +209,7 @@ public class MenuBarController {
 		
 		
 		Project.getInstance().drawWorkspace();
-		mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public void export() {
@@ -244,7 +221,7 @@ public class MenuBarController {
 				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg");
 		fileChooser.getExtensionFilters().addAll(extPNG, extJPG);
 		
-		Main mainApp = mainViewController.getMain();
+		Main mainApp = MainViewController.getInstance().getMain();
 		
 		// Show save file dialog
 		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
@@ -263,7 +240,7 @@ public class MenuBarController {
 				new FileChooser.ExtensionFilter("PNG (*.png)", "*.png"),
 				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
 		
-		Main mainApp = mainViewController.getMain();
+		Main mainApp = MainViewController.getInstance().getMain();
 		
 		// Show save file dialog
 		File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());

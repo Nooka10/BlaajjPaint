@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -18,12 +19,9 @@ import java.io.IOException;
  */
 public class ToolBarController {
 	
-	
 	private ParamDrawToolController paramDrawToolControler;
 	
 	private Parent paramBar;
-	
-	private MainViewController mainViewController; // Reference to the mainViewController
 	
 	/* attributs pour FXML */
 	
@@ -72,41 +70,33 @@ public class ToolBarController {
 	@FXML
 	private ToggleButton zoomTool;
 	
-	
-	/**
-	 * Appelé par le MainViewController pour donner une référence vers lui-même.
-	 *
-	 * @param mainViewController, une référence vers le mainViewController
-	 *
-	 *                            Créé par Benoît Schopfer
-	 */
-	public void setMainViewController(MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
-	}
-	
 	@FXML
-	void handleMoveView(ActionEvent event) {
+	public void handleMoveView(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleSelect(ActionEvent event) {
+	public void handleSelect(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleLasso(ActionEvent event) {
+	public void handleLasso(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleCrop(ActionEvent event) {
+	public void handleCrop(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handlePipette(ActionEvent event) {
-	
+	public void handlePipette(ActionEvent event) {
+		Tool.setCurrentTool(Pipette.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -128,33 +118,37 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	void handleBlur(ActionEvent event) {
+	public void handleBlur(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleAddText(ActionEvent event) {
+	public void handleAddText(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleMouse(ActionEvent event) {
+	public void handleMouse(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleAddShape(ActionEvent event) {
+	public void handleAddShape(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleHand(ActionEvent event) {
+	public void handleHand(ActionEvent event) {
 	
 	}
 	
 	@FXML
-	void handleZoom(ActionEvent event) {
-	
+	public void handleZoom(ActionEvent event) {
+		Tool.setCurrentTool(Zoom.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	public static void displayError() {
@@ -167,22 +161,21 @@ public class ToolBarController {
 	}
 	
 	private void addParamDrawBar(String FXMLpath) {
-		if (paramBar != null) {
-			mainViewController.getParamBar().getChildren().remove(paramBar);
+		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
+			closeCurrentParamBar();
 		}
+		// on crée la nouvelle barre de paramètre
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
 			paramBar = fxmlLoader.load();
 			paramDrawToolControler = fxmlLoader.getController();
-			mainViewController.getParamBar().getChildren().add(paramBar);
+			MainViewController.getInstance().getParamBar().getChildren().add(paramBar); // on ajoute la barre de paramètre au MainViewController
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	// Added by Adrien
-	public void SetOpacity() {
-	
+	private void closeCurrentParamBar(){
+		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}
-	// End Added by Adrien
 }

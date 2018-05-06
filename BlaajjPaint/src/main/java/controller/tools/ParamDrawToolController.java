@@ -4,7 +4,6 @@ Modified by : Adrien
  */
 package controller.tools;
 
-import controller.Project;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -36,29 +35,23 @@ public class ParamDrawToolController {
 		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			tool.thickness = Double.parseDouble(newValue.toString());
 			thicknessTextField.setText(String.valueOf(tool.thickness));
-			((ToolDrawer) Tool.getCurrentTool()).onThicknessSet();
+			((ToolDrawer) Tool.getCurrentTool()).setThickness();
 		});
 		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			tool.opacity = Double.parseDouble(newValue.toString());
 			opacityTextField.setText(String.valueOf(tool.opacity));
-			((ToolDrawer) Tool.getCurrentTool()).onOpacitySet();
+			((ToolDrawer) Tool.getCurrentTool()).setOpacity();
 		});
 		// Handle TextField text changes.
 		thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			tool.thickness = Double.parseDouble(newValue);
 			thicknessSlider.setValue(tool.thickness);
-			((ToolDrawer) Tool.getCurrentTool()).onThicknessSet();
+			((ToolDrawer) Tool.getCurrentTool()).setThickness();
 		});
 		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			tool.opacity = Double.parseDouble(newValue);
 			opacitySlider.setValue(tool.opacity);
-			((ToolDrawer) Tool.getCurrentTool()).onOpacitySet();
+			((ToolDrawer) Tool.getCurrentTool()).setOpacity();
 		});
 	}
-
-	// by Adrien
-
-
-
-	// end by Adrien
 }

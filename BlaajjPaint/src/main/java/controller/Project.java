@@ -17,14 +17,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-//import javafx.scene.layout.StackPane;
 
 public class Project {
 	private Dimension dimension;
 	private LinkedList<Layer> layers = new LinkedList<>();
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	private Layer currentLayer;
-	private MainViewController mainViewController;
 	
 	private GraphicsContext gc;
 	//private StackPane pane = new StackPane();
@@ -41,8 +39,7 @@ public class Project {
 		currentColor = Color.BLACK;
 	}
 	
-	public void setData(int width, int height, MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
+	public void setData(int width, int height) {
 		dimension = new Dimension(width, height);
 		//currentLayer = new Layer(width, height);
 		setCurrentLayer(new Layer(width, height));
@@ -62,7 +59,7 @@ public class Project {
 		}
 		
 		layers.add(currentLayer);
-		mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
 	
@@ -80,11 +77,12 @@ public class Project {
 				layersGroup.getChildren().add(layer);
 			}
 		}
-		mainViewController.drawLayers(layersGroup);
+		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
 	}
 	
 	public void setCurrentColor(Color color) {
 		currentColor = color;
+		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 	}
 	
 	public Color getCurrentColor() {
@@ -95,7 +93,7 @@ public class Project {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		drawWorkspace();
-		mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -186,7 +184,7 @@ public class Project {
 			}
 			currentLayer = layers.get(index);
 			drawWorkspace();
-			mainViewController.getRightMenuController().updateLayerList();
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 	}
 	
@@ -196,7 +194,7 @@ public class Project {
 			Collections.swap(layers, index, index - 1);
 		}
 		drawWorkspace();
-		mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public void currentLayerToBack() {
@@ -205,7 +203,7 @@ public class Project {
 			Collections.swap(layers, index, index + 1);
 		}
 		drawWorkspace();
-		mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public Canvas getBackgroungImage() {

@@ -5,18 +5,26 @@ package controller.tools;
 
 import controller.Project;
 import javafx.event.EventHandler;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 
-
+/**
+ * Classe implémentant l'outil pinceau
+ */
 public class Pencil extends ToolDrawer {
 	
-	private static Pencil toolInstance = new Pencil();
+	private static Pencil toolInstance = new Pencil(); // l'instance unique du pinceau
 	
+	/**
+	 * Retourne l'instance unique du pinceau
+	 * @return l'instance unique du pinceau
+	 */
 	public static Pencil getInstance() {
 		return toolInstance;
 	}
 	
+	/**
+	 * Constructeur privé (modèle singleton)
+	 */
 	private Pencil() {
 		toolType = ToolType.PENCIL;
 	}
@@ -61,12 +69,12 @@ public class Pencil extends ToolDrawer {
 	}
 	
 	@Override
-	protected void onOpacitySet() {
+	protected void setOpacity() {
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 	}
 	
 	@Override
-	protected void onThicknessSet() {
+	protected void setThickness() {
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 }

@@ -9,58 +9,59 @@ package controller.tools;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
-import java.io.IOException;
-
 /**
- * Classe mère du pinceau et de la gomme, permet aux enfants de réagire au changement de thickness et d'opacité
- *
- * @Author Adrien
+ * Classe abstraite implémentant un outil permettant de dessiner ou effacer. Classe mère du pinceau et de la gomme.
  */
 public abstract class ToolDrawer extends Tool {
-	protected double opacity = 100;
-	protected double thickness = 1;
-	protected Trait currentTrait;
+	protected double opacity = 100; // l'opacité de l'outil // FIXME: pas encore bien géré...
+	protected double thickness = 1; // l'épaisseur de l'outil
+	protected Trait currentTrait; // Le trait actuellement tiré
 	
-	public ToolDrawer() {
-	}
-	
-	public ToolDrawer(double thickness, double opacity) {
-		this.thickness = thickness;
-		this.opacity = opacity;
-	}
-	
+	/**
+	 * Permet de régler l'opacité de l'outil
+	 *
+	 * @param opacity, l'opacité à donner à l'outil. Doit être un nombre réel compris entre 0 et 100.
+	 *                   Si la valeur passée est plus petite que 0, la valeur 0 sera donnée à l'opacité.
+	 *                   Si la valeur passée est plus grande que 100, la valeur 100 sera donnée à l'opacité
+	 */
 	public void setOpacity(double opacity) {
-		this.opacity = opacity;
-		onOpacitySet();     // évenement qui est appelé au moment ou l'opacitée est changée
-	}
-	
-	public void setThickness(double thickness) {
-		this.thickness = thickness;
-		onThicknessSet();   // évènement qu iest appellé au momen tou l'épaisseur est changée
+		if (opacity < 0) {
+			this.opacity = 0;
+		} else if (opacity > 100) {
+			this.opacity = 100;
+		} else {
+			this.opacity = opacity;
+		}
+		setOpacity();
 	}
 	
 	/**
-	 * Evènement appelé sur les enfants au moment ou l'opacité est changée Doit être surchargé par les enfants
+	 * Permet de régler l'épaisseur de l'outil
 	 *
-	 * @Author Adrien
+	 * @param thickness, l'épaisseur à donner à l'outil. Doit être un nombre réel compris entre 1 et 200 Si la valeur passée est plus petite que 1, la valeur 1 sera
+	 *                   donnée à l'épaisseur Si la valeur passée est plus grande que 200, la valeur 200 sera donnée à l'épaisseur
 	 */
-	abstract protected void onOpacitySet();
+	public void setThickness(double thickness) {
+		this.thickness = thickness;
+		setThickness();
+	}
+	
+	/**
+	 * Évènement appelé sur les enfants au moment ou l'opacité est changée Doit être surchargé par les enfants
+	 */
+	protected abstract void setOpacity();
 	
 	/**
 	 * Evènement appelé sur les enfants au moment ou l'épaisseur est changée Doit être surchargé par les enfants
 	 *
 	 * @Author Adrien
 	 */
-	abstract protected void onThicknessSet();
+	protected abstract void setThickness();
 	
 	class Trait implements ICmd {
 		private Image undosave;

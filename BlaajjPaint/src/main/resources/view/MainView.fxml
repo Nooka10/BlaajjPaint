@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="mainView" onKeyPressed="#KeyPressed" prefHeight="400.0" prefWidth="600.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<BorderPane fx:id="mainView" onKeyPressed="#KeyPressed" prefHeight="400.0" prefWidth="600.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" ><!--fx:controller="controller.MainViewController"-->
 	<left>
 		<AnchorPane prefWidth="70.0">
 			<children>
