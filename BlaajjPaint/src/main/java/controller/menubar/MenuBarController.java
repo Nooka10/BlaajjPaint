@@ -10,10 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Main;
@@ -24,9 +20,6 @@ public class MenuBarController {
 	
 	@FXML
 	private MenuBar menuBar;
-	
-	@FXML
-	private MainViewController mainViewController; // Reference to the mainViewController
 	
 	/*
 	@FXML
@@ -78,19 +71,6 @@ public class MenuBarController {
 	private MenuItem menuBar_manuel; // bouton "Manuel" de la MenuBar
 	*/
 	
-	/**
-	 * Appelé par le MainViewController pour donner une référence vers lui-même.
-	 *
-	 * @param mainViewController, une référence vers le mainViewController
-	 *
-	 * Créé par Benoît Schopfer
-	 *
-	 * Modifier par James Smith
-	 */
-	public void setMainViewController(MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
-	}
-	
 	@FXML
 	void handleNew(ActionEvent event) {
 		openNewProjectWindows();
@@ -114,42 +94,42 @@ public class MenuBarController {
 	
 	@FXML
 	void undo(ActionEvent event) {
-	    undoAction();
+		undoAction();
 	}
 	
 	@FXML
 	void redo(ActionEvent event) {
 		redoAction();
 	}
-
+	
 	@FXML
-	void newLayer(ActionEvent event){
+	void newLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
 	}
-
+	
 	@FXML
-	void duplicateLayer(ActionEvent event){
+	void duplicateLayer(ActionEvent event) {
 		//to do
 	}
-
+	
 	@FXML
-	void deleteLayer(ActionEvent event){
+	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
 	}
-
+	
 	@FXML
-	void fusionLayer(ActionEvent event){
+	void fusionLayer(ActionEvent event) {
 		// to do
 	}
-
+	
 	@FXML
-	void hideCurrentLayer(ActionEvent event){
+	void hideCurrentLayer(ActionEvent event) {
 		Project.getInstance().getCurrentLayer().setVisible(false);
 	}
-
+	
 	// James do not work
-
-	public void openNewProjectWindows(){
+	
+	public void openNewProjectWindows() {
 		/*
 		if (changesMade) {
 			changesWarning(false);
@@ -159,87 +139,80 @@ public class MenuBarController {
 		changesMade = false;
 		firstTimeSave = true;
 		*/
-
+		
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/WindowsNewProject.fxml"));
 			Parent newProjectWindow = fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.setScene(new Scene(newProjectWindow));
 			stage.show();
-
-			// Give the windowsNeWProject access to the menuBarController.
-			WindowsNewProject windowsNewProject= fxmlLoader.getController();
-			windowsNewProject.setMainViewController(mainViewController);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		//mainViewController.newCanvas(width, height);
 	}
-
+	
 	public void openProject() {
 		FileChooser fileChooser = new FileChooser();
-
+		
 		// Set extension filter
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
 		fileChooser.getExtensionFilters().add(extFilter);
-
+		
 		// Show save file dialog
-		File file = fileChooser.showOpenDialog(mainViewController.getMain().getPrimaryStage());
-
+		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
+		
 		if (file != null) {
 			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
 			System.out.println("path fichier choisi: " + file.getPath());
 		}
 	}
-
-	public void undoAction(){
-        System.out.println("undo");
-        RecordCmd.getInstance().undo();
-    }
-
-    public void redoAction(){
-        RecordCmd.getInstance().redo();
-    }
-
-    public void saveAs(){
-        FileChooser fileChooser = new FileChooser();
-
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        Main mainApp = mainViewController.getMain();
-
-        // Show save file dialog
-        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-
-        if (file != null) {
-            // Make sure it has the correct extension
-            if (!file.getPath().endsWith(".blaajj")) {
-                file = new File(file.getPath() + ".blaajj");
-            }
-            //mainApp.savePersonDataToFile(file);
-            System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
-        }
-    }
 	
-    public void mergeAllLayer(){
-	    Layer layer = Project.getInstance().getLayers().getLast();
-	    for(int i = Project.getInstance().getLayers().size() - 2; i >= 0 ; --i)
+	public void undoAction() {
+		System.out.println("undo");
+		RecordCmd.getInstance().undo();
+	}
+	
+	public void redoAction() {
+		RecordCmd.getInstance().redo();
+	}
+	
+	public void saveAs() {
+		FileChooser fileChooser = new FileChooser();
 		
-		    Project.getInstance().getLayers().get(i).mergeLayers(layer);
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj");
+		fileChooser.getExtensionFilters().add(extFilter);
+		
+		Main mainApp = MainViewController.getInstance().getMain();
+		
+		// Show save file dialog
+		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+		
+		if (file != null) {
+			// Make sure it has the correct extension
+			if (!file.getPath().endsWith(".blaajj")) {
+				file = new File(file.getPath() + ".blaajj");
+			}
+			//mainApp.savePersonDataToFile(file);
+			System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
+		}
+	}
 	
-	    Project.getInstance().getLayers().clear();
-	    Project.getInstance().getLayers().add(layer);
-		   
-	    
-	    Project.getInstance().drawWorkspace();
-	    mainViewController.getRightMenuController().updateLayerList();
-    }
-    
-	public void export(){
+	public void mergeAllLayer() {
+		Layer layer = Project.getInstance().getLayers().getLast();
+		for (int i = Project.getInstance().getLayers().size() - 2; i >= 0; --i)
+			
+			Project.getInstance().getLayers().get(i).mergeLayers(layer);
+		
+		Project.getInstance().getLayers().clear();
+		Project.getInstance().getLayers().add(layer);
+		
+		
+		Project.getInstance().drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+	}
+	
+	public void export() {
 		FileChooser fileChooser = new FileChooser();
 		
 		FileChooser.ExtensionFilter extPNG =
@@ -248,16 +221,16 @@ public class MenuBarController {
 				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg");
 		fileChooser.getExtensionFilters().addAll(extPNG, extJPG);
 		
-		Main mainApp = mainViewController.getMain();
+		Main mainApp = MainViewController.getInstance().getMain();
 		
 		// Show save file dialog
 		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 		
 		Project.getInstance().export(file);
-	
+		
 	}
 	
-	public void importImage(){
+	public void importImage() {
 		
 		FileChooser fileChooser = new FileChooser();
 		
@@ -267,12 +240,12 @@ public class MenuBarController {
 				new FileChooser.ExtensionFilter("PNG (*.png)", "*.png"),
 				new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
 		
-		Main mainApp = mainViewController.getMain();
+		Main mainApp = MainViewController.getInstance().getMain();
 		
 		// Show save file dialog
 		File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 		
 		Project.getInstance().importImage(file);
 	}
- 
+	
 }

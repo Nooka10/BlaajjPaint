@@ -1,127 +1,112 @@
+/*
+Author: Benoît
+ */
 package controller.tools;
 
 import controller.Project;
-import controller.history.ICmd;
-import controller.history.RecordCmd;
 import javafx.event.EventHandler;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import utils.UndoException;
 
-public class Eraser extends Tool implements ICmd {
+/**
+ * Classe implémentant l'outil gomme
+ */
+public class Eraser extends ToolDrawer {
 	
-	private static Color transparent = new Color(0, 0, 0, 0);
+	private static Eraser toolInstance = new Eraser(); // l'instance unique de la gomme
 	
+	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
-	private static int id; // FIXME: à virer -> juste pour tests
-	private int realid; // FIXME: à virer -> juste pour tests
-	private Image undosave;
-	private Image redosave = null;
-	private SnapshotParameters params;
+	private GraphicsContext eraserMaskGraphicsContext;
 	
-	private EventHandler<MouseEvent> mousedrag;
-	private EventHandler<MouseEvent> mouserelease;
-	private EventHandler<MouseEvent> mousePressed;
+	/**
+	 * Retourne l'instance unique de la gomme
+	 * @return l'instance unique de la gomme
+	 */
+	public static Eraser getInstance() {
+		return toolInstance;
+	}
 	
-	public Eraser(Canvas canvas, double thickness) {
-		// stock le cnaevas dans le parent
-		super(canvas);
-		
-		realid = id++;
-		System.out.println("create : " + realid);
-		
+	/**
+	 * Constructeur privé (modèle singleton)
+	 */
+	private Eraser() {
 		toolType = ToolType.ERASER;
-		
-		// configuration des paramètres utilisés pour la sauvegarde du canevas
-		params = new SnapshotParameters();
-		params.setFill(Color.TRANSPARENT);
-		
-		// exécute le snapshot de l'état actuel du canvas
-		undosave = canvas.snapshot(params, null);
-		
-		// définit un handler qui est utilisé pour dessiner sur le canvas et l'ajoute au canvas
-		mousedrag = new EventHandler<MouseEvent>() {
+	}
+	
+	@Override
+	public EventHandler<MouseEvent> createMousePressedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//canvas.getGraphicsContext2D().clearRect(event.getX(), event.getY(), thickness, thickness);
-				canvas.getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur de la gomme
-				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 0);
-				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur de la gomme
-				canvas.getGraphicsContext2D().stroke();
-				System.out.println("drag : " + realid);
+				currentTrait = new Trait();
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter().setColor((int) event.getX(), (int) event.getY(), Color.TRANSPARENT);
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(event.getX() - thickness / 2, event.getY() - thickness / 2, thickness, thickness);
+				
+				// create eraserMask
+				eraserMask = new Canvas(Project.getInstance().getCurrentLayer().getWidth(), Project.getInstance().getCurrentLayer().getHeight());
+				eraserMaskGraphicsContext = eraserMask.getGraphicsContext2D();
+				eraserMaskGraphicsContext.setFill(Color.WHITE);
+				eraserMaskGraphicsContext.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
+				eraserMaskGraphicsContext.beginPath();
+				eraserMaskGraphicsContext.moveTo(event.getX(), event.getY());
+				eraserMaskGraphicsContext.setLineWidth(thickness); // définit l'épaisseur de la gomme
+				eraserMaskGraphicsContext.setStroke(Color.BLACK); // définit la couleur de la gomme
+				//eraserMaskGraphicsContext.setGlobalAlpha(opacity / 100);
+				eraserMaskGraphicsContext.stroke();
 			}
 		};
-		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
-		
-		mousePressed = new EventHandler<MouseEvent>() {
+	}
+	
+	@Override
+	public EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				canvas.getGraphicsContext2D().beginPath();
-				canvas.getGraphicsContext2D().moveTo(event.getX(), event.getY());
-				canvas.getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur de la gomme
-				Color c = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 0);
-				canvas.getGraphicsContext2D().setStroke(c); // définit la couleur de la gomme
-				canvas.getGraphicsContext2D().stroke();
-				System.out.println("pressed : " + realid);
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter().setColor((int) event.getX(), (int) event.getY(), Color.TRANSPARENT);
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(event.getX() - thickness / 2, event.getY() - thickness / 2, thickness, thickness);
+				
+				eraserMaskGraphicsContext.lineTo(event.getX(), event.getY());
+				eraserMaskGraphicsContext.stroke();
 			}
 		};
-		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
-		
-		// definit un event qui est utilisé pour gérer le release du bouton de la souric sur le canvas
-		mouserelease = new EventHandler<MouseEvent>() {
+	}
+	
+	@Override
+	public EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("release : " + realid);
-				execute();
-				canvas.removeEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
-				canvas.removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
-				canvas.removeEventHandler(MouseEvent.MOUSE_RELEASED, mouserelease);
+				eraserMaskGraphicsContext.closePath();
+				
+				// get image from eraserMask
+				WritableImage srcMask = new WritableImage((int) eraserMask.getWidth(), (int) eraserMask.getHeight());
+				srcMask = eraserMask.snapshot(null, srcMask);
+				
+				PixelReader maskReader = srcMask.getPixelReader();
+				
+				int width = (int) srcMask.getWidth();
+				int height = (int) srcMask.getHeight();
+				
+				PixelWriter writer = Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter();
+				
+				// blend image and eraserMask
+				for (int x = 0; x < width; x++) {
+					for (int y = 0; y < height; y++) {
+						Color maskColor = maskReader.getColor(x, y);
+						if (maskColor.equals(Color.BLACK)) {
+							writer.setColor(x, y, Color.TRANSPARENT);
+						}
+					}
+				}
+				
+				currentTrait.execute();
 			}
 		};
-		canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouserelease);
 	}
-	
-	@Override
-	public void unregisterEventHandlers() {
-		getCanvas().removeEventHandler(MouseEvent.MOUSE_DRAGGED, mousedrag);
-		getCanvas().removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressed);
-		getCanvas().removeEventHandler(MouseEvent.MOUSE_RELEASED, mouserelease);
-	}
-	
-	@Override
-	public void execute() {
-		RecordCmd.getInstance().saveCmd(this);
-		// RecordCmd.getInstance().clearRedo();
-	}
-	
-	@Override
-	public void undo() throws UndoException {
-		if (undosave == null) {
-			throw new UndoException();
-		}
-		redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
-		gc.drawImage(undosave, 0, 0);
-		undosave = null;
-		
-	}
-	
-	@Override
-	public void redo() throws UndoException {
-		if (redosave == null) {
-			throw new UndoException();
-		}
-		undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-		
-		GraphicsContext gc = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
-		gc.drawImage(redosave, 0, 0);
-		redosave = null;
-	}
-	
-	
 }

@@ -1,3 +1,7 @@
+/*
+Author : Benoit
+Modified by : Adrien
+ */
 package controller.tools;
 
 import javafx.fxml.FXML;
@@ -15,54 +19,22 @@ public class ParamDrawToolController {
 	@FXML
 	private HBox paramDrawTools;
 	
-	@FXML
-	private Slider opacitySlider;
-	
-	@FXML
-	private TextField opacityTextField;
-	
-	private Double thicknessValue = 1.0; // FIXME: valeur par défaut pour l'épaisseur;
-	
-	private Double opacityValue = 100.0; // FIXME: valeur par défaut pour l'opacité
-	
+	private ToolDrawer tool = (ToolDrawer) Tool.getCurrentTool();
 	@FXML
 	private void initialize() {
-		thicknessTextField.setText(thicknessValue.toString());
-		opacityTextField.setText(opacityValue.toString());
+		thicknessTextField.setText(String.valueOf(tool.thickness));
 		
 		// Handle Slider value change events.
 		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			thicknessValue = Double.parseDouble(newValue.toString());
-			thicknessTextField.setText(thicknessValue.toString());
-		});
-		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			opacityValue = Double.parseDouble(newValue.toString());
-			opacityTextField.setText(opacityValue.toString());
+			tool.thickness = Double.parseDouble(newValue.toString());
+			thicknessTextField.setText(String.valueOf(tool.thickness));
+			((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
 		});
 		// Handle TextField text changes.
 		thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			thicknessValue = Double.parseDouble(newValue);
-			thicknessSlider.setValue(thicknessValue);
+			tool.thickness = Double.parseDouble(newValue);
+			thicknessSlider.setValue(tool.thickness);
+			((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
 		});
-		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			opacityValue = Double.parseDouble(newValue);
-			opacitySlider.setValue(opacityValue);
-		});
-	}
-	
-	public Double getThicknessValue() {
-		return thicknessValue;
-	}
-	
-	public void setThicknessValue(Double thicknessValue) {
-		this.thicknessValue = thicknessValue;
-	}
-	
-	public Double getOpacityValue() {
-		return opacityValue;
-	}
-	
-	public void setOpacityValue(Double opacityValue) {
-		this.opacityValue = opacityValue;
 	}
 }

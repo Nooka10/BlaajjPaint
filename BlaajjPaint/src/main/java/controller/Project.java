@@ -1,11 +1,16 @@
 package controller;
 
+import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -13,18 +18,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-
-import javax.imageio.ImageIO;
-//import javafx.scene.layout.StackPane;
-
 public class Project {
 	private Dimension dimension;
 	private LinkedList<Layer> layers = new LinkedList<>();
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
+	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
-	private MainViewController mainViewController;
 	
 	private GraphicsContext gc;
 	//private StackPane pane = new StackPane();
@@ -39,12 +38,13 @@ public class Project {
 	
 	private Project() {
 		currentColor = Color.BLACK;
+		
 	}
 	
-	public void setData(int width, int height, MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
+	public void setData(int width, int height) {
 		dimension = new Dimension(width, height);
-		currentLayer = new Layer(width, height);
+		//currentLayer = new Layer(width, height);
+		setCurrentLayer(new Layer(width, height));
 		backgroungImage = new Canvas(width, height);
 		gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
@@ -61,7 +61,7 @@ public class Project {
 		}
 		
 		layers.add(currentLayer);
-		mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
 	
@@ -72,19 +72,19 @@ public class Project {
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
-        Iterator it = layers.descendingIterator();
-		while(it.hasNext()) {
-		    Layer layer = (Layer)it.next();
-            if (layer.isVisible()) {
-                layersGroup.getChildren().add(layer);
-            }
-        }
-		
-		mainViewController.drawLayers(layersGroup);
+		Iterator it = layers.descendingIterator();
+		while (it.hasNext()) {
+			Layer layer = (Layer) it.next();
+			if (layer.isVisible()) {
+				layersGroup.getChildren().add(layer);
+			}
+		}
+		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
 	}
 	
 	public void setCurrentColor(Color color) {
 		currentColor = color;
+		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 	}
 	
 	public Color getCurrentColor() {
@@ -92,10 +92,10 @@ public class Project {
 	}
 	
 	public void addLayer(Layer newLayer) {
-		currentLayer = newLayer;
+		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		drawWorkspace();
-        mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -103,9 +103,26 @@ public class Project {
 	}
 	
 	public void setCurrentLayer(Layer currentLayer) {
+		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
+		addEventHandlers(Tool.getCurrentTool());
 	}
 	
+	public void addEventHandlers(Tool tool) {
+		if (this.currentLayer != null && tool != null) {
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		}
+	}
+	
+	public void removeEventHandler(Tool tool) {
+		if (this.currentLayer != null && tool != null) {
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		}
+	}
 	
 	public void export(File file) {
 		if (file != null) {
@@ -155,39 +172,43 @@ public class Project {
 		
 		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
-
-	public void addNewLayer(){
-	    addLayer(new Layer(currentLayer));
-    }
-
-    public void deleteCurrentLayer(){
-	    if(layers.size() != 1) {
-            int index = layers.indexOf(currentLayer);
-            layers.remove(index);
-            if (index >= layers.size()) {
-                index--;
-            }
-            currentLayer = layers.get(index);
-            drawWorkspace();
-            mainViewController.getRightMenuController().updateLayerList();
-        }
-    }
-
-    public void currentLayerToFront(){
-	    int index = layers.indexOf(currentLayer);
-	    if(index != 0) {
-            Collections.swap(layers, index, index - 1);
-        }
-        drawWorkspace();
-	    mainViewController.getRightMenuController().updateLayerList();
-    }
-
-    public void currentLayerToBack(){
-        int index = layers.indexOf(currentLayer);
-        if(index < layers.size() -1) {
-            Collections.swap(layers, index, index + 1);
-        }
-        drawWorkspace();
-        mainViewController.getRightMenuController().updateLayerList();
-    }
+	
+	public void addNewLayer() {
+		addLayer(new Layer(currentLayer));
+	}
+	
+	public void deleteCurrentLayer() {
+		if (layers.size() != 1) {
+			int index = layers.indexOf(currentLayer);
+			layers.remove(index);
+			if (index >= layers.size()) {
+				index--;
+			}
+			currentLayer = layers.get(index);
+			drawWorkspace();
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
+		}
+	}
+	
+	public void currentLayerToFront() {
+		int index = layers.indexOf(currentLayer);
+		if (index != 0) {
+			Collections.swap(layers, index, index - 1);
+		}
+		drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+	}
+	
+	public void currentLayerToBack() {
+		int index = layers.indexOf(currentLayer);
+		if (index < layers.size() - 1) {
+			Collections.swap(layers, index, index + 1);
+		}
+		drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+	}
+	
+	public Canvas getBackgroungImage() {
+		return backgroungImage;
+	}
 }

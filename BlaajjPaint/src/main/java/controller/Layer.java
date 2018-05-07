@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -11,31 +10,33 @@ import javafx.scene.paint.Color;
 
 import java.awt.*;
 
-public class Layer extends Canvas{
-
+public class Layer extends Canvas {
+	
 	final private int id;
 	private static int count = 1;
 	
 	/**
 	 * Constructeur
-	 * @param width la largeur de notre calque
+	 *
+	 * @param width  la largeur de notre calque
 	 * @param height la hauteur de notre calque
 	 */
-	public Layer(int width, int height){
-		super(width,height);
+	public Layer(int width, int height) {
+		super(width, height);
 		id = count++;
 	}
-
-	public Layer(Dimension dimension){
+	
+	public Layer(Dimension dimension) {
 		this(dimension.width, dimension.height);
 	}
 	
 	/**
 	 * Constructeur de copie, pour copier un calque
+	 *
 	 * @param toCopy le calque à copier
 	 */
-	public Layer(Layer toCopy){
-		super(toCopy.getWidth(),toCopy.getHeight());
+	public Layer(Layer toCopy) {
+		super(toCopy.getWidth(), toCopy.getHeight());
 		id = count++;
 	}
 	
@@ -59,16 +60,25 @@ public class Layer extends Canvas{
 	
 	/**
 	 * Permet de fusionner deux calques
+	 *
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
 	public void mergeLayers(Layer backgroundLayer) {
 		Image image = createImageFromCanvas(4);
 		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
-		// Project.getInstance().getLayers().remove(this); // TODO : enlever ca maybe
+		// Project.getCurrentTool().getLayers().remove(this); // TODO : enlever ca maybe
 	}
-
+	
+	public void setLayerOpacity(double opacity){
+		setOpacity(opacity / 100);
+	}
+	
+	public double getLayerOpacity(){
+		return getOpacity() * 100;
+	}
+	
 	@Override
-	public String toString(){
+	public String toString() {
 		return "Calque " + id;
 	}
 }
