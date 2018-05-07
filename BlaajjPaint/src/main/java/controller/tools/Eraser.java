@@ -109,14 +109,4 @@ public class Eraser extends ToolDrawer {
 			}
 		};
 	}
-	
-	@Override
-	protected void setOpacity() {
-		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
-	}
-	
-	@Override
-	protected void setThickness() {
-		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
-	}
 }

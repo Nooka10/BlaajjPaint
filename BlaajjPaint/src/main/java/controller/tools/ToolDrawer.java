@@ -18,27 +18,8 @@ import utils.UndoException;
  * Classe abstraite implémentant un outil permettant de dessiner ou effacer. Classe mère du pinceau et de la gomme.
  */
 public abstract class ToolDrawer extends Tool {
-	protected double opacity = 100; // l'opacité de l'outil // FIXME: pas encore bien géré...
 	protected double thickness = 1; // l'épaisseur de l'outil
 	protected Trait currentTrait; // Le trait actuellement tiré
-	
-	/**
-	 * Permet de régler l'opacité de l'outil
-	 *
-	 * @param opacity, l'opacité à donner à l'outil. Doit être un nombre réel compris entre 0 et 100.
-	 *                   Si la valeur passée est plus petite que 0, la valeur 0 sera donnée à l'opacité.
-	 *                   Si la valeur passée est plus grande que 100, la valeur 100 sera donnée à l'opacité
-	 */
-	public void setOpacity(double opacity) {
-		if (opacity < 0) {
-			this.opacity = 0;
-		} else if (opacity > 100) {
-			this.opacity = 100;
-		} else {
-			this.opacity = opacity;
-		}
-		setOpacity();
-	}
 	
 	/**
 	 * Permet de régler l'épaisseur de l'outil
@@ -48,20 +29,8 @@ public abstract class ToolDrawer extends Tool {
 	 */
 	public void setThickness(double thickness) {
 		this.thickness = thickness;
-		setThickness();
+		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
-	
-	/**
-	 * Évènement appelé sur les enfants au moment ou l'opacité est changée Doit être surchargé par les enfants
-	 */
-	protected abstract void setOpacity();
-	
-	/**
-	 * Evènement appelé sur les enfants au moment ou l'épaisseur est changée Doit être surchargé par les enfants
-	 *
-	 * @Author Adrien
-	 */
-	protected abstract void setThickness();
 	
 	class Trait implements ICmd {
 		private Image undosave;

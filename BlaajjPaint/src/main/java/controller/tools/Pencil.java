@@ -16,6 +16,7 @@ public class Pencil extends ToolDrawer {
 	
 	/**
 	 * Retourne l'instance unique du pinceau
+	 *
 	 * @return l'instance unique du pinceau
 	 */
 	public static Pencil getInstance() {
@@ -66,15 +67,5 @@ public class Pencil extends ToolDrawer {
 				currentTrait.execute();
 			}
 		};
-	}
-	
-	@Override
-	protected void setOpacity() {
-		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
-	}
-	
-	@Override
-	protected void setThickness() {
-		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 }

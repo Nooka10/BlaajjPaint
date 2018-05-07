@@ -2,39 +2,63 @@ package controller.rightMenu;
 
 import controller.Layer;
 import controller.Project;
+import controller.tools.Tool;
+import controller.tools.ToolDrawer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 public class RightMenuController {
 	@FXML
-	private AnchorPane rightMenu;
+	private VBox LayersList;
+	
+	@FXML
+	private Button fusion;
+	
+	@FXML
+	private Button upLayer;
 	
 	@FXML
 	private Button addNewLayer;
 	
 	@FXML
+	private Button downLayer;
+	
+	@FXML
 	private ColorPicker colorPicker;
 	
 	@FXML
-	private VBox LayersList;
+	private Slider opacitySlider;
+	
+	@FXML
+	private TextField opacityTextField;
+	
+	@FXML
+	private AnchorPane rightMenu;
+	
 	
 	// LayerList config
-	private final Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
 	
-	private final Background unfocusBackground = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
+	private final static Background unfocusBackground = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
 	
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
+		
+		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+			Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(newValue.toString()));
+			opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
+		});
+		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(newValue));
+			opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
+		});
 	}
 	
 	@FXML
@@ -63,7 +87,7 @@ public class RightMenuController {
 	
 	@FXML
 	void fusionLayer(ActionEvent event) {
-		
+	
 	}
 	
 	private HBox createLayoutUI(Layer layer) {
@@ -71,11 +95,14 @@ public class RightMenuController {
 		CheckBox visibility = new CheckBox();
 		Label layerName = new Label(layer.toString());
 		
+		
 		visibility.setSelected(layer.isVisible());
+		opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
 		
 		container.setOnMouseClicked((e) ->
 		{
 			Project.getInstance().setCurrentLayer(layer);
+			opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
 			updateLayerList();
 		});
 		

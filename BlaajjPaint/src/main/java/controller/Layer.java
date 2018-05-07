@@ -69,6 +69,14 @@ public class Layer extends Canvas {
 		// Project.getCurrentTool().getLayers().remove(this); // TODO : enlever ca maybe
 	}
 	
+	public void setLayerOpacity(double opacity){
+		setOpacity(opacity / 100);
+	}
+	
+	public double getLayerOpacity(){
+		return getOpacity() * 100;
+	}
+	
 	@Override
 	public String toString() {
 		return "Calque " + id;
