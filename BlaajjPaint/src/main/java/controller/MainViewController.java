@@ -117,13 +117,6 @@ public class MainViewController {
 	}
 	
 	@FXML
-	private void KeyReleased(KeyEvent event) {
-		if (event.getCode() == KeyCode.SHIFT && Tool.getCurrentTool().getToolType() == Tool.ToolType.ZOOM) {
-			((Zoom) Tool.getCurrentTool()).setMajPressed(false);
-		}
-	}
-	
-	@FXML
 	private void KeyPressed(KeyEvent event) {
 		KeyCombination cntrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_DOWN);
@@ -181,23 +174,16 @@ public class MainViewController {
 		if (event.getCode() == KeyCode.Z) {
 			toolBarController.handleZoom(null);
 		}
-		
-		if (Tool.getCurrentTool() != null) { // FIXME: Testé à part car il y a de frotes chances qu'on ajoute d'autres tests à l'intérieur...
-			// zoom out if shift is pressed and zoom tool is selected
-			if (event.getCode() == KeyCode.SHIFT && Tool.getCurrentTool().getToolType() == Tool.ToolType.ZOOM) {
-				((Zoom) Tool.getCurrentTool()).setMajPressed(true);
-			}
-		}
 	}
 	
 	@FXML
 	private void zoomIn() {
-		Zoom.getInstance().zoomIn();
+		Zoom.getInstance().zoomIn(Project.getInstance().getCurrentLayer().getWidth()/2, Project.getInstance().getCurrentLayer().getHeight()/2);
 	}
 	
 	@FXML
 	private void zoomOut() {
-		Zoom.getInstance().zoomOut();
+		Zoom.getInstance().zoomOut(Project.getInstance().getCurrentLayer().getWidth()/2, Project.getInstance().getCurrentLayer().getHeight()/2);
 	}
 	
 	public void setTextZoomLabel(String text) {

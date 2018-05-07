@@ -26,54 +26,34 @@ public class Zoom extends Tool {
 	
 	private double zoom = 1.0;
 	
-	public double getZoom() {
-		return zoom;
+	public void zoomIn(double posX, double posY) {
+		zoom(posX, posY, 1.2);
 	}
 	
-	private boolean majPressed;
-	
-	public boolean isMajPressed() {
-		return majPressed;
+	public void zoomOut(double posX, double posY) {
+		zoom(posX, posY, 1/1.2);
 	}
 	
-	public void setMajPressed(boolean majPressed) {
-		this.majPressed = majPressed;
-	}
-	
-	public void zoomIn() {
-		zoom *= 2;
+	private void zoom(double posX, double posY, double zoomFactor){
+		zoom *= zoomFactor;
 		Project.getInstance().getBackgroungImage().setScaleX(zoom);
 		Project.getInstance().getBackgroungImage().setScaleY(zoom);
 		for (Layer layer : Project.getInstance().getLayers()) {
 			layer.setScaleX(zoom);
 			layer.setScaleY(zoom);
 		}
-		MainViewController.getInstance().setTextZoomLabel(zoom * 100 + "%");
-		
+		MainViewController.getInstance().setTextZoomLabel(Math.round(zoom * 100) + "%");
 	}
-	
-	public void zoomOut() {
-		zoom /= 2;
-		Project.getInstance().getBackgroungImage().setScaleX(zoom);
-		Project.getInstance().getBackgroungImage().setScaleY(zoom);
-		for (Layer layer : Project.getInstance().getLayers()) {
-			layer.setScaleX(zoom);
-			layer.setScaleY(zoom);
-			
-		}
-		MainViewController.getInstance().setTextZoomLabel(zoom * 100 + "%");
-	}
-	
 	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (majPressed) {
-					zoomOut();
+				if (event.isShiftDown()) {
+					zoomOut(event.getX(), event.getY());
 				} else {
-					zoomIn();
+					zoomIn(event.getX(), event.getY());
 				}
 			}
 		};

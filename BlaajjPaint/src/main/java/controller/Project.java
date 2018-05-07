@@ -22,6 +22,7 @@ public class Project {
 	private Dimension dimension;
 	private LinkedList<Layer> layers = new LinkedList<>();
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
+	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
 	
 	private GraphicsContext gc;
@@ -37,6 +38,7 @@ public class Project {
 	
 	private Project() {
 		currentColor = Color.BLACK;
+		
 	}
 	
 	public void setData(int width, int height) {
