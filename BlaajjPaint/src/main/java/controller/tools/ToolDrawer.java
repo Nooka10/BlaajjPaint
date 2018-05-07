@@ -38,11 +38,11 @@ public abstract class ToolDrawer extends Tool {
 		private SnapshotParameters params;
 		
 		public Trait() {
-			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-			
 			// configuration des paramètres utilisés pour la sauvegarde du canevas
 			params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
+			
+			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 		}
 		
 		@Override

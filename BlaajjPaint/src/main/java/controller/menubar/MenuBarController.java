@@ -21,115 +21,9 @@ public class MenuBarController {
 	@FXML
 	private MenuBar menuBar;
 	
-	/*
-	@FXML
-	private MenuItem menuBar_nouveau; // bouton "Nouveau" de la MenuBar
 	
 	@FXML
-	private MenuItem menuBar_ouvrir; // bouton "Ouvrir" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_enregistrer; // bouton "Enregistrer" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_enregistrerSous; // bouton "Enregistrer sous" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_exporter; // bouton "Exporter" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_fermer; // bouton "Fermer" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_undo; // bouton "Undo" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_redo; // bouton "Redo" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_nouveauCalque; // bouton "Nouveau calque" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_dupliquerCalque; // bouton "Dupliquer calque" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_supprimerCalque; // bouton "Supprimer calque" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_fusionnerCalques; // bouton "Fusionner calques" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_aplatirCalques; // bouton "Aplatir calques" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_masquerCalques; // bouton "Masquer calques" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_aPropos; // bouton "À propos" de la MenuBar
-	
-	@FXML
-	private MenuItem menuBar_manuel; // bouton "Manuel" de la MenuBar
-	*/
-	
-	@FXML
-	void handleNew(ActionEvent event) {
-		openNewProjectWindows();
-	}
-	
-	@FXML
-	void handleOpen(ActionEvent event) {
-		openProject();
-	}
-	
-	@FXML
-	void handleSave(ActionEvent event) {
-		System.out.println("appeler la fonction de sauvegarde!");
-		// FIXME appeler fonction sauvegarder
-	}
-	
-	@FXML
-	void handleSaveAs(ActionEvent event) {
-		saveAs();
-	}
-	
-	@FXML
-	void undo(ActionEvent event) {
-		undoAction();
-	}
-	
-	@FXML
-	void redo(ActionEvent event) {
-		redoAction();
-	}
-	
-	@FXML
-	void newLayer(ActionEvent event) {
-		Project.getInstance().addNewLayer();
-	}
-	
-	@FXML
-	void duplicateLayer(ActionEvent event) {
-		//to do
-	}
-	
-	@FXML
-	void deleteLayer(ActionEvent event) {
-		Project.getInstance().deleteCurrentLayer();
-	}
-	
-	@FXML
-	void fusionLayer(ActionEvent event) {
-		// to do
-	}
-	
-	@FXML
-	void hideCurrentLayer(ActionEvent event) {
-		Project.getInstance().getCurrentLayer().setVisible(false);
-	}
-	
-	// James do not work
-	
-	public void openNewProjectWindows() {
+	public void handleNew(ActionEvent event) {
 		/*
 		if (changesMade) {
 			changesWarning(false);
@@ -151,7 +45,8 @@ public class MenuBarController {
 		}
 	}
 	
-	public void openProject() {
+	@FXML
+	public void handleOpen(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		
 		// Set extension filter
@@ -167,16 +62,14 @@ public class MenuBarController {
 		}
 	}
 	
-	public void undoAction() {
-		System.out.println("undo");
-		RecordCmd.getInstance().undo();
+	@FXML
+	public void handleSave(ActionEvent event) {
+		System.out.println("appeler la fonction de sauvegarde!");
+		// FIXME appeler fonction sauvegarder
 	}
 	
-	public void redoAction() {
-		RecordCmd.getInstance().redo();
-	}
-	
-	public void saveAs() {
+	@FXML
+	public void handleSaveAs(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		
 		// Set extension filter
@@ -198,21 +91,9 @@ public class MenuBarController {
 		}
 	}
 	
-	public void mergeAllLayer() {
-		Layer layer = Project.getInstance().getLayers().getLast();
-		for (int i = Project.getInstance().getLayers().size() - 2; i >= 0; --i)
-			
-			Project.getInstance().getLayers().get(i).mergeLayers(layer);
-		
-		Project.getInstance().getLayers().clear();
-		Project.getInstance().getLayers().add(layer);
-		
-		
-		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
-	}
 	
-	public void export() {
+	@FXML
+	public void handleExport(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		
 		FileChooser.ExtensionFilter extPNG =
@@ -227,11 +108,10 @@ public class MenuBarController {
 		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 		
 		Project.getInstance().export(file);
-		
 	}
 	
-	public void importImage() {
-		
+	@FXML
+	public void handleImportImage(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		
 		fileChooser.setTitle("Import an image");
@@ -248,4 +128,68 @@ public class MenuBarController {
 		Project.getInstance().importImage(file);
 	}
 	
+	@FXML
+	public void handleClose(ActionEvent event) {
+	
+	}
+	
+	@FXML
+	public void handleUndo(ActionEvent event) {
+		RecordCmd.getInstance().undo();
+	}
+	
+	@FXML
+	public void handleRedo(ActionEvent event) {
+		RecordCmd.getInstance().redo();
+	}
+	
+	@FXML
+	public void handleNewLayer(ActionEvent event) {
+		Project.getInstance().addNewLayer();
+	}
+	
+	@FXML
+	public void handleDuplicateLayer(ActionEvent event) {
+		//to do
+	}
+	
+	@FXML
+	public void handleDeleteLayer(ActionEvent event) {
+		Project.getInstance().deleteCurrentLayer();
+	}
+	
+	@FXML
+	public void handleFusionLayer(ActionEvent event) {
+		// to do
+	}
+	
+	@FXML
+	public void mergeAllLayer(ActionEvent event) {
+		Layer layer = Project.getInstance().getLayers().getLast();
+		for (int i = Project.getInstance().getLayers().size() - 2; i >= 0; --i)
+			
+			Project.getInstance().getLayers().get(i).mergeLayers(layer);
+		
+		Project.getInstance().getLayers().clear();
+		Project.getInstance().getLayers().add(layer);
+		
+		
+		Project.getInstance().drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+	}
+	
+	@FXML
+	public void hideCurrentLayer(ActionEvent event) {
+		Project.getInstance().getCurrentLayer().setVisible(false);
+	}
+	
+	@FXML
+	public void handleAPropos(ActionEvent event) {
+	
+	}
+	
+	@FXML
+	public void handleHelp(ActionEvent event) {
+	
+	}
 }

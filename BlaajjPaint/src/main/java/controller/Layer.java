@@ -42,18 +42,18 @@ public class Layer extends Canvas {
 	
 	// TODO : Antoine
 	public Image createImageFromCanvas(int scale) {
-		final Bounds bounds = getLayoutBounds();
+		//final Bounds bounds = getLayoutBounds();
 		
 		final WritableImage image = new WritableImage(
-				(int) Math.round(bounds.getWidth() * scale),
-				(int) Math.round(bounds.getHeight() * scale));
+				(int) Math.round(Project.getInstance().getDimension().width * scale),
+				(int) Math.round(Project.getInstance().getDimension().height * scale));
 		
 		final SnapshotParameters spa = new SnapshotParameters();
 		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
 		spa.setFill(Color.TRANSPARENT);
 		final ImageView view = new ImageView(snapshot(spa, image));
-		view.setFitWidth(bounds.getWidth());
-		view.setFitHeight(bounds.getHeight());
+		view.setFitWidth(Project.getInstance().getDimension().width);
+		view.setFitHeight(Project.getInstance().getDimension().height);
 		
 		return view.getImage();
 	}
@@ -65,15 +65,15 @@ public class Layer extends Canvas {
 	 */
 	public void mergeLayers(Layer backgroundLayer) {
 		Image image = createImageFromCanvas(4);
-		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
+		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
 		// Project.getCurrentTool().getLayers().remove(this); // TODO : enlever ca maybe
 	}
 	
-	public void setLayerOpacity(double opacity){
+	public void setLayerOpacity(double opacity) {
 		setOpacity(opacity / 100);
 	}
 	
-	public double getLayerOpacity(){
+	public double getLayerOpacity() {
 		return getOpacity() * 100;
 	}
 	

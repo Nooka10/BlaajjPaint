@@ -2,8 +2,6 @@ package controller.rightMenu;
 
 import controller.Layer;
 import controller.Project;
-import controller.tools.Tool;
-import controller.tools.ToolDrawer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -76,6 +74,11 @@ public class RightMenuController {
 	}
 	
 	@FXML
+	void deleteLayer(ActionEvent event) {
+		Project.getInstance().deleteCurrentLayer();
+	}
+	
+	@FXML
 	void upLayer(ActionEvent event) {
 		Project.getInstance().currentLayerToFront();
 	}
@@ -87,7 +90,7 @@ public class RightMenuController {
 	
 	@FXML
 	void fusionLayer(ActionEvent event) {
-	
+		//Project.getInstance().getCurrentLayer().mergeLayers();
 	}
 	
 	private HBox createLayoutUI(Layer layer) {

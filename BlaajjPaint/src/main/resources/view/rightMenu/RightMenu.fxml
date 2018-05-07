@@ -85,6 +85,7 @@
 				<HBox spacing="5.0">
    <children>
    					<Button fx:id="addNewLayer" mnemonicParsing="false" onAction="#addNewLayer" text="+" />
+                  <Button fx:id="deleteLayer" mnemonicParsing="false" onAction="#deleteLayer" text="-" />
    					<Button fx:id="upLayer" mnemonicParsing="false" onAction="#upLayer" text="^" />
    					<Button fx:id="downLayer" mnemonicParsing="false" onAction="#downLayer" text="v" />
    					<Button fx:id="fusion" mnemonicParsing="false" onAction="#fusionLayer" text="fusion" />
