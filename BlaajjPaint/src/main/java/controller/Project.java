@@ -25,7 +25,6 @@ public class Project {
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
 	
-	private GraphicsContext gc;
 	//private StackPane pane = new StackPane();
 	
 	private Color currentColor;
@@ -41,12 +40,16 @@ public class Project {
 		
 	}
 	
+	public Dimension getDimension() {
+		return dimension;
+	}
+	
 	public void setData(int width, int height) {
 		dimension = new Dimension(width, height);
 		//currentLayer = new Layer(width, height);
 		setCurrentLayer(new Layer(width, height));
 		backgroungImage = new Canvas(width, height);
-		gc = backgroungImage.getGraphicsContext2D();
+		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, dimension.width, dimension.height);
 		gc.setFill(Color.LIGHTGRAY);
@@ -154,23 +157,21 @@ public class Project {
 	}
 	
 	public void importImage(File file) {
-		
-		Layer newLayer = new Layer(dimension);
-		addLayer(newLayer);
-		
 		String chosenExtension = "";
 		int i = file.getPath().lastIndexOf('.');
 		if (i > 0) {
 			chosenExtension = file.getPath().substring(i + 1);
 		}
 		
-		javafx.scene.image.Image image = null;
-		
 		if (chosenExtension.equals("png") || chosenExtension.equals("jpg")) {
+			javafx.scene.image.Image image;
 			image = new Image(file.toURI().toString());
+			
+			Layer newLayer = new Layer(new Dimension((int) image.getWidth(), (int) image.getHeight()));
+			addLayer(newLayer);
+			
+			newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 		}
-		
-		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
 	
 	public void addNewLayer() {

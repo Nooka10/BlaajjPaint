@@ -3,7 +3,6 @@ package controller;
 import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
-import controller.tools.Tool;
 import controller.tools.ToolBarController;
 import controller.tools.Zoom;
 import javafx.fxml.FXML;
@@ -52,7 +51,8 @@ public class MainViewController {
 	/**
 	 * Constructeur privé (modèle Singleton)
 	 */
-	private MainViewController() { }
+	private MainViewController() {
+	}
 	
 	/**
 	 * Retourne l'instance unique du singleton MainViewController
@@ -84,7 +84,6 @@ public class MainViewController {
 	}
 	
 	
-	
 	// --------------------------------------Partie Jerem. Était contenu dans MasterController--------------------------------------------------
 	private RecordCmd instance = RecordCmd.getInstance();
 	private SaveProjects saveProjects = SaveProjects.getInstance();
@@ -107,7 +106,6 @@ public class MainViewController {
 	// -------------------------------------- Fin partie Jerem. Était contenu dans MasterController--------------------------------------------------
 	
 	
-	
 	public AnchorPane getParamBar() {
 		return paramBar;
 	}
@@ -127,27 +125,27 @@ public class MainViewController {
 		
 		// New
 		if (cntrlN.match(event)) {
-			menuBarController.openNewProjectWindows();
+			menuBarController.handleNew(null);
 		}
 		
 		// Open
 		if (cntrlO.match(event)) {
-			menuBarController.openProject();
+			menuBarController.handleOpen(null);
 		}
 		
 		// Undo
 		if (cntrlZ.match(event)) {
-			menuBarController.undoAction();
+			menuBarController.handleUndo(null);
 		}
 		
 		// Redo
 		if (cntrlMajZ.match(event)) {
-			menuBarController.redoAction();
+			menuBarController.handleRedo(null);
 		}
 		
 		// Save As
 		if (cntrlMajS.match(event)) {
-			menuBarController.saveAs();
+			menuBarController.handleSaveAs(null);
 		}
 		
 		// Add new layer
@@ -178,12 +176,12 @@ public class MainViewController {
 	
 	@FXML
 	private void zoomIn() {
-		Zoom.getInstance().zoomIn(Project.getInstance().getCurrentLayer().getWidth()/2, Project.getInstance().getCurrentLayer().getHeight()/2);
+		Zoom.getInstance().zoomIn(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
 	}
 	
 	@FXML
 	private void zoomOut() {
-		Zoom.getInstance().zoomOut(Project.getInstance().getCurrentLayer().getWidth()/2, Project.getInstance().getCurrentLayer().getHeight()/2);
+		Zoom.getInstance().zoomOut(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
 	}
 	
 	public void setTextZoomLabel(String text) {
