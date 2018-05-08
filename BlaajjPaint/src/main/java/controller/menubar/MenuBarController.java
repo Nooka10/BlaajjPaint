@@ -3,6 +3,7 @@ package controller.menubar;
 import controller.Layer;
 import controller.MainViewController;
 import controller.Project;
+import controller.SaveProjects;
 import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,12 +60,16 @@ public class MenuBarController {
 		if (file != null) {
 			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
 			System.out.println("path fichier choisi: " + file.getPath());
+
+			SaveProjects.getInstance().openFile(file);
 		}
 	}
 	
 	@FXML
 	public void handleSave(ActionEvent event) {
 		System.out.println("appeler la fonction de sauvegarde!");
+
+		SaveProjects.getInstance().save();
 		// FIXME appeler fonction sauvegarder
 	}
 	
@@ -86,8 +91,10 @@ public class MenuBarController {
 			if (!file.getPath().endsWith(".blaajj")) {
 				file = new File(file.getPath() + ".blaajj");
 			}
+
+			SaveProjects.getInstance().saveAs(file);
 			//mainApp.savePersonDataToFile(file);
-			System.out.println("appeler la fonction de sauvegarde!"); // FIXME: appeler fct sauvegarder
+			System.out.println("appeler la fonction de sauvegarde! Me donne pas d'ordre"); // FIXME: appeler fct sauvegarder
 		}
 	}
 	

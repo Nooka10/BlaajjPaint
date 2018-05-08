@@ -11,14 +11,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Project {
+public class Project implements Serializable{
 	private Dimension dimension;
 	private LinkedList<Layer> layers = new LinkedList<>();
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
@@ -26,7 +26,9 @@ public class Project {
 	private Layer currentLayer;
 	
 	//private StackPane pane = new StackPane();
-	
+
+
+
 	private Color currentColor;
 	
 	private static Project projectInstance = new Project();
@@ -34,6 +36,8 @@ public class Project {
 	public static Project getInstance() {
 		return projectInstance;
 	}
+
+
 	
 	private Project() {
 		currentColor = Color.BLACK;
@@ -44,10 +48,12 @@ public class Project {
 		return dimension;
 	}
 	
-	public void setData(int width, int height) {
+	public void setData(int width, int height, boolean isNew) {
 		dimension = new Dimension(width, height);
+
 		//currentLayer = new Layer(width, height);
-		setCurrentLayer(new Layer(width, height));
+		if(isNew)
+			setCurrentLayer(new Layer(width, height));
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
@@ -62,8 +68,9 @@ public class Project {
 				}
 			}
 		}
-		
-		layers.add(currentLayer);
+
+		if(isNew)
+			layers.add(currentLayer);
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
@@ -212,4 +219,40 @@ public class Project {
 	public Canvas getBackgroungImage() {
 		return backgroungImage;
 	}
+
+
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+		//s.defaultReadObject();
+		dimension = new Dimension(s.readInt(), s.readInt());
+
+
+		int nbCalques = s.readInt();
+
+		for(int i = 0; i < nbCalques; ++i){
+
+			layers = new LinkedList<>();
+			Layer l = (Layer) s.readObject();
+			System.out.println(l.toString());
+			layers.add(l);
+		}
+		setData(dimension.height, dimension.height, false);
+		drawWorkspace();
+		setCurrentLayer(layers.getFirst());
+	}
+
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		//s.defaultWriteObject();
+		// Dimentions du projet
+		s.writeInt(dimension.width);
+		s.writeInt(dimension.height);
+
+
+		// Claques
+		s.writeInt(layers.size());		// Nombre de qualques
+		for(Layer l: layers)
+			s.writeObject(l);
+
+	}
+
+
 }

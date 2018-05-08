@@ -91,7 +91,8 @@ public class MainViewController {
 	public void newModel() {
 		project = Project.getInstance();
 	}
-	
+
+	/*
 	public void openModel(File f) {
 		try {
 			project = (Project) saveProjects.rebuild(f);
@@ -101,8 +102,9 @@ public class MainViewController {
 	}
 	
 	public void saveAsModel(File f) {
-		saveProjects.generateCompact(f, project);
+		saveProjects.saveAs(f);
 	}
+	*/
 	// -------------------------------------- Fin partie Jerem. Était contenu dans MasterController--------------------------------------------------
 	
 	
