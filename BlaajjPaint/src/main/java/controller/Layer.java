@@ -97,8 +97,8 @@ public class Layer extends Canvas implements Serializable {
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 		//s.defaultReadObject();
 		id = (s.readInt());
-		super.setHeight(s.readDouble());
 		super.setWidth(s.readDouble());
+		super.setHeight(s.readDouble());
 		setLayerOpacity(s.readDouble());
 		Image image;
 		image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
@@ -119,7 +119,7 @@ public class Layer extends Canvas implements Serializable {
         ImageIO.write(SwingFXUtils.fromFXImage(generateImage(this, (int)super.getWidth(), (int) super.getHeight()), null), "png", s);
 	}
 
-	private Image generateImage(Canvas c, int weight, int height){
+	private Image generateImage(Layer c, int weight, int height){
 		SnapshotParameters params = new SnapshotParameters();
 		WritableImage writableImage = new WritableImage(weight, height);
 		c.snapshot(params, writableImage);

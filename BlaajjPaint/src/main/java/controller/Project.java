@@ -235,7 +235,7 @@ public class Project implements Serializable{
 			System.out.println(l.toString());
 			layers.add(l);
 		}
-		setData(dimension.height, dimension.height, false);
+		setData(dimension.width, dimension.height, false);
 		drawWorkspace();
 		setCurrentLayer(layers.getFirst());
 	}
