@@ -72,7 +72,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleMoveView(ActionEvent event) {
-	
+		Tool.setCurrentTool(Move.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML

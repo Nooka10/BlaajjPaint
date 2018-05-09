@@ -6,6 +6,7 @@ import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import controller.tools.Zoom;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -67,8 +68,8 @@ public class MainViewController {
 	private void initialize() {
 		mainViewControllerInstance = this;
 		
-		scrollPane.setFitToHeight(true);
-		scrollPane.setFitToWidth(true);
+		//scrollPane.setFitToHeight(true);
+		//scrollPane.setFitToWidth(true);
 	}
 	
 	public Main getMain() {
@@ -182,6 +183,12 @@ public class MainViewController {
 	@FXML
 	private void zoomOut() {
 		Zoom.getInstance().zoomOut(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
+	}
+	
+	
+	public void moveView(double x, double y){
+		scrollPane.vvalueProperty().setValue(x);// - Project.getInstance().getDimension().height / 2);
+		scrollPane.hvalueProperty().setValue(y);// - Project.getInstance().getDimension().width / 2);
 	}
 	
 	public void setTextZoomLabel(String text) {

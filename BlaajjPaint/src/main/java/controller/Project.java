@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,6 +30,8 @@ public class Project {
 	
 	private Color currentColor;
 	
+	//private Rectangle clip;
+	
 	private static Project projectInstance = new Project();
 	
 	public static Project getInstance() {
@@ -37,7 +40,6 @@ public class Project {
 	
 	private Project() {
 		currentColor = Color.BLACK;
-		
 	}
 	
 	public Dimension getDimension() {
@@ -46,17 +48,18 @@ public class Project {
 	
 	public void setData(int width, int height) {
 		dimension = new Dimension(width, height);
-		//currentLayer = new Layer(width, height);
 		setCurrentLayer(new Layer(width, height));
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
-		gc.fillRect(0, 0, dimension.width, dimension.height);
+		gc.fillRect(0, 0, width, height);
 		gc.setFill(Color.LIGHTGRAY);
 		
+		//clip = new Rectangle(width, height);
+		
 		int rectSize = 10;
-		for (int i = 0; i < dimension.width; i = i + rectSize) {
-			for (int j = 0; j < dimension.height; j = j + rectSize) {
+		for (int i = 0; i < width; i = i + rectSize) {
+			for (int j = 0; j < height; j = j + rectSize) {
 				if (i % (rectSize * 2) == 0 ^ j % (rectSize * 2) == 0) {
 					gc.fillRect(i, j, rectSize, rectSize);
 				}
@@ -76,6 +79,12 @@ public class Project {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
+		
+		// centre le clip
+		//clip.setLayoutX(Math.round((MainViewController.getInstance().getScrollPane().getWidth() - dimension.width) / 2));
+		//clip.setLayoutY(Math.round((MainViewController.getInstance().getScrollPane().getHeight() - dimension.height) / 2));
+		//MainViewController.getInstance().getScrollPane().setClip(clip);
+		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
@@ -211,5 +220,14 @@ public class Project {
 	
 	public Canvas getBackgroungImage() {
 		return backgroungImage;
+	}
+	
+	public void zoom(double factor){
+		for (Layer l:layers) {
+			l.setScaleX(l.getScaleX() * factor);
+			l.setScaleY(l.getScaleY() * factor);
+		}
+		backgroungImage.setScaleX(backgroungImage.getScaleX() * factor);
+		backgroungImage.setScaleY(backgroungImage.getScaleY() * factor);
 	}
 }
