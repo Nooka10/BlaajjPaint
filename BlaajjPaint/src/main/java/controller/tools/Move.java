@@ -6,39 +6,22 @@ package controller.tools;
 import controller.MainViewController;
 import controller.Project;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 
 /**
  * Classe implémentant l'outil pipette
  */
-public class Zoom extends Tool {
+public class Move extends Tool {
 	
-	private static Zoom toolInstance = new Zoom();
+	private static Move toolInstance = new Move();
 	
-	public static Zoom getInstance() {
+	public static Move getInstance() {
 		return toolInstance;
 	}
 	
-	private Zoom() {
-		toolType = ToolType.ZOOM;
-	}
-	
-	private double zoom = 1.0;
-	
-	public void zoomIn(double posX, double posY) {
-		zoom(posX, posY, 1.2);
-	}
-	
-	public void zoomOut(double posX, double posY) {
-		zoom(posX, posY, 1 / 1.2);
-	}
-	
-	private void zoom(double posX, double posY, double zoomFactor) {
-		zoom *= zoomFactor;
-		
-		Project.getInstance().zoom(zoomFactor);
-		MainViewController.getInstance().moveView(posX, posY);
-		MainViewController.getInstance().setTextZoomLabel(Math.round(zoom * 100) + "%");
+	private Move() {
+		toolType = ToolType.MOVE;
 	}
 	
 	@Override
@@ -46,11 +29,7 @@ public class Zoom extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.isShiftDown()) {
-					zoomOut(event.getX(), event.getY());
-				} else {
-					zoomIn(event.getX(), event.getY());
-				}
+				MainViewController.getInstance().getScrollPane().setPannable(true);
 			}
 		};
 	}
@@ -60,7 +39,6 @@ public class Zoom extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
 			}
 		};
 	}
@@ -70,7 +48,7 @@ public class Zoom extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				MainViewController.getInstance().getScrollPane().setPannable(false);
 			}
 		};
 	}
