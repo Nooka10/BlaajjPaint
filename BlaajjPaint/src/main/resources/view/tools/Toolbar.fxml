@@ -7,7 +7,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="#mainPaneId" fx:id="toolBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="70.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolBarController">
+<AnchorPane id="#mainPaneId" fx:id="toolBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="70.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolBarController">
 	<children>
 		<ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" style="-fx-background-color: #707070;" stylesheets="@ToolBarStyleSheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>

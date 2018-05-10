@@ -1,12 +1,10 @@
 package controller;
 
-import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import controller.tools.Zoom;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -181,7 +179,7 @@ public class MainViewController {
 	/**
 	 * Permet de fermer le projet en cours d'execution
 	 */
-	public void closePorject(){
+	public void closeProject(){
 		Project.getInstance().close();
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
@@ -202,7 +200,7 @@ public class MainViewController {
 			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
 			System.out.println("path fichier choisi: " + file.getPath());
 
-			closePorject();
+			closeProject();
 			SaveProjects.getInstance().openFile(file);
 
 		}

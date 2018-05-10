@@ -1,7 +1,6 @@
 package controller.rightMenu;
 
 import controller.Layer;
-import controller.MainViewController;
 import controller.Project;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +14,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import main.Main;
+
+import java.util.Collections;
 
 public class RightMenuController {
 	@FXML
@@ -44,7 +44,6 @@ public class RightMenuController {
 	
 	@FXML
 	private AnchorPane rightMenu;
-	
 	
 	// LayerList config
 	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -87,13 +86,31 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void upLayer(ActionEvent event) {
-		Project.getInstance().currentLayerToFront();
+	void downLayer(ActionEvent event) {
+		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
+		if (index < Project.getInstance().getLayers().size() - 1) {
+			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
+			
+			Node toMove = layersList.getChildren().get(index);
+			layersList.getChildren().remove(index);
+			layersList.getChildren().add(index + 1, toMove);
+			
+			Project.getInstance().drawWorkspace();
+		}
 	}
 	
 	@FXML
-	void downLayer(ActionEvent event) {
-		Project.getInstance().currentLayerToBack();
+	void upLayer(ActionEvent event) {
+		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
+		
+		if (index != 0) {
+			Collections.swap(Project.getInstance().getLayers(), index, index - 1);
+			
+			Node toMove = layersList.getChildren().get(index);
+			layersList.getChildren().remove(index);
+			layersList.getChildren().add(index - 1, toMove);
+			Project.getInstance().drawWorkspace();
+		}
 	}
 	
 	@FXML
@@ -106,20 +123,13 @@ public class RightMenuController {
 		for (Layer layer : Project.getInstance().getLayers()) {
 			addNewLayer(layer);
 		}
+		
+		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
+		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
 	}
 	
-	public void deleteLayer(int index){
+	public void deleteLayer(int index) {
 		layersList.getChildren().remove(index);
-	}
-	
-	public void updateLayerList(){
-	
-	}
-	
-	public void moveLayer(int index, int indexDest){
-		Node toMove = layersList.getChildren().get(index);
-		layersList.getChildren().remove(index);
-		layersList.getChildren().add(indexDest, toMove);
 	}
 	
 	public void addNewLayer(Layer layer) {
@@ -138,6 +148,10 @@ public class RightMenuController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void clearLayerList() {
+		layersList.getChildren().clear();
 	}
 	
 	public void setOpacitySlider(double opacitySlider) {

@@ -1,6 +1,5 @@
 package controller.rightMenu;
 
-
 import controller.Layer;
 import controller.MainViewController;
 import controller.Project;
@@ -36,32 +35,14 @@ public class LayerController {
 		label.setText(layerName.toString());
 	}
 	
-	public CheckBox getVisibility() {
-		return visibility;
-	}
-	
-	public void setVisibility(boolean visibility) {
-		this.visibility.setSelected(visibility);
-	}
-	
-	public Label getLabel() {
-		return label;
-	}
-	
-	public void setLabel(String label) {
-		this.label.setText(label);
-	}
-	
 	@FXML
 	private void initialize() {
-		/*
 		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
 				layerName.setVisible(new_val);
 				Project.getInstance().drawWorkspace();
 			}
 		});
-		*/
 	}
 	
 	@FXML
@@ -69,7 +50,7 @@ public class LayerController {
 		Project.getInstance().setCurrentLayer(layerName);
 		MainViewController.getInstance().getRightMenuController().setOpacitySlider(layerName.getLayerOpacity());
 		MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(layerName.getLayerOpacity()));
-		//MainViewController.getInstance().getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().createLayerList();
 	}
 	
 	@FXML

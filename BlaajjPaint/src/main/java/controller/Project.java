@@ -67,8 +67,6 @@ public class Project implements Serializable {
 		gc.fillRect(0, 0, width, height);
 		gc.setFill(Color.LIGHTGRAY);
 		
-		//clip = new Rectangle(width, height);
-		
 		int rectSize = 10;
 		for (int i = 0; i < width; i = i + rectSize) {
 			for (int j = 0; j < height; j = j + rectSize) {
@@ -136,7 +134,7 @@ public class Project implements Serializable {
 		addLayer(new Layer(currentLayer));
 	}
 	
-	public void addLayer(Layer newLayer) {
+	private void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
@@ -234,24 +232,6 @@ public class Project implements Serializable {
 		}
 	}
 	
-	public void currentLayerToFront() {
-		int index = layers.indexOf(currentLayer);
-		if (index != 0) {
-			Collections.swap(layers, index, index - 1);
-		}
-		drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().moveLayer(index, 0);
-	}
-	
-	public void currentLayerToBack() {
-		int index = layers.indexOf(currentLayer);
-		if (index < layers.size() - 1) {
-			Collections.swap(layers, index, index + 1);
-		}
-		drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().moveLayer(index, layers.size() - 1);
-	}
-	
 	public Canvas getBackgroungImage() {
 		return backgroungImage;
 	}
@@ -305,7 +285,7 @@ public class Project implements Serializable {
 		s.writeInt(dimension.height);
 		
 		
-		// Claques
+		// Calques
 		s.writeInt(layers.size());		// Nombre de qualques
 
 		Iterator li = layers.descendingIterator();

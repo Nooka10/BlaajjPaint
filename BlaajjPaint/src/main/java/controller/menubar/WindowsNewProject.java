@@ -27,7 +27,7 @@ public class WindowsNewProject {
 	private void initialize() {
 
 
-		MainViewController.getInstance().closePorject();
+		MainViewController.getInstance().closeProject();
 
 		cancel.setCancelButton(true);
 		createButton.setDefaultButton(true);
