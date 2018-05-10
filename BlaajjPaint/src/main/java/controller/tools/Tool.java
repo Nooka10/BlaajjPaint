@@ -34,13 +34,21 @@ public abstract class Tool {
 	public static Tool getCurrentTool() {
 		return currentTool;
 	}
-	
+
+	/**
+	 * Appelé sur le tool qui est sur le point de perdre la main
+	 */
+	public void CallbackToolChanged(){}
+
 	/**
 	 * Remplace l'outil actuellement sélectionné par celui passé en paramètre
 	 * @param currentTool, l'outil nouvellement sélectionné
 	 */
 	public static void setCurrentTool(Tool currentTool) {
 		if(Tool.currentTool != currentTool){ // l'outil ne change que s'il n'est pas déjà l'outil sélectionné
+			// appel de la fonction de callback
+			Tool.currentTool.CallbackToolChanged();
+
 			toolHasChanged = true;
 			Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
 			Tool.currentTool = currentTool;
