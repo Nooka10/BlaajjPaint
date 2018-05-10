@@ -67,10 +67,11 @@ public class BucketFill extends Tool {
             // ATTRIBUTS EVENTHANDLER BUCKETFILL
             Stack<Point2D> stack;
             HashSet<Point2D> marked;
-            Layer layer = Project.getInstance().getCurrentLayer();
+            Layer layer;
 
             @Override
             public void handle(MouseEvent event) {
+                layer = Project.getInstance().getCurrentLayer();
                 currentFill = new Fill();
                 stack = new Stack<>();
                 marked = new HashSet<>();
