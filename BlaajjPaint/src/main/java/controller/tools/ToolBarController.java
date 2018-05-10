@@ -153,7 +153,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleHand(ActionEvent event) {
-	
+		Tool.setCurrentTool(Hand.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
