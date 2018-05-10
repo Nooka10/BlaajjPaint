@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -19,7 +18,7 @@ import java.io.Serializable;
 public class Layer extends Canvas implements Serializable {
 
 	private int id;					// pas final pour la serealisation
-	private static int count = 3;
+	private static int count = 1;
 
 	public Layer(){
 		//id = count ++;
@@ -68,6 +67,37 @@ public class Layer extends Canvas implements Serializable {
 		return view.getImage();
 	}
 
+	public WritableImage createImageFromCanvasJPG(int scale, SnapshotParameters spa, boolean tr) {
+		//final Bounds bounds = getLayoutBounds();
+
+
+		createImageFromCanvas(scale);
+		final WritableImage image = new WritableImage(
+				(int) Math.round(Project.getInstance().getDimension().width * scale),
+				(int) Math.round(Project.getInstance().getDimension().height * scale));
+
+		if(!tr) {
+			for (int x = 0; x < Project.getInstance().getDimension().width; ++x) {
+				for (int y = 0; y < Project.getInstance().getDimension().width; ++y) {
+					if (image.getPixelReader().getColor(x, y) == Color.TRANSPARENT)
+						image.getPixelWriter().setColor(x, y, Color.WHITE);
+				}
+			}
+		}
+
+
+		//final SnapshotParameters spa = new SnapshotParameters();
+		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
+		//spa.setFill(Color.TRANSPARENT);
+
+		this.snapshot(spa, image);
+		/*final ImageView view = new ImageView(snapshot(spa, image));
+		view.setFitWidth(Project.getInstance().getDimension().width);
+		view.setFitHeight(Project.getInstance().getDimension().height);*/
+
+		return image;
+	}
+
 	/**
 	 * Permet de fusionner deux calques
 	 *
@@ -80,11 +110,11 @@ public class Layer extends Canvas implements Serializable {
 	}
 
 	public void setLayerOpacity(double opacity) {
-		setOpacity(opacity / 100);
+		this.setOpacity(opacity / 100);
 	}
 
 	public double getLayerOpacity() {
-		return getOpacity() * 100;
+		return this.getOpacity() * 100;
 	}
 
 	@Override
@@ -122,6 +152,7 @@ public class Layer extends Canvas implements Serializable {
 	private Image generateImage(Layer c, int weight, int height){
 		SnapshotParameters params = new SnapshotParameters();
 		WritableImage writableImage = new WritableImage(weight, height);
+		params.setFill(Color.TRANSPARENT);
 		c.snapshot(params, writableImage);
 		return writableImage;
 	}

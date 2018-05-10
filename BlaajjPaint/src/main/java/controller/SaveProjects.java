@@ -56,8 +56,12 @@ public class SaveProjects {
             FileInputStream fileInput = new FileInputStream(f);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInput);
 
-            //projectInstance = (Project) objectInputStream.readObject();
-            objectInputStream.readObject();
+            projectInstance = (Project) objectInputStream.readObject();
+            //objectInputStream.readObject();
+
+            // MainViewController.getInstance().setProject((Project) objectInputStream.readObject());
+
+            projectInstance.drawWorkspace();
             System.out.println("openFile done");
         } catch (Exception ex) {
             ex.printStackTrace();

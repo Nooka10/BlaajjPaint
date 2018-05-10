@@ -24,10 +24,6 @@ public class Project implements Serializable{
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
-	
-	//private StackPane pane = new StackPane();
-
-
 
 	private Color currentColor;
 	
@@ -37,23 +33,31 @@ public class Project implements Serializable{
 		return projectInstance;
 	}
 
-
-	
 	private Project() {
 		currentColor = Color.BLACK;
-		
 	}
-	
+
+	//*** GETTER  ***//
 	public Dimension getDimension() {
 		return dimension;
 	}
-	
+
+	public Layer getCurrentLayer() {
+		return currentLayer;
+	}
+
+	//*** SETTER ***//
+	public void setCurrentColor(Color color) {
+		currentColor = color;
+		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
+	}
+
 	public void setData(int width, int height, boolean isNew) {
 		dimension = new Dimension(width, height);
 
-		//currentLayer = new Layer(width, height);
 		if(isNew)
 			setCurrentLayer(new Layer(width, height));
+
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
@@ -71,14 +75,12 @@ public class Project implements Serializable{
 
 		if(isNew)
 			layers.add(currentLayer);
+
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
 	
-	public Layer getCurrentLayer() {
-		return currentLayer;
-	}
-	
+
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
@@ -92,10 +94,7 @@ public class Project implements Serializable{
 		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
 	}
 	
-	public void setCurrentColor(Color color) {
-		currentColor = color;
-		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
-	}
+
 	
 	public Color getCurrentColor() {
 		return currentColor;
@@ -117,7 +116,7 @@ public class Project implements Serializable{
 		this.currentLayer = currentLayer;
 		addEventHandlers(Tool.getCurrentTool());
 	}
-	
+
 	public void addEventHandlers(Tool tool) {
 		if (this.currentLayer != null && tool != null) {
 			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
@@ -149,14 +148,19 @@ public class Project implements Serializable{
 			if (i > 0) {
 				chosenExtension = file.getPath().substring(i + 1);
 			}
+			boolean transparent = true;
 			if (chosenExtension.equals("png")) {
 				params.setFill(Color.TRANSPARENT);
+
 			} else if (chosenExtension.equals("jpg")) {
-				params.setFill(Color.WHITE);
+				//params.setFill(Color.TRANSPARENT);
+				//params.setFill(Color.WHITE);
+				transparent = false;
 			}
 			
 			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+
+				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvasJPG(1, params, transparent), null), chosenExtension, file);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
@@ -222,22 +226,30 @@ public class Project implements Serializable{
 
 
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-		//s.defaultReadObject();
-		dimension = new Dimension(s.readInt(), s.readInt());
 
+		projectInstance = this;
+
+		layers = new LinkedList<>();
+
+		setData(s.readInt(), s.readInt(), false);
 
 		int nbCalques = s.readInt();
 
+
 		for(int i = 0; i < nbCalques; ++i){
 
-			layers = new LinkedList<>();
-			Layer l = (Layer) s.readObject();
-			System.out.println(l.toString());
-			layers.add(l);
+
+			addLayer((Layer) s.readObject());
+/*			System.out.println(l.toString());
+			layers.add(l);*/
 		}
-		setData(dimension.width, dimension.height, false);
-		drawWorkspace();
+
+
+
 		setCurrentLayer(layers.getFirst());
+
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		drawWorkspace();
 	}
 
 	private void writeObject(ObjectOutputStream s) throws IOException {
