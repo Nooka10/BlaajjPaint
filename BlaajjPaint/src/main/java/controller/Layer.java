@@ -1,5 +1,7 @@
 package controller;
 
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -7,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import utils.UndoException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -109,8 +112,47 @@ public class Layer extends Canvas implements Serializable {
 		// Project.getCurrentTool().getLayers().remove(this); // TODO : enlever ca maybe
 	}
 
+	/**
+	 * Classe interne qui encapsule la commande de changement d'opacité
+	 * Permet de faire une undo/redo sur le changement d'opacité
+	 * Attention a TOUJOURS setNewOpacity en premier
+	 */
+	public class OpacitySave implements ICmd {
+
+		double oldOpacity;
+		double newOpacity;
+
+		public OpacitySave(){
+			// par défaut on set a l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que
+			// ça passe a 0
+			oldOpacity = newOpacity = getLayerOpacity();
+		}
+
+		public OpacitySave setNewOpacity(double newOpacity){
+			this.newOpacity = newOpacity;
+			return this;
+		}
+
+		@Override
+		public void execute() {
+			oldOpacity = getLayerOpacity();
+			setOpacity(newOpacity / 100);
+			RecordCmd.getInstance().saveCmd(this);
+		}
+
+		@Override
+		public void undo() throws UndoException {
+			setOpacity(oldOpacity / 100);
+		}
+
+		@Override
+		public void redo() throws UndoException {
+			setOpacity(newOpacity / 100);
+		}
+	}
+
 	public void setLayerOpacity(double opacity) {
-		this.setOpacity(opacity / 100);
+		new OpacitySave().setNewOpacity(opacity).execute();
 	}
 
 	public double getLayerOpacity() {
@@ -123,7 +165,7 @@ public class Layer extends Canvas implements Serializable {
 	}
 
 
-	/** SERiALISATION **/
+	/** SERIALISATION **/
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 		//s.defaultReadObject();
 		id = (s.readInt());
