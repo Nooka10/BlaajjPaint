@@ -117,7 +117,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleClose(ActionEvent event) {
-		MainViewController.getInstance().closePorject();
+		MainViewController.getInstance().closeProject();
 
 	}
 	
