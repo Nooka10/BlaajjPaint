@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -143,7 +142,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleHand(ActionEvent event) {
-	
+		Tool.setCurrentTool(Hand.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML

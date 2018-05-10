@@ -4,35 +4,30 @@ Author: Benoît
 package controller.tools;
 
 import controller.MainViewController;
-import controller.Project;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 /**
  * Classe implémentant l'outil de déplacement
  */
-public class Move extends Tool {
+public class Hand extends Tool {
 	
-	private static Move toolInstance = new Move();
+	private static Hand toolInstance = new Hand();
 	
-	public static Move getInstance() {
+	public static Hand getInstance() {
 		return toolInstance;
 	}
 	
-	private Move() {
+	private Hand() {
 		toolType = ToolType.HAND;
 	}
-	
-	double oldX;
-	double oldY;
 	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				oldX = event.getX();
-				oldY = event.getY();
+				MainViewController.getInstance().getScrollPane().setPannable(true);
 			}
 		};
 	}
@@ -42,7 +37,6 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getCurrentLayer().setLayoutX(event.getX() - oldX);
 			}
 		};
 	}

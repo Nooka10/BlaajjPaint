@@ -47,6 +47,11 @@ public class Layer extends Canvas implements Serializable {
 	public Layer(Layer toCopy) {
 		super(toCopy.getWidth(), toCopy.getHeight());
 		id = count++;
+		boolean visibility = toCopy.isVisible();
+		toCopy.setVisible(true);
+		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4),0,0,getWidth(),getHeight());
+		setVisible(visibility);
+		toCopy.setVisible(visibility);
 	}
 
 	// TODO : Antoine
