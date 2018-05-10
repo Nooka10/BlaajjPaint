@@ -1,8 +1,11 @@
 package controller.tools;
 
 
+import controller.MainViewController;
 import controller.Project;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -21,6 +24,8 @@ public abstract class Tool {
 	protected ToolType toolType = ToolType.OTHER; // le type de l'outil
 	
 	private static Tool currentTool; // l'outil actuellement sélectionné
+
+	private Cursor oldCursor;
 	
 	/**
 	 * Retourne le ToolType de l'outil
@@ -109,4 +114,15 @@ public abstract class Tool {
 	 * @return l'évènement déclanché par cet outil lorsqu'on relâche le bouton de la la souris
 	 */
 	protected abstract EventHandler<MouseEvent> createMouseReleasedEventHandlers();
+
+	protected void changeCursor(Cursor cursor){
+		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
+		oldCursor = scene.getCursor();
+		scene.setCursor(cursor);
+	}
+
+	protected void resetOldCursor(){
+		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
+		scene.setCursor(oldCursor);
+	}
 }
