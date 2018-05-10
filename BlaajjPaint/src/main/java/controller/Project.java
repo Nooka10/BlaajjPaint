@@ -9,23 +9,21 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.io.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Project implements Serializable{
+public class Project implements Serializable {
 	private Dimension dimension;
-	private LinkedList<Layer> layers = new LinkedList<>();
+	private LinkedList<Layer> layers;
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
-
+	
 	private Color currentColor;
 	
 	//private Rectangle clip;
@@ -35,32 +33,34 @@ public class Project implements Serializable{
 	public static Project getInstance() {
 		return projectInstance;
 	}
-
+	
 	private Project() {
 		currentColor = Color.BLACK;
 	}
-
+	
 	//*** GETTER  ***//
 	public Dimension getDimension() {
 		return dimension;
 	}
-
+	
 	public Layer getCurrentLayer() {
 		return currentLayer;
 	}
-
+	
 	//*** SETTER ***//
 	public void setCurrentColor(Color color) {
 		currentColor = color;
 		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 	}
 
-	public void setData(int width, int height, boolean isNew) {
+	public void initData(int width, int height, boolean isNew) {
+		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
-
-		if(isNew)
+		
+		if (isNew) {
 			setCurrentLayer(new Layer(width, height));
-
+		}
+		
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
@@ -77,15 +77,37 @@ public class Project implements Serializable{
 				}
 			}
 		}
-
-		if(isNew)
+		
+		if (isNew) {
 			layers.add(currentLayer);
-
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		}
+		
+		MainViewController.getInstance().getRightMenuController().createLayerList();
 		drawWorkspace();
 	}
-	
 
+	/**
+	 * Méthode qui ferme un projet.
+	 */
+	public void close(){
+
+		//projectInstance = null;
+
+		/*if(backgroungImage != null) {
+			backgroungImage.getGraphicsContext2D().setFill(Color.WHITE);
+			backgroungImage = null;
+		}*/
+
+		backgroungImage = null;
+		dimension = null;
+		layers = null;
+		currentLayer = null;
+
+		Layer.reset();
+
+	}
+	
+	
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
@@ -105,17 +127,20 @@ public class Project implements Serializable{
 		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
 	}
 	
-
 	
 	public Color getCurrentColor() {
 		return currentColor;
 	}
 	
+	public void addNewLayer() {
+		addLayer(new Layer(currentLayer));
+	}
+	
 	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
+		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
 		drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -127,7 +152,7 @@ public class Project implements Serializable{
 		this.currentLayer = currentLayer;
 		addEventHandlers(Tool.getCurrentTool());
 	}
-
+	
 	public void addEventHandlers(Tool tool) {
 		if (this.currentLayer != null && tool != null) {
 			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
@@ -162,7 +187,7 @@ public class Project implements Serializable{
 			boolean transparent = true;
 			if (chosenExtension.equals("png")) {
 				params.setFill(Color.TRANSPARENT);
-
+				
 			} else if (chosenExtension.equals("jpg")) {
 				//params.setFill(Color.TRANSPARENT);
 				//params.setFill(Color.WHITE);
@@ -170,7 +195,7 @@ public class Project implements Serializable{
 			}
 			
 			try {
-
+				
 				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvasJPG(1, params, transparent), null), chosenExtension, file);
 			} catch (IOException ex) {
 				ex.printStackTrace();
@@ -196,10 +221,6 @@ public class Project implements Serializable{
 		}
 	}
 	
-	public void addNewLayer() {
-		addLayer(new Layer(currentLayer));
-	}
-	
 	public void deleteCurrentLayer() {
 		if (layers.size() != 1) {
 			int index = layers.indexOf(currentLayer);
@@ -208,8 +229,8 @@ public class Project implements Serializable{
 				index--;
 			}
 			currentLayer = layers.get(index);
+			MainViewController.getInstance().getRightMenuController().deleteLayer(index);
 			drawWorkspace();
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 	}
 	
@@ -219,7 +240,7 @@ public class Project implements Serializable{
 			Collections.swap(layers, index, index - 1);
 		}
 		drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().moveLayer(index, 0);
 	}
 	
 	public void currentLayerToBack() {
@@ -228,7 +249,7 @@ public class Project implements Serializable{
 			Collections.swap(layers, index, index + 1);
 		}
 		drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().moveLayer(index, layers.size() - 1);
 	}
 	
 	public Canvas getBackgroungImage() {
@@ -236,51 +257,68 @@ public class Project implements Serializable{
 	}
 
 
+	//*** SERIALISATION  ***//
+	/**
+	 * Permet de dé-serialiser la projet à l'aide de l'interface Serializable
+	 * @param s
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 
+		// pour pas recréer une instance de projet
 		projectInstance = this;
 
-		layers = new LinkedList<>();
-
-		setData(s.readInt(), s.readInt(), false);
+		initData(s.readInt(), s.readInt(), false);
 
 		int nbCalques = s.readInt();
 
-
+		int maxCount = 1;
 		for(int i = 0; i < nbCalques; ++i){
 
+			Layer l = (Layer) s.readObject();
+			addLayer(l);
+			if(l.id() > maxCount)
+				maxCount = l.id();
 
-			addLayer((Layer) s.readObject());
 /*			System.out.println(l.toString());
 			layers.add(l);*/
 		}
 
-
+		Layer.setCount(maxCount);
 
 		setCurrentLayer(layers.getFirst());
-
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		
+		MainViewController.getInstance().getRightMenuController().createLayerList();
 		drawWorkspace();
 	}
 
+	/**
+	 * Permet de serialiser la projet à l'aide de l'interface Serializable
+	 * @param s
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		//s.defaultWriteObject();
 		// Dimentions du projet
 		s.writeInt(dimension.width);
 		s.writeInt(dimension.height);
-
-
+		
+		
 		// Claques
 		s.writeInt(layers.size());		// Nombre de qualques
-		for(Layer l: layers)
-			s.writeObject(l);
 
+		Iterator li = layers.descendingIterator();
+
+		while(li.hasNext()) {
+			//System.out.println(li.next());
+			s.writeObject(li.next());
+		}
 	}
-
-
 	
-	public void zoom(double factor){
-		for (Layer l:layers) {
+	
+	public void zoom(double factor) {
+		for (Layer l : layers) {
 			l.setScaleX(l.getScaleX() * factor);
 			l.setScaleY(l.getScaleY() * factor);
 		}

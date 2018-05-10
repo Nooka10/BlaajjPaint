@@ -1,5 +1,6 @@
 package controller.menubar;
 
+import controller.MainViewController;
 import controller.Project;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +25,10 @@ public class WindowsNewProject {
 	
 	@FXML
 	private void initialize() {
+
+
+		MainViewController.getInstance().closePorject();
+
 		cancel.setCancelButton(true);
 		createButton.setDefaultButton(true);
 		
@@ -55,7 +60,7 @@ public class WindowsNewProject {
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		
-		Project.getInstance().setData(width, height, true);
+		Project.getInstance().initData(width, height, true);
 		
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close();

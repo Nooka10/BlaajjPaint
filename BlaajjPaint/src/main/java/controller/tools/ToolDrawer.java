@@ -1,9 +1,3 @@
-/*
-Author: Adrien
- */
-
-// parent de la gomme et du pinceau
-
 package controller.tools;
 
 import controller.Project;
@@ -68,6 +62,11 @@ public abstract class ToolDrawer extends Tool {
 			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
+		}
+
+		@Override
+		public String toString() {
+			return "Drawing Tool";
 		}
 	}
 }

@@ -63,6 +63,8 @@ public class SaveProjects {
 
             projectInstance.drawWorkspace();
             System.out.println("openFile done");
+
+            saveFile = f;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -71,72 +73,9 @@ public class SaveProjects {
         //return pw;
     }
 
-    /*public static SaveProjects getInstance() {
-        return ourInstance;
+
+
+    public void clear(){
+        saveFile = null;
     }
-
-    private XStream xstream;
-
-    String path = "./auto";
-    final static String EXTENTION = ".blaajj";
-
-    private SaveProjects(){
-        //xstream = new XStream(new XppDriver());
-        initBinary();
-    }
-
-    private void initCompat(){
-        xstream = new XStream(new XppDriver() {
-            @Override
-            public HierarchicalStreamWriter createWriter(Writer out) {
-                return new CompactWriter(out, getNameCoder());
-            }
-        });
-    }
-
-    private void initBinary(){
-        xstream = new XStream(new BinaryStreamDriver() {
-            @Override
-            public HierarchicalStreamWriter createWriter(Writer out) {
-                return new CompactWriter(out, getNameCoder());
-            }
-        });
-    }
-
-    public void generateCompact(File f, Object o){
-*//*
-        if(path == ""){
-            // Do error no path value
-            System.err.println("No file?");
-        }
-
-        File f = new File(f.getPath());
-        if(f.exists() && !f.isDirectory()) {
-            // do error popup Warining file already exist
-            System.err.println("No new file, sur to continue?");
-        }
-*//*
-        try{
-            ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(new FileOutputStream(f.getPath()));
-            objectOutputStream.writeObject(o);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-
-        } catch (IOException e){
-            System.out.println(" ERROR1" + e.toString());
-            // ERROR can't save file
-        }
-
-    }
-
-    public Object rebuild(File f) throws IOException, ClassNotFoundException{
-
-
-        FileInputStream fis = new FileInputStream(f.getPath());
-        ObjectInputStream ois = xstream.createObjectInputStream(fis);
-
-        //Object aut =  ois.readObject();
-
-        return  ois.readObject();
-    }*/
 }
