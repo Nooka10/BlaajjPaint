@@ -121,7 +121,7 @@ public class Layer extends Canvas implements Serializable {
 	public void mergeLayers(Layer backgroundLayer) {
 		Image image = createImageFromCanvas(4);
 		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
-		// Project.getCurrentTool().getLayers().remove(this); // TODO : enlever ca maybe
+		Project.getInstance().getLayers().remove(this);
 	}
 
 	/**

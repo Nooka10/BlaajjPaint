@@ -1,6 +1,3 @@
-/*
-Author: Benoît
- */
 package controller.tools;
 
 import controller.MainViewController;
@@ -8,13 +5,11 @@ import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
 import utils.UndoException;
 
 /**
- * Classe implémentant l'outil pipette
+ * Classe implémentant l'outil de déplacement
  */
 public class Move extends Tool {
 	
@@ -27,53 +22,62 @@ public class Move extends Tool {
 	private Move() {
 		toolType = ToolType.MOVE;
 	}
+	
+	double oldX;
+	double oldY;
 
-	/*
-	public class MovementSave implements ICmd {
+	MoveSave currentSave;
 
-		double oldPositionV;
-		double oldPositionH;
-		double newPositionV;
-		double newPositionH;
+	public class MoveSave implements ICmd {
 
-		public MovementSave(){
-			setNewPosition();
-			setOldPosition();
-		}
+		double oldXSave;
+		double oldYSave;
+		double newXSave;
+		double newYSave;
 
-		private void setOldPosition(){
-			oldPositionV  = MainViewController.getInstance().getScrollPane().getVvalue();
-			oldPositionH  = MainViewController.getInstance().getScrollPane().getHvalue();
-		}
-		private void setNewPosition(){
-			newPositionV = MainViewController.getInstance().getScrollPane().getVvalue();
-			newPositionH = MainViewController.getInstance().getScrollPane().getHvalue();
+		public MoveSave(){
+
+			oldXSave = Project.getInstance().getCurrentLayer().getLayoutX();
+			oldYSave = Project.getInstance().getCurrentLayer().getLayoutY();
 		}
 
 		@Override
 		public void execute() {
-			setNewPosition();
+			RecordCmd.getInstance().saveCmd(this);
 		}
 
 		@Override
 		public void undo() throws UndoException {
-			MainViewController.getInstance().getScrollPane().setVvalue(oldPositionV);
-			MainViewController.getInstance().getScrollPane().getHvalue();
+			newXSave = Project.getInstance().getCurrentLayer().getLayoutX();
+			newYSave = Project.getInstance().getCurrentLayer().getLayoutY();
+
+			Project.getInstance().getCurrentLayer().setLayoutX(oldXSave);
+			Project.getInstance().getCurrentLayer().setLayoutY(oldYSave);
+
 		}
 
 		@Override
 		public void redo() throws UndoException {
+			Project.getInstance().getCurrentLayer().setLayoutX(newXSave);
+			Project.getInstance().getCurrentLayer().setLayoutY(newYSave);
+		}
 
+		@Override
+		public String toString(){
+			return "Move Layer";
 		}
 	}
-	*/
 
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainViewController.getInstance().getScrollPane().setPannable(true);
+
+				oldX = event.getX();
+				oldY = event.getY();
+
+				currentSave = new MoveSave();
 			}
 		};
 	}
@@ -83,6 +87,9 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				Project.getInstance().getCurrentLayer().setLayoutX(Project.getInstance().getCurrentLayer().getLayoutX() + event.getX() - oldX);
+				Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() + event.getY() - oldY);
+				
 			}
 		};
 	}
@@ -92,7 +99,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainViewController.getInstance().getScrollPane().setPannable(false);
+				currentSave.execute();
 			}
 		};
 	}

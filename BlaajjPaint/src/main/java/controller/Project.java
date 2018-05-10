@@ -1,13 +1,17 @@
 package controller;
 
 import controller.tools.Tool;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
@@ -105,17 +109,40 @@ public class Project implements Serializable {
 	
 	
 	public void drawWorkspace() {
-		Group layersGroup = new Group();
-		layersGroup.getChildren().add(backgroungImage);
+		AnchorPane workspace = new AnchorPane();
+		workspace.getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
-
+		
+		MainViewController.getInstance().getScrollPane().setContent(workspace);
+		/*
+		final javafx.scene.shape.Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+		redBorder.setStroke(Color.LIGHTBLUE);
+		redBorder.setManaged(false);
+		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+			
+			@Override
+			public void changed(ObservableValue<? extends Bounds> observable,
+			                    Bounds oldValue, Bounds newValue) {
+				redBorder.setLayoutX(currentLayer.getBoundsInParent().getMinX());
+				redBorder.setLayoutY(currentLayer.getBoundsInParent().getMinY());
+				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
+				redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
+			}
+			
+		});
+		MainViewController.getInstance().getWorkspace().getChildren().add(redBorder);
+		*/
+		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
-				layersGroup.getChildren().add(layer);
+				workspace.getChildren().add(layer);
 			}
 		}
-		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
+		
+		workspace.setMinSize(dimension.width,dimension.height);
+		workspace.setPrefSize(dimension.width,dimension.height);
+		workspace.setMaxSize(dimension.width,dimension.height);
 	}
 	
 	

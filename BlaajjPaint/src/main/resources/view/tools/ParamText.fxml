@@ -14,9 +14,9 @@
             <Insets />
          </HBox.margin>
       </Slider>
-      <TextField fx:id="textFieldSizeFont" maxWidth="80.0" onAction="#changeFontText" text="6" />
+      <TextField fx:id="textFieldSizeFont" maxWidth="80.0" onKeyReleased="#changeFontText" text="6" />
       <ChoiceBox id="Font" fx:id="fontList" onDragDetected="#changeFont" prefWidth="150.0" />
-      <TextField fx:id="textValue" onAction="#changeValue" />
+      <TextField fx:id="textValue" onAction="#changeValue" onKeyReleased="#changeValue" />
       <Button fx:id="validateButton" mnemonicParsing="false" onAction="#validateText" text="Validate" />
    </children>
    <padding>

@@ -2,21 +2,22 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
+.BlaajjPaint/*.iml
+.BlaajjPaint/idea/**/workspace.xml
+.BlaajjPaint/idea/**/tasks.xml
+.BlaajjPaint/idea/dictionaries
 
 # Sensitive or high-churn files:
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
+.BlaajjPaint/idea/**/dataSources/
+.BlaajjPaint/idea/**/dataSources.ids
+.BlaajjPaint/idea/**/dataSources.local.xml
+.BlaajjPaint/idea/**/sqlDataSources.xml
+.BlaajjPaint/idea/**/dynamic.xml
+.BlaajjPaint/idea/**/uiDesigner.xml
 
 # Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
+.BlaajjPaint/idea/**/gradle.xml
+.BlaajjPaint/idea/**/libraries
 
 # CMake
 cmake-build-debug/
@@ -31,7 +32,7 @@ cmake-build-release/
 ## Plugin-specific files:
 
 # IntelliJ
-out/
+.BlaajjPaint/out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

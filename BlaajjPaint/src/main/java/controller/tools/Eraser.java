@@ -23,13 +23,13 @@ public class Eraser extends ToolDrawer {
 	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
 	private GraphicsContext eraserMaskGraphicsContext;
-
+/*
 	public class EraserStrike extends Trait {
 		public String toString(){
 			return "Eraser Strike";
 		}
 	}
-
+*/
 	/**
 	 * Retourne l'instance unique de la gomme
 	 * @return l'instance unique de la gomme
@@ -50,7 +50,7 @@ public class Eraser extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				currentTrait = new EraserStrike();
+				currentTrait = new Trait();
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter().setColor((int) event.getX(), (int) event.getY(), Color.TRANSPARENT);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(event.getX() - thickness / 2, event.getY() - thickness / 2, thickness, thickness);
 				
