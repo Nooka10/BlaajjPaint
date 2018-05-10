@@ -1,19 +1,25 @@
 package controller.rightMenu;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import main.Main;
 
 public class RightMenuController {
 	@FXML
-	private VBox LayersList;
+	private VBox layersList;
 	
 	@FXML
 	private Button fusion;
@@ -71,11 +77,13 @@ public class RightMenuController {
 	@FXML
 	void addNewLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
+		createLayerList();
 	}
 	
 	@FXML
 	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
+		createLayerList();
 	}
 	
 	@FXML
@@ -93,51 +101,50 @@ public class RightMenuController {
 		//Project.getInstance().getCurrentLayer().mergeLayers();
 	}
 	
-	private HBox createLayoutUI(Layer layer) {
-		HBox container = new HBox();
-		CheckBox visibility = new CheckBox();
-		Label layerName = new Label(layer.toString());
-		
-		
-		visibility.setSelected(layer.isVisible());
-		opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
-		
-		container.setOnMouseClicked((e) ->
-		{
-			Project.getInstance().setCurrentLayer(layer);
-			opacitySlider.setValue(layer.getLayerOpacity());
-			opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
-			updateLayerList();
-		});
-		
-		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				layer.setVisible(new_val);
-				Project.getInstance().drawWorkspace();
-			}
-		});
-		
-		
-		container.getChildren().addAll(visibility, layerName);
-		
-		return container;
-	}
-	
-	public void updateLayerList() {
-		clearLayerList();
+	public void createLayerList() {
+		layersList.getChildren().clear();
 		for (Layer layer : Project.getInstance().getLayers()) {
-			HBox newEl = createLayoutUI(layer);
-			LayersList.getChildren().add(newEl);
-			if (layer.equals(Project.getInstance().getCurrentLayer())) {
-				newEl.setBackground(focusBackground);
-				// System.out.println("current Layer: " + layer.toString());
-			} else {
-				newEl.setBackground(unfocusBackground);
-			}
+			addNewLayer(layer);
 		}
 	}
-
-	public void clearLayerList(){
-		LayersList.getChildren().clear();
+	
+	public void deleteLayer(int index){
+		layersList.getChildren().remove(index);
+	}
+	
+	public void updateLayerList(){
+	
+	}
+	
+	public void moveLayer(int index, int indexDest){
+		Node toMove = layersList.getChildren().get(index);
+		layersList.getChildren().remove(index);
+		layersList.getChildren().add(indexDest, toMove);
+	}
+	
+	public void addNewLayer(Layer layer) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/Layer.fxml"));
+			Parent newLayer = fxmlLoader.load();
+			LayerController l = fxmlLoader.getController();
+			l.setLayerName(layer);
+			layersList.getChildren().add(newLayer);
+			
+			if (layer.equals(Project.getInstance().getCurrentLayer())) {
+				l.getLayerElem().setBackground(focusBackground);
+			} else {
+				l.getLayerElem().setBackground(unfocusBackground);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setOpacitySlider(double opacitySlider) {
+		this.opacitySlider.setValue(opacitySlider);
+	}
+	
+	public void setOpacityTextField(String opacityTextField) {
+		this.opacityTextField.setText(opacityTextField);
 	}
 }
