@@ -47,6 +47,8 @@ public class MainViewController {
 	private ScrollPane scrollPane;
 	@FXML
 	private Label zoomLabel;
+	@FXML
+	private AnchorPane workspace;
 	
 	/**
 	 * Constructeur privé (modèle Singleton)
@@ -206,5 +208,9 @@ public class MainViewController {
 			SaveProjects.getInstance().openFile(file);
 
 		}
+	}
+	
+	public AnchorPane getWorkspace() {
+		return workspace;
 	}
 }

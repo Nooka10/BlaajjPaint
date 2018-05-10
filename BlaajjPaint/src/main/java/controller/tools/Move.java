@@ -23,7 +23,7 @@ public class Move extends Tool {
 	}
 	
 	private Move() {
-		toolType = ToolType.HAND;
+		toolType = ToolType.MOVE;
 	}
 	
 	double oldX;
@@ -45,7 +45,9 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getCurrentLayer().setLayoutX(event.getX() - oldX);
+				Project.getInstance().getCurrentLayer().setLayoutX(Project.getInstance().getCurrentLayer().getLayoutX() + event.getX() - oldX);
+				Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() +event.getY() - oldY);
+				
 			}
 		};
 	}
@@ -55,7 +57,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainViewController.getInstance().getScrollPane().setPannable(false);
+			
 			}
 		};
 	}

@@ -31,7 +31,9 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane fx:id="paramBar" minHeight="40.0" prefHeight="40.0" styleClass="menuBackground" stylesheets="@MainStyleSheet.css" AnchorPane.bottomAnchor="359.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+            <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" >
+	            <AnchorPane fx:id="workspace"/>
+            </ScrollPane>
          </children>
       </AnchorPane>
    </center>

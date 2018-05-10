@@ -2,7 +2,10 @@ package controller;
 
 import controller.menubar.MenuBarController;
 import controller.tools.Tool;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -10,6 +13,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -107,24 +111,42 @@ public class Project implements Serializable{
 
 	}
 	
-
+	
 	public void drawWorkspace() {
-		Group layersGroup = new Group();
-		layersGroup.getChildren().add(backgroungImage);
+		
+		MainViewController.getInstance().getWorkspace().getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
 		
-		// centre le clip
-		//clip.setLayoutX(Math.round((MainViewController.getInstance().getScrollPane().getWidth() - dimension.width) / 2));
-		//clip.setLayoutY(Math.round((MainViewController.getInstance().getScrollPane().getHeight() - dimension.height) / 2));
-		//MainViewController.getInstance().getScrollPane().setClip(clip);
+		MainViewController.getInstance().getScrollPane().setContent(MainViewController.getInstance().getWorkspace());
+		final javafx.scene.shape.Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+		redBorder.setStroke(Color.LIGHTBLUE);
+		redBorder.setManaged(false);
+		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+			
+			@Override
+			public void changed(ObservableValue<? extends Bounds> observable,
+			                    Bounds oldValue, Bounds newValue) {
+				redBorder.setLayoutX(currentLayer.getBoundsInParent().getMinX());
+				redBorder.setLayoutY(currentLayer.getBoundsInParent().getMinY());
+				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
+				redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
+			}
+			
+		});
+		MainViewController.getInstance().getWorkspace().getChildren().add(redBorder);
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
-				layersGroup.getChildren().add(layer);
+				MainViewController.getInstance().getWorkspace().getChildren().add(layer);
 			}
 		}
-		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
+		
+		MainViewController.getInstance().getWorkspace().setMinSize(dimension.width,dimension.height);
+		MainViewController.getInstance().getWorkspace().setPrefSize(dimension.width,dimension.height);
+		MainViewController.getInstance().getWorkspace().setMaxSize(dimension.width,dimension.height);
+		
+		
 	}
 	
 
