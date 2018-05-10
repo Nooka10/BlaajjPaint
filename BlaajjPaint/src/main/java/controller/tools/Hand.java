@@ -28,46 +28,6 @@ public class Hand extends Tool {
 		toolType = ToolType.MOVE;
 	}
 
-	/*
-	public class MovementSave implements ICmd {
-
-		double oldPositionV;
-		double oldPositionH;
-		double newPositionV;
-		double newPositionH;
-
-		public MovementSave(){
-			setNewPosition();
-			setOldPosition();
-		}
-
-		private void setOldPosition(){
-			oldPositionV  = MainViewController.getInstance().getScrollPane().getVvalue();
-			oldPositionH  = MainViewController.getInstance().getScrollPane().getHvalue();
-		}
-		private void setNewPosition(){
-			newPositionV = MainViewController.getInstance().getScrollPane().getVvalue();
-			newPositionH = MainViewController.getInstance().getScrollPane().getHvalue();
-		}
-
-		@Override
-		public void execute() {
-			setNewPosition();
-		}
-
-		@Override
-		public void undo() throws UndoException {
-			MainViewController.getInstance().getScrollPane().setVvalue(oldPositionV);
-			MainViewController.getInstance().getScrollPane().getHvalue();
-		}
-
-		@Override
-		public void redo() throws UndoException {
-
-		}
-	}
-	*/
-	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
