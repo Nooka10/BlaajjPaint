@@ -8,11 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
-import javafx.util.converter.NumberStringConverter;
-
-import java.text.NumberFormat;
 
 public class WindowsNewProject {
 	@FXML
@@ -28,21 +24,11 @@ public class WindowsNewProject {
 	private TextField height;
 	
 	@FXML
-	private MainViewController mainViewController; // Reference to the menuBarController
-	
-	/**
-	 * Appelé par le MainViewController pour donner une référence vers lui-même.
-	 *
-	 * @param mainViewController, une référence vers le mainViewController
-	 *
-	 *                            Créé par Benoît Schopfer
-	 */
-	public void setMainViewController(MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
-	}
-	
-	@FXML
 	private void initialize() {
+
+
+		MainViewController.getInstance().closePorject();
+
 		cancel.setCancelButton(true);
 		createButton.setDefaultButton(true);
 		
@@ -74,8 +60,7 @@ public class WindowsNewProject {
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		
-		Project project = Project.getInstance();
-		project.setData(width, height, mainViewController);
+		Project.getInstance().initData(width, height, true);
 		
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close();

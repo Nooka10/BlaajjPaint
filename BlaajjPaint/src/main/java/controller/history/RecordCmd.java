@@ -1,3 +1,6 @@
+/*
+Author: Adrien
+ */
 package controller.history;
 
 import utils.UndoException;
@@ -6,7 +9,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getInstance(), le constructeur est publique*/
+/** Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getCurrentTool(), le constructeur est publique*/
 public class RecordCmd {
 
     /** La taille max de chaque pile */
@@ -37,26 +40,26 @@ public class RecordCmd {
         return instance;
     }
 
-    /** Apelle la fonction <b>undo()</b> sur la dernière <b>Cmd</b> sauvée.
+    /** Apelle la fonction <b>handleUndo()</b> sur la dernière <b>Cmd</b> sauvée.
      * Si aucune <b>Cmd</b> ne se trouves dans la pile il ne fait rien. Si
-     * le undo lèves une exception celle-ci est capturée et consignée dans les logs
+     * le handleUndo lèves une exception celle-ci est capturée et consignée dans les logs
      * et l'<b>Cmd</b> concernée retourne sur la pile.*/
     public void undo(){
 
-        // si la pile des undo n'est pas vide
+        // si la pile des handleUndo n'est pas vide
         if(!undoStack.isEmpty()){
             ICmd cmdToUndo = undoStack.pop();
             try {
 
-                // on essaie de undo
+                // on essaie de handleUndo
                 cmdToUndo.undo();
 
-                // si ça a passé on ajoute la commande a la pile des redo
+                // si ça a passé on ajoute la commande a la pile des handleRedo
                 redoStack.push(cmdToUndo);
             }
-            // Si ça ne passe pas on remet la commande sur la pile de undo
+            // Si ça ne passe pas on remet la commande sur la pile de handleUndo
             catch (UndoException e){
-                LOG.log(Level.SEVERE, "Can't undo commande !");
+                LOG.log(Level.SEVERE, "Can't handleUndo commande !");
 
                 // vider les deux piles
                 undoStack.clear();
@@ -65,7 +68,7 @@ public class RecordCmd {
             }
         }
         else {
-            LOG.log(Level.INFO, "Nothing to undo.");
+            LOG.log(Level.INFO, "Nothing to handleUndo.");
         }
     }
     
@@ -74,29 +77,29 @@ public class RecordCmd {
     }
 
 
-    /** Apelle la fonction <b>redo()</b> sur le dernier <b>Cmd</b> de la pile de redo.
+    /** Apelle la fonction <b>handleRedo()</b> sur le dernier <b>Cmd</b> de la pile de handleRedo.
      * Si aucune <b>Cmd</b> ne se trouves dans la pile il ne fait rien. Si
-     * le redo lèves une exception celle-ci est capturée et consignée dans les logs
+     * le handleRedo lèves une exception celle-ci est capturée et consignée dans les logs
      * et l'<b>Cmd</b> concernée retourne sur la pile.*/
     public void redo(){
         System.out.println("redo");
-        // si la pile de redo n'est pas vide
+        // si la pile de handleRedo n'est pas vide
         if(!redoStack.isEmpty()){
-            // on essaie de undo
+            // on essaie de handleUndo
             ICmd cmdToRedo = redoStack.pop();
             try {
                 cmdToRedo.redo();
     
                 undoStack.push(cmdToRedo);
             }
-            // Si ça ne passe pas on remet la commande sur la pile de undo
+            // Si ça ne passe pas on remet la commande sur la pile de handleUndo
             catch (UndoException e){
-                LOG.log(Level.SEVERE, "Can't redo commande !");
+                LOG.log(Level.SEVERE, "Can't handleRedo commande !");
                 //redoStack.push(cmdToRedo);
             }
         }
         else {
-            LOG.log(Level.INFO, "Nothing to redo.");
+            LOG.log(Level.INFO, "Nothing to handleRedo.");
 
             // vider les deux piles
           //  undoStack.clear();

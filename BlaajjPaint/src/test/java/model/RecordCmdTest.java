@@ -54,7 +54,7 @@ public class RecordCmdTest {
     @Test
     public void getInstanceIsNotNull() {
 
-        // test que getInstance() crée l'objet
+        // test que getCurrentTool() crée l'objet
         RecordCmd recordCmd = RecordCmd.getInstance();
 
         assertNotNull(recordCmd);
@@ -63,7 +63,7 @@ public class RecordCmdTest {
     @Test
     public void getInstanceIsAlwaysSame() {
 
-        // test que getInstance retournes toujours la même référence
+        // test que getCurrentTool retournes toujours la même référence
         RecordCmd recordCmd1 = RecordCmd.getInstance();
         RecordCmd recordCmd2 = RecordCmd.getInstance();
 
@@ -82,15 +82,15 @@ public class RecordCmdTest {
         // test que la cmd est bien exécutée
         assertTrue(cmd.done);
 
-        // application du undo
+        // application du handleUndo
         RecordCmd.getInstance().undo();
 
-        // test que le undo a fonctionné
+        // test que le handleUndo a fonctionné
         assertFalse(cmd.done);
 
         RecordCmd.getInstance().redo();
 
-        // test que le redo a bien fonctionné
+        // test que le handleRedo a bien fonctionné
         assertTrue(cmd.done);
     }
 }

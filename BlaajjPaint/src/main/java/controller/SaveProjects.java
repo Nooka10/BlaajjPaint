@@ -12,76 +12,70 @@ import java.io.*;
 
 
 public class SaveProjects {
-    
+
+    private Project projectInstance = Project.getInstance();
+    private File saveFile;
+
     private static SaveProjects ourInstance = new SaveProjects();
 
     public static SaveProjects getInstance() {
         return ourInstance;
     }
 
-    private XStream xstream;
-
-    String path = "./auto";
-    final static String EXTENTION = ".blaajj";
-
     private SaveProjects(){
-        //xstream = new XStream(new XppDriver());
-        initBinary();
+        saveFile = null;
     }
 
-    private void initCompat(){
-        xstream = new XStream(new XppDriver() {
-            @Override
-            public HierarchicalStreamWriter createWriter(Writer out) {
-                return new CompactWriter(out, getNameCoder());
-            }
-        });
+    public void saveAs(File f){
+        saveFile = f;
+        save();
     }
 
-    private void initBinary(){
-        xstream = new XStream(new BinaryStreamDriver() {
-            @Override
-            public HierarchicalStreamWriter createWriter(Writer out) {
-                return new CompactWriter(out, getNameCoder());
-            }
-        });
-    }
-
-    public void generateCompact(File f, Object o){
-/*
-        if(path == ""){
-            // Do error no path value
-            System.err.println("No file?");
+    public void save(){
+        if(saveFile == null){
+            System.out.println("No project to save");
+            return;
         }
 
-        File f = new File(f.getPath());
-        if(f.exists() && !f.isDirectory()) {
-            // do error popup Warining file already exist
-            System.err.println("No new file, sur to continue?");
+        FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+        try {
+            fos = new FileOutputStream(saveFile);
+            out = new ObjectOutputStream(fos);
+            out.writeObject(projectInstance);
+
+            out.close();
+            System.out.println("Save done");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-*/
+    }
+
+    public void openFile(File f){
         try{
-            ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(new FileOutputStream(f.getPath()));
-            objectOutputStream.writeObject(o);
-            objectOutputStream.flush();
-            objectOutputStream.close();
+            FileInputStream fileInput = new FileInputStream(f);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInput);
 
-        } catch (IOException e){
-            System.out.println(" ERROR1" + e.toString());
-            // ERROR can't save file
+            projectInstance = (Project) objectInputStream.readObject();
+            //objectInputStream.readObject();
+
+            // MainViewController.getInstance().setProject((Project) objectInputStream.readObject());
+
+            projectInstance.drawWorkspace();
+            System.out.println("openFile done");
+
+            saveFile = f;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
+
+        //return pw;
     }
 
-    public Object rebuild(File f) throws IOException, ClassNotFoundException{
 
 
-        FileInputStream fis = new FileInputStream(f.getPath());
-        ObjectInputStream ois = xstream.createObjectInputStream(fis);
-
-        //Object aut =  ois.readObject();
-
-        return  ois.readObject();
+    public void clear(){
+        saveFile = null;
     }
-
 }

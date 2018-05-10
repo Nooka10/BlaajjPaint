@@ -1,100 +1,143 @@
 package controller;
 
+import controller.menubar.MenuBarController;
+import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-
-import javax.imageio.ImageIO;
-//import javafx.scene.layout.StackPane;
-
-public class Project {
+public class Project implements Serializable{
 	private Dimension dimension;
-	private LinkedList<Layer> layers = new LinkedList<>();
+	private LinkedList<Layer> layers;
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
+	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
-	private MainViewController mainViewController;
-	
-	private GraphicsContext gc;
-	//private StackPane pane = new StackPane();
-	
+
 	private Color currentColor;
+	
+	//private Rectangle clip;
 	
 	private static Project projectInstance = new Project();
 	
 	public static Project getInstance() {
 		return projectInstance;
 	}
-	
+
 	private Project() {
 		currentColor = Color.BLACK;
 	}
-	
-	public void setData(int width, int height, MainViewController mainViewController) {
-		this.mainViewController = mainViewController;
+
+
+	//*** GETTER  ***//
+	public Dimension getDimension() {
+		return dimension;
+	}
+
+	public Layer getCurrentLayer() {
+		return currentLayer;
+	}
+
+	//*** SETTER ***//
+	public void setCurrentColor(Color color) {
+		currentColor = color;
+		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
+	}
+
+	public void initData(int width, int height, boolean isNew) {
+		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
-		currentLayer = new Layer(width, height);
+
+		if(isNew)
+			setCurrentLayer(new Layer(width, height));
+
 		backgroungImage = new Canvas(width, height);
-		gc = backgroungImage.getGraphicsContext2D();
+		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
-		gc.fillRect(0, 0, dimension.width, dimension.height);
+		gc.fillRect(0, 0, width, height);
 		gc.setFill(Color.LIGHTGRAY);
 		
+		//clip = new Rectangle(width, height);
+		
 		int rectSize = 10;
-		for (int i = 0; i < dimension.width; i = i + rectSize) {
-			for (int j = 0; j < dimension.height; j = j + rectSize) {
+		for (int i = 0; i < width; i = i + rectSize) {
+			for (int j = 0; j < height; j = j + rectSize) {
 				if (i % (rectSize * 2) == 0 ^ j % (rectSize * 2) == 0) {
 					gc.fillRect(i, j, rectSize, rectSize);
 				}
 			}
 		}
-		
-		layers.add(currentLayer);
-		mainViewController.getRightMenuController().updateLayerList();
+
+		if(isNew)
+			layers.add(currentLayer);
+
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
-	
-	public Layer getCurrentLayer() {
-		return currentLayer;
+
+	/**
+	 * Méthode qui ferme un projet.
+	 */
+	public void close(){
+
+		//projectInstance = null;
+
+		/*if(backgroungImage != null) {
+			backgroungImage.getGraphicsContext2D().setFill(Color.WHITE);
+			backgroungImage = null;
+		}*/
+
+		backgroungImage = null;
+		dimension = null;
+		layers = null;
+		currentLayer = null;
+
+		Layer.reset();
+
 	}
 	
+
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
-        Iterator it = layers.descendingIterator();
-		while(it.hasNext()) {
-		    Layer layer = (Layer)it.next();
-            if (layer.isVisible()) {
-                layersGroup.getChildren().add(layer);
-            }
-        }
-		mainViewController.drawLayers(layersGroup);
+		Iterator it = layers.descendingIterator();
+		
+		// centre le clip
+		//clip.setLayoutX(Math.round((MainViewController.getInstance().getScrollPane().getWidth() - dimension.width) / 2));
+		//clip.setLayoutY(Math.round((MainViewController.getInstance().getScrollPane().getHeight() - dimension.height) / 2));
+		//MainViewController.getInstance().getScrollPane().setClip(clip);
+		
+		while (it.hasNext()) {
+			Layer layer = (Layer) it.next();
+			if (layer.isVisible()) {
+				layersGroup.getChildren().add(layer);
+			}
+		}
+		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
 	}
 	
-	public void setCurrentColor(Color color) {
-		currentColor = color;
-	}
+
 	
 	public Color getCurrentColor() {
 		return currentColor;
 	}
 	
 	public void addLayer(Layer newLayer) {
-		currentLayer = newLayer;
+		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		drawWorkspace();
-        mainViewController.getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	public LinkedList<Layer> getLayers() {
@@ -102,9 +145,26 @@ public class Project {
 	}
 	
 	public void setCurrentLayer(Layer currentLayer) {
+		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
+		addEventHandlers(Tool.getCurrentTool());
+	}
+
+	public void addEventHandlers(Tool tool) {
+		if (this.currentLayer != null && tool != null) {
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+			this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		}
 	}
 	
+	public void removeEventHandler(Tool tool) {
+		if (this.currentLayer != null && tool != null) {
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		}
+	}
 	
 	public void export(File file) {
 		if (file != null) {
@@ -121,14 +181,19 @@ public class Project {
 			if (i > 0) {
 				chosenExtension = file.getPath().substring(i + 1);
 			}
+			boolean transparent = true;
 			if (chosenExtension.equals("png")) {
 				params.setFill(Color.TRANSPARENT);
+
 			} else if (chosenExtension.equals("jpg")) {
-				params.setFill(Color.WHITE);
+				//params.setFill(Color.TRANSPARENT);
+				//params.setFill(Color.WHITE);
+				transparent = false;
 			}
 			
 			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+
+				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvasJPG(1, params, transparent), null), chosenExtension, file);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
@@ -136,61 +201,130 @@ public class Project {
 	}
 	
 	public void importImage(File file) {
-		
-		Layer newLayer = new Layer(dimension);
-		addLayer(newLayer);
-		
 		String chosenExtension = "";
 		int i = file.getPath().lastIndexOf('.');
 		if (i > 0) {
 			chosenExtension = file.getPath().substring(i + 1);
 		}
 		
-		javafx.scene.image.Image image = null;
-		
 		if (chosenExtension.equals("png") || chosenExtension.equals("jpg")) {
+			javafx.scene.image.Image image;
 			image = new Image(file.toURI().toString());
+			
+			Layer newLayer = new Layer(new Dimension((int) image.getWidth(), (int) image.getHeight()));
+			addLayer(newLayer);
+			
+			newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 		}
-		
-		newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 	}
-
-	public void addNewLayer(){
-	    addLayer(new Layer(currentLayer));
-    }
-
-    public void deleteCurrentLayer(){
-	    if(layers.size() != 1) {
-            int index = layers.indexOf(currentLayer);
-            layers.remove(index);
-            if (index >= layers.size()) {
-                index--;
-            }
-            currentLayer = layers.get(index);
-            drawWorkspace();
-            mainViewController.getRightMenuController().updateLayerList();
-        }
-    }
-
-    public void currentLayerToFront(){
-	    int index = layers.indexOf(currentLayer);
-	    if(index != 0) {
-            Collections.swap(layers, index, index - 1);
-        }
-        drawWorkspace();
-	    mainViewController.getRightMenuController().updateLayerList();
-    }
-
-    public void currentLayerToBack(){
-        int index = layers.indexOf(currentLayer);
-        if(index < layers.size() -1) {
-            Collections.swap(layers, index, index + 1);
-        }
-        drawWorkspace();
-        mainViewController.getRightMenuController().updateLayerList();
-    }
+	
+	public void addNewLayer() {
+		addLayer(new Layer(currentLayer));
+	}
+	
+	public void deleteCurrentLayer() {
+		if (layers.size() != 1) {
+			int index = layers.indexOf(currentLayer);
+			layers.remove(index);
+			if (index >= layers.size()) {
+				index--;
+			}
+			currentLayer = layers.get(index);
+			drawWorkspace();
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
+		}
+	}
+	
+	public void currentLayerToFront() {
+		int index = layers.indexOf(currentLayer);
+		if (index != 0) {
+			Collections.swap(layers, index, index - 1);
+		}
+		drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+	}
+	
+	public void currentLayerToBack() {
+		int index = layers.indexOf(currentLayer);
+		if (index < layers.size() - 1) {
+			Collections.swap(layers, index, index + 1);
+		}
+		drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+	}
 	
 	public Canvas getBackgroungImage() {
 		return backgroungImage;
+	}
+
+
+	//*** SERIALISATION  ***//
+	/**
+	 * Permet de dé-serialiser la projet à l'aide de l'interface Serializable
+	 * @param s
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+
+		// pour pas recréer une instance de projet
+		projectInstance = this;
+
+		initData(s.readInt(), s.readInt(), false);
+
+		int nbCalques = s.readInt();
+
+		int maxCount = 1;
+		for(int i = 0; i < nbCalques; ++i){
+
+			Layer l = (Layer) s.readObject();
+			addLayer(l);
+			if(l.id() > maxCount)
+				maxCount = l.id();
+
+/*			System.out.println(l.toString());
+			layers.add(l);*/
+		}
+
+		Layer.setCount(maxCount);
+
+		setCurrentLayer(layers.getFirst());
+
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		drawWorkspace();
+	}
+
+	/**
+	 * Permet de serialiser la projet à l'aide de l'interface Serializable
+	 * @param s
+	 * @throws IOException
+	 */
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		//s.defaultWriteObject();
+		// Dimentions du projet
+		s.writeInt(dimension.width);
+		s.writeInt(dimension.height);
+
+
+		// Claques
+		s.writeInt(layers.size());		// Nombre de qualques
+
+		Iterator li = layers.descendingIterator();
+
+		while(li.hasNext()) {
+			//System.out.println(li.next());
+			s.writeObject(li.next());
+		}
+	}
+
+
+	
+	public void zoom(double factor) {
+		for (Layer l : layers) {
+			l.setScaleX(l.getScaleX() * factor);
+			l.setScaleY(l.getScaleY() * factor);
+		}
+		backgroungImage.setScaleX(backgroungImage.getScaleX() * factor);
+		backgroungImage.setScaleY(backgroungImage.getScaleY() * factor);
 	}
 }
