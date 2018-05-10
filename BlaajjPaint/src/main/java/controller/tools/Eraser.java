@@ -23,15 +23,16 @@ public class Eraser extends ToolDrawer {
 	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
 	private GraphicsContext eraserMaskGraphicsContext;
-/*
+	
 	public class EraserStrike extends Trait {
-		public String toString(){
+		public String toString() {
 			return "Eraser Strike";
 		}
 	}
-*/
+	
 	/**
 	 * Retourne l'instance unique de la gomme
+	 *
 	 * @return l'instance unique de la gomme
 	 */
 	public static Eraser getInstance() {
@@ -63,7 +64,6 @@ public class Eraser extends ToolDrawer {
 				eraserMaskGraphicsContext.moveTo(event.getX(), event.getY());
 				eraserMaskGraphicsContext.setLineWidth(thickness); // définit l'épaisseur de la gomme
 				eraserMaskGraphicsContext.setStroke(Color.BLACK); // définit la couleur de la gomme
-				//eraserMaskGraphicsContext.setGlobalAlpha(opacity / 100);
 				eraserMaskGraphicsContext.stroke();
 			}
 		};
@@ -110,7 +110,6 @@ public class Eraser extends ToolDrawer {
 						}
 					}
 				}
-				
 				currentTrait.execute();
 			}
 		};
