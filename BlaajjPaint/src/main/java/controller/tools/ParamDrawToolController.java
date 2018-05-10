@@ -23,6 +23,7 @@ public class ParamDrawToolController {
 	@FXML
 	private void initialize() {
 		thicknessTextField.setText(String.valueOf(tool.thickness));
+		thicknessSlider.setValue(tool.thickness);
 		
 		// Handle Slider value change events.
 		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
