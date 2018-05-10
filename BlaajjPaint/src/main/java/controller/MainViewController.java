@@ -65,9 +65,6 @@ public class MainViewController {
 	@FXML
 	private void initialize() {
 		mainViewControllerInstance = this;
-		
-		//scrollPane.setFitToHeight(true);
-		//scrollPane.setFitToWidth(true);
 	}
 	
 	public Main getMain() {

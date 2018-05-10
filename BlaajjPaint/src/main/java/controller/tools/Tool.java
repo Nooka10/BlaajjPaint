@@ -23,14 +23,6 @@ public abstract class Tool {
 	private static Tool currentTool; // l'outil actuellement sélectionné
 	
 	/**
-	 * Retourne le ToolType de l'outil
-	 * @return le ToolType de l'outil
-	 */
-	public ToolType getToolType() {
-		return toolType;
-	}
-	
-	/**
 	 * Retourne l'outil actuellement sélectionné
 	 * @return l'outil actuellement sélectionné
 	 */
@@ -45,7 +37,6 @@ public abstract class Tool {
 	public static void setCurrentTool(Tool currentTool) {
 		if(Tool.currentTool != currentTool){ // l'outil ne change que s'il n'est pas déjà l'outil sélectionné
 			toolHasChanged = true;
-			
 			Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
 			Tool.currentTool = currentTool;
 			Project.getInstance().addEventHandlers(Tool.currentTool); // on met les EventHandler de l'outil nouvellement sélectionné

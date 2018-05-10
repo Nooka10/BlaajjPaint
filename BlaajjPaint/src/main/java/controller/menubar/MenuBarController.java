@@ -22,19 +22,8 @@ public class MenuBarController {
 	@FXML
 	private MenuBar menuBar;
 	
-	
 	@FXML
 	public void handleNew(ActionEvent event) {
-		/*
-		if (changesMade) {
-			changesWarning(false);
-		}
-		gc.clearRect(0, 0, drawingCanvasWidth, drawingCanvasHeight);
-		list = new ArrayList<>();
-		changesMade = false;
-		firstTimeSave = true;
-		*/
-		
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/WindowsNewProject.fxml"));
 			Parent newProjectWindow = fxmlLoader.load();

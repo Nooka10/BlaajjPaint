@@ -1,5 +1,6 @@
 package controller;
 
+import controller.menubar.MenuBarController;
 import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -9,7 +10,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
 import javax.swing.plaf.DimensionUIResource;
@@ -279,8 +279,8 @@ public class Project implements Serializable{
 
 
 	
-	public void zoom(double factor){
-		for (Layer l:layers) {
+	public void zoom(double factor) {
+		for (Layer l : layers) {
 			l.setScaleX(l.getScaleX() * factor);
 			l.setScaleY(l.getScaleY() * factor);
 		}

@@ -105,16 +105,10 @@ public class RightMenuController {
 		container.setOnMouseClicked((e) ->
 		{
 			Project.getInstance().setCurrentLayer(layer);
+			opacitySlider.setValue(layer.getLayerOpacity());
 			opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
 			updateLayerList();
 		});
-		
-		// use different backgrounds for focused and unfocused states
-        /*container.backgroundProperty().bind( Bindings
-                .when( container.focusedProperty() )
-                .then( focusBackground )
-                .otherwise( unfocusBackground )
-        );*/
 		
 		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {

@@ -1,9 +1,3 @@
-/*
-Author: Adrien
- */
-
-// parent de la gomme et du pinceau
-
 package controller.tools;
 
 import controller.Project;
