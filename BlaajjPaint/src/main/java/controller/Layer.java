@@ -149,6 +149,11 @@ public class Layer extends Canvas implements Serializable {
 		public void redo() throws UndoException {
 			setOpacity(newOpacity / 100);
 		}
+
+		@Override
+		public String toString() {
+			return "Opacity Change from " +oldOpacity + " to "+ newOpacity;
+		}
 	}
 
 	public void setLayerOpacity(double opacity) {
