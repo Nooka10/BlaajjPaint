@@ -147,10 +147,10 @@ public class Project implements Serializable {
 	}
 	
 	public void addNewLayer() {
-		addLayer(new Layer(currentLayer));
+		addLayer(new Layer(dimension.width, dimension.height));
 	}
 	
-	private void addLayer(Layer newLayer) {
+	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);

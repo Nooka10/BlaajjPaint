@@ -18,9 +18,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
-	private int id; // l'id du layer
-	private static int count = 1; // nombre de layers qui ont été créés
-	
+	final static int INITIAL_ID = 1;
+	private int id;								//
+	private static int count = INITIAL_ID;		// id du prochain calque qui sera créé
+
 	/**
 	 * Constructeur
 	 *
@@ -59,8 +60,7 @@ public class Layer extends Canvas implements Serializable {
 	
 	// TODO : Antoine
 	public Image createImageFromCanvas(int scale) {
-		//final Bounds bounds = getLayoutBounds();
-		
+
 		final WritableImage image = new WritableImage(
 				Math.round(Project.getInstance().getDimension().width * scale),
 				Math.round(Project.getInstance().getDimension().height * scale));
@@ -111,9 +111,27 @@ public class Layer extends Canvas implements Serializable {
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
 	public void mergeLayers(Layer backgroundLayer) {
-		Image image = createImageFromCanvas(4);
-		backgroundLayer.getGraphicsContext2D().drawImage(image, 0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
+		Image image1 = createImageFromCanvas(4);
+		Image image2 = backgroundLayer.createImageFromCanvas(4);
+		
+		double minX = getLayoutX() < backgroundLayer.getLayoutX() ? getLayoutX() : backgroundLayer.getLayoutX();
+		double minY = getLayoutY() < backgroundLayer.getLayoutY() ? getLayoutY() : backgroundLayer.getLayoutY();
+		
+		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
+		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
+		
+		Layer mergeLayer = new Layer((int)(maxX - minX), (int)(maxY - minY));
+		
+		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX(), backgroundLayer.getLayoutY(), backgroundLayer.getLayoutX() + backgroundLayer.getWidth(), backgroundLayer.getLayoutY() + backgroundLayer.getHeight());
+		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX(), getLayoutY(), getLayoutX() + getWidth(), getLayoutY() + getHeight());
+		
+		mergeLayer.setLayoutX(minX);
+		mergeLayer.setLayoutY(minY);
 		Project.getInstance().getLayers().remove(this);
+		Project.getInstance().getLayers().remove(backgroundLayer);
+		Project.getInstance().addLayer(mergeLayer);
+		MainViewController.getInstance().getRightMenuController().createLayerList();
+		
 	}
 	
 	/**

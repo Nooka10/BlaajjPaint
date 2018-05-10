@@ -120,7 +120,13 @@ public class RightMenuController {
 	
 	@FXML
 	void fusionLayer(ActionEvent event) {
-		//Project.getInstance().getCurrentLayer().mergeLayers();
+		Layer currentLayer = Project.getInstance().getCurrentLayer();
+		int index = Project.getInstance().getLayers().indexOf(currentLayer);
+		if(index != Project.getInstance().getLayers().size()-1){
+			currentLayer.mergeLayers( Project.getInstance().getLayers().get(index+1));
+			
+		}
+		
 	}
 	
 	public void createLayerList() {
