@@ -25,7 +25,13 @@ public class BucketFill extends Tool {
 
     @Override
     protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
-        return null;
+        return new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                currentFill = new Fill();
+                
+            }
+        };
     }
 
     @Override
