@@ -25,14 +25,59 @@ public class Move extends Tool {
 	
 	double oldX;
 	double oldY;
-	
+
+	MoveSave currentSave;
+
+	public class MoveSave implements ICmd {
+
+		double oldXSave;
+		double oldYSave;
+		double newXSave;
+		double newYSave;
+
+		public MoveSave(){
+
+			oldXSave = Project.getInstance().getCurrentLayer().getLayoutX();
+			oldYSave = Project.getInstance().getCurrentLayer().getLayoutY();
+		}
+
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+
+		@Override
+		public void undo() throws UndoException {
+			newXSave = Project.getInstance().getCurrentLayer().getLayoutX();
+			newYSave = Project.getInstance().getCurrentLayer().getLayoutY();
+
+			Project.getInstance().getCurrentLayer().setLayoutX(oldXSave);
+			Project.getInstance().getCurrentLayer().setLayoutY(oldYSave);
+
+		}
+
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().getCurrentLayer().setLayoutX(newXSave);
+			Project.getInstance().getCurrentLayer().setLayoutY(newYSave);
+		}
+
+		@Override
+		public String toString(){
+			return "Move Layer";
+		}
+	}
+
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+
 				oldX = event.getX();
 				oldY = event.getY();
+
+				currentSave = new MoveSave();
 			}
 		};
 	}
@@ -43,7 +88,7 @@ public class Move extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				Project.getInstance().getCurrentLayer().setLayoutX(Project.getInstance().getCurrentLayer().getLayoutX() + event.getX() - oldX);
-				Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() +event.getY() - oldY);
+				Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() + event.getY() - oldY);
 				
 			}
 		};
@@ -54,7 +99,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				currentSave.execute();
 			}
 		};
 	}

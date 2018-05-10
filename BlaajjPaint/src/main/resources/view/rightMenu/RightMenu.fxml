@@ -17,20 +17,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rightMenu" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
+<AnchorPane fx:id="rightMenu" maxWidth="250.0" minWidth="250.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
 	<children>
 		<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
-				<Pane>
-					<children>
-						<ColorPicker fx:id="colorPicker" onAction="#selectColor" stylesheets="@RightMenuStyleSheet.css">
+						<ColorPicker fx:id="colorPicker" minWidth="230.0" onAction="#selectColor" stylesheets="@RightMenuStyleSheet.css">
 							<styleClass>
 								<String fx:value="menuButton" />
 								<String fx:value="colorPicker" />
 							</styleClass>
 						</ColorPicker>
-					</children>
-				</Pane>
 				<VBox>
 					<children>
 						<Label text="Historique">
@@ -38,9 +34,9 @@
 								<Font name="System Bold" size="24.0" />
 							</font>
 						</Label>
-						<ScrollPane fitToWidth="true" minHeight="50.0">
+						<ScrollPane fitToWidth="true" maxHeight="300.0" minHeight="150.0">
 							<content>
-								<VBox />
+								<VBox fx:id="historyList" minHeight="50.0" />
 							</content>
 						</ScrollPane>
 					</children>
@@ -55,23 +51,26 @@
 								<Font name="System Bold" size="24.0" />
 							</font>
 						</Label>
-                  <HBox prefHeight="31.0" prefWidth="200.0">
+                  <HBox prefHeight="30.0">
                      <children>
-                        <Label prefHeight="23.0" prefWidth="110.0" text="Opacité">
+                        <Label minWidth="100.0" text="Opacité">
                            <font>
                               <Font size="18.0" />
                            </font>
-                           <padding>
-                              <Insets left="30.0" />
-                           </padding>
+                           <HBox.margin>
+                              <Insets left="20.0" right="5.0" />
+                           </HBox.margin>
                         </Label>
-                        <TextField fx:id="opacityTextField" prefHeight="27.0" prefWidth="90.0" />
+                        <TextField fx:id="opacityTextField">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin></TextField>
                      </children>
                   </HBox>
                   <Slider fx:id="opacitySlider" blockIncrement="5.0" majorTickUnit="5.0" minorTickCount="1" snapToTicks="true" value="100.0" />
-						<ScrollPane fitToWidth="true" minHeight="50.0">
+						<ScrollPane fitToWidth="true" maxHeight="300.0" minHeight="150.0">
                      <content>
-                        <VBox fx:id="layersList" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox fx:id="layersList" minHeight="50.0" />
                      </content>
 						</ScrollPane>
 					</children>
@@ -84,11 +83,26 @@
 				</VBox>
 				<HBox spacing="5.0">
    <children>
-   					<Button fx:id="addNewLayer" mnemonicParsing="false" onAction="#addNewLayer" text="+" />
-                  <Button fx:id="deleteLayer" mnemonicParsing="false" onAction="#deleteLayer" text="-" />
-   					<Button fx:id="upLayer" mnemonicParsing="false" onAction="#upLayer" text="^" />
-   					<Button fx:id="downLayer" mnemonicParsing="false" onAction="#downLayer" text="v" />
-   					<Button fx:id="fusion" mnemonicParsing="false" onAction="#fusionLayer" text="fusion" />
+   					<Button fx:id="addNewLayer" mnemonicParsing="false" onAction="#addNewLayer" text="+">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="deleteLayer" mnemonicParsing="false" onAction="#deleteLayer" text="-">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
+   					<Button fx:id="upLayer" mnemonicParsing="false" onAction="#upLayer" text="^">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
+   					<Button fx:id="downLayer" mnemonicParsing="false" onAction="#downLayer" text="v">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
+   					<Button fx:id="fusion" mnemonicParsing="false" onAction="#fusionLayer" text="fusion">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
    </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />

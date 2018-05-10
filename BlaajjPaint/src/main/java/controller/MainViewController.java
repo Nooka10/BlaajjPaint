@@ -192,8 +192,6 @@ public class MainViewController {
 	}
 
 	public void openProject(){
-
-
 		FileChooser fileChooser = new FileChooser();
 
 		// Set extension filter
@@ -211,5 +209,4 @@ public class MainViewController {
 			SaveProjects.getInstance().openFile(file);
 		}
 	}
-
 }

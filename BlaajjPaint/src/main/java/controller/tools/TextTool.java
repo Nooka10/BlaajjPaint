@@ -47,6 +47,7 @@ public class TextTool extends Tool {
             textLayer.mergeLayers(oldCurrentLayer);
             Project.getInstance().setCurrentLayer(oldCurrentLayer);
             Project.getInstance().drawWorkspace();
+            text = "";
             addText.execute();
             addText = null; // end of the session of adding a text
         }
@@ -61,10 +62,15 @@ public class TextTool extends Tool {
         if(addText != null){
             GraphicsContext graphics = textLayer.getGraphicsContext2D();
             graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
-            graphics.fillText(text ,x ,y);
             graphics.setFont(font);
+            graphics.fillText(text ,x ,y);
             Project.getInstance().drawWorkspace();;
         }
+    }
+
+    @Override
+    public void CallbackOldToolChanged() {
+        validate();
     }
 
     @Override
@@ -74,8 +80,8 @@ public class TextTool extends Tool {
             public void handle(MouseEvent event) {
                 // first click
                 if(addText == null){
-                    oldCurrentLayer = Project.getInstance().getCurrentLayer();
                     addText = new AddText();
+                    oldCurrentLayer = Project.getInstance().getCurrentLayer();
                     textLayer = new Layer(Project.getInstance().getDimension());
                     textLayer.setVisible(true);
                     Project.getInstance().setCurrentLayer(textLayer);
