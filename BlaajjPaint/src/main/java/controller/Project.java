@@ -134,7 +134,7 @@ public class Project implements Serializable {
 		addLayer(new Layer(currentLayer));
 	}
 	
-	private void addLayer(Layer newLayer) {
+	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
