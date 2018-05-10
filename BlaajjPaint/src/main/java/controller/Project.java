@@ -12,22 +12,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Project {
+public class Project implements Serializable{
 	private Dimension dimension;
 	private LinkedList<Layer> layers = new LinkedList<>();
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
-	
-	//private StackPane pane = new StackPane();
-	
+
 	private Color currentColor;
 	
 	//private Rectangle clip;
@@ -37,18 +35,32 @@ public class Project {
 	public static Project getInstance() {
 		return projectInstance;
 	}
-	
+
 	private Project() {
 		currentColor = Color.BLACK;
 	}
-	
+
+	//*** GETTER  ***//
 	public Dimension getDimension() {
 		return dimension;
 	}
-	
-	public void setData(int width, int height) {
+
+	public Layer getCurrentLayer() {
+		return currentLayer;
+	}
+
+	//*** SETTER ***//
+	public void setCurrentColor(Color color) {
+		currentColor = color;
+		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
+	}
+
+	public void setData(int width, int height, boolean isNew) {
 		dimension = new Dimension(width, height);
-		setCurrentLayer(new Layer(width, height));
+
+		if(isNew)
+			setCurrentLayer(new Layer(width, height));
+
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
 		gc.setFill(Color.WHITE);
@@ -65,16 +77,15 @@ public class Project {
 				}
 			}
 		}
-		
-		layers.add(currentLayer);
+
+		if(isNew)
+			layers.add(currentLayer);
+
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
 	
-	public Layer getCurrentLayer() {
-		return currentLayer;
-	}
-	
+
 	public void drawWorkspace() {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
@@ -94,10 +105,7 @@ public class Project {
 		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
 	}
 	
-	public void setCurrentColor(Color color) {
-		currentColor = color;
-		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
-	}
+
 	
 	public Color getCurrentColor() {
 		return currentColor;
@@ -119,7 +127,7 @@ public class Project {
 		this.currentLayer = currentLayer;
 		addEventHandlers(Tool.getCurrentTool());
 	}
-	
+
 	public void addEventHandlers(Tool tool) {
 		if (this.currentLayer != null && tool != null) {
 			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
@@ -151,14 +159,19 @@ public class Project {
 			if (i > 0) {
 				chosenExtension = file.getPath().substring(i + 1);
 			}
+			boolean transparent = true;
 			if (chosenExtension.equals("png")) {
 				params.setFill(Color.TRANSPARENT);
+
 			} else if (chosenExtension.equals("jpg")) {
-				params.setFill(Color.WHITE);
+				//params.setFill(Color.TRANSPARENT);
+				//params.setFill(Color.WHITE);
+				transparent = false;
 			}
 			
 			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+
+				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvasJPG(1, params, transparent), null), chosenExtension, file);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
@@ -221,6 +234,50 @@ public class Project {
 	public Canvas getBackgroungImage() {
 		return backgroungImage;
 	}
+
+
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+
+		projectInstance = this;
+
+		layers = new LinkedList<>();
+
+		setData(s.readInt(), s.readInt(), false);
+
+		int nbCalques = s.readInt();
+
+
+		for(int i = 0; i < nbCalques; ++i){
+
+
+			addLayer((Layer) s.readObject());
+/*			System.out.println(l.toString());
+			layers.add(l);*/
+		}
+
+
+
+		setCurrentLayer(layers.getFirst());
+
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		drawWorkspace();
+	}
+
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		//s.defaultWriteObject();
+		// Dimentions du projet
+		s.writeInt(dimension.width);
+		s.writeInt(dimension.height);
+
+
+		// Claques
+		s.writeInt(layers.size());		// Nombre de qualques
+		for(Layer l: layers)
+			s.writeObject(l);
+
+	}
+
+
 	
 	public void zoom(double factor){
 		for (Layer l:layers) {

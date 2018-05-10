@@ -23,8 +23,6 @@ import java.io.File;
 public class MainViewController {
 	
 	private static MainViewController mainViewControllerInstance = new MainViewController(); // L'instance unique du singleton MainViewController
-	public SaveProjects saveBlaajj;
-	private Project project; // FIXME: laissé pour code Jerem... Voir si il peut utililser le Singleton de Project
 	private Main main; // Reference to the main application
 	@FXML
 	private javafx.scene.canvas.Canvas canvas;
@@ -83,29 +81,6 @@ public class MainViewController {
 	public ScrollPane getScrollPane() {
 		return scrollPane;
 	}
-	
-	
-	// --------------------------------------Partie Jerem. Était contenu dans MasterController--------------------------------------------------
-	private RecordCmd instance = RecordCmd.getInstance();
-	private SaveProjects saveProjects = SaveProjects.getInstance();
-	
-	public void newModel() {
-		project = Project.getInstance();
-	}
-	
-	public void openModel(File f) {
-		try {
-			project = (Project) saveProjects.rebuild(f);
-		} catch (Exception e) {
-			//todo
-		}
-	}
-	
-	public void saveAsModel(File f) {
-		saveProjects.generateCompact(f, project);
-	}
-	// -------------------------------------- Fin partie Jerem. Était contenu dans MasterController--------------------------------------------------
-	
 	
 	public AnchorPane getParamBar() {
 		return paramBar;

@@ -55,7 +55,7 @@ public class WindowsNewProject {
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		
-		Project.getInstance().setData(width, height);
+		Project.getInstance().setData(width, height, true);
 		
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close();
