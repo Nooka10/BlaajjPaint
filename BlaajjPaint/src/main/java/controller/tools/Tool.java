@@ -1,8 +1,11 @@
 package controller.tools;
 
 
+import controller.MainViewController;
 import controller.Project;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -14,13 +17,15 @@ public abstract class Tool {
 	protected final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers(); // l'évènement déclanché lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
 	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers(); // l'évènement déclanché lorsqu'on relache le bouton de la souris
 	
-	public enum ToolType {PENCIL, ERASER, PIPETTE, ZOOM, MOVE, OTHER} // énumération de tout les types d'outils gérés
+	public enum ToolType {PENCIL, ERASER, PIPETTE, ZOOM, MOVE, BUCKETFILL, OTHER} // énumération de tout les types d'outils gérés
 	
 	public static boolean toolHasChanged = false; // Vrai lorsqu'on vient de changer d'outil
 	
 	protected ToolType toolType = ToolType.OTHER; // le type de l'outil
 	
 	private static Tool currentTool; // l'outil actuellement sélectionné
+
+	private Cursor oldCursor;
 	
 	/**
 	 * Retourne l'outil actuellement sélectionné
@@ -100,4 +105,15 @@ public abstract class Tool {
 	 * @return l'évènement déclanché par cet outil lorsqu'on relâche le bouton de la la souris
 	 */
 	protected abstract EventHandler<MouseEvent> createMouseReleasedEventHandlers();
+
+	protected void changeCursor(Cursor cursor){
+		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
+		oldCursor = scene.getCursor();
+		scene.setCursor(cursor);
+	}
+
+	protected void resetOldCursor(){
+		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
+		scene.setCursor(oldCursor);
+	}
 }
