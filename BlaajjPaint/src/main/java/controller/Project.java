@@ -25,8 +25,7 @@ public class Project implements Serializable {
 	private Layer currentLayer;
 	
 	private Color currentColor;
-	
-	//private Rectangle clip;
+
 	
 	private static Project projectInstance = new Project();
 	
@@ -53,6 +52,12 @@ public class Project implements Serializable {
 		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 	}
 
+	/**
+	 * Méthode qui crée l'état initial du projet.
+	 * @param width
+	 * @param height
+	 * @param isNew		Indique si on doit créer un nouveau calque de fond
+	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
@@ -66,6 +71,7 @@ public class Project implements Serializable {
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, width, height);
 		gc.setFill(Color.LIGHTGRAY);
+
 		
 		int rectSize = 10;
 		for (int i = 0; i < width; i = i + rectSize) {
@@ -89,20 +95,12 @@ public class Project implements Serializable {
 	 */
 	public void close(){
 
-		//projectInstance = null;
-
-		/*if(backgroungImage != null) {
-			backgroungImage.getGraphicsContext2D().setFill(Color.WHITE);
-			backgroungImage = null;
-		}*/
-
 		backgroungImage = null;
 		dimension = null;
 		layers = null;
 		currentLayer = null;
 
 		Layer.reset();
-
 	}
 	
 	
@@ -110,12 +108,7 @@ public class Project implements Serializable {
 		Group layersGroup = new Group();
 		layersGroup.getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
-		
-		// centre le clip
-		//clip.setLayoutX(Math.round((MainViewController.getInstance().getScrollPane().getWidth() - dimension.width) / 2));
-		//clip.setLayoutY(Math.round((MainViewController.getInstance().getScrollPane().getHeight() - dimension.height) / 2));
-		//MainViewController.getInstance().getScrollPane().setClip(clip);
-		
+
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
@@ -261,8 +254,6 @@ public class Project implements Serializable {
 			if(l.id() > maxCount)
 				maxCount = l.id();
 
-/*			System.out.println(l.toString());
-			layers.add(l);*/
 		}
 
 		Layer.setCount(maxCount);
