@@ -117,4 +117,12 @@ public class RecordCmd {
         undoStack.push(cmd);
         redoStack.clear();
     }
+
+    /**
+     * Nettoie la classe (remet à 0)
+     */
+    public void clear(){
+        undoStack.clear();
+        redoStack.clear();
+    }
 }

@@ -117,7 +117,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleClose(ActionEvent event) {
-		MainViewController.getInstance().closePorject();
+		MainViewController.getInstance().closeProject();
 
 	}
 	
@@ -163,7 +163,7 @@ public class MenuBarController {
 		
 		
 		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		MainViewController.getInstance().getRightMenuController().createLayerList();
 	}
 	
 	@FXML

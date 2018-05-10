@@ -24,11 +24,12 @@ public abstract class Tool {
 	protected ToolType toolType = ToolType.OTHER; // le type de l'outil
 	
 	private static Tool currentTool; // l'outil actuellement sélectionné
-
+	
 	private Cursor oldCursor;
 	
 	/**
 	 * Retourne l'outil actuellement sélectionné
+	 *
 	 * @return l'outil actuellement sélectionné
 	 */
 	public static Tool getCurrentTool() {
@@ -36,36 +37,68 @@ public abstract class Tool {
 	}
 	
 	/**
+	 * Appelé sur le tool qui est sur le point de perdre la main alors qu'il était current tool
+	 */
+	public void CallbackOldToolChanged() {
+	}
+	
+	/**
+	 * Appelé sur le tool qui viens de prendre la main en tant que current tool
+	 */
+	public void CallbackNewToolChanged() {
+	}
+	
+	
+	/**
 	 * Remplace l'outil actuellement sélectionné par celui passé en paramètre
+	 *
 	 * @param currentTool, l'outil nouvellement sélectionné
 	 */
 	public static void setCurrentTool(Tool currentTool) {
-		if(Tool.currentTool != currentTool){ // l'outil ne change que s'il n'est pas déjà l'outil sélectionné
+		if (Tool.currentTool != currentTool) { // l'outil ne change que s'il n'est pas déjà l'outil sélectionné
+			
+			// appel de la fonction de callback sur l'ancien outil
+			// pour le notifier qu'il n'est plus sélectionné
+			
+			if (Tool.currentTool != null) {
+				Tool.currentTool.CallbackOldToolChanged();
+			}
+			
 			toolHasChanged = true;
+			
 			Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
+			
 			Tool.currentTool = currentTool;
+			
 			Project.getInstance().addEventHandlers(Tool.currentTool); // on met les EventHandler de l'outil nouvellement sélectionné
+			
+			// appel de la fonction de callback sur le nouvel outil
+			// pour le notifier qu'il a été sélectionné
+			Tool.currentTool.CallbackNewToolChanged();
 		}
 	}
 	
 	/**
 	 * Indique si l'outil sélectionné a changé
+	 *
 	 * @return true si un nouvel outil a été sélectionné, false sinon
 	 */
-	public static boolean getToolHasChanged(){
+	public static boolean getToolHasChanged() {
 		return toolHasChanged;
 	}
 	
 	/**
 	 * Permet de modifier la valeur du booléen indiquant si l'outil sélectionné a changé dernièrement par la valeur passée en paramètre
+	 *
 	 * @param value, true si l'outil a été changé dernièrement, false sinon
 	 */
-	public static void setToolHasChanged(boolean value){
+	public static void setToolHasChanged(boolean value) {
 		toolHasChanged = value;
 	}
 	
 	/**
 	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsqu'on appuie sur le bouton de la la souris
+	 *
 	 * @return l'évènement déclanché par l'outil actuellement sélectionné lorsqu'on appuie sur le bouton de la la souris
 	 */
 	public EventHandler<MouseEvent> getCurrentOnMousePressedEventHandler() {
@@ -74,6 +107,7 @@ public abstract class Tool {
 	
 	/**
 	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
+	 *
 	 * @return l'évènement déclanché par l'outil actuellement sélectionné lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
 	 */
 	public EventHandler<MouseEvent> getCurrentOnMouseDraggedEventHandler() {
@@ -82,6 +116,7 @@ public abstract class Tool {
 	
 	/**
 	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsqu'on relâche le bouton de la la souris
+	 *
 	 * @return l'évènement déclanché par l'outil actuellement sélectionné lorsqu'on relâche le bouton de la la souris
 	 */
 	public EventHandler<MouseEvent> getCurrentOnMouseRelesedEventHandler() {
@@ -90,29 +125,32 @@ public abstract class Tool {
 	
 	/**
 	 * Crée l'évènement déclanché par cet outil lorsqu'on appuie sur le bouton de la la souris
+	 *
 	 * @return l'évènement déclanché par cet outil lorsqu'on appuie sur le bouton de la la souris
 	 */
 	protected abstract EventHandler<MouseEvent> createMousePressedEventHandlers();
 	
 	/**
 	 * Crée l'évènement déclanché par cet outil lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
+	 *
 	 * @return l'évènement déclanché par cet outil lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
 	 */
 	protected abstract EventHandler<MouseEvent> createMouseDraggedEventHandlers();
 	
 	/**
 	 * Crée l'évènement déclanché par cet outil lorsqu'on relâche le bouton de la la souris
+	 *
 	 * @return l'évènement déclanché par cet outil lorsqu'on relâche le bouton de la la souris
 	 */
 	protected abstract EventHandler<MouseEvent> createMouseReleasedEventHandlers();
-
-	protected void changeCursor(Cursor cursor){
+	
+	protected void changeCursor(Cursor cursor) {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
 		oldCursor = scene.getCursor();
 		scene.setCursor(cursor);
 	}
-
-	protected void resetOldCursor(){
+	
+	protected void resetOldCursor() {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
 		scene.setCursor(oldCursor);
 	}

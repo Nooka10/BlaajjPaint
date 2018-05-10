@@ -70,9 +70,9 @@
                   </HBox>
                   <Slider fx:id="opacitySlider" blockIncrement="5.0" majorTickUnit="5.0" minorTickCount="1" snapToTicks="true" value="100.0" />
 						<ScrollPane fitToWidth="true" minHeight="50.0">
-							<content>
-								<VBox fx:id="LayersList" />
-							</content>
+                     <content>
+                        <VBox fx:id="layersList" prefHeight="200.0" prefWidth="100.0" />
+                     </content>
 						</ScrollPane>
 					</children>
 					<opaqueInsets>
