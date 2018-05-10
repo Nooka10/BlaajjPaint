@@ -19,9 +19,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
-
-	private int id;					// pas final pour la serealisation
-	private static int count = 1;
+	final static int INITIAL_ID = 1;
+	private int id;								//
+	private static int count = INITIAL_ID;		// id du prochain calque qui sera créé
 
 	public Layer(){
 		//id = count ++;
@@ -55,6 +55,18 @@ public class Layer extends Canvas implements Serializable {
 		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4),0,0,getWidth(),getHeight());
 		setVisible(visibility);
 		toCopy.setVisible(visibility);
+	}
+
+	/**
+	 *
+	 * @param _count
+	 */
+	public static void setCount(int _count){
+		count = ++_count;
+	}
+
+	public int id(){
+		return id;
 	}
 
 	// TODO : Antoine
@@ -154,6 +166,11 @@ public class Layer extends Canvas implements Serializable {
 		public void redo() throws UndoException {
 			setOpacity(newOpacity / 100);
 		}
+
+		@Override
+		public String toString() {
+			return "Opacity Change from " +oldOpacity + " to "+ newOpacity;
+		}
 	}
 
 	public void setLayerOpacity(double opacity) {
@@ -203,4 +220,10 @@ public class Layer extends Canvas implements Serializable {
 		c.snapshot(params, writableImage);
 		return writableImage;
 	}
+
+	public static void reset(){
+		count  = INITIAL_ID;
+	}
+
+
 }

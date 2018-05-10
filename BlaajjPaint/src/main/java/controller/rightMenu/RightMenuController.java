@@ -124,7 +124,7 @@ public class RightMenuController {
 	}
 	
 	public void updateLayerList() {
-		LayersList.getChildren().clear();
+		clearLayerList();
 		for (Layer layer : Project.getInstance().getLayers()) {
 			HBox newEl = createLayoutUI(layer);
 			LayersList.getChildren().add(newEl);
@@ -135,5 +135,9 @@ public class RightMenuController {
 				newEl.setBackground(unfocusBackground);
 			}
 		}
+	}
+
+	public void clearLayerList(){
+		LayersList.getChildren().clear();
 	}
 }

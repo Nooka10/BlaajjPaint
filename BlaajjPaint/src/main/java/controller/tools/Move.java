@@ -5,8 +5,11 @@ package controller.tools;
 
 import controller.MainViewController;
 import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import utils.UndoException;
 
 /**
  * Classe implémentant l'outil de déplacement

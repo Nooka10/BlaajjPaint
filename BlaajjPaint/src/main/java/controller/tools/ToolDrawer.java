@@ -63,5 +63,10 @@ public abstract class ToolDrawer extends Tool {
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}
+
+		@Override
+		public String toString() {
+			return "Drawing Tool";
+		}
 	}
 }

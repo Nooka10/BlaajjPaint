@@ -55,7 +55,7 @@ public class ToolBarController {
 	private ToggleButton handTool;
 	
 	@FXML
-	private ToggleButton blurTool;
+	private ToggleButton bucketFillTool;
 	
 	@FXML
 	private ToggleButton selectTool;
@@ -121,8 +121,12 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	public void handleBlur(ActionEvent event) {
-	
+	public void handleBucketFill(ActionEvent event) {
+		Tool.setCurrentTool(BucketFill.getInstance());
+		if(Tool.getToolHasChanged()){
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
