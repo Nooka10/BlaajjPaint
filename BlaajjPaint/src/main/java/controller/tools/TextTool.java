@@ -35,6 +35,7 @@ public class TextTool extends Tool {
 
     public void setFont(Font font){
         this.font = font;
+        changeTextOnLayout();
     }
 
     public Font getFont(){
@@ -42,11 +43,13 @@ public class TextTool extends Tool {
     }
 
     public void validate(){
-        textLayer.mergeLayers(Project.getInstance().getCurrentLayer());
-        addText.execute();
-        addText = null; // end of the session of adding a text
-        Project.getInstance().setCurrentLayer(oldCurrentLayer);
-        addText.execute();
+        if(addText != null) {
+            textLayer.mergeLayers(oldCurrentLayer);
+            Project.getInstance().setCurrentLayer(oldCurrentLayer);
+            Project.getInstance().drawWorkspace();
+            addText.execute();
+            addText = null; // end of the session of adding a text
+        }
     }
 
     public void changeTextValue(String text){
@@ -59,6 +62,7 @@ public class TextTool extends Tool {
             GraphicsContext graphics = textLayer.getGraphicsContext2D();
             graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
             graphics.fillText(text ,x ,y);
+            graphics.setFont(font);
             Project.getInstance().drawWorkspace();;
         }
     }
@@ -76,6 +80,7 @@ public class TextTool extends Tool {
                     textLayer.setVisible(true);
                     Project.getInstance().setCurrentLayer(textLayer);
                     Project.getInstance().getLayers().addFirst(textLayer);
+                    Project.getInstance().drawWorkspace();
                 }
                 // set new position
                 x = (int)event.getX();
