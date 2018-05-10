@@ -2,18 +2,24 @@ package controller.rightMenu;
 
 import controller.Layer;
 import controller.Project;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.Collections;
+
 public class RightMenuController {
 	@FXML
-	private VBox LayersList;
+	private VBox layersList;
 	
 	@FXML
 	private Button fusion;
@@ -38,7 +44,6 @@ public class RightMenuController {
 	
 	@FXML
 	private AnchorPane rightMenu;
-	
 	
 	// LayerList config
 	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -71,21 +76,41 @@ public class RightMenuController {
 	@FXML
 	void addNewLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
+		createLayerList();
 	}
 	
 	@FXML
 	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
-	}
-	
-	@FXML
-	void upLayer(ActionEvent event) {
-		Project.getInstance().currentLayerToFront();
+		createLayerList();
 	}
 	
 	@FXML
 	void downLayer(ActionEvent event) {
-		Project.getInstance().currentLayerToBack();
+		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
+		if (index < Project.getInstance().getLayers().size() - 1) {
+			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
+			
+			Node toMove = layersList.getChildren().get(index);
+			layersList.getChildren().remove(index);
+			layersList.getChildren().add(index + 1, toMove);
+			
+			Project.getInstance().drawWorkspace();
+		}
+	}
+	
+	@FXML
+	void upLayer(ActionEvent event) {
+		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
+		
+		if (index != 0) {
+			Collections.swap(Project.getInstance().getLayers(), index, index - 1);
+			
+			Node toMove = layersList.getChildren().get(index);
+			layersList.getChildren().remove(index);
+			layersList.getChildren().add(index - 1, toMove);
+			Project.getInstance().drawWorkspace();
+		}
 	}
 	
 	@FXML
@@ -93,51 +118,47 @@ public class RightMenuController {
 		//Project.getInstance().getCurrentLayer().mergeLayers();
 	}
 	
-	private HBox createLayoutUI(Layer layer) {
-		HBox container = new HBox();
-		CheckBox visibility = new CheckBox();
-		Label layerName = new Label(layer.toString());
+	public void createLayerList() {
+		layersList.getChildren().clear();
+		for (Layer layer : Project.getInstance().getLayers()) {
+			addNewLayer(layer);
+		}
 		
-		
-		visibility.setSelected(layer.isVisible());
-		opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
-		
-		container.setOnMouseClicked((e) ->
-		{
-			Project.getInstance().setCurrentLayer(layer);
-			opacitySlider.setValue(layer.getLayerOpacity());
-			opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
-			updateLayerList();
-		});
-		
-		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				layer.setVisible(new_val);
-				Project.getInstance().drawWorkspace();
-			}
-		});
-		
-		
-		container.getChildren().addAll(visibility, layerName);
-		
-		return container;
+		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
+		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
 	}
 	
-	public void updateLayerList() {
-		clearLayerList();
-		for (Layer layer : Project.getInstance().getLayers()) {
-			HBox newEl = createLayoutUI(layer);
-			LayersList.getChildren().add(newEl);
+	public void deleteLayer(int index) {
+		layersList.getChildren().remove(index);
+	}
+	
+	public void addNewLayer(Layer layer) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/Layer.fxml"));
+			Parent newLayer = fxmlLoader.load();
+			LayerController l = fxmlLoader.getController();
+			l.setLayerName(layer);
+			layersList.getChildren().add(newLayer);
+			
 			if (layer.equals(Project.getInstance().getCurrentLayer())) {
-				newEl.setBackground(focusBackground);
-				// System.out.println("current Layer: " + layer.toString());
+				l.getLayerElem().setBackground(focusBackground);
 			} else {
-				newEl.setBackground(unfocusBackground);
+				l.getLayerElem().setBackground(unfocusBackground);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-
-	public void clearLayerList(){
-		LayersList.getChildren().clear();
+	
+	public void clearLayerList() {
+		layersList.getChildren().clear();
+	}
+	
+	public void setOpacitySlider(double opacitySlider) {
+		this.opacitySlider.setValue(opacitySlider);
+	}
+	
+	public void setOpacityTextField(String opacityTextField) {
+		this.opacityTextField.setText(opacityTextField);
 	}
 }

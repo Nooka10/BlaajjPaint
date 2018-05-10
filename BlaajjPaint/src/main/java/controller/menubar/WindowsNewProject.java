@@ -27,7 +27,7 @@ public class WindowsNewProject {
 	private void initialize() {
 
 
-		MainViewController.getInstance().closePorject();
+		MainViewController.getInstance().closeProject();
 
 		cancel.setCancelButton(true);
 		createButton.setDefaultButton(true);
@@ -57,6 +57,10 @@ public class WindowsNewProject {
 	
 	@FXML
 	void createNewProject(ActionEvent event) {
+
+		// Netoyage du projet
+        MainViewController.getInstance().closeProject();
+
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		

@@ -6,7 +6,6 @@ import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import controller.tools.Zoom;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -178,17 +177,23 @@ public class MainViewController {
 		zoomLabel.setText(text);
 	}
 
+
+
 	/**
 	 * Permet de fermer le projet en cours d'execution
+	 * Permet aussi le nettoyage du projet (mise à 0)
 	 */
-	public void closePorject(){
+	public void closeProject(){
 		Project.getInstance().close();
+		RecordCmd.getInstance().clear();
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
 		SaveProjects.getInstance().clear();
 	}
 
 	public void openProject(){
+
+
 		FileChooser fileChooser = new FileChooser();
 
 		// Set extension filter
@@ -202,9 +207,9 @@ public class MainViewController {
 			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
 			System.out.println("path fichier choisi: " + file.getPath());
 
-			closePorject();
+			closeProject();
 			SaveProjects.getInstance().openFile(file);
-
 		}
 	}
+
 }

@@ -189,8 +189,9 @@ public class Layer extends Canvas implements Serializable {
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
 		setLayerOpacity(s.readDouble());
-		Image image;
-		image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
+		super.setVisible(s.readBoolean());
+
+		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 
 		this.getGraphicsContext2D().drawImage(image, 0, 0);
 
@@ -202,8 +203,8 @@ public class Layer extends Canvas implements Serializable {
 		s.writeInt(id);
         s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
-
 		s.writeDouble(getLayerOpacity());
+		s.writeBoolean(super.isVisible());
 
         ImageIO.write(SwingFXUtils.fromFXImage(generateImage(this, (int)super.getWidth(), (int) super.getHeight()), null), "png", s);
 	}
