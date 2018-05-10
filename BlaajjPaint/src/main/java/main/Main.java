@@ -24,7 +24,7 @@ public class Main extends Application {
 		
 		initRootLayout();
 	}
-	
+
 	/**
 	 * Initialise la fenêtre de base avec tous ses fxml ainsi que tous les controllers associés.
 	 */

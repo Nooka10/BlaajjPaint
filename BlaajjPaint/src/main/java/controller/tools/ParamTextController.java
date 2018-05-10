@@ -64,6 +64,6 @@ public class ParamTextController {
 
     @FXML
     void changeValue(ActionEvent event) {
-        textTool.changeTextValue();
+        textTool.changeTextValue(textValue.getText());
     }
 }
