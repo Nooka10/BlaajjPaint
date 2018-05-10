@@ -1,5 +1,6 @@
 package controller;
 
+import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
@@ -176,17 +177,23 @@ public class MainViewController {
 		zoomLabel.setText(text);
 	}
 
+
+
 	/**
 	 * Permet de fermer le projet en cours d'execution
+	 * Permet aussi le nettoyage du projet (mise à 0)
 	 */
 	public void closeProject(){
 		Project.getInstance().close();
+		RecordCmd.getInstance().clear();
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
 		SaveProjects.getInstance().clear();
 	}
 
 	public void openProject(){
+
+
 		FileChooser fileChooser = new FileChooser();
 
 		// Set extension filter
@@ -202,7 +209,7 @@ public class MainViewController {
 
 			closeProject();
 			SaveProjects.getInstance().openFile(file);
-
 		}
 	}
+
 }

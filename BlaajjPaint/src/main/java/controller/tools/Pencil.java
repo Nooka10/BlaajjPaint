@@ -6,6 +6,8 @@ package controller.tools;
 import controller.Project;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * Classe implémentant l'outil pinceau
@@ -46,7 +48,10 @@ public class Pencil extends ToolDrawer {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().beginPath();
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
+				
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
+
+
 				//Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}

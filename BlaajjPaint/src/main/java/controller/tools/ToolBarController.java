@@ -20,7 +20,9 @@ import java.io.IOException;
 public class ToolBarController {
 	
 	private ParamDrawToolController paramDrawToolControler;
-	
+
+	private ParamTextController paramTextController;
+
 	private Parent paramBar;
 	
 	/* attributs pour FXML */
@@ -132,7 +134,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleAddText(ActionEvent event) {
-	
+		Tool.setCurrentTool(TextTool.getInstance());
+		if(Tool.getToolHasChanged()){
+			addParamTextBar("/view/tools/ParamText.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -186,6 +192,22 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
+
+	// redondant à voir si on peut faire mieux (James)
+    private void addParamTextBar(String FXMLpath) {
+        if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
+            closeCurrentParamBar();
+        }
+        // on crée la nouvelle barre de paramètre
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
+            paramBar = fxmlLoader.load();
+            paramTextController = fxmlLoader.getController();
+            MainViewController.getInstance().getParamBar().getChildren().add(paramBar); // on ajoute la barre de paramètre au MainViewController
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
