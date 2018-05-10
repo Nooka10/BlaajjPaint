@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.io.*;
 import java.util.Collections;
@@ -21,7 +20,7 @@ import java.util.LinkedList;
 
 public class Project implements Serializable{
 	private Dimension dimension;
-	private LinkedList<Layer> layers = new LinkedList<>();
+	private LinkedList<Layer> layers;
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
@@ -40,6 +39,7 @@ public class Project implements Serializable{
 		currentColor = Color.BLACK;
 	}
 
+
 	//*** GETTER  ***//
 	public Dimension getDimension() {
 		return dimension;
@@ -55,7 +55,8 @@ public class Project implements Serializable{
 		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 	}
 
-	public void setData(int width, int height, boolean isNew) {
+	public void initData(int width, int height, boolean isNew) {
+		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
 
 		if(isNew)
@@ -83,6 +84,27 @@ public class Project implements Serializable{
 
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
+	}
+
+	/**
+	 * Méthode qui ferme un projet.
+	 */
+	public void close(){
+
+		//projectInstance = null;
+
+		/*if(backgroungImage != null) {
+			backgroungImage.getGraphicsContext2D().setFill(Color.WHITE);
+			backgroungImage = null;
+		}*/
+
+		backgroungImage = null;
+		dimension = null;
+		layers = null;
+		currentLayer = null;
+
+		Layer.reset();
+
 	}
 	
 
@@ -236,26 +258,35 @@ public class Project implements Serializable{
 	}
 
 
+	//*** SERIALISATION  ***//
+	/**
+	 * Permet de dé-serialiser la projet à l'aide de l'interface Serializable
+	 * @param s
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 
+		// pour pas recréer une instance de projet
 		projectInstance = this;
 
-		layers = new LinkedList<>();
-
-		setData(s.readInt(), s.readInt(), false);
+		initData(s.readInt(), s.readInt(), false);
 
 		int nbCalques = s.readInt();
 
-
+		int maxCount = 1;
 		for(int i = 0; i < nbCalques; ++i){
 
+			Layer l = (Layer) s.readObject();
+			addLayer(l);
+			if(l.id() > maxCount)
+				maxCount = l.id();
 
-			addLayer((Layer) s.readObject());
 /*			System.out.println(l.toString());
 			layers.add(l);*/
 		}
 
-
+		Layer.setCount(maxCount);
 
 		setCurrentLayer(layers.getFirst());
 
@@ -263,6 +294,11 @@ public class Project implements Serializable{
 		drawWorkspace();
 	}
 
+	/**
+	 * Permet de serialiser la projet à l'aide de l'interface Serializable
+	 * @param s
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		//s.defaultWriteObject();
 		// Dimentions du projet
@@ -272,9 +308,13 @@ public class Project implements Serializable{
 
 		// Claques
 		s.writeInt(layers.size());		// Nombre de qualques
-		for(Layer l: layers)
-			s.writeObject(l);
 
+		Iterator li = layers.descendingIterator();
+
+		while(li.hasNext()) {
+			//System.out.println(li.next());
+			s.writeObject(li.next());
+		}
 	}
 
 

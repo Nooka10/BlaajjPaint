@@ -37,21 +37,7 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleOpen(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		// Show save file dialog
-		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
-		
-		if (file != null) {
-			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
-			System.out.println("path fichier choisi: " + file.getPath());
-
-			SaveProjects.getInstance().openFile(file);
-		}
+		MainViewController.getInstance().openProject();
 	}
 	
 	@FXML
@@ -123,10 +109,16 @@ public class MenuBarController {
 		
 		Project.getInstance().importImage(file);
 	}
-	
+
+
+	/**
+	 * Fermeture du projet en cours d'execution.
+	 * @param event
+	 */
 	@FXML
 	public void handleClose(ActionEvent event) {
-	
+		MainViewController.getInstance().closePorject();
+
 	}
 	
 	@FXML
@@ -186,6 +178,8 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleHelp(ActionEvent event) {
-	
+
+
+
 	}
 }

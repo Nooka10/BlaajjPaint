@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import main.Main;
 
 import java.io.File;
@@ -78,6 +79,10 @@ public class MainViewController {
 	public ScrollPane getScrollPane() {
 		return scrollPane;
 	}
+
+	public void resetScrollPane() {
+		scrollPane = new ScrollPane();
+	}
 	
 	public AnchorPane getParamBar() {
 		return paramBar;
@@ -90,6 +95,7 @@ public class MainViewController {
 	@FXML
 	private void KeyPressed(KeyEvent event) {
 		KeyCombination cntrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN);
+		KeyCombination cntrlS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlMajZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHIFT_DOWN, KeyCodeCombination.CONTROL_DOWN);
@@ -119,6 +125,11 @@ public class MainViewController {
 		// Save As
 		if (cntrlMajS.match(event)) {
 			menuBarController.handleSaveAs(null);
+		}
+
+		// Save
+		if (cntrlS.match(event)) {
+			menuBarController.handleSave(null);
 		}
 		
 		// Add new layer
@@ -165,5 +176,35 @@ public class MainViewController {
 	
 	public void setTextZoomLabel(String text) {
 		zoomLabel.setText(text);
+	}
+
+	/**
+	 * Permet de fermer le projet en cours d'execution
+	 */
+	public void closePorject(){
+		Project.getInstance().close();
+		MainViewController.getInstance().getRightMenuController().clearLayerList();
+		MainViewController.getInstance().getScrollPane().setContent(null);
+		SaveProjects.getInstance().clear();
+	}
+
+	public void openProject(){
+		FileChooser fileChooser = new FileChooser();
+
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
+		fileChooser.getExtensionFilters().add(extFilter);
+
+		// Show save file dialog
+		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
+
+		if (file != null) {
+			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
+			System.out.println("path fichier choisi: " + file.getPath());
+
+			closePorject();
+			SaveProjects.getInstance().openFile(file);
+
+		}
 	}
 }
