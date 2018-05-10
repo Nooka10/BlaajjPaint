@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 
@@ -52,7 +53,7 @@ public class ParamTextController {
     }
 
     @FXML
-    void changeFontText(ActionEvent event) {
+        void changeFontText(KeyEvent event) {
         sliderSizeFont.setValue(Integer.parseInt(textFieldSizeFont.getText()));
         textTool.setFont(new Font(fontList.getValue(),sliderSizeFont.getValue()));
     }
@@ -63,7 +64,7 @@ public class ParamTextController {
     }
 
     @FXML
-    void changeValue(ActionEvent event) {
-        textTool.changeTextValue();
+    void changeValue(KeyEvent event) {
+        textTool.changeTextValue(textValue.getText());
     }
 }
