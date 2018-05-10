@@ -84,7 +84,8 @@ public abstract class ShapeDrawer extends Tool {
                 throw new UndoException();
             }
             redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
+            Project.getInstance().getLayers().removeFirst();
+            Project.getInstance().drawWorkspace();
             undosave = null;
         }
 
@@ -94,7 +95,9 @@ public abstract class ShapeDrawer extends Tool {
                 throw new UndoException();
             }
             undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+            Layer redoLayer = new Layer((int)redosave.getWidth(), (int)redosave.getHeight());
+            redoLayer.getGraphicsContext2D().drawImage(redosave,0,0);
+            Project.getInstance().addLayer(redoLayer);
             redosave = null;
         }
     }

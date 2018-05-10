@@ -46,6 +46,7 @@ public class BlaajjRectangle extends ShapeDrawer {
         shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
         shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, currentOnMouseRelesedEventHandler);
         //Project.getInstance().addEventHandlers(Tool.getCurrentTool());
+        Project.getInstance().drawWorkspace();
     }
 
 
