@@ -138,7 +138,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleAddShape(ActionEvent event) {
-	
+		Tool.setCurrentTool(BlaajjRectangle.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
