@@ -10,7 +10,9 @@ import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
@@ -29,7 +31,8 @@ public class BucketFill extends Tool {
             @Override
             public void handle(MouseEvent event) {
                 currentFill = new Fill();
-                
+                PixelWriter pixelWriter = Project.getInstance().getCurrentLayer().get;
+
             }
         };
     }
