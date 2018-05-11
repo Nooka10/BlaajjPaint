@@ -88,7 +88,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleCrop(ActionEvent event) {
-	
+		Tool.setCurrentTool(Crop.getInstance());
+		if(Tool.getToolHasChanged()){
+			addParamBar("/view/tools/ParamCrop.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
