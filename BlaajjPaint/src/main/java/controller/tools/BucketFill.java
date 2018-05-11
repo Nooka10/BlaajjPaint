@@ -158,7 +158,7 @@ public class BucketFill extends Tool {
 	/**
 	 * Commande pour remplir une forme - utile pour le undo redo
 	 */
-	class Fill implements ICmd {
+	class Fill extends ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private SnapshotParameters params;

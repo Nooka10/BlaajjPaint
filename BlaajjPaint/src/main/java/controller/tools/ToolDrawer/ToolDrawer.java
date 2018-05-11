@@ -27,7 +27,7 @@ public abstract class ToolDrawer extends Tool {
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 	
-	class Trait implements ICmd {
+	class Trait extends ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private SnapshotParameters params;
