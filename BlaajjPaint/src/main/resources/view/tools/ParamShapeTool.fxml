@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="paramDrawTools" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolDrawer.ParamDrawToolController">
+<HBox fx:id="paramShapeTools" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.Shapes.ParamShapeController">
    <children>
+      <ToggleButton fx:id="emptyRect" mnemonicParsing="false" onAction="#handleEmptyRect" selected="true" text="EmptyRect" />
+      <ToggleButton fx:id="filledRect" mnemonicParsing="false" onAction="#handleFilledRect" text="FilledRect" />
+      <ToggleButton fx:id="emptyEllipse" mnemonicParsing="false" onAction="#handleEmptyEllipse" text="EmptyEllipse" />
+      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="FilledEllipse" />
       <Label text="Épaisseur">
          <font>
             <Font size="18.0" />
