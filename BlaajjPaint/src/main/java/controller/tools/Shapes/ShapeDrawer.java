@@ -23,6 +23,7 @@ public abstract class ShapeDrawer extends Tool {
     protected double startPosY;
     protected double width;
     protected double height;
+    protected String tooltipHistory = "ShapeDrawer";
 
 
     @Override
@@ -83,7 +84,7 @@ public abstract class ShapeDrawer extends Tool {
                 System.out.println("Dans mouseRelased");
                 Project.getInstance().getLayers().remove(shapeLayer);
                 Project.getInstance().addLayer(shapeLayer);
-                MainViewController.getInstance().getRightMenuController().createLayerList();
+                MainViewController.getInstance().getRightMenuController().updateLayerList();
                 CallbackNewToolChanged();
                 currentShapeSave.execute();
 
@@ -127,6 +128,11 @@ public abstract class ShapeDrawer extends Tool {
         }
 
         @Override
+        public String toString(){
+            return tooltipHistory;
+        }
+
+        @Override
         public void execute() {
             RecordCmd.getInstance().saveCmd(this);
         }
@@ -144,7 +150,7 @@ public abstract class ShapeDrawer extends Tool {
             MainViewController.getInstance().getRightMenuController().deleteLayer(0);
             Project.getInstance().setCurrentLayer(Project.getInstance().getLayers().getFirst());
             Project.getInstance().drawWorkspace();
-            MainViewController.getInstance().getRightMenuController().createLayerList();
+            MainViewController.getInstance().getRightMenuController().updateLayerList();
             undosave = null;
         }
 
@@ -156,7 +162,7 @@ public abstract class ShapeDrawer extends Tool {
             undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
             Layer redoLayer = new Layer((int)redosave.getWidth(), (int)redosave.getHeight());
             redoLayer.getGraphicsContext2D().drawImage(redosave,0,0);
-            MainViewController.getInstance().getRightMenuController().createLayerList();
+            MainViewController.getInstance().getRightMenuController().updateLayerList();
             Project.getInstance().addLayer(redoLayer);
             redosave = null;
         }

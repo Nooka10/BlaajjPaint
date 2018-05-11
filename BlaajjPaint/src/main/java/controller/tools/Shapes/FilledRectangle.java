@@ -20,6 +20,7 @@ public class FilledRectangle extends ShapeDrawer {
      */
     private FilledRectangle() {
         toolType = ToolType.FILLEDRECTANGLE;
+        tooltipHistory = "Rectangle plein";
     }
 
 

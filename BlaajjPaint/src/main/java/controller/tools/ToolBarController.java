@@ -147,10 +147,9 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleAddShape(ActionEvent event) {
-		addParamBar("/view/tools/ParamShapeTool.fxml");
 		Tool.setCurrentTool(EmptyRectangle.getInstance());
 		if (Tool.getToolHasChanged()) {
-			closeCurrentParamBar();
+			addParamBar("/view/tools/ParamShapeTool.fxml");
 			Tool.setToolHasChanged(false);
 		}
 	}

@@ -29,7 +29,6 @@ public class ParamShapeController {
     @FXML
     private HBox paramShapeTools;
 
-    private ShapeDrawer tool = (ShapeDrawer) Tool.getCurrentTool();
     @FXML
     private void initialize() {
         thicknessTextField.setText(String.valueOf(EmptyRectangle.getInstance().getThickness()));

@@ -20,6 +20,7 @@ public class FilledEllipse extends ShapeDrawer {
      */
     private FilledEllipse() {
         toolType = ToolType.FILLEDELLIPSE;
+        tooltipHistory = "Ellipse pleine";
     }
 
 

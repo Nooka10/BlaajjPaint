@@ -22,6 +22,7 @@ public class EmptyEllipse extends ShapeDrawer {
      */
     private EmptyEllipse() {
         toolType = ToolType.EMPTYELLIPSE;
+        tooltipHistory = "Ellipse vide";
     }
 
     public double getThickness(){

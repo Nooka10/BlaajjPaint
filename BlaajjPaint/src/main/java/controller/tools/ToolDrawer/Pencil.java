@@ -26,7 +26,7 @@ public class Pencil extends ToolDrawer {
 
 	public class PencilStrike extends Trait {
 		public String toString(){
-			return "Pencil Strike";
+			return "Trait de pinceau";
 		}
 	}
 	
