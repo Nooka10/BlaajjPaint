@@ -80,8 +80,10 @@ public class Layer extends Canvas implements Serializable {
 		final ImageView view = new ImageView(snapshot(spa, image));
 		view.setFitWidth(getWidth());
 		view.setFitHeight(getHeight());
-		
-		return view.getImage();
+
+		snapshot(spa, image);
+		return image;
+		//return view.getImage();
 	}
 	
 	
@@ -213,6 +215,15 @@ public class Layer extends Canvas implements Serializable {
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
 
+		double lX = s.readDouble();
+		double lY=s.readDouble();
+		System.out.println("BEF: " + lX + " " + lY);
+
+		super.setLayoutX(lX);
+		super.setLayoutY(lY);
+
+		System.out.println("AFR: " + getLayoutX() + " " + getLayoutY());
+
 		double tmpOpacity = s.readDouble();
 					// opacité de Canevas [0;1]
 		super.setOpacity(tmpOpacity);
@@ -220,7 +231,9 @@ public class Layer extends Canvas implements Serializable {
 		
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
-		this.getGraphicsContext2D().drawImage(image, 0, 0);
+		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
+
+
 
 	}
 	
@@ -229,6 +242,9 @@ public class Layer extends Canvas implements Serializable {
 		s.writeInt(id);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
+		System.out.println(getLayoutX() + " " + getLayoutY());
+		s.writeDouble(getLayoutX());
+		s.writeDouble(getLayoutY());
 
 		double tmpOpacity = super.getOpacity();
 		boolean tmpVisible = super.isVisible();
@@ -238,20 +254,12 @@ public class Layer extends Canvas implements Serializable {
 
 		this.setVisible(true);
 		this.setOpacity(1);							// enlève l'opacité pour la sauvegardes
-		ImageIO.write(SwingFXUtils.fromFXImage(generateImage(this, (int) super.getWidth(), (int) super.getHeight()), null), "png", s);
-		this.setOpacity(tmpOpacity);			// Remet l'opacité
-		this.setVisible(tmpVisible);			// Remet la visibilité
+		ImageIO.write(SwingFXUtils.fromFXImage(createImageFromCanvas(1), null), "png", s);
+		this.setOpacity(tmpOpacity);				// Remet l'opacité
+		this.setVisible(tmpVisible);				// Remet la visibilité
 
 	}
-	
-	private Image generateImage(Layer c, int weight, int height) {
-		SnapshotParameters params = new SnapshotParameters();
-		WritableImage writableImage = new WritableImage(weight, height);
-		params.setFill(Color.TRANSPARENT);
-		c.snapshot(params, writableImage);
-		return writableImage;
-	}
-	
+
 	public static void reset() {
 		count = 1;
 	}

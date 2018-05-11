@@ -105,36 +105,68 @@ public class RightMenuController {
 	}
 	
 	public class NewLayerSave implements ICmd {
-		
+
+		Layer oldCurrentLayer;
+		Layer newLayer;
+
+		/**
+		 * Prends l'ancien current layer
+		 */
+		public NewLayerSave(){
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
+
 		@Override
+		/**
+		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
+		 */
 		public void execute() {
-		
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
 		}
 		
 		@Override
 		public void undo() throws UndoException {
-		
+			Project.getInstance().setCurrentLayer(newLayer);
+			Project.getInstance().deleteCurrentLayer();
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 		}
 		
 		@Override
 		public void redo() throws UndoException {
 		
 		}
+
+		public String toString(){
+			return "Nouveau Layer";
+		}
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void addNewLayer(ActionEvent event) {
+		NewLayerSave ls = new NewLayerSave();
+
 		Project.getInstance().addNewLayer();
 		updateLayerList();
+		ls.execute();
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
 		updateLayerList();
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void downLayer(ActionEvent event) {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		if (index < Project.getInstance().getLayers().size() - 1) {
@@ -149,6 +181,9 @@ public class RightMenuController {
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void upLayer(ActionEvent event) {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		
