@@ -19,14 +19,16 @@ import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
 	final static int INITIAL_ID = 1;
-	private int id;								//
-	private static int count = INITIAL_ID;		// id du prochain calque qui sera créé
-
+	private int id;                                //
+	private static int count = INITIAL_ID;        // id du prochain calque qui sera créé
+	
 	/**
 	 * Constructeur
 	 *
-	 * @param width  la largeur de notre calque
-	 * @param height la hauteur de notre calque
+	 * @param width
+	 * 		la largeur de notre calque
+	 * @param height
+	 * 		la hauteur de notre calque
 	 */
 	public Layer(int width, int height) {
 		super(width, height);
@@ -40,11 +42,19 @@ public class Layer extends Canvas implements Serializable {
 	/**
 	 * Constructeur de copie, pour copier un calque
 	 *
-	 * @param toCopy le calque à copier
+	 * @param toCopy
+	 * 		le calque à copier
 	 */
 	public Layer(Layer toCopy) {
 		super(toCopy.getWidth(), toCopy.getHeight());
 		id = count++;
+		boolean visibility = toCopy.isVisible();
+		toCopy.setVisible(true);
+		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4), 0, 0, getWidth(), getHeight());
+		setVisible(visibility);
+		setLayoutX(toCopy.getLayoutX());
+		setLayoutY(toCopy.getLayoutY());
+		toCopy.setVisible(visibility);
 	}
 	
 	/**
@@ -60,21 +70,23 @@ public class Layer extends Canvas implements Serializable {
 	
 	// TODO : Antoine
 	public Image createImageFromCanvas(int scale) {
-
+		
 		final WritableImage image = new WritableImage(
-				Math.round(Project.getInstance().getDimension().width * scale),
-				Math.round(Project.getInstance().getDimension().height * scale));
+				Math.round((int) getWidth() * scale),
+				Math.round((int) getHeight() * scale));
 		
 		final SnapshotParameters spa = new SnapshotParameters();
 		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
 		spa.setFill(Color.TRANSPARENT);
 		final ImageView view = new ImageView(snapshot(spa, image));
-		view.setFitWidth(Project.getInstance().getDimension().width);
-		view.setFitHeight(Project.getInstance().getDimension().height);
+		view.setFitWidth(getWidth());
+		view.setFitHeight(getHeight());
 		
 		return view.getImage();
 	}
 	
+	
+	// TODO : false
 	public WritableImage createImageFromCanvasJPG(int scale, SnapshotParameters spa, boolean tr) {
 		//final Bounds bounds = getLayoutBounds();
 		
@@ -108,7 +120,8 @@ public class Layer extends Canvas implements Serializable {
 	/**
 	 * Permet de fusionner deux calques
 	 *
-	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
+	 * @param backgroundLayer
+	 * 		le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
 	public void mergeLayers(Layer backgroundLayer) {
 		Image image1 = createImageFromCanvas(4);
@@ -120,13 +133,14 @@ public class Layer extends Canvas implements Serializable {
 		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
 		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
 		
-		Layer mergeLayer = new Layer((int)(maxX - minX), (int)(maxY - minY));
+		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY));
 		
-		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX(), backgroundLayer.getLayoutY(), backgroundLayer.getLayoutX() + backgroundLayer.getWidth(), backgroundLayer.getLayoutY() + backgroundLayer.getHeight());
-		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX(), getLayoutY(), getLayoutX() + getWidth(), getLayoutY() + getHeight());
+		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
+		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
 		
 		mergeLayer.setLayoutX(minX);
 		mergeLayer.setLayoutY(minY);
+		
 		Project.getInstance().getLayers().remove(this);
 		Project.getInstance().getLayers().remove(backgroundLayer);
 		Project.getInstance().addLayer(mergeLayer);
