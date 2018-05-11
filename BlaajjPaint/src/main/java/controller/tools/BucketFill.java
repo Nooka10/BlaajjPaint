@@ -25,76 +25,106 @@ import java.util.HashSet;
 import java.util.Stack;
 
 public class BucketFill extends Tool {
+	/** ATTRIBUTS **/
 	private static BucketFill instance = new BucketFill();
 	private Fill currentFill;
-	
+
+	/**
+	 * Constructeur privé car Singleton
+	 */
 	private BucketFill() {
 		toolType = ToolType.BUCKETFILL;
 	}
-	
+
+	/**
+	 * Retourne l'instance du Singleton
+	 * @return l'instance du Singleton
+	 */
 	public static BucketFill getInstance() {
 		return instance;
 	}
-	
+
+	/**
+	 * Gestion de l'événement du "l'appuie" de la souris
+	 * @return l'événement qui dois être réalisé lorsque l'on clique lorsque le BucketFill est séléctionné
+	 */
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.WAIT);
+				changeCursor(Cursor.WAIT); // Change le curseur en mode "attente"
 			}
 		};
 	}
-	
+
+	/**
+	 * Gestion de l'événement du "dragg" de la souris
+	 * @return ne fait rien dans le cas du "BucketFill"
+	 */
 	@Override
 	protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// do nothing
+				// Ne fait rien
 			}
 		};
 	}
-	
+
+	/**
+	 * Gestion de l'événement du relachement du clique de la souris
+	 * @return l'événement qui lorsque l'on relache le clique de la souris peint dans la zone du calque
+	 */
 	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			
-			// ATTRIBUTS EVENTHANDLER BUCKETFILL
-			Stack<Point2D> stack;
-			HashSet<Point2D> marked;
-			Layer layer;
+			/** ATTRIBUTS DE L'EVENEMENT **/
+			Stack<Point2D> stack; // Stack des points qui devront être traiter
+			HashSet<Point2D> marked; // Map des points traité
+			Layer layer; // Layer sur lequel on doit dessiner (Evite l'appelle constant à Project
 			
 			@Override
 			public void handle(MouseEvent event) {
+				// Set des attributs
 				layer = Project.getInstance().getCurrentLayer();
 				currentFill = new Fill();
 				stack = new Stack<>();
 				marked = new HashSet<>();
+
+				// Récupération du PixelWriter - permet d'écrire sur des pixel du graphics context
 				PixelWriter pixelWriter = layer.getGraphicsContext2D().getPixelWriter();
-				// PixelReader
+
+				// Récupération du PixelReader - permet de lire les pixels sur le graphics context
 				WritableImage srcMask = new WritableImage((int) layer.getWidth(), (int) layer.getHeight());
 				srcMask = layer.snapshot(null, srcMask);
 				PixelReader pixelReader = srcMask.getPixelReader();
-				
-				Color colorSelected = pixelReader.getColor((int) Math.ceil(event.getX()), (int) Math.ceil(event.getY()));
+
+				// Couleur de l'élément/zone à colorer
+				Color colorSelected = pixelReader.getColor((int) Math.round(event.getX()), (int) Math.round(event.getY()));
+				// Couleur qu'on doit coloré l'élément/zone
 				Color currentColor = Project.getInstance().getCurrentColor();
 				
-				stack.push(new Point2D(event.getX(), event.getY()));
-				
+				stack.push(new Point2D(event.getX(), event.getY())); // Set de l'élément de base de notre parcours
+
+				// Parcours des pixel environnant le point de départ
 				while (!stack.isEmpty()) {
 					Point2D point = stack.pop();
-					int x = (int) Math.ceil(point.getX());
-					int y = (int) Math.ceil(point.getY());
-					
+					// Récupération de la position du point (moins d'accès au fonction)
+					int x = (int) Math.round(point.getX());
+					int y = (int) Math.round(point.getY());
+
+					// Test si le pixel courant à la meme couleur que le point de départ (fait partie de la forme
 					if ((!pixelReader.getColor(x, y).equals(colorSelected))) {
 						continue;
 					}
 					
-					pixelWriter.setColor(x, y, currentColor);
+					pixelWriter.setColor(x, y, currentColor); // mise en couleur du pixel en cours de traitement
 					
-					marked.add(point);
-					
+					marked.add(point); // Marquer le point comme traité
+
+					// Ajout des points adjacent le point courant dans la liste de traitement
 					addPointToStack(x - 1, y - 1);
 					addPointToStack(x - 1, y);
 					addPointToStack(x - 1, y + 1);
@@ -104,20 +134,30 @@ public class BucketFill extends Tool {
 					addPointToStack(x + 1, y);
 					addPointToStack(x + 1, y + 1);
 				}
+				// Fin de la coloration - remise en place du curseur et execution de la commande
 				resetOldCursor();
+				currentFill.execute();
 			}
-			
+
+			/**
+			 * Ajout d'un point dans la stack de traitement
+			 * @param x - position horizontal du point
+			 * @param y - position vertical du point
+			 * @brief Permet de faire des verification si le point et toujours dans l'image et si il a pas déjà été traité
+			 */
 			private void addPointToStack(int x, int y) {
 				Point2D point = new Point2D(x, y);
 				if (marked.contains(point) || x < 0 || x >= layer.getWidth() || y < 0 || y >= layer.getHeight()) {
 					return;
 				}
 				stack.push(point);
-				currentFill.execute();
 			}
 		};
 	}
-	
+
+	/**
+	 * Commande pour remplir une forme - utile pour le undo redo
+	 */
 	class Fill implements ICmd {
 		private Image undosave;
 		private Image redosave = null;
@@ -153,6 +193,10 @@ public class BucketFill extends Tool {
 			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
+		}
+
+		public String toString(){
+			return "Remplissage de l'image";
 		}
 	}
 }

@@ -11,16 +11,15 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
-	final static int INITIAL_ID = 1;
-	private int id;                                //
-	private static int count = INITIAL_ID;        // id du prochain calque qui sera créé
+	private int id; // l'id du calque
+	private static int count = 1; // le nombre de calques qui ont été créés
 	
 	/**
 	 * Constructeur
@@ -86,35 +85,24 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	
-	// TODO : false
-	public WritableImage createImageFromCanvasJPG(int scale, SnapshotParameters spa, boolean tr) {
+	// TODO : false, rend une image 4x plus grande
+	public ImageView createImageFromCanvasJPG(int scale) {
 		//final Bounds bounds = getLayoutBounds();
-		
-		createImageFromCanvas(scale);
 		final WritableImage image = new WritableImage(
-				Math.round(Project.getInstance().getDimension().width * scale),
-				Math.round(Project.getInstance().getDimension().height * scale));
+				(int) getWidth() * scale,
+				(int) getHeight() * scale);
 		
-		if (!tr) {
-			for (int x = 0; x < Project.getInstance().getDimension().width; ++x) {
-				for (int y = 0; y < Project.getInstance().getDimension().width; ++y) {
-					if (image.getPixelReader().getColor(x, y) == Color.TRANSPARENT)
-						image.getPixelWriter().setColor(x, y, Color.WHITE);
-				}
-			}
-		}
-		
-		
-		//final SnapshotParameters spa = new SnapshotParameters();
+		final SnapshotParameters spa = new SnapshotParameters();
 		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
-		//spa.setFill(Color.TRANSPARENT);
+		spa.setFill(Color.WHITE);
 		
-		this.snapshot(spa, image);
-		/*final ImageView view = new ImageView(snapshot(spa, image));
-		view.setFitWidth(Project.getInstance().getDimension().width);
-		view.setFitHeight(Project.getInstance().getDimension().height);*/
+		final ImageView view = new ImageView(snapshot(spa, image));
+
+		view.setFitWidth(getWidth());
+		view.setFitHeight(getHeight());
+		view.setPreserveRatio(true);
 		
-		return image;
+		return view;
 	}
 	
 	/**
@@ -123,7 +111,7 @@ public class Layer extends Canvas implements Serializable {
 	 * @param backgroundLayer
 	 * 		le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
-	public void mergeLayers(Layer backgroundLayer) {
+	public Layer mergeLayers(Layer backgroundLayer) {
 		Image image1 = createImageFromCanvas(4);
 		Image image2 = backgroundLayer.createImageFromCanvas(4);
 		
@@ -138,14 +126,12 @@ public class Layer extends Canvas implements Serializable {
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
 		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
 		
+		
 		mergeLayer.setLayoutX(minX);
 		mergeLayer.setLayoutY(minY);
 		
-		Project.getInstance().getLayers().remove(this);
-		Project.getInstance().getLayers().remove(backgroundLayer);
-		Project.getInstance().addLayer(mergeLayer);
-		MainViewController.getInstance().getRightMenuController().createLayerList();
 		
+		return mergeLayer;
 	}
 	
 	/**
@@ -158,8 +144,7 @@ public class Layer extends Canvas implements Serializable {
 		double newOpacity;
 		
 		public OpacitySave(double newOpacity) {
-			// par défaut on set a l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que
-			// ça passe a 0
+			// par défaut on set à l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que ça passe à 0
 			oldOpacity = getLayerOpacity();
 			this.newOpacity = newOpacity;
 		}
@@ -171,24 +156,27 @@ public class Layer extends Canvas implements Serializable {
 		
 		@Override
 		public void execute() {
-			oldOpacity = getLayerOpacity();
 			updateLayerOpacity(newOpacity);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		
 		@Override
 		public void undo() {
-			setLayerOpacity(oldOpacity);
+			updateLayerOpacity(oldOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(oldOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(oldOpacity);
 		}
 		
 		@Override
 		public void redo() {
-			setLayerOpacity(newOpacity);
+			updateLayerOpacity(newOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(newOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(newOpacity);
 		}
 		
 		@Override
 		public String toString() {
-			return "Opacity Change from " + oldOpacity + " to " + newOpacity;
+			return "L'opacité changée de " + Math.round(oldOpacity) + " à " + Math.round(newOpacity);
 		}
 	}
 	
@@ -222,14 +210,16 @@ public class Layer extends Canvas implements Serializable {
 		id = (s.readInt());
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
-		setLayerOpacity(s.readDouble());
+
+		double tmpOpacity = s.readDouble();
+					// opacité de Canevas [0;1]
+		super.setOpacity(tmpOpacity);
 		super.setVisible(s.readBoolean());
 		
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
 		this.getGraphicsContext2D().drawImage(image, 0, 0);
-		
-		//return this;
+
 	}
 	
 	private void writeObject(ObjectOutputStream s) throws IOException {
@@ -237,10 +227,19 @@ public class Layer extends Canvas implements Serializable {
 		s.writeInt(id);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
-		s.writeDouble(getLayerOpacity());
+
+		double tmpOpacity = super.getOpacity();
+		boolean tmpVisible = super.isVisible();
+
+		s.writeDouble(tmpOpacity);					// opacité de Canevas [0;1]
 		s.writeBoolean(super.isVisible());
-		
+
+		this.setVisible(true);
+		this.setOpacity(1);							// enlève l'opacité pour la sauvegardes
 		ImageIO.write(SwingFXUtils.fromFXImage(generateImage(this, (int) super.getWidth(), (int) super.getHeight()), null), "png", s);
+		this.setOpacity(tmpOpacity);			// Remet l'opacité
+		this.setVisible(tmpVisible);			// Remet la visibilité
+
 	}
 	
 	private Image generateImage(Layer c, int weight, int height) {
@@ -254,6 +253,4 @@ public class Layer extends Canvas implements Serializable {
 	public static void reset() {
 		count = 1;
 	}
-	
-	
 }

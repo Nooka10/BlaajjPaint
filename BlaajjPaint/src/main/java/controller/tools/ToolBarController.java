@@ -24,7 +24,7 @@ public class ToolBarController {
 
 	private Parent paramBar;
 	
-	/* attributs pour FXML */
+	/* Attributs  FXML */
 	
 	@FXML
 	private ToggleButton brushTool;

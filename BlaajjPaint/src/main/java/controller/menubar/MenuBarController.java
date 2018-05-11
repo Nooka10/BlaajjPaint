@@ -138,7 +138,7 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleDuplicateLayer(ActionEvent event) {
-		//to do
+		Project.getInstance().addLayer(new Layer(Project.getInstance().getCurrentLayer()));
 	}
 	
 	@FXML
@@ -163,7 +163,7 @@ public class MenuBarController {
 		
 		
 		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().createLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	@FXML

@@ -56,8 +56,8 @@ public class RecordCmd {
 	}
 	
 	/**
-	 * Appelle la fonction <b>handleUndo()</b> sur la dernière <b>Cmd</b> sauvée. Si aucune <b>Cmd</b> ne se trouve dans la pile, il ne fait rien.
-	 * Si le handleUndo lèves une exception celle-ci est capturée et consignée dans les logs et la <b>Cmd</b> concernée retourne sur la pile.
+	 * Appelle la fonction <b>handleUndo()</b> sur la dernière <b>Cmd</b> sauvée. Si aucune <b>Cmd</b> ne se trouve dans la pile, il ne fait rien. Si le handleUndo lèves
+	 * une exception celle-ci est capturée et consignée dans les logs et la <b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void undo() {
 		// si la pile des handleUndo n'est pas vide
@@ -69,6 +69,9 @@ public class RecordCmd {
 				
 				// si ça a passé on ajoute la commande a la pile des handleRedo
 				redoStack.push(cmdToUndo);
+				
+				// on met à jour la liste de l'historique
+				MainViewController.getInstance().getRightMenuController().updateHistoryList();
 			}
 			// Si ça ne passe pas on remet la commande sur la pile de handleUndo
 			catch (UndoException e) {
@@ -79,7 +82,6 @@ public class RecordCmd {
 				// redoStack.clear();
 				
 			}
-			MainViewController.getInstance().getRightMenuController().undoHistory();
 		} else {
 			LOG.log(Level.INFO, "Nothing to handleUndo.");
 		}
@@ -103,7 +105,7 @@ public class RecordCmd {
 			try {
 				cmdToRedo.redo();
 				undoStack.push(cmdToRedo);
-				MainViewController.getInstance().getRightMenuController().addUndoHistory(cmdToRedo);
+				MainViewController.getInstance().getRightMenuController().updateHistoryList();
 			}
 			// Si ça ne passe pas on remet la commande sur la pile de handleUndo
 			catch (UndoException e) {
@@ -130,8 +132,7 @@ public class RecordCmd {
 		}
 		undoStack.push(cmd);
 		redoStack.clear();
-		
-		MainViewController.getInstance().getRightMenuController().addUndoHistory(cmd);
+		MainViewController.getInstance().getRightMenuController().updateHistoryList();
 	}
 	
 	public LinkedList<ICmd> getUndoStack() {
@@ -148,5 +149,6 @@ public class RecordCmd {
 	public void clear() {
 		undoStack.clear();
 		redoStack.clear();
+		MainViewController.getInstance().getRightMenuController().clearHistoryList();
 	}
 }
