@@ -50,7 +50,7 @@ public class LayerController {
 		Project.getInstance().setCurrentLayer(layerName);
 		MainViewController.getInstance().getRightMenuController().setOpacitySlider(layerName.getLayerOpacity());
 		MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(layerName.getLayerOpacity()));
-		MainViewController.getInstance().getRightMenuController().createLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	@FXML
