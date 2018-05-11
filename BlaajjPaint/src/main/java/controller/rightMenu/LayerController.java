@@ -55,6 +55,6 @@ public class LayerController {
 	
 	@FXML
 	void handleVisibilityChange(ActionEvent event) {
-		Project.getInstance().setCurrentLayer(layerName);
+		//Project.getInstance().setCurrentLayer(layerName);
 	}
 }
