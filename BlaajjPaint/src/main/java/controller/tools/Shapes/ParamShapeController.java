@@ -1,5 +1,6 @@
 package controller.tools.Shapes;
 
+import controller.Project;
 import controller.tools.Tool;
 import controller.tools.ToolDrawer.ToolDrawer;
 import javafx.event.ActionEvent;
@@ -7,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class ParamShapeController {
@@ -30,21 +32,33 @@ public class ParamShapeController {
     private ShapeDrawer tool = (ShapeDrawer) Tool.getCurrentTool();
     @FXML
     private void initialize() {
-        thicknessTextField.setText(String.valueOf(tool.getThickness()));
-        thicknessSlider.setValue(tool.getThickness());
-
+        thicknessTextField.setText(String.valueOf(EmptyRectangle.getInstance().getThickness()));
+        thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
+        /*
         // Handle Slider value change events.
         thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             tool.setThickness(Double.parseDouble(newValue.toString()));
             thicknessTextField.setText(String.valueOf(tool.getThickness()));
             ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
         });
-        // Handle TextField text changes.
+         Handle TextField text changes.
         thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             tool.setThickness(Double.parseDouble(newValue));
             thicknessSlider.setValue(tool.getThickness());
-            ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
-        });
+           ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
+        });*/
+    }
+
+    public void sliderOnTextChange(ActionEvent actionEvent) {
+        EmptyRectangle.getInstance().setThickness(Double.parseDouble(thicknessTextField.getText()));
+        EmptyEllipse.getInstance().setThickness(Double.parseDouble(thicknessTextField.getText()));
+        thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
+    }
+
+    public void sliderOnMouseRelased(MouseEvent mouseEvent) {
+        thicknessTextField.setText(String.valueOf(thicknessSlider.getValue()));
+        EmptyRectangle.getInstance().setThickness(thicknessSlider.getValue());
+        EmptyEllipse.getInstance().setThickness(thicknessSlider.getValue());
     }
 
     @FXML

@@ -172,7 +172,8 @@ public class ToolBarController {
 			Tool.setToolHasChanged(false);
 		}
 	}
-	
+
+	@FXML
 	public static void displayError() {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Erreur, aucune image n'est ouverte!");
@@ -181,7 +182,8 @@ public class ToolBarController {
 		
 		alert.showAndWait();
 	}
-	
+
+	@FXML
 	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
 			closeCurrentParamBar();
@@ -195,7 +197,8 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@FXML
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}

@@ -15,7 +15,6 @@ import utils.UndoException;
 
 public abstract class ShapeDrawer extends Tool {
 
-    //
     protected Layer shapeLayer;
     protected ShapeSave currentShapeSave; // La forme actuellement dessinée
     protected double beginPointX;
@@ -24,7 +23,6 @@ public abstract class ShapeDrawer extends Tool {
     protected double startPosY;
     protected double width;
     protected double height;
-    protected double thickness = 1; // l'épaisseur de l'outil
 
 
     @Override
@@ -94,15 +92,6 @@ public abstract class ShapeDrawer extends Tool {
     }
 
     abstract protected void drawShape();
-
-    public double getThickness(){
-        return thickness;
-    }
-
-    public void setThickness(double thickness) {
-        this.thickness = thickness;
-        Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
-    }
 
     private void updateShape(double endPosX, double endPosY){
         if(endPosX < beginPointX){

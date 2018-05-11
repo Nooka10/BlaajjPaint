@@ -1,11 +1,12 @@
 package controller.tools.Shapes;
 
 import controller.Project;
-import controller.tools.Tool;
 
 public class EmptyEllipse extends ShapeDrawer {
 
     private static EmptyEllipse toolInstance = new EmptyEllipse(); // l'instance unique de l'ellipse vide
+
+    private double thickness; // l'épaisseur de l'outil
 
     /**
      * Retourne l'instance unique de l'ellipse vide
@@ -20,9 +21,17 @@ public class EmptyEllipse extends ShapeDrawer {
      * Constructeur privé (modèle singleton)
      */
     private EmptyEllipse() {
-        toolType = Tool.ToolType.EMPTYELLIPSE;
+        toolType = ToolType.EMPTYELLIPSE;
     }
 
+    public double getThickness(){
+        return thickness;
+    }
+
+    public void setThickness(double thickness) {
+        this.thickness = thickness;
+        Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
+    }
 
     @Override
     protected void drawShape() {

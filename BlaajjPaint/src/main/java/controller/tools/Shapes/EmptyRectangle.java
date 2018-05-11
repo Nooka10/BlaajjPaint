@@ -4,12 +4,15 @@ import controller.Project;
 
 public class EmptyRectangle extends ShapeDrawer {
 
-    private static EmptyRectangle toolInstance = new EmptyRectangle(); // l'instance unique du pinceau
+    private static EmptyRectangle toolInstance = new EmptyRectangle(); // l'instance unique du rectangle vide
+
+
+    private double thickness; // l'épaisseur de l'outil
 
     /**
-     * Retourne l'instance unique du rectangle
+     * Retourne l'instance unique du rectangle vide
      *
-     * @return l'instance unique du rectangle
+     * @return l'instance unique du rectangle vide
      */
     public static EmptyRectangle getInstance() {
         return toolInstance;
@@ -20,6 +23,15 @@ public class EmptyRectangle extends ShapeDrawer {
      */
     private EmptyRectangle() {
         toolType = ToolType.EMPTYRECTANGLE;
+    }
+
+    public double getThickness(){
+        return thickness;
+    }
+
+    public void setThickness(double thickness) {
+        this.thickness = thickness;
+        Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
     }
 
     @Override
