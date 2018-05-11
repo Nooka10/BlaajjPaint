@@ -219,14 +219,16 @@ public class Layer extends Canvas implements Serializable {
 		id = (s.readInt());
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
-		setLayerOpacity(s.readDouble());
+
+		double tmpOpacity = s.readDouble();
+					// opacité de Canevas [0;1]
+		super.setOpacity(tmpOpacity);
 		super.setVisible(s.readBoolean());
 		
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
 		this.getGraphicsContext2D().drawImage(image, 0, 0);
-		
-		//return this;
+
 	}
 	
 	private void writeObject(ObjectOutputStream s) throws IOException {
@@ -234,10 +236,19 @@ public class Layer extends Canvas implements Serializable {
 		s.writeInt(id);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
-		s.writeDouble(getLayerOpacity());
+
+		double tmpOpacity = super.getOpacity();
+		boolean tmpVisible = super.isVisible();
+
+		s.writeDouble(tmpOpacity);					// opacité de Canevas [0;1]
 		s.writeBoolean(super.isVisible());
-		
+
+		this.setVisible(true);
+		this.setOpacity(1);							// enlève l'opacité pour la sauvegardes
 		ImageIO.write(SwingFXUtils.fromFXImage(generateImage(this, (int) super.getWidth(), (int) super.getHeight()), null), "png", s);
+		this.setOpacity(tmpOpacity);			// Remet l'opacité
+		this.setVisible(tmpVisible);			// Remet la visibilité
+
 	}
 	
 	private Image generateImage(Layer c, int weight, int height) {
@@ -251,6 +262,4 @@ public class Layer extends Canvas implements Serializable {
 	public static void reset() {
 		count = 1;
 	}
-	
-	
 }
