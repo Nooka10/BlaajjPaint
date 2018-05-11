@@ -55,6 +55,7 @@ public class LayerController {
 	
 	@FXML
 	void handleVisibilityChange(ActionEvent event) {
-		Project.getInstance().setCurrentLayer(layerName);
+		layerName.setVisible(visibility.isSelected());
+		Project.getInstance().drawWorkspace();
 	}
 }
