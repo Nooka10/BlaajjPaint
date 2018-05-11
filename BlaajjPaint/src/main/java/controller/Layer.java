@@ -213,14 +213,9 @@ public class Layer extends Canvas implements Serializable {
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
 
-		double lX = s.readDouble();
-		double lY=s.readDouble();
-		System.out.println("BEF: " + lX + " " + lY);
+		super.setLayoutX(s.readDouble());
+		super.setLayoutY(s.readDouble());
 
-		super.setLayoutX(lX);
-		super.setLayoutY(lY);
-
-		System.out.println("AFR: " + getLayoutX() + " " + getLayoutY());
 
 		double tmpOpacity = s.readDouble();
 					// opacité de Canevas [0;1]
@@ -240,7 +235,7 @@ public class Layer extends Canvas implements Serializable {
 		s.writeInt(id);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
-		System.out.println(getLayoutX() + " " + getLayoutY());
+
 		s.writeDouble(getLayoutX());
 		s.writeDouble(getLayoutY());
 

@@ -209,4 +209,11 @@ public class MainViewController {
 			SaveProjects.getInstance().openFile(file);
 		}
 	}
+
+	/**
+	 * Permet la sauvegarde du projet depuis n'importe quelle autre aubjet du package.
+	 */
+	public void saveAs(){
+		menuBarController.handleSaveAs(null);
+	}
 }
