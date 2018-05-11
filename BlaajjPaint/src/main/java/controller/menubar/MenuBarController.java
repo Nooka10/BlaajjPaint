@@ -163,7 +163,7 @@ public class MenuBarController {
 		
 		
 		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().createLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	@FXML
