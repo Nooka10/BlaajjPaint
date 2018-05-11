@@ -64,7 +64,7 @@ public class TextTool extends Tool {
         if(addText != null) {
             text = ""; // reset du text
             addText.execute(); // exécution de la cmd (historique)
-            MainViewController.getInstance().getRightMenuController().createLayerList(); // ajout du calque à la liste de rightMenu
+            MainViewController.getInstance().getRightMenuController().updateLayerList(); // ajout du calque à la liste de rightMenu
             Project.getInstance().drawWorkspace(); // redessine les calque
             addText = null; // fin de l'ajout du text
         }
@@ -86,7 +86,7 @@ public class TextTool extends Tool {
         // Test si la personne commencé l'ajout du text (nécessite le clique sur le calque)
         if(addText != null){
             GraphicsContext graphics = textLayer.getGraphicsContext2D(); // récupération du graphics context
-            // nettoyage du calque (permet de déplacer le text)
+            // Nettoyage du calque (permet de déplacer le text)
             graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
             graphics.setFont(font); // changement de la police d'écriture
             graphics.fillText(text ,x ,y); // positionnement et ajout du text
@@ -103,7 +103,7 @@ public class TextTool extends Tool {
         // Le calque courant redevient l'ancien calque courant
         Project.getInstance().setCurrentLayer(oldCurrentLayer);
         // redessine les layers et list de layers
-        MainViewController.getInstance().getRightMenuController().createLayerList();
+        MainViewController.getInstance().getRightMenuController().updateLayerList();
         Project.getInstance().drawWorkspace();
         // reset des attributs
         addText = null;
