@@ -3,6 +3,7 @@ package controller.rightMenu;
 import controller.Layer;
 import controller.Project;
 import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -67,9 +67,17 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void OnInputTextChanged(InputMethodEvent event) {
-		Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(opacityTextField.getText()));
-		opacitySlider.setValue(Double.parseDouble(opacityTextField.getText()));
+	void OnInputTextChanged(ActionEvent event) {
+		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
+		Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
+		opacitySlider.setValue(newOpacity);
+	}
+	
+	@FXML
+	void OnMousePressed(MouseEvent event) {
+		oldOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
+		opacityTextField.setText(String.valueOf(oldOpacity));
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
 	}
 	
 	@FXML
@@ -80,16 +88,9 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void OnMousePressed(MouseEvent event) {
-		oldOpacity = opacitySlider.getValue();
-		opacityTextField.setText(String.valueOf(oldOpacity));
-		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
-	}
-	
-	@FXML
 	void OnMouseReleased(MouseEvent event) {
-		opacityTextField.setText(String.valueOf(opacitySlider.getValue()));
-		newOpacity = opacitySlider.getValue();
+		newOpacity = Math.round(opacitySlider.getValue());
+		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
 	}
 	
@@ -164,8 +165,8 @@ public class RightMenuController {
 	void fusionLayer(ActionEvent event) {
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
-		if(index != Project.getInstance().getLayers().size()-1){
-			currentLayer.mergeLayers( Project.getInstance().getLayers().get(index+1));
+		if (index != Project.getInstance().getLayers().size() - 1) {
+			currentLayer.mergeLayers(Project.getInstance().getLayers().get(index + 1));
 			
 		}
 		
@@ -227,7 +228,15 @@ public class RightMenuController {
 		}
 	}
 	
+	public void updateHistoryList(){
+		historyList.getChildren().clear();
+		for (ICmd cmd: RecordCmd.getInstance().getUndoStack()) {
+			addUndoHistory(cmd);
+		}
+	}
+	
 	public void undoHistory() {
 		historyList.getChildren().remove(historyList.getChildren().size() - 1);
+		//updateHistoryList();
 	}
 }

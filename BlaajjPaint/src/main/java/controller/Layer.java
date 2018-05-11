@@ -18,9 +18,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
-	final static int INITIAL_ID = 1;
-	private int id;                                //
-	private static int count = INITIAL_ID;        // id du prochain calque qui sera créé
+	private int id; // l'id du calque
+	private static int count = 1; // le nombre de calques qui ont été créés
 	
 	/**
 	 * Constructeur
@@ -158,8 +157,7 @@ public class Layer extends Canvas implements Serializable {
 		double newOpacity;
 		
 		public OpacitySave(double newOpacity) {
-			// par défaut on set a l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que
-			// ça passe a 0
+			// par défaut on set à l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que ça passe à 0
 			oldOpacity = getLayerOpacity();
 			this.newOpacity = newOpacity;
 		}
@@ -171,7 +169,6 @@ public class Layer extends Canvas implements Serializable {
 		
 		@Override
 		public void execute() {
-			oldOpacity = getLayerOpacity();
 			updateLayerOpacity(newOpacity);
 			RecordCmd.getInstance().saveCmd(this);
 		}
@@ -188,7 +185,7 @@ public class Layer extends Canvas implements Serializable {
 		
 		@Override
 		public String toString() {
-			return "Opacity Change from " + oldOpacity + " to " + newOpacity;
+			return "L'opacité changée de " + Math.round(oldOpacity) + " à " + Math.round(newOpacity);
 		}
 	}
 	

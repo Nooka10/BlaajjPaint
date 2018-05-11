@@ -69,6 +69,7 @@ public class RecordCmd {
 				
 				// si ça a passé on ajoute la commande a la pile des handleRedo
 				redoStack.push(cmdToUndo);
+				MainViewController.getInstance().getRightMenuController().undoHistory();
 			}
 			// Si ça ne passe pas on remet la commande sur la pile de handleUndo
 			catch (UndoException e) {
@@ -79,7 +80,6 @@ public class RecordCmd {
 				// redoStack.clear();
 				
 			}
-			MainViewController.getInstance().getRightMenuController().undoHistory();
 		} else {
 			LOG.log(Level.INFO, "Nothing to handleUndo.");
 		}

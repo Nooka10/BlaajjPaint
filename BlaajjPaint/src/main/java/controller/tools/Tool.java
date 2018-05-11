@@ -57,9 +57,7 @@ public abstract class Tool {
 	public static void setCurrentTool(Tool currentTool) {
 		if (Tool.currentTool != currentTool) { // l'outil ne change que s'il n'est pas déjà l'outil sélectionné
 			
-			// appel de la fonction de callback sur l'ancien outil
-			// pour le notifier qu'il n'est plus sélectionné
-			
+			// appel de la fonction de callback sur l'ancien outil pour le notifier qu'il n'est plus sélectionné
 			if (Tool.currentTool != null) {
 				Tool.currentTool.CallbackOldToolChanged();
 				Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
