@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamTextController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamTextController">
    <children>
       <Slider fx:id="sliderSizeFont" max="500.0" min="10.0" onMouseDragged="#changeFontSlider" onMousePressed="#changeFontSlider" onMouseReleased="#changeFontSlider" showTickMarks="true" value="40.0">
          <HBox.margin>
@@ -16,7 +16,7 @@
       </Slider>
       <TextField fx:id="textFieldSizeFont" maxWidth="80.0" text="40" />
       <ChoiceBox id="Font" fx:id="fontList" prefWidth="150.0" />
-      <TextField fx:id="textValue" onAction="#changeValue" onKeyReleased="#changeValue" promptText="Text" />
+      <TextField fx:id="textValue" onAction="#validateText" onKeyReleased="#changeValue" promptText="Text" />
       <Button fx:id="validateButton" mnemonicParsing="false" onAction="#validateText" text="Validate" />
       <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelTextCreation" text="Annuler" />
    </children>
