@@ -1,27 +1,36 @@
 package controller;
 
 import controller.tools.Tool;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Dimension;
+
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Project implements Serializable {
-
+	
 	private Dimension dimension;
-
+	
 	private LinkedList<Layer> layers;
-
+	
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
@@ -29,19 +38,20 @@ public class Project implements Serializable {
 	private Color currentColor;
 	
 	private static Project projectInstance;
-
+	
 	/**
 	 * Projet étant un singleton on peut récupérer son instance unique avec getInstance
+	 *
 	 * @return
 	 */
 	public static Project getInstance() {
-		if(projectInstance == null){
+		if (projectInstance == null) {
 			projectInstance = new Project();
 		}
-
+		
 		return projectInstance;
 	}
-
+	
 	/**
 	 * Crée un nouveau projet
 	 */
@@ -50,32 +60,33 @@ public class Project implements Serializable {
 	}
 	
 	//*** GETTER  ***//
-
-
+	
+	
 	/**
 	 * Retourne la taille de l'image définie dans le projet ( C'est les dimensions qu'aura l'image finale lors de son export )
+	 *
 	 * @return
 	 */
 	public Dimension getDimension() {
-
+		
 		return dimension;
 	}
-
+	
 	/**
-	 * Retourne le currentLayer. Utiliser SetCurrentLayer pour le modifier UNIQUEMENT (pour que ce dernier gères les
-	 * eventHandlers
+	 * Retourne le currentLayer. Utiliser SetCurrentLayer pour le modifier UNIQUEMENT (pour que ce dernier gères les eventHandlers
+	 *
 	 * @return
 	 */
 	public Layer getCurrentLayer() {
-
+		
 		return currentLayer;
 	}
 	
 	//*** SETTER ***//
-
+	
 	/**
-	 * Change la couleur sélectionnée pour les outils, met a jour le RightMenu
-	 * Prooncipalement utilisé par la pipette
+	 * Change la couleur sélectionnée pour les outils, met a jour le RightMenu Prooncipalement utilisé par la pipette
+	 *
 	 * @param color
 	 */
 	public void setCurrentColor(Color color) {
@@ -88,7 +99,8 @@ public class Project implements Serializable {
 	 *
 	 * @param width
 	 * @param height
-	 * @param isNew  Indique si on doit créer un nouveau calque de fond
+	 * @param isNew
+	 * 		Indique si on doit créer un nouveau calque de fond
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
@@ -141,25 +153,7 @@ public class Project implements Serializable {
 		Iterator it = layers.descendingIterator();
 		
 		MainViewController.getInstance().getScrollPane().setContent(workspace);
-		/*
-		// Permet de dessiner le contour du currentLayer
-		final javafx.scene.shape.Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
-		redBorder.setStroke(Color.LIGHTBLUE);
-		redBorder.setManaged(false);
-		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
-			
-			@Override
-			public void changed(ObservableValue<? extends Bounds> observable,
-			                    Bounds oldValue, Bounds newValue) {
-				redBorder.setLayoutX(currentLayer.getBoundsInParent().getMinX());
-				redBorder.setLayoutY(currentLayer.getBoundsInParent().getMinY());
-				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
-				redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
-			}
-			
-		});
-		MainViewController.getInstance().getWorkspace().getChildren().add(redBorder);
-		*/
+		
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
@@ -172,25 +166,27 @@ public class Project implements Serializable {
 		workspace.setPrefSize(dimension.width, dimension.height);
 		workspace.setMaxSize(dimension.width, dimension.height);
 	}
-
+	
 	/**
 	 * Retourne la couleur actuellement sélectionnée
+	 *
 	 * @return
 	 */
 	public Color getCurrentColor() {
 		return currentColor;
 	}
-
+	
 	/**
 	 * Ajoutes un nouveau layer avec les dimensions définies dans le projet
 	 */
 	public void addNewLayer() {
-
+		
 		addLayer(new Layer(dimension.width, dimension.height));
 	}
-
+	
 	/**
 	 * Ajoutes un nouveau layer passé en paramètre
+	 *
 	 * @param newLayer
 	 */
 	public void addLayer(Layer newLayer) {
@@ -199,71 +195,99 @@ public class Project implements Serializable {
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
 		drawWorkspace();
 	}
-
+	
 	/**
 	 * Retournes la linked list de layers
 	 */
 	public LinkedList<Layer> getLayers() {
-
+		
 		return layers;
 	}
-
+	
 	/**
 	 * Change le currentLayer en prenant soin de retirer les eventHandlers sur l'ancien et de les remettre sur le nouveau
+	 *
 	 * @param currentLayer
 	 */
 	public void setCurrentLayer(Layer currentLayer) {
 		removeEventHandler(Tool.getCurrentTool());
+		
 		this.currentLayer = currentLayer;
+		
+		
 		addEventHandlers(Tool.getCurrentTool());
 	}
 	
 	public void addEventHandlers(Tool tool) {
-		if (this.currentLayer != null && tool != null) {
-			this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
-			this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
-			this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		if (this.currentLayer != null) {
+			this.currentLayer.setMouseTransparent(false);
+			if (tool != null) {
+				this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+				this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+				this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+			}
 		}
 	}
 	
 	public void removeEventHandler(Tool tool) {
-		if (this.currentLayer != null && tool != null) {
-			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
-			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
-			this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+		if (this.currentLayer != null) {
+			this.currentLayer.setMouseTransparent(true);
+			if (tool != null) {
+				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
+				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
+				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+			}
 		}
 	}
 	
 	public void export(File file) {
 		if (file != null) {
+			
 			Layer resultLayer = new Layer(dimension.width, dimension.height);
 			for (Layer layer : layers) {
-				resultLayer.mergeLayers(layer);
-				resultLayer = layer;
+				resultLayer = resultLayer.mergeLayers(layer);
 			}
 			
-			SnapshotParameters params = new SnapshotParameters();
 			String chosenExtension = "";
 			
 			int i = file.getPath().lastIndexOf('.');
 			if (i > 0) {
 				chosenExtension = file.getPath().substring(i + 1);
 			}
-			boolean transparent = true;
+			
 			if (chosenExtension.equals("png")) {
-				params.setFill(Color.TRANSPARENT);
+				try {
+					ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 				
 			} else if (chosenExtension.equals("jpg")) {
-				//params.setFill(Color.TRANSPARENT);
-				//params.setFill(Color.WHITE);
-				transparent = false;
-			}
-			
-			try {
+				SnapshotParameters params = new SnapshotParameters();
 				
-				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvasJPG(1, params, transparent), null), chosenExtension, file);
-			} catch (IOException ex) {
-				ex.printStackTrace();
+				params.setFill(Color.WHITE);
+				
+				Image lol = resultLayer.createImageFromCanvasJPG(4).getImage();
+				
+				PixelReader reader = lol.getPixelReader();
+				WritableImage newImage = new WritableImage(reader, (int) -resultLayer.getLayoutX(), (int) -resultLayer.getLayoutY(), dimension.width * 4, dimension.height * 4);
+				
+				System.out.println(-resultLayer.getLayoutX());
+				
+				BufferedImage image = SwingFXUtils.fromFXImage(newImage, null);
+				
+				BufferedImage imageRGB = new BufferedImage(dimension.width, dimension.height, BufferedImage.OPAQUE);
+				
+				Graphics2D graphics = imageRGB.createGraphics();
+				
+				graphics.drawImage(image, 0, 0, dimension.width, dimension.height, null);
+				try {
+					ImageIO.write(imageRGB, "jpg", file);
+					graphics.dispose();
+				} catch (IOException e) {
+				}
+				
+				
 			}
 		}
 	}
@@ -293,7 +317,7 @@ public class Project implements Serializable {
 			if (index >= layers.size()) {
 				index--;
 			}
-			currentLayer = layers.get(index);
+			setCurrentLayer(layers.get(index));
 			MainViewController.getInstance().getRightMenuController().deleteLayer(index);
 			drawWorkspace();
 		}

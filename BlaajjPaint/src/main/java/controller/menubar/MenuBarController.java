@@ -138,7 +138,7 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleDuplicateLayer(ActionEvent event) {
-		//to do
+		Project.getInstance().addLayer(new Layer(Project.getInstance().getCurrentLayer()));
 	}
 	
 	@FXML

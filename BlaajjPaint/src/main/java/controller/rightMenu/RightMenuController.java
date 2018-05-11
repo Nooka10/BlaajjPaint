@@ -1,6 +1,7 @@
 package controller.rightMenu;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -102,25 +103,25 @@ public class RightMenuController {
 	public void setColorPickerColor(Color color) {
 		colorPicker.setValue(color);
 	}
-
+	
 	public class NewLayerSave implements ICmd {
-
+		
 		@Override
 		public void execute() {
-
+		
 		}
-
+		
 		@Override
 		public void undo() throws UndoException {
-
+		
 		}
-
+		
 		@Override
 		public void redo() throws UndoException {
-
+		
 		}
 	}
-
+	
 	@FXML
 	void addNewLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
@@ -165,9 +166,13 @@ public class RightMenuController {
 	void fusionLayer(ActionEvent event) {
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
-		if (index != Project.getInstance().getLayers().size() - 1) {
-			currentLayer.mergeLayers(Project.getInstance().getLayers().get(index + 1));
-			
+		if(index != Project.getInstance().getLayers().size()-1){
+			Layer backgroundLayer = Project.getInstance().getLayers().get(index+1);
+			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer );
+			Project.getInstance().getLayers().remove(currentLayer);
+			Project.getInstance().getLayers().remove(backgroundLayer);
+			Project.getInstance().addLayer(mergeLayer);
+			updateLayerList();
 		}
 		
 	}
@@ -207,8 +212,10 @@ public class RightMenuController {
 	public void clearLayerList() {
 		layersList.getChildren().clear();
 	}
-
-	public void clearHistoryList() { historyList.getChildren().clear();}
+	
+	public void clearHistoryList() {
+		historyList.getChildren().clear();
+	}
 	
 	public void setOpacitySlider(double opacitySlider) {
 		this.opacitySlider.setValue(opacitySlider);
@@ -219,26 +226,35 @@ public class RightMenuController {
 	}
 	
 	public void addUndoHistory(ICmd iCmd) {
+		addHistory(iCmd, false);
+	}
+	
+	public void updateHistoryList() {
+		historyList.getChildren().clear();
+		for (int i = RecordCmd.getInstance().getUndoStack().size() - 1; i >= 0; --i) {
+			addUndoHistory(RecordCmd.getInstance().getUndoStack().get(i));
+		}
+		for (ICmd cmd: RecordCmd.getInstance().getRedoStack()) {
+			addRedoHistory(cmd);
+		}
+	}
+	
+	public void addRedoHistory(ICmd iCmd) {
+		addHistory(iCmd, true);
+	}
+	
+	private void addHistory(ICmd iCmd, boolean isRedo) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
 			h.setLabel(iCmd.toString());
+			if (isRedo) {
+				h.changeLabelOpacity(60);
+			}
 			historyList.getChildren().add(newHistory);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void updateHistoryList(){
-		historyList.getChildren().clear();
-		for (ICmd cmd: RecordCmd.getInstance().getUndoStack()) {
-			addUndoHistory(cmd);
-		}
-	}
-	
-	public void undoHistory() {
-		historyList.getChildren().remove(historyList.getChildren().size() - 1);
-		//updateHistoryList();
 	}
 }

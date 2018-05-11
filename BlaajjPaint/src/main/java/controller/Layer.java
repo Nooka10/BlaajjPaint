@@ -11,7 +11,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -87,35 +87,24 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	
-	// TODO : false
-	public WritableImage createImageFromCanvasJPG(int scale, SnapshotParameters spa, boolean tr) {
+	// TODO : false, rend une image 4x plus grande
+	public ImageView createImageFromCanvasJPG(int scale) {
 		//final Bounds bounds = getLayoutBounds();
-		
-		createImageFromCanvas(scale);
 		final WritableImage image = new WritableImage(
-				Math.round(Project.getInstance().getDimension().width * scale),
-				Math.round(Project.getInstance().getDimension().height * scale));
+				(int) getWidth() * scale,
+				(int) getHeight() * scale);
 		
-		if (!tr) {
-			for (int x = 0; x < Project.getInstance().getDimension().width; ++x) {
-				for (int y = 0; y < Project.getInstance().getDimension().width; ++y) {
-					if (image.getPixelReader().getColor(x, y) == Color.TRANSPARENT)
-						image.getPixelWriter().setColor(x, y, Color.WHITE);
-				}
-			}
-		}
-		
-		
-		//final SnapshotParameters spa = new SnapshotParameters();
+		final SnapshotParameters spa = new SnapshotParameters();
 		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
-		//spa.setFill(Color.TRANSPARENT);
+		spa.setFill(Color.WHITE);
 		
-		this.snapshot(spa, image);
-		/*final ImageView view = new ImageView(snapshot(spa, image));
-		view.setFitWidth(Project.getInstance().getDimension().width);
-		view.setFitHeight(Project.getInstance().getDimension().height);*/
+		final ImageView view = new ImageView(snapshot(spa, image));
+
+		view.setFitWidth(getWidth());
+		view.setFitHeight(getHeight());
+		view.setPreserveRatio(true);
 		
-		return image;
+		return view;
 	}
 	
 	/**
@@ -124,7 +113,7 @@ public class Layer extends Canvas implements Serializable {
 	 * @param backgroundLayer
 	 * 		le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
-	public void mergeLayers(Layer backgroundLayer) {
+	public Layer mergeLayers(Layer backgroundLayer) {
 		Image image1 = createImageFromCanvas(4);
 		Image image2 = backgroundLayer.createImageFromCanvas(4);
 		
@@ -139,14 +128,12 @@ public class Layer extends Canvas implements Serializable {
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
 		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
 		
+		
 		mergeLayer.setLayoutX(minX);
 		mergeLayer.setLayoutY(minY);
 		
-		Project.getInstance().getLayers().remove(this);
-		Project.getInstance().getLayers().remove(backgroundLayer);
-		Project.getInstance().addLayer(mergeLayer);
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		
+		return mergeLayer;
 	}
 	
 	/**
@@ -177,12 +164,16 @@ public class Layer extends Canvas implements Serializable {
 		
 		@Override
 		public void undo() {
-			setLayerOpacity(oldOpacity);
+			updateLayerOpacity(oldOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(oldOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(oldOpacity);
 		}
 		
 		@Override
 		public void redo() {
-			setLayerOpacity(newOpacity);
+			updateLayerOpacity(newOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(newOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(newOpacity);
 		}
 		
 		@Override
