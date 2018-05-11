@@ -2,18 +2,17 @@ package controller;
 
 import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -25,7 +24,6 @@ public class Project implements Serializable {
 	private Layer currentLayer;
 	
 	private Color currentColor;
-
 	
 	private static Project projectInstance = new Project();
 	
@@ -51,12 +49,13 @@ public class Project implements Serializable {
 		currentColor = color;
 		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 	}
-
+	
 	/**
 	 * Méthode qui crée l'état initial du projet.
+	 *
 	 * @param width
 	 * @param height
-	 * @param isNew		Indique si on doit créer un nouveau calque de fond
+	 * @param isNew  Indique si on doit créer un nouveau calque de fond
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
@@ -71,7 +70,7 @@ public class Project implements Serializable {
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, width, height);
 		gc.setFill(Color.LIGHTGRAY);
-
+		
 		
 		int rectSize = 10;
 		for (int i = 0; i < width; i = i + rectSize) {
@@ -84,38 +83,61 @@ public class Project implements Serializable {
 		
 		if (isNew) {
 			layers.add(currentLayer);
+			MainViewController.getInstance().getRightMenuController().createLayerList();
+			drawWorkspace();
 		}
 		
-		MainViewController.getInstance().getRightMenuController().createLayerList();
-		drawWorkspace();
 	}
-
+	
 	/**
 	 * Méthode qui ferme un projet.
 	 */
-	public void close(){
-
+	public void close() {
 		backgroungImage = null;
 		dimension = null;
 		layers = null;
 		currentLayer = null;
-
+		
 		Layer.reset();
 	}
 	
 	
 	public void drawWorkspace() {
-		Group layersGroup = new Group();
-		layersGroup.getChildren().add(backgroungImage);
+		AnchorPane workspace = new AnchorPane();
+		workspace.getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
-
+		
+		MainViewController.getInstance().getScrollPane().setContent(workspace);
+		/*
+		// Permet de dessiner le contour du currentLayer
+		final javafx.scene.shape.Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+		redBorder.setStroke(Color.LIGHTBLUE);
+		redBorder.setManaged(false);
+		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+			
+			@Override
+			public void changed(ObservableValue<? extends Bounds> observable,
+			                    Bounds oldValue, Bounds newValue) {
+				redBorder.setLayoutX(currentLayer.getBoundsInParent().getMinX());
+				redBorder.setLayoutY(currentLayer.getBoundsInParent().getMinY());
+				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
+				redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
+			}
+			
+		});
+		MainViewController.getInstance().getWorkspace().getChildren().add(redBorder);
+		*/
+		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
-				layersGroup.getChildren().add(layer);
+				workspace.getChildren().add(layer);
 			}
 		}
-		MainViewController.getInstance().getScrollPane().setContent(layersGroup);
+		
+		workspace.setMinSize(dimension.width, dimension.height);
+		workspace.setPrefSize(dimension.width, dimension.height);
+		workspace.setMaxSize(dimension.width, dimension.height);
 	}
 	
 	
@@ -124,10 +146,10 @@ public class Project implements Serializable {
 	}
 	
 	public void addNewLayer() {
-		addLayer(new Layer(currentLayer));
+		addLayer(new Layer(dimension.width, dimension.height));
 	}
 	
-	private void addLayer(Layer newLayer) {
+	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
@@ -228,45 +250,50 @@ public class Project implements Serializable {
 	public Canvas getBackgroungImage() {
 		return backgroungImage;
 	}
-
-
+	
+	
 	//*** SERIALISATION  ***//
+	
 	/**
 	 * Permet de dé-serialiser la projet à l'aide de l'interface Serializable
+	 *
 	 * @param s
+	 *
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-
+		
 		// pour pas recréer une instance de projet
 		projectInstance = this;
-
+		
 		initData(s.readInt(), s.readInt(), false);
-
+		
 		int nbCalques = s.readInt();
-
+		
 		int maxCount = 1;
-		for(int i = 0; i < nbCalques; ++i){
-
+		for (int i = 0; i < nbCalques; ++i) {
+			
 			Layer l = (Layer) s.readObject();
 			addLayer(l);
-			if(l.id() > maxCount)
+			if (l.id() > maxCount)
 				maxCount = l.id();
-
+			
 		}
-
+		
 		Layer.setCount(maxCount);
-
+		
 		setCurrentLayer(layers.getFirst());
 		
 		MainViewController.getInstance().getRightMenuController().createLayerList();
 		drawWorkspace();
 	}
-
+	
 	/**
 	 * Permet de serialiser la projet à l'aide de l'interface Serializable
+	 *
 	 * @param s
+	 *
 	 * @throws IOException
 	 */
 	private void writeObject(ObjectOutputStream s) throws IOException {
@@ -277,11 +304,11 @@ public class Project implements Serializable {
 		
 		
 		// Calques
-		s.writeInt(layers.size());		// Nombre de qualques
-
+		s.writeInt(layers.size());        // Nombre de qualques
+		
 		Iterator li = layers.descendingIterator();
-
-		while(li.hasNext()) {
+		
+		while (li.hasNext()) {
 			//System.out.println(li.next());
 			s.writeObject(li.next());
 		}

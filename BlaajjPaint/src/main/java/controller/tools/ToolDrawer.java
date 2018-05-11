@@ -35,7 +35,9 @@ public abstract class ToolDrawer extends Tool {
 			// configuration des paramètres utilisés pour la sauvegarde du canevas
 			params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
-			
+
+			System.out.println("Snap Trait");
+
 			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
 		}
 		
@@ -49,7 +51,10 @@ public abstract class ToolDrawer extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
+
+			System.out.println("Trait undo");
 			redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0,0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
 			undosave = null;
 		}
@@ -59,8 +64,10 @@ public abstract class ToolDrawer extends Tool {
 			if (redosave == null) {
 				throw new UndoException();
 			}
+			System.out.println("Trait redo");
 			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+            Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0,0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
+            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}
 

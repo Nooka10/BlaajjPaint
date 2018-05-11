@@ -20,18 +20,18 @@
 		</Menu>
 		<Menu mnemonicParsing="false" text="Edition">
 			<items>
-				<MenuItem id="menuBar_undo" disable="true" mnemonicParsing="false" onAction="#handleUndo" text="Undo" />
-				<MenuItem id="menuBar_redo" disable="true" mnemonicParsing="false" onAction="#handleRedo" text="Redo" />
+				<MenuItem id="menuBar_undo" mnemonicParsing="false" onAction="#handleUndo" text="Undo" />
+				<MenuItem id="menuBar_redo" mnemonicParsing="false" onAction="#handleRedo" text="Redo" />
 			</items>
 		</Menu>
 		<Menu mnemonicParsing="false" text="Calque">
 			<items>
-				<MenuItem id="menuBar_nouveauCalque" disable="true" mnemonicParsing="false" onAction="#handleNewLayer" text="Nouveau" />
-				<MenuItem id="menuBar_dupliquerCalque" disable="true" mnemonicParsing="false" onAction="#handleDuplicateLayer" text="Dupliquer" />
-				<MenuItem id="menuBar_supprimerCalque" disable="true" mnemonicParsing="false" onAction="#handleDeleteLayer" text="Supprimer" />
-				<MenuItem id="menuBar_fusionnerCalques" disable="true" mnemonicParsing="false" onAction="#handleFusionLayer" text="Fusionner les calques séléctionnés" />
-				<MenuItem id="menuBar_aplatirCalques" disable="true" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques" />
-				<MenuItem id="menuBar_masquerCalques" disable="true" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque séléctionné" />
+				<MenuItem id="menuBar_nouveauCalque" mnemonicParsing="false" onAction="#handleNewLayer" text="Nouveau" />
+				<MenuItem id="menuBar_dupliquerCalque" mnemonicParsing="false" onAction="#handleDuplicateLayer" text="Dupliquer" />
+				<MenuItem id="menuBar_supprimerCalque" mnemonicParsing="false" onAction="#handleDeleteLayer" text="Supprimer" />
+				<MenuItem id="menuBar_fusionnerCalques" mnemonicParsing="false" onAction="#handleFusionLayer" text="Fusionner les calques séléctionnés" />
+				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques" />
+				<MenuItem id="menuBar_masquerCalques" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque séléctionné" />
 			</items>
 		</Menu>
 		<Menu mnemonicParsing="false" text="Aide">

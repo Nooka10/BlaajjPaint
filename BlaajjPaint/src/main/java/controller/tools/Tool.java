@@ -17,7 +17,7 @@ public abstract class Tool {
 	protected final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers(); // l'évènement déclanché lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
 	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers(); // l'évènement déclanché lorsqu'on relache le bouton de la souris
 	
-	public enum ToolType {PENCIL, ERASER, PIPETTE, ZOOM, MOVE, BUCKETFILL, OTHER} // énumération de tout les types d'outils gérés
+	public enum ToolType {PENCIL, ERASER, PIPETTE, ZOOM, MOVE, BUCKETFILL, TEXT, OTHER} // énumération de tout les types d'outils gérés
 	
 	public static boolean toolHasChanged = false; // Vrai lorsqu'on vient de changer d'outil
 	
@@ -62,11 +62,10 @@ public abstract class Tool {
 			
 			if (Tool.currentTool != null) {
 				Tool.currentTool.CallbackOldToolChanged();
+				Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
 			}
 			
 			toolHasChanged = true;
-			
-			Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
 			
 			Tool.currentTool = currentTool;
 			

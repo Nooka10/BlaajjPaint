@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -18,9 +17,7 @@ import java.io.IOException;
  * resizing, deleting and so on.
  */
 public class ToolBarController {
-	
-	private ParamDrawToolController paramDrawToolControler;
-	
+
 	private Parent paramBar;
 	
 	/* attributs pour FXML */
@@ -107,7 +104,7 @@ public class ToolBarController {
 	public void handlePencil(ActionEvent event) {
 		Tool.setCurrentTool(Pencil.getInstance());
 		if (Tool.getToolHasChanged()) {
-			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
+			addParamBar("/view/tools/ParamDrawTool.fxml");
 			Tool.setToolHasChanged(false);
 		}
 	}
@@ -116,7 +113,7 @@ public class ToolBarController {
 	public void handleEraser(ActionEvent event) {
 		Tool.setCurrentTool(Eraser.getInstance());
 		if (Tool.getToolHasChanged()) {
-			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
+			addParamBar("/view/tools/ParamDrawTool.fxml");
 			Tool.setToolHasChanged(false);
 		}
 	}
@@ -132,7 +129,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleAddText(ActionEvent event) {
-	
+		Tool.setCurrentTool(TextTool.getInstance());
+		if(Tool.getToolHasChanged()){
+			addParamBar("/view/tools/ParamText.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -147,7 +148,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleHand(ActionEvent event) {
-	
+		Tool.setCurrentTool(Hand.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -168,7 +173,7 @@ public class ToolBarController {
 		alert.showAndWait();
 	}
 	
-	private void addParamDrawBar(String FXMLpath) {
+	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
 			closeCurrentParamBar();
 		}
@@ -176,7 +181,6 @@ public class ToolBarController {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
 			paramBar = fxmlLoader.load();
-			paramDrawToolControler = fxmlLoader.getController();
 			MainViewController.getInstance().getParamBar().getChildren().add(paramBar); // on ajoute la barre de paramètre au MainViewController
 		} catch (IOException e) {
 			e.printStackTrace();

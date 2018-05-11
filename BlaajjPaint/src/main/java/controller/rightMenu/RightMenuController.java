@@ -2,6 +2,7 @@ package controller.rightMenu;
 
 import controller.Layer;
 import controller.Project;
+import controller.history.ICmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -20,6 +23,9 @@ import java.util.Collections;
 public class RightMenuController {
 	@FXML
 	private VBox layersList;
+	
+	@FXML
+	private VBox historyList;
 	
 	@FXML
 	private Button fusion;
@@ -45,6 +51,10 @@ public class RightMenuController {
 	@FXML
 	private AnchorPane rightMenu;
 	
+	private double oldOpacity;
+	
+	private double newOpacity;
+	
 	// LayerList config
 	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
 	
@@ -53,15 +63,33 @@ public class RightMenuController {
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
-		
-		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(newValue.toString()));
-			opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
-		});
-		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(newValue));
-			opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
-		});
+	}
+	
+	@FXML
+	void OnInputTextChanged(InputMethodEvent event) {
+		Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(opacityTextField.getText()));
+		opacitySlider.setValue(Double.parseDouble(opacityTextField.getText()));
+	}
+	
+	@FXML
+	void OnMouseDragged(MouseEvent event) {
+		newOpacity = opacitySlider.getValue();
+		opacityTextField.setText(String.valueOf(newOpacity));
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(newOpacity);
+	}
+	
+	@FXML
+	void OnMousePressed(MouseEvent event) {
+		oldOpacity = opacitySlider.getValue();
+		opacityTextField.setText(String.valueOf(oldOpacity));
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
+	}
+	
+	@FXML
+	void OnMouseReleased(MouseEvent event) {
+		opacityTextField.setText(String.valueOf(opacitySlider.getValue()));
+		newOpacity = opacitySlider.getValue();
+		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
 	}
 	
 	@FXML
@@ -115,7 +143,13 @@ public class RightMenuController {
 	
 	@FXML
 	void fusionLayer(ActionEvent event) {
-		//Project.getInstance().getCurrentLayer().mergeLayers();
+		Layer currentLayer = Project.getInstance().getCurrentLayer();
+		int index = Project.getInstance().getLayers().indexOf(currentLayer);
+		if(index != Project.getInstance().getLayers().size()-1){
+			currentLayer.mergeLayers( Project.getInstance().getLayers().get(index+1));
+			
+		}
+		
 	}
 	
 	public void createLayerList() {
@@ -160,5 +194,21 @@ public class RightMenuController {
 	
 	public void setOpacityTextField(String opacityTextField) {
 		this.opacityTextField.setText(opacityTextField);
+	}
+	
+	public void addUndoHistory(ICmd iCmd) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
+			Parent newHistory = fxmlLoader.load();
+			HistoryController h = fxmlLoader.getController();
+			h.setLabel(iCmd.toString());
+			historyList.getChildren().add(newHistory);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void undoHistory() {
+		historyList.getChildren().remove(historyList.getChildren().size() - 1);
 	}
 }

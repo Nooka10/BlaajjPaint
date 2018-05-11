@@ -3,38 +3,37 @@ Author: Benoît
  */
 package controller.tools;
 
+import controller.MainViewController;
 import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.EventHandler;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
+import utils.UndoException;
 
 /**
  * Classe implémentant l'outil pipette
  */
-public class Pipette extends Tool {
+public class Hand extends Tool {
 	
-	private static Pipette toolInstance = new Pipette();
+	private static Hand toolInstance = new Hand();
 	
-	public static Pipette getInstance() {
+	public static Hand getInstance() {
 		return toolInstance;
 	}
 	
-	private Pipette() {
-		toolType = ToolType.PIPETTE;
+	private Hand() {
+		toolType = ToolType.MOVE;
 	}
-	
+
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				WritableImage srcMask = new WritableImage((int) Project.getInstance().getCurrentLayer().getWidth(), (int) Project.getInstance().getCurrentLayer().getHeight());
-				srcMask = Project.getInstance().getCurrentLayer().snapshot(null, srcMask);
-				
-				PixelReader maskReader = srcMask.getPixelReader();
-				
-				Project.getInstance().setCurrentColor(maskReader.getColor((int) event.getX(), (int) event.getY()));
+				MainViewController.getInstance().getScrollPane().setPannable(true);
 			}
 		};
 	}
@@ -54,7 +53,7 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// do nothing
+				MainViewController.getInstance().getScrollPane().setPannable(false);
 			}
 		};
 	}
