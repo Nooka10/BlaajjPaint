@@ -175,12 +175,16 @@ public class Layer extends Canvas implements Serializable {
 		
 		@Override
 		public void undo() {
-			setLayerOpacity(oldOpacity);
+			updateLayerOpacity(oldOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(oldOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(oldOpacity);
 		}
 		
 		@Override
 		public void redo() {
-			setLayerOpacity(newOpacity);
+			updateLayerOpacity(newOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(newOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(newOpacity);
 		}
 		
 		@Override

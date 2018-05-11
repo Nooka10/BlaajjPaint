@@ -13,10 +13,6 @@ public class HistoryController {
 	@FXML
 	private Label label;
 	
-	public HBox getHistoryElem() {
-		return historyElem;
-	}
-	
 	@FXML
 	private void initialize() {
 	
@@ -29,5 +25,10 @@ public class HistoryController {
 	
 	public void setLabel(String label) {
 		this.label.setText(label);
+	}
+	
+	public void changeLabelOpacity(double opacity) {
+		opacity /= 100;
+		label.opacityProperty().setValue(opacity);
 	}
 }
