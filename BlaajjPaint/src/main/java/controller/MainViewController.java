@@ -189,6 +189,9 @@ public class MainViewController {
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
 		SaveProjects.getInstance().clear();
+
+		// desactive les bouttons
+		disableButton();
 	}
 
 	public void openProject(){
@@ -208,6 +211,9 @@ public class MainViewController {
 			closeProject();
 			SaveProjects.getInstance().openFile(file);
 		}
+
+		// réactive les bouttons
+		enableButton();
 	}
 
 	/**
@@ -215,5 +221,27 @@ public class MainViewController {
 	 */
 	public void saveAs(){
 		menuBarController.handleSaveAs(null);
+	}
+
+
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
+		menuBarController.disableButton();
+		rightMenuController.disableButton();
+		rightMenuController.disableButton();
+	}
+
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert ou créé
+	 */
+	public void enableButton(){
+		menuBarController.enableButton();
+		rightMenuController.enableButton();
+		toolBarController.enableButton();
 	}
 }

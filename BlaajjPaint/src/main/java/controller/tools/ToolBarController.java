@@ -201,4 +201,20 @@ public class ToolBarController {
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}
+
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert ou créé
+	 */
+	public void enableButton(){
+
+	}
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
+
+	}
 }

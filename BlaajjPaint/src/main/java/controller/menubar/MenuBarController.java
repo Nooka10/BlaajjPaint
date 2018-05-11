@@ -179,7 +179,21 @@ public class MenuBarController {
 	@FXML
 	public void handleHelp(ActionEvent event) {
 
+	}
 
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert, créé
+	 */
+	public void enableButton(){
+
+	}
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
 
 	}
 }
