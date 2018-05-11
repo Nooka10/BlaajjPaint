@@ -87,7 +87,6 @@ public class Layer extends Canvas implements Serializable {
 	
 	// TODO : false, rend une image 4x plus grande
 	public ImageView createImageFromCanvasJPG(int scale) {
-		//final Bounds bounds = getLayoutBounds();
 		final WritableImage image = new WritableImage(
 				(int) getWidth() * scale,
 				(int) getHeight() * scale);
@@ -115,21 +114,24 @@ public class Layer extends Canvas implements Serializable {
 		Image image1 = createImageFromCanvas(4);
 		Image image2 = backgroundLayer.createImageFromCanvas(4);
 		
+		// prend le décalage (layout) minimum des deux calques
 		double minX = getLayoutX() < backgroundLayer.getLayoutX() ? getLayoutX() : backgroundLayer.getLayoutX();
 		double minY = getLayoutY() < backgroundLayer.getLayoutY() ? getLayoutY() : backgroundLayer.getLayoutY();
 		
+		// prend le décalage (layout) maximum des deux calques
 		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
 		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
 		
+		// crée un nouveau calque qui contiendra la fusion des deux autres
 		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY));
 		
+		// dessine les deux calques sur notre nouveau calque fusion
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
 		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
 		
-		
+		// place le calque fusionné avec le bon décalage
 		mergeLayer.setLayoutX(minX);
 		mergeLayer.setLayoutY(minY);
-		
 		
 		return mergeLayer;
 	}
