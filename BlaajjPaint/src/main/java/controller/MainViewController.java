@@ -1,6 +1,6 @@
 package controller;
 
-import controller.history.RecordCmd;
+	import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
