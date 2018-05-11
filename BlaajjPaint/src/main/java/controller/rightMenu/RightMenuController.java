@@ -1,6 +1,7 @@
 package controller.rightMenu;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import javafx.event.ActionEvent;
@@ -165,8 +166,12 @@ public class RightMenuController {
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
 		if(index != Project.getInstance().getLayers().size()-1){
-			currentLayer.mergeLayers( Project.getInstance().getLayers().get(index+1));
-			
+			Layer backgroundLayer = Project.getInstance().getLayers().get(index+1);
+			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer );
+			Project.getInstance().getLayers().remove(currentLayer);
+			Project.getInstance().getLayers().remove(backgroundLayer);
+			Project.getInstance().addLayer(mergeLayer);
+			createLayerList();
 		}
 		
 	}

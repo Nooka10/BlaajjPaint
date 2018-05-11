@@ -6,12 +6,15 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -88,7 +91,8 @@ public class Project implements Serializable {
 	 *
 	 * @param width
 	 * @param height
-	 * @param isNew  Indique si on doit créer un nouveau calque de fond
+	 * @param isNew
+	 * 		Indique si on doit créer un nouveau calque de fond
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
@@ -236,34 +240,50 @@ public class Project implements Serializable {
 	
 	public void export(File file) {
 		if (file != null) {
+			
 			Layer resultLayer = new Layer(dimension.width, dimension.height);
 			for (Layer layer : layers) {
-				resultLayer.mergeLayers(layer);
-				resultLayer = layer;
+				resultLayer = resultLayer.mergeLayers(layer);
 			}
 			
-			SnapshotParameters params = new SnapshotParameters();
 			String chosenExtension = "";
 			
 			int i = file.getPath().lastIndexOf('.');
 			if (i > 0) {
 				chosenExtension = file.getPath().substring(i + 1);
 			}
-			boolean transparent = true;
+			
 			if (chosenExtension.equals("png")) {
-				params.setFill(Color.TRANSPARENT);
+				try {
+					ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 				
 			} else if (chosenExtension.equals("jpg")) {
-				//params.setFill(Color.TRANSPARENT);
-				//params.setFill(Color.WHITE);
-				transparent = false;
-			}
-			
-			try {
+				SnapshotParameters params = new SnapshotParameters();
 				
-				ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvasJPG(1, params, transparent), null), chosenExtension, file);
-			} catch (IOException ex) {
-				ex.printStackTrace();
+				params.setFill(Color.WHITE);
+				
+				Image lol = resultLayer.createImageFromCanvasJPG(4).getImage();
+				
+				PixelReader reader = lol.getPixelReader();
+				WritableImage newImage = new WritableImage(reader, (int) -resultLayer.getLayoutX(), (int) -resultLayer.getLayoutY(), dimension.width * 4, dimension.height * 4);
+				
+				BufferedImage image = SwingFXUtils.fromFXImage(newImage, null);
+				
+				BufferedImage imageRGB = new BufferedImage(dimension.width, dimension.height, BufferedImage.OPAQUE);
+				
+				Graphics2D graphics = imageRGB.createGraphics();
+				
+				graphics.drawImage(image, 0, 0, dimension.width, dimension.height, null);
+				try {
+					ImageIO.write(imageRGB, "jpg", file);
+					graphics.dispose();
+				} catch (IOException e) {
+				}
+				
+				
 			}
 		}
 	}
