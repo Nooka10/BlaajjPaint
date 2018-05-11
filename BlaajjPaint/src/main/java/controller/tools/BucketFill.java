@@ -77,15 +77,15 @@ public class BucketFill extends Tool {
 				srcMask = layer.snapshot(null, srcMask);
 				PixelReader pixelReader = srcMask.getPixelReader();
 				
-				Color colorSelected = pixelReader.getColor((int) Math.ceil(event.getX()), (int) Math.ceil(event.getY()));
+				Color colorSelected = pixelReader.getColor((int) Math.round(event.getX()), (int) Math.round(event.getY()));
 				Color currentColor = Project.getInstance().getCurrentColor();
 				
 				stack.push(new Point2D(event.getX(), event.getY()));
 				
 				while (!stack.isEmpty()) {
 					Point2D point = stack.pop();
-					int x = (int) Math.ceil(point.getX());
-					int y = (int) Math.ceil(point.getY());
+					int x = (int) Math.round(point.getX());
+					int y = (int) Math.round(point.getY());
 					
 					if ((!pixelReader.getColor(x, y).equals(colorSelected))) {
 						continue;
@@ -105,6 +105,7 @@ public class BucketFill extends Tool {
 					addPointToStack(x + 1, y + 1);
 				}
 				resetOldCursor();
+				currentFill.execute();
 			}
 			
 			private void addPointToStack(int x, int y) {
@@ -113,7 +114,6 @@ public class BucketFill extends Tool {
 					return;
 				}
 				stack.push(point);
-				currentFill.execute();
 			}
 		};
 	}

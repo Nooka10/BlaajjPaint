@@ -1,6 +1,7 @@
 package controller.tools;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -43,11 +44,10 @@ public class TextTool extends Tool {
 
     public void validate(){
         if(addText != null) {
-            textLayer.mergeLayers(oldCurrentLayer);
-            Project.getInstance().setCurrentLayer(oldCurrentLayer);
-            Project.getInstance().drawWorkspace();
             text = "";
             addText.execute();
+            MainViewController.getInstance().getRightMenuController().createLayerList();
+            Project.getInstance().drawWorkspace();
             addText = null; // end of the session of adding a text
         }
     }
@@ -63,7 +63,7 @@ public class TextTool extends Tool {
             graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
             graphics.setFont(font);
             graphics.fillText(text ,x ,y);
-            Project.getInstance().drawWorkspace();;
+            Project.getInstance().drawWorkspace();
         }
     }
 
