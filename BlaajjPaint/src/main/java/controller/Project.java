@@ -17,34 +17,67 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Project implements Serializable {
+
 	private Dimension dimension;
+
 	private LinkedList<Layer> layers;
+
 	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
 	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
 	private Layer currentLayer;
 	
 	private Color currentColor;
 	
-	private static Project projectInstance = new Project();
-	
+	private static Project projectInstance;
+
+	/**
+	 * Projet étant un singleton on peut récupérer son instance unique avec getInstance
+	 * @return
+	 */
 	public static Project getInstance() {
+		if(projectInstance == null){
+			projectInstance = new Project();
+		}
+
 		return projectInstance;
 	}
-	
+
+	/**
+	 * Crée un nouveau projet
+	 */
 	private Project() {
 		currentColor = Color.BLACK;
 	}
 	
 	//*** GETTER  ***//
+
+
+	/**
+	 * Retourne la taille de l'image définie dans le projet ( C'est les dimensions qu'aura l'image finale lors de son export )
+	 * @return
+	 */
 	public Dimension getDimension() {
+
 		return dimension;
 	}
-	
+
+	/**
+	 * Retourne le currentLayer. Utiliser SetCurrentLayer pour le modifier UNIQUEMENT (pour que ce dernier gères les
+	 * eventHandlers
+	 * @return
+	 */
 	public Layer getCurrentLayer() {
+
 		return currentLayer;
 	}
 	
 	//*** SETTER ***//
+
+	/**
+	 * Change la couleur sélectionnée pour les outils, met a jour le RightMenu
+	 * Prooncipalement utilisé par la pipette
+	 * @param color
+	 */
 	public void setCurrentColor(Color color) {
 		currentColor = color;
 		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
@@ -83,7 +116,7 @@ public class Project implements Serializable {
 		
 		if (isNew) {
 			layers.add(currentLayer);
-			MainViewController.getInstance().getRightMenuController().createLayerList();
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
 		
@@ -101,7 +134,7 @@ public class Project implements Serializable {
 		Layer.reset();
 	}
 	
-	
+	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
 	public void drawWorkspace() {
 		AnchorPane workspace = new AnchorPane();
 		workspace.getChildren().add(backgroungImage);
@@ -139,27 +172,46 @@ public class Project implements Serializable {
 		workspace.setPrefSize(dimension.width, dimension.height);
 		workspace.setMaxSize(dimension.width, dimension.height);
 	}
-	
-	
+
+	/**
+	 * Retourne la couleur actuellement sélectionnée
+	 * @return
+	 */
 	public Color getCurrentColor() {
 		return currentColor;
 	}
-	
+
+	/**
+	 * Ajoutes un nouveau layer avec les dimensions définies dans le projet
+	 */
 	public void addNewLayer() {
+
 		addLayer(new Layer(dimension.width, dimension.height));
 	}
-	
+
+	/**
+	 * Ajoutes un nouveau layer passé en paramètre
+	 * @param newLayer
+	 */
 	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
 		drawWorkspace();
 	}
-	
+
+	/**
+	 * Retournes la linked list de layers
+	 */
 	public LinkedList<Layer> getLayers() {
+
 		return layers;
 	}
-	
+
+	/**
+	 * Change le currentLayer en prenant soin de retirer les eventHandlers sur l'ancien et de les remettre sur le nouveau
+	 * @param currentLayer
+	 */
 	public void setCurrentLayer(Layer currentLayer) {
 		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
@@ -285,7 +337,7 @@ public class Project implements Serializable {
 		
 		setCurrentLayer(layers.getFirst());
 		
-		MainViewController.getInstance().getRightMenuController().createLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
 	
