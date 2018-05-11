@@ -176,7 +176,7 @@ public class TextTool extends Tool {
 		};
 	}
 	
-	class AddText implements ICmd {
+	class AddText extends ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private SnapshotParameters params;
