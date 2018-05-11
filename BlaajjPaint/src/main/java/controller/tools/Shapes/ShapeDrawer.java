@@ -35,7 +35,7 @@ public abstract class ShapeDrawer extends Tool {
     /**
      * Classe interne destine à la sauvegarde des formes dans l'historique des actions
      */
-    class ShapeSave implements ICmd {
+    class ShapeSave extends ICmd {
 
         //image à récupérer en cas de redo
         private Image undosave;
