@@ -210,10 +210,7 @@ public class Project implements Serializable {
 	 */
 	public void setCurrentLayer(Layer currentLayer) {
 		removeEventHandler(Tool.getCurrentTool());
-		
 		this.currentLayer = currentLayer;
-		
-		
 		addEventHandlers(Tool.getCurrentTool());
 	}
 	

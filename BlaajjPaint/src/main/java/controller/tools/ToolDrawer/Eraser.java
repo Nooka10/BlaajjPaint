@@ -27,7 +27,7 @@ public class Eraser extends ToolDrawer {
 	
 	public class EraserStrike extends Trait {
 		public String toString() {
-			return "Eraser Strike";
+			return "Trait de gomme";
 		}
 	}
 	
