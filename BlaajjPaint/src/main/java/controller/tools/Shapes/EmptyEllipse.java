@@ -20,12 +20,13 @@ public class EmptyEllipse extends ShapeDrawer {
      * Constructeur privé (modèle singleton)
      */
     private EmptyEllipse() {
-        toolType = Tool.ToolType.EMPTYRECTANGLE;
+        toolType = Tool.ToolType.EMPTYELLIPSE;
     }
 
 
     @Override
     protected void drawShape() {
+        shapeLayer.getGraphicsContext2D().setLineWidth(thickness);
         shapeLayer.getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor());
         shapeLayer.getGraphicsContext2D().strokeOval(startPosX, startPosY, width, height);
     }

@@ -37,13 +37,13 @@ public class ParamShapeController {
         thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             tool.setThickness(Double.parseDouble(newValue.toString()));
             thicknessTextField.setText(String.valueOf(tool.getThickness()));
-            ((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
+            ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
         });
         // Handle TextField text changes.
         thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             tool.setThickness(Double.parseDouble(newValue));
             thicknessSlider.setValue(tool.getThickness());
-            ((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
+            ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
         });
     }
 

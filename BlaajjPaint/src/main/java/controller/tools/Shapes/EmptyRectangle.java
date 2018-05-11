@@ -4,8 +4,6 @@ import controller.Project;
 
 public class EmptyRectangle extends ShapeDrawer {
 
-    protected double thickness = 1; // l'épaisseur de l'outil
-
     private static EmptyRectangle toolInstance = new EmptyRectangle(); // l'instance unique du pinceau
 
     /**
@@ -26,13 +24,9 @@ public class EmptyRectangle extends ShapeDrawer {
 
     @Override
     protected void drawShape() {
+        shapeLayer.getGraphicsContext2D().setLineWidth(thickness);
         shapeLayer.getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor());
         shapeLayer.getGraphicsContext2D().strokeRect(startPosX, startPosY, width, height);
-    }
-
-    public void setThickness(double thickness) {
-        this.thickness = thickness;
-        Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
     }
 
 }

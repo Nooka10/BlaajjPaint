@@ -15,6 +15,7 @@ import utils.UndoException;
 
 public abstract class ShapeDrawer extends Tool {
 
+    //
     protected Layer shapeLayer;
     protected ShapeSave currentShapeSave; // La forme actuellement dessinée
     protected double beginPointX;
