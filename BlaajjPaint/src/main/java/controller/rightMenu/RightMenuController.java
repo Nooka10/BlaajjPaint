@@ -172,7 +172,7 @@ public class RightMenuController {
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
-			createLayerList();
+			updateLayerList();
 		}
 		
 	}
