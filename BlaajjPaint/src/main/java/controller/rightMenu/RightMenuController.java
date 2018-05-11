@@ -2,6 +2,8 @@ package controller.rightMenu;
 
 import controller.Layer;
 import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,9 @@ import java.util.Collections;
 public class RightMenuController {
 	@FXML
 	private VBox layersList;
+	
+	@FXML
+	private VBox historyList;
 	
 	@FXML
 	private Button fusion;
@@ -115,7 +120,13 @@ public class RightMenuController {
 	
 	@FXML
 	void fusionLayer(ActionEvent event) {
-		//Project.getInstance().getCurrentLayer().mergeLayers();
+		Layer currentLayer = Project.getInstance().getCurrentLayer();
+		int index = Project.getInstance().getLayers().indexOf(currentLayer);
+		if(index != Project.getInstance().getLayers().size()-1){
+			currentLayer.mergeLayers( Project.getInstance().getLayers().get(index+1));
+			
+		}
+		
 	}
 	
 	public void createLayerList() {
@@ -160,5 +171,26 @@ public class RightMenuController {
 	
 	public void setOpacityTextField(String opacityTextField) {
 		this.opacityTextField.setText(opacityTextField);
+	}
+	
+	public void createHistoryList() {
+		historyList.getChildren().clear();
+		for (ICmd iCmd: RecordCmd.getInstance().getUndoStack()) {
+			addUndoHistory(iCmd);
+		}
+	}
+	
+	public void addUndoHistory(ICmd iCmd) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
+			Parent newHistory = fxmlLoader.load();
+			HistoryController h = fxmlLoader.getController();
+			h.setLabel(iCmd.toString());
+			historyList.getChildren().add(newHistory);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

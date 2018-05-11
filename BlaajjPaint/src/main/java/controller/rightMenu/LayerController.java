@@ -17,13 +17,13 @@ public class LayerController {
 	@FXML
 	private HBox layerElem;
 	
-	private Layer layerName;
-	
 	@FXML
 	private CheckBox visibility;
 	
 	@FXML
 	private Label label;
+	
+	private Layer layerName;
 	
 	public HBox getLayerElem() {
 		return layerElem;

@@ -3,6 +3,7 @@ Author: Adrien
  */
 package controller.history;
 
+import controller.MainViewController;
 import utils.UndoException;
 
 import java.util.LinkedList;
@@ -116,9 +117,19 @@ public class RecordCmd {
         }
         undoStack.push(cmd);
         redoStack.clear();
+	
+	    MainViewController.getInstance().getRightMenuController().addUndoHistory(cmd);
     }
-
-    /**
+	
+	public LinkedList<ICmd> getUndoStack() {
+		return undoStack;
+	}
+	
+	public LinkedList<ICmd> getRedoStack() {
+		return redoStack;
+	}
+	
+	/**
      * Nettoie la classe (remet à 0)
      */
     public void clear(){
