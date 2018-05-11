@@ -78,7 +78,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleSelect(ActionEvent event) {
-	
+		Tool.setCurrentTool(Pencil.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/tools/ParamDrawTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML

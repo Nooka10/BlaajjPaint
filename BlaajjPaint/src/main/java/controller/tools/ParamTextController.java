@@ -87,6 +87,8 @@ public class ParamTextController {
     void validateText(ActionEvent event) {
         textTool.validate();
     }
+    
+    
 
     @FXML
     void changeValue(KeyEvent event) {
