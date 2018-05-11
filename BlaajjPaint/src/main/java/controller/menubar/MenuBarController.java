@@ -152,6 +152,20 @@ public class MenuBarController {
 	}
 	
 	@FXML
+	public void handleResizeLayer(){
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/ResizeLayer.fxml"));
+			Parent resizeWindow = fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Redimensionner calque");
+			stage.setScene(new Scene(resizeWindow));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
 	public void mergeAllLayer(ActionEvent event) {
 		Layer layer = Project.getInstance().getLayers().getLast();
 		for (int i = Project.getInstance().getLayers().size() - 2; i >= 0; --i)

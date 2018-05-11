@@ -19,6 +19,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import utils.SnapshotMaker;
 import utils.UndoException;
 
 import java.util.HashSet;
@@ -167,7 +168,7 @@ public class BucketFill extends Tool {
 			params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
 			
-			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			this.undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 		}
 		
 		@Override
@@ -180,7 +181,7 @@ public class BucketFill extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-			redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
 			undosave = null;
 		}
@@ -190,7 +191,7 @@ public class BucketFill extends Tool {
 			if (redosave == null) {
 				throw new UndoException();
 			}
-			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}

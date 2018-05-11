@@ -3,7 +3,6 @@ package controller.tools;
 import controller.MainViewController;
 import controller.tools.Shapes.EmptyRectangle;
 import controller.tools.ToolDrawer.Eraser;
-import controller.tools.ToolDrawer.ParamDrawToolController;
 import controller.tools.ToolDrawer.Pencil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,7 +81,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleSelect(ActionEvent event) {
-	
+		Tool.setCurrentTool(Resize.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/menubar/ResizeLayer.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML

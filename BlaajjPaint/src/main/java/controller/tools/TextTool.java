@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import utils.SnapshotMaker;
 import utils.UndoException;
 
 
@@ -185,7 +186,7 @@ public class TextTool extends Tool {
 			params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
 			
-			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			this.undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 		}
 		
 		@Override
@@ -198,7 +199,7 @@ public class TextTool extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-			redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
 			undosave = null;
 		}
@@ -208,7 +209,7 @@ public class TextTool extends Tool {
 			if (redosave == null) {
 				throw new UndoException();
 			}
-			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}
