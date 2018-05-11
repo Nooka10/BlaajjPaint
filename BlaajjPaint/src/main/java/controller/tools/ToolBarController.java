@@ -195,7 +195,6 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-
 	
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);

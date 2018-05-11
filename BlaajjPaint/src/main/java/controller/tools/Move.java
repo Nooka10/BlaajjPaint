@@ -1,12 +1,10 @@
 package controller.tools;
 
-import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import utils.UndoException;
 
 /**
  * Classe implémentant l'outil de déplacement
@@ -14,6 +12,12 @@ import utils.UndoException;
 public class Move extends Tool {
 	
 	private static Move toolInstance = new Move();
+	
+	private double oldX;
+	
+	private double oldY;
+	
+	private MoveSave currentSave;
 	
 	public static Move getInstance() {
 		return toolInstance;
@@ -23,60 +27,53 @@ public class Move extends Tool {
 		toolType = ToolType.MOVE;
 	}
 	
-	double oldX;
-	double oldY;
-
-	MoveSave currentSave;
-
 	public class MoveSave implements ICmd {
-
-		double oldXSave;
-		double oldYSave;
-		double newXSave;
-		double newYSave;
-
-		public MoveSave(){
-
+		private double oldXSave;
+		private double oldYSave;
+		private double newXSave;
+		private double newYSave;
+		
+		public MoveSave() {
 			oldXSave = Project.getInstance().getCurrentLayer().getLayoutX();
 			oldYSave = Project.getInstance().getCurrentLayer().getLayoutY();
 		}
-
+		
 		@Override
 		public void execute() {
 			RecordCmd.getInstance().saveCmd(this);
 		}
-
+		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			newXSave = Project.getInstance().getCurrentLayer().getLayoutX();
 			newYSave = Project.getInstance().getCurrentLayer().getLayoutY();
-
+			
 			Project.getInstance().getCurrentLayer().setLayoutX(oldXSave);
 			Project.getInstance().getCurrentLayer().setLayoutY(oldYSave);
-
+			
 		}
-
+		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Project.getInstance().getCurrentLayer().setLayoutX(newXSave);
 			Project.getInstance().getCurrentLayer().setLayoutY(newYSave);
 		}
-
+		
 		@Override
-		public String toString(){
+		public String toString() {
 			return "Move Layer";
 		}
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
+				
 				oldX = event.getX();
 				oldY = event.getY();
-
+				
 				currentSave = new MoveSave();
 			}
 		};

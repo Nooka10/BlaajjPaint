@@ -24,13 +24,11 @@ public class Pencil extends ToolDrawer {
 		return toolInstance;
 	}
 
-	/*
-	public class PercilStrike extends Trait {
+	public class PencilStrike extends Trait {
 		public String toString(){
 			return "Pencil Strike";
 		}
 	}
-	*/
 	
 	/**
 	 * Constructeur privé (modèle singleton)
@@ -44,15 +42,11 @@ public class Pencil extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				currentTrait = new Trait();
+				currentTrait = new PencilStrike();
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().beginPath();
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().moveTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
-				
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
-
-
-				//Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};
@@ -64,7 +58,6 @@ public class Pencil extends ToolDrawer {
 			@Override
 			public void handle(MouseEvent event) {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				//Project.getInstance().getCurrentLayer().getGraphicsContext2D().setGlobalAlpha(opacity / 100);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};

@@ -44,7 +44,7 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				// do nothing
 			}
 		};
 	}
@@ -54,7 +54,7 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				// do nothing
 			}
 		};
 	}

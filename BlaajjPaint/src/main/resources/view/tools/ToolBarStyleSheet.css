@@ -44,19 +44,13 @@
 }
 
 #fingerTool {
-	-fx-background-image    :url('../../outils/doigt.png');
+	-fx-background-image    :url('../../outils/potDePeinture.png');
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
 
 #textTool {
 	-fx-background-image    :url('../../outils/texte.png');
-	-fx-background-position :center;
-	-fx-background-repeat   :stretch;
-}
-
-#pointerTool {
-	-fx-background-image    :url('../../outils/curseur.png');
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
@@ -68,7 +62,7 @@
 }
 
 #handTool {
-	-fx-background-image    :url('../../outils/main.png');
+	-fx-background-image    :url('../../outils/curseur.png');
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }

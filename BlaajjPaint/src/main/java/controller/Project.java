@@ -83,17 +83,16 @@ public class Project implements Serializable {
 		
 		if (isNew) {
 			layers.add(currentLayer);
+			MainViewController.getInstance().getRightMenuController().createLayerList();
+			drawWorkspace();
 		}
 		
-		MainViewController.getInstance().getRightMenuController().createLayerList();
-		drawWorkspace();
 	}
 	
 	/**
 	 * Méthode qui ferme un projet.
 	 */
 	public void close() {
-		
 		backgroungImage = null;
 		dimension = null;
 		layers = null;
