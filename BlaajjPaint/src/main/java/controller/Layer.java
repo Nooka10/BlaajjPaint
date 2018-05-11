@@ -142,7 +142,7 @@ public class Layer extends Canvas implements Serializable {
 	 * Classe interne qui encapsule la commande de changement d'opacité Permet de faire une undo/redo sur le changement d'opacité Attention a TOUJOURS setNewOpacity en
 	 * premier
 	 */
-	public class OpacitySave implements ICmd {
+	public class OpacitySave extends ICmd {
 		
 		double oldOpacity;
 		double newOpacity;

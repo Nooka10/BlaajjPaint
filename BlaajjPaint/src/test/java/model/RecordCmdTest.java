@@ -16,7 +16,7 @@ public class RecordCmdTest {
     int testNo = 0;
 
 
-    class TestCmd implements ICmd {
+    class TestCmd extends ICmd {
 
         public boolean done = false;
 

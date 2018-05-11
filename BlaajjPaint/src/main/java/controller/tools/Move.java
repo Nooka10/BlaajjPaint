@@ -27,7 +27,7 @@ public class Move extends Tool {
 		toolType = ToolType.MOVE;
 	}
 	
-	public class MoveSave implements ICmd {
+	public class MoveSave extends ICmd {
 		private double oldXSave;
 		private double oldYSave;
 		private double newXSave;

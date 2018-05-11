@@ -1,8 +1,9 @@
-package controller.tools;
+package controller.tools.ToolDrawer;
 
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
+import controller.tools.Tool;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -26,7 +27,7 @@ public abstract class ToolDrawer extends Tool {
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 	
-	class Trait implements ICmd {
+	class Trait extends ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private SnapshotParameters params;
