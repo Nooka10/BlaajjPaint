@@ -1,7 +1,6 @@
 package controller.rightMenu;
 
 import controller.Layer;
-import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -20,7 +19,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
+import javax.swing.*;
 import java.util.Collections;
+import java.util.ListIterator;
 
 public class RightMenuController {
 	@FXML
@@ -67,6 +68,10 @@ public class RightMenuController {
 		colorPicker.setValue(Color.BLACK);
 	}
 	
+	public VBox getHistoryList() {
+		return historyList;
+	}
+	
 	@FXML
 	void OnInputTextChanged(ActionEvent event) {
 		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
@@ -104,18 +109,18 @@ public class RightMenuController {
 		colorPicker.setValue(color);
 	}
 	
-	public class NewLayerSave implements ICmd {
-
+	public class NewLayerSave extends ICmd {
+		
 		Layer oldCurrentLayer;
 		Layer newLayer;
-
+		
 		/**
 		 * Prends l'ancien current layer
 		 */
-		public NewLayerSave(){
+		public NewLayerSave() {
 			oldCurrentLayer = Project.getInstance().getCurrentLayer();
 		}
-
+		
 		@Override
 		/**
 		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
@@ -136,8 +141,8 @@ public class RightMenuController {
 		public void redo() throws UndoException {
 		
 		}
-
-		public String toString(){
+		
+		public String toString() {
 			return "Nouveau Layer";
 		}
 	}
@@ -148,7 +153,7 @@ public class RightMenuController {
 	 */
 	void addNewLayer(ActionEvent event) {
 		NewLayerSave ls = new NewLayerSave();
-
+		
 		Project.getInstance().addNewLayer();
 		updateLayerList();
 		ls.execute();
@@ -201,9 +206,9 @@ public class RightMenuController {
 	void fusionLayer(ActionEvent event) {
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
-		if(index != Project.getInstance().getLayers().size()-1){
-			Layer backgroundLayer = Project.getInstance().getLayers().get(index+1);
-			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer );
+		if (index != Project.getInstance().getLayers().size() - 1) {
+			Layer backgroundLayer = Project.getInstance().getLayers().get(index + 1);
+			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer);
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
@@ -266,10 +271,13 @@ public class RightMenuController {
 	
 	public void updateHistoryList() {
 		historyList.getChildren().clear();
-		for (int i = RecordCmd.getInstance().getUndoStack().size() - 1; i >= 0; --i) {
-			addUndoHistory(RecordCmd.getInstance().getUndoStack().get(i));
+		ListIterator<ICmd> li = RecordCmd.getInstance().getUndoStack().listIterator(RecordCmd.getInstance().getUndoStack().size());
+		
+		while (li.hasPrevious()) {
+			ICmd cmd = li.previous();
+			addUndoHistory(cmd);
 		}
-		for (ICmd cmd: RecordCmd.getInstance().getRedoStack()) {
+		for (ICmd cmd : RecordCmd.getInstance().getRedoStack()) {
 			addRedoHistory(cmd);
 		}
 	}
@@ -284,6 +292,7 @@ public class RightMenuController {
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
 			h.setLabel(iCmd.toString());
+			h.setID(iCmd.getID());
 			if (isRedo) {
 				h.changeLabelOpacity(60);
 			}

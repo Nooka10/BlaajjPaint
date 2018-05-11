@@ -11,7 +11,6 @@ import java.util.logging.Logger;
  * Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getCurrentTool(), le constructeur est public
  */
 public class RecordCmd {
-	
 	/**
 	 * La taille max de chaque pile
 	 */
@@ -130,6 +129,7 @@ public class RecordCmd {
 		if (undoStack.size() > MAX_CMD_HISTORY) {
 			undoStack.removeLast();
 		}
+		
 		undoStack.push(cmd);
 		redoStack.clear();
 		MainViewController.getInstance().getRightMenuController().updateHistoryList();
