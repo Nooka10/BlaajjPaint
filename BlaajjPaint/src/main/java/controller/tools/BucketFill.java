@@ -154,5 +154,9 @@ public class BucketFill extends Tool {
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}
+
+		public String toString(){
+			return "Remplissage de l'image";
+		}
 	}
 }

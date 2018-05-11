@@ -68,6 +68,15 @@ public class TextTool extends Tool {
         }
     }
 
+    public void cancel(){
+        Project.getInstance().deleteCurrentLayer();
+        Project.getInstance().setCurrentLayer(oldCurrentLayer);
+        MainViewController.getInstance().getRightMenuController().createLayerList();
+        Project.getInstance().drawWorkspace();
+        addText = null;
+        text = "";
+    }
+
     @Override
     public void CallbackOldToolChanged() {
         validate();
@@ -153,6 +162,10 @@ public class TextTool extends Tool {
             undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
             Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
             redosave = null;
+        }
+
+        public String toString(){
+            return "Ajout de texte";
         }
     }
 }

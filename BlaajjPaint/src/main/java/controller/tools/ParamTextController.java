@@ -33,6 +33,9 @@ public class ParamTextController {
     @FXML
     private Button validateButton;
 
+    @FXML
+    private Button cancelButton;
+
     private TextTool textTool = TextTool.getInstance();
 
     @FXML
@@ -80,4 +83,11 @@ public class ParamTextController {
     void changeValue(KeyEvent event) {
         textTool.changeTextValue(textValue.getText());
     }
+
+    @FXML
+    void cancelTextCreation(ActionEvent event){
+        textTool.cancel();
+    }
+
+
 }
