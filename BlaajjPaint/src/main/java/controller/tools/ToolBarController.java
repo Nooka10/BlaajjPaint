@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -18,10 +17,6 @@ import java.io.IOException;
  * resizing, deleting and so on.
  */
 public class ToolBarController {
-	
-	private ParamDrawToolController paramDrawToolControler;
-
-	private ParamTextController paramTextController;
 
 	private Parent paramBar;
 	
@@ -109,7 +104,7 @@ public class ToolBarController {
 	public void handlePencil(ActionEvent event) {
 		Tool.setCurrentTool(Pencil.getInstance());
 		if (Tool.getToolHasChanged()) {
-			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
+			addParamBar("/view/tools/ParamDrawTool.fxml");
 			Tool.setToolHasChanged(false);
 		}
 	}
@@ -118,7 +113,7 @@ public class ToolBarController {
 	public void handleEraser(ActionEvent event) {
 		Tool.setCurrentTool(Eraser.getInstance());
 		if (Tool.getToolHasChanged()) {
-			addParamDrawBar("/view/tools/ParamDrawTool.fxml");
+			addParamBar("/view/tools/ParamDrawTool.fxml");
 			Tool.setToolHasChanged(false);
 		}
 	}
@@ -136,7 +131,7 @@ public class ToolBarController {
 	public void handleAddText(ActionEvent event) {
 		Tool.setCurrentTool(TextTool.getInstance());
 		if(Tool.getToolHasChanged()){
-			addParamTextBar("/view/tools/ParamText.fxml");
+			addParamBar("/view/tools/ParamText.fxml");
 			Tool.setToolHasChanged(false);
 		}
 	}
@@ -178,7 +173,7 @@ public class ToolBarController {
 		alert.showAndWait();
 	}
 	
-	private void addParamDrawBar(String FXMLpath) {
+	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
 			closeCurrentParamBar();
 		}
@@ -186,28 +181,11 @@ public class ToolBarController {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
 			paramBar = fxmlLoader.load();
-			paramDrawToolControler = fxmlLoader.getController();
 			MainViewController.getInstance().getParamBar().getChildren().add(paramBar); // on ajoute la barre de paramètre au MainViewController
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	// redondant à voir si on peut faire mieux (James)
-    private void addParamTextBar(String FXMLpath) {
-        if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
-            closeCurrentParamBar();
-        }
-        // on crée la nouvelle barre de paramètre
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXMLpath));
-            paramBar = fxmlLoader.load();
-            paramTextController = fxmlLoader.getController();
-            MainViewController.getInstance().getParamBar().getChildren().add(paramBar); // on ajoute la barre de paramètre au MainViewController
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 	
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);

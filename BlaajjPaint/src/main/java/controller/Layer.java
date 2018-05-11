@@ -157,20 +157,22 @@ public class Layer extends Canvas implements Serializable {
 		double oldOpacity;
 		double newOpacity;
 		
-		public OpacitySave() {
+		public OpacitySave(double newOpacity) {
 			// par défaut on set a l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que
 			// ça passe a 0
-			oldOpacity = newOpacity = getLayerOpacity();
+			oldOpacity = getLayerOpacity();
+			this.newOpacity = newOpacity;
 		}
 		
-		public OpacitySave setNewOpacity(double newOpacity) {
+		public OpacitySave(double oldOpacity, double newOpacity) {
+			this.oldOpacity = oldOpacity;
 			this.newOpacity = newOpacity;
-			return this;
 		}
 		
 		@Override
 		public void execute() {
 			oldOpacity = getLayerOpacity();
+			updateLayerOpacity(newOpacity);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		
@@ -191,11 +193,19 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	public void setLayerOpacity(double opacity) {
-		new OpacitySave().setNewOpacity(opacity).execute();
+		new OpacitySave(opacity).execute();
+	}
+	
+	public void setLayerOpacity(double oldOpacity, double newOpacity) {
+		new OpacitySave(oldOpacity, newOpacity).execute();
+	}
+	
+	public void updateLayerOpacity(double opacity) {
+		Project.getInstance().getCurrentLayer().setOpacity(opacity/100);
 	}
 	
 	public double getLayerOpacity() {
-		return this.getOpacity() * 100;
+		return Project.getInstance().getCurrentLayer().getOpacity() * 100;
 	}
 	
 	@Override

@@ -62,11 +62,10 @@ public abstract class Tool {
 			
 			if (Tool.currentTool != null) {
 				Tool.currentTool.CallbackOldToolChanged();
+				Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
 			}
 			
 			toolHasChanged = true;
-			
-			Project.getInstance().removeEventHandler(Tool.currentTool); // on enlève les EventHandler de l'outil actuellement sélectionné
 			
 			Tool.currentTool = currentTool;
 			
