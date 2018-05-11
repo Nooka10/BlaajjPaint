@@ -17,6 +17,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import utils.UndoException;
 
 import java.util.Collections;
 
@@ -100,17 +101,35 @@ public class RightMenuController {
 	public void setColorPickerColor(Color color) {
 		colorPicker.setValue(color);
 	}
-	
+
+	public class NewLayerSave implements ICmd {
+
+		@Override
+		public void execute() {
+
+		}
+
+		@Override
+		public void undo() throws UndoException {
+
+		}
+
+		@Override
+		public void redo() throws UndoException {
+
+		}
+	}
+
 	@FXML
 	void addNewLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
-		createLayerList();
+		updateLayerList();
 	}
 	
 	@FXML
 	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
-		createLayerList();
+		updateLayerList();
 	}
 	
 	@FXML
@@ -152,7 +171,7 @@ public class RightMenuController {
 		
 	}
 	
-	public void createLayerList() {
+	public void updateLayerList() {
 		layersList.getChildren().clear();
 		for (Layer layer : Project.getInstance().getLayers()) {
 			addNewLayer(layer);

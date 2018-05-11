@@ -144,7 +144,7 @@ public class Layer extends Canvas implements Serializable {
 		Project.getInstance().getLayers().remove(this);
 		Project.getInstance().getLayers().remove(backgroundLayer);
 		Project.getInstance().addLayer(mergeLayer);
-		MainViewController.getInstance().getRightMenuController().createLayerList();
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		
 	}
 	
