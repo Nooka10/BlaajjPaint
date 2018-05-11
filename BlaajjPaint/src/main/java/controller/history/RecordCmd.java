@@ -1,6 +1,7 @@
 package controller.history;
 
 import controller.MainViewController;
+import controller.rightMenu.RightMenuController;
 import utils.UndoException;
 
 import java.util.LinkedList;
@@ -148,5 +149,6 @@ public class RecordCmd {
 	public void clear() {
 		undoStack.clear();
 		redoStack.clear();
+		MainViewController.getInstance().getRightMenuController().clearHistoryList();
 	}
 }

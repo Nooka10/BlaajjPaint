@@ -187,6 +187,8 @@ public class RightMenuController {
 	public void clearLayerList() {
 		layersList.getChildren().clear();
 	}
+
+	public void clearHistoryList() { historyList.getChildren().clear();}
 	
 	public void setOpacitySlider(double opacitySlider) {
 		this.opacitySlider.setValue(opacitySlider);
