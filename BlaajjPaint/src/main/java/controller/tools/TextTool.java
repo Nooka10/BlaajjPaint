@@ -1,3 +1,8 @@
+/**
+ * @file TextTool
+ * @authors Blaajj
+ */
+
 package controller.tools;
 
 import controller.Layer;
@@ -15,7 +20,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import utils.UndoException;
 
+
 public class TextTool extends Tool {
+    /** ATTRIBUTS **/
     private static TextTool instance = new TextTool();
     private AddText addText;
 
@@ -26,57 +33,87 @@ public class TextTool extends Tool {
     private int x;
     private int y;
 
+    /**
+     * Constructeur privé de l'objet pour rajouter du text à l'image
+     */
     private TextTool(){
         toolType = ToolType.TEXT;
     }
 
+    /**
+     * Retourne l'instance de l'objet - Singleton
+     * @return l'instance de l'objet
+     */
     public static TextTool getInstance(){
         return instance;
     }
 
+    /**
+     * Setter permettant de changer la police du text à ajouter
+     * @param font - Police d'écriture de Javafx
+     */
     public void setFont(Font font){
         this.font = font;
-        changeTextOnLayout();
+        changeTextOnLayer();
     }
 
-    public Font getFont(){
-        return font;
-    }
-
+    /**
+     * Fonction appeler lorsque la personne valide la création du calque ou change d'outil
+     */
     public void validate(){
+        // Test si l'outil est en cours d'édition
         if(addText != null) {
-            text = "";
-            addText.execute();
-            MainViewController.getInstance().getRightMenuController().createLayerList();
-            Project.getInstance().drawWorkspace();
-            addText = null; // end of the session of adding a text
+            text = ""; // reset du text
+            addText.execute(); // exécution de la cmd (historique)
+            MainViewController.getInstance().getRightMenuController().createLayerList(); // ajout du calque à la liste de rightMenu
+            Project.getInstance().drawWorkspace(); // redessine les calque
+            addText = null; // fin de l'ajout du text
         }
     }
 
+    /**
+     * Change la valeur du text
+     * @param text - text à afficher
+     */
     public void changeTextValue(String text){
         this.text = text;
-        changeTextOnLayout();
+        changeTextOnLayer();
     }
 
-    private void changeTextOnLayout(){
+    /**
+     * refresh ou affiche le text avec la font, text et position donné précédement
+     */
+    private void changeTextOnLayer(){
+        // Test si la personne commencé l'ajout du text (nécessite le clique sur le calque)
         if(addText != null){
-            GraphicsContext graphics = textLayer.getGraphicsContext2D();
+            GraphicsContext graphics = textLayer.getGraphicsContext2D(); // récupération du graphics context
+            // nettoyage du calque (permet de déplacer le text)
             graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
-            graphics.setFont(font);
-            graphics.fillText(text ,x ,y);
-            Project.getInstance().drawWorkspace();
+            graphics.setFont(font); // changement de la police d'écriture
+            graphics.fillText(text ,x ,y); // positionnement et ajout du text
+            Project.getInstance().drawWorkspace(); // Refresh du calque
         }
     }
 
+    /**
+     * Annulation de l'ajout du text
+     */
     public void cancel(){
+        // Suppression du calque d'ajout de text (textLayer)
         Project.getInstance().deleteCurrentLayer();
+        // Le calque courant redevient l'ancien calque courant
         Project.getInstance().setCurrentLayer(oldCurrentLayer);
+        // redessine les layers et list de layers
         MainViewController.getInstance().getRightMenuController().createLayerList();
         Project.getInstance().drawWorkspace();
+        // reset des attributs
         addText = null;
         text = "";
     }
 
+    /**
+     * Si outil quitté, valide l'ajout du text
+     */
     @Override
     public void CallbackOldToolChanged() {
         validate();
@@ -87,8 +124,12 @@ public class TextTool extends Tool {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                // first click
+                // premier clique - set des valeurs et création du calque
                 if(addText == null){
+                    // Si le text est vide, mettre un text pour voir ou va être situé le text
+                    if(text == null || text.equals("")){
+                        text = "Text";
+                    }
                     addText = new AddText();
                     oldCurrentLayer = Project.getInstance().getCurrentLayer();
                     textLayer = new Layer(Project.getInstance().getDimension());
@@ -97,11 +138,11 @@ public class TextTool extends Tool {
                     Project.getInstance().getLayers().addFirst(textLayer);
                     Project.getInstance().drawWorkspace();
                 }
-                // set new position
+                // récupération de la position du clique
                 x = (int)event.getX();
                 y = (int)event.getY();
 
-                changeTextOnLayout();
+                changeTextOnLayer(); // affichage du text sur le layer
             }
         };
     }
@@ -111,9 +152,10 @@ public class TextTool extends Tool {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                /** Déplace le text sur le layer **/
                 x = (int)event.getX();
                 y = (int)event.getY();
-                changeTextOnLayout();
+                changeTextOnLayer();
             }
         };
     }

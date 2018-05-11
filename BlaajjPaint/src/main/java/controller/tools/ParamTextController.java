@@ -1,3 +1,8 @@
+/**
+ * @file ParamTextController
+ * @author
+ */
+
 package controller.tools;
 
 import javafx.beans.value.ChangeListener;
@@ -18,6 +23,7 @@ import javax.xml.soap.Text;
 
 public class ParamTextController {
 
+    // ATTRIBUT DU CONTROLER
     @FXML
     private Slider sliderSizeFont;
 
@@ -40,11 +46,13 @@ public class ParamTextController {
 
     @FXML
     private void initialize() {
+        // Récupération de la liste des polices d'écriture
         ObservableList<String> list = FXCollections.observableArrayList(Font.getFamilies());
         fontList.getItems().addAll(list);
         fontList.setValue(list.get(0));
         textTool.setFont(new Font(fontList.getValue(),Math.round(sliderSizeFont.getValue())));
 
+        // Ajout d'événement lorsque un élément de la liste des polices et séléctionné
         fontList.getSelectionModel().selectedIndexProperty().addListener(
                 new ChangeListener<Number>() {
                     @Override
@@ -55,6 +63,7 @@ public class ParamTextController {
                 }
         );
 
+        // Ajout d'événement lorsque la taille du text change dans le textField
         textFieldSizeFont.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
