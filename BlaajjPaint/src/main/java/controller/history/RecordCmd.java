@@ -11,7 +11,6 @@ import java.util.logging.Logger;
  * Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getCurrentTool(), le constructeur est public
  */
 public class RecordCmd {
-	
 	/**
 	 * La taille max de chaque pile
 	 */
@@ -60,8 +59,7 @@ public class RecordCmd {
 	 * une exception celle-ci est capturée et consignée dans les logs et la <b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void undo() {
-		// si la pile des handleUndo n'est pas vide
-		if (!undoStack.isEmpty()) {
+		if (!undoStack.isEmpty()) { // si la pile des handleUndo n'est pas vide
 			ICmd cmdToUndo = undoStack.pop();
 			try {
 				// on essaie de handleUndo
@@ -72,25 +70,13 @@ public class RecordCmd {
 				
 				// on met à jour la liste de l'historique
 				MainViewController.getInstance().getRightMenuController().updateHistoryList();
-			}
-			// Si ça ne passe pas on remet la commande sur la pile de handleUndo
-			catch (UndoException e) {
+			} catch (UndoException e) { // Si ça ne passe pas
 				LOG.log(Level.SEVERE, "Can't handleUndo commande !");
-				
-				// vider les deux piles
-				// undoStack.clear();
-				// redoStack.clear();
-				
 			}
 		} else {
 			LOG.log(Level.INFO, "Nothing to handleUndo.");
 		}
 	}
-	
-	public void clearRedo() {
-		redoStack.clear();
-	}
-	
 	
 	/**
 	 * Apelle la fonction <b>handleRedo()</b> sur le dernier <b>Cmd</b> de la pile de handleRedo. Si aucune <b>Cmd</b> ne se trouves dans la pile il ne fait rien. Si le
@@ -114,10 +100,6 @@ public class RecordCmd {
 			}
 		} else {
 			LOG.log(Level.INFO, "Nothing to handleRedo.");
-			
-			// vider les deux piles
-			//  undoStack.clear();
-			//redoStack.clear();
 		}
 	}
 	
@@ -130,6 +112,7 @@ public class RecordCmd {
 		if (undoStack.size() > MAX_CMD_HISTORY) {
 			undoStack.removeLast();
 		}
+		
 		undoStack.push(cmd);
 		redoStack.clear();
 		MainViewController.getInstance().getRightMenuController().updateHistoryList();

@@ -36,16 +36,6 @@ public class LayerController {
 	}
 	
 	@FXML
-	private void initialize() {
-		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				layerName.setVisible(new_val);
-				Project.getInstance().drawWorkspace();
-			}
-		});
-	}
-	
-	@FXML
 	void handleMouseClicked(MouseEvent event) {
 		Project.getInstance().setCurrentLayer(layerName);
 		MainViewController.getInstance().getRightMenuController().setOpacitySlider(layerName.getLayerOpacity());
@@ -55,6 +45,7 @@ public class LayerController {
 	
 	@FXML
 	void handleVisibilityChange(ActionEvent event) {
-		Project.getInstance().setCurrentLayer(layerName);
+		layerName.setVisible(visibility.isSelected());
+		Project.getInstance().drawWorkspace();
 	}
 }

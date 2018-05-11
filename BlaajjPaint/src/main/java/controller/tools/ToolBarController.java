@@ -1,6 +1,10 @@
 package controller.tools;
 
 import controller.MainViewController;
+import controller.tools.Shapes.EmptyRectangle;
+import controller.tools.ToolDrawer.Eraser;
+import controller.tools.ToolDrawer.ParamDrawToolController;
+import controller.tools.ToolDrawer.Pencil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -143,7 +147,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleAddShape(ActionEvent event) {
-	
+		Tool.setCurrentTool(EmptyRectangle.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/tools/ParamShapeTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -163,7 +171,8 @@ public class ToolBarController {
 			Tool.setToolHasChanged(false);
 		}
 	}
-	
+
+	@FXML
 	public static void displayError() {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Erreur, aucune image n'est ouverte!");
@@ -172,7 +181,8 @@ public class ToolBarController {
 		
 		alert.showAndWait();
 	}
-	
+
+	@FXML
 	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
 			closeCurrentParamBar();
@@ -186,7 +196,8 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@FXML
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}
