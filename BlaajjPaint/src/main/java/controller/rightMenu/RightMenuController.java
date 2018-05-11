@@ -4,6 +4,7 @@ import controller.Layer;
 import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -68,9 +68,17 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void OnInputTextChanged(InputMethodEvent event) {
-		Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(opacityTextField.getText()));
-		opacitySlider.setValue(Double.parseDouble(opacityTextField.getText()));
+	void OnInputTextChanged(ActionEvent event) {
+		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
+		Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
+		opacitySlider.setValue(newOpacity);
+	}
+	
+	@FXML
+	void OnMousePressed(MouseEvent event) {
+		oldOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
+		opacityTextField.setText(String.valueOf(oldOpacity));
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
 	}
 	
 	@FXML
@@ -81,16 +89,9 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void OnMousePressed(MouseEvent event) {
-		oldOpacity = opacitySlider.getValue();
-		opacityTextField.setText(String.valueOf(oldOpacity));
-		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
-	}
-	
-	@FXML
 	void OnMouseReleased(MouseEvent event) {
-		opacityTextField.setText(String.valueOf(opacitySlider.getValue()));
-		newOpacity = opacitySlider.getValue();
+		newOpacity = Math.round(opacitySlider.getValue());
+		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
 	}
 	
@@ -102,25 +103,25 @@ public class RightMenuController {
 	public void setColorPickerColor(Color color) {
 		colorPicker.setValue(color);
 	}
-
+	
 	public class NewLayerSave implements ICmd {
-
+		
 		@Override
 		public void execute() {
-
+		
 		}
-
+		
 		@Override
 		public void undo() throws UndoException {
-
+		
 		}
-
+		
 		@Override
 		public void redo() throws UndoException {
-
+		
 		}
 	}
-
+	
 	@FXML
 	void addNewLayer(ActionEvent event) {
 		Project.getInstance().addNewLayer();
@@ -212,6 +213,10 @@ public class RightMenuController {
 		layersList.getChildren().clear();
 	}
 	
+	public void clearHistoryList() {
+		historyList.getChildren().clear();
+	}
+	
 	public void setOpacitySlider(double opacitySlider) {
 		this.opacitySlider.setValue(opacitySlider);
 	}
@@ -221,18 +226,35 @@ public class RightMenuController {
 	}
 	
 	public void addUndoHistory(ICmd iCmd) {
+		addHistory(iCmd, false);
+	}
+	
+	public void updateHistoryList() {
+		historyList.getChildren().clear();
+		for (int i = RecordCmd.getInstance().getUndoStack().size() - 1; i >= 0; --i) {
+			addUndoHistory(RecordCmd.getInstance().getUndoStack().get(i));
+		}
+		for (ICmd cmd: RecordCmd.getInstance().getRedoStack()) {
+			addRedoHistory(cmd);
+		}
+	}
+	
+	public void addRedoHistory(ICmd iCmd) {
+		addHistory(iCmd, true);
+	}
+	
+	private void addHistory(ICmd iCmd, boolean isRedo) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
 			h.setLabel(iCmd.toString());
+			if (isRedo) {
+				h.changeLabelOpacity(60);
+			}
 			historyList.getChildren().add(newHistory);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void undoHistory() {
-		historyList.getChildren().remove(historyList.getChildren().size() - 1);
 	}
 }

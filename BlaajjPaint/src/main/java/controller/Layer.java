@@ -18,9 +18,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
-	final static int INITIAL_ID = 1;
-	private int id;                                //
-	private static int count = INITIAL_ID;        // id du prochain calque qui sera créé
+	private int id; // l'id du calque
+	private static int count = 1; // le nombre de calques qui ont été créés
 	
 	/**
 	 * Constructeur
@@ -145,8 +144,7 @@ public class Layer extends Canvas implements Serializable {
 		double newOpacity;
 		
 		public OpacitySave(double newOpacity) {
-			// par défaut on set a l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que
-			// ça passe a 0
+			// par défaut on set à l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que ça passe à 0
 			oldOpacity = getLayerOpacity();
 			this.newOpacity = newOpacity;
 		}
@@ -158,24 +156,27 @@ public class Layer extends Canvas implements Serializable {
 		
 		@Override
 		public void execute() {
-			oldOpacity = getLayerOpacity();
 			updateLayerOpacity(newOpacity);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		
 		@Override
 		public void undo() {
-			setLayerOpacity(oldOpacity);
+			updateLayerOpacity(oldOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(oldOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(oldOpacity);
 		}
 		
 		@Override
 		public void redo() {
-			setLayerOpacity(newOpacity);
+			updateLayerOpacity(newOpacity);
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(newOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(newOpacity);
 		}
 		
 		@Override
 		public String toString() {
-			return "Opacity Change from " + oldOpacity + " to " + newOpacity;
+			return "L'opacité changée de " + Math.round(oldOpacity) + " à " + Math.round(newOpacity);
 		}
 	}
 	
@@ -209,14 +210,16 @@ public class Layer extends Canvas implements Serializable {
 		id = (s.readInt());
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
-		setLayerOpacity(s.readDouble());
+
+		double tmpOpacity = s.readDouble();
+					// opacité de Canevas [0;1]
+		super.setOpacity(tmpOpacity);
 		super.setVisible(s.readBoolean());
 		
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
 		this.getGraphicsContext2D().drawImage(image, 0, 0);
-		
-		//return this;
+
 	}
 	
 	private void writeObject(ObjectOutputStream s) throws IOException {
@@ -224,10 +227,19 @@ public class Layer extends Canvas implements Serializable {
 		s.writeInt(id);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
-		s.writeDouble(getLayerOpacity());
+
+		double tmpOpacity = super.getOpacity();
+		boolean tmpVisible = super.isVisible();
+
+		s.writeDouble(tmpOpacity);					// opacité de Canevas [0;1]
 		s.writeBoolean(super.isVisible());
-		
+
+		this.setVisible(true);
+		this.setOpacity(1);							// enlève l'opacité pour la sauvegardes
 		ImageIO.write(SwingFXUtils.fromFXImage(generateImage(this, (int) super.getWidth(), (int) super.getHeight()), null), "png", s);
+		this.setOpacity(tmpOpacity);			// Remet l'opacité
+		this.setVisible(tmpVisible);			// Remet la visibilité
+
 	}
 	
 	private Image generateImage(Layer c, int weight, int height) {
@@ -241,6 +253,4 @@ public class Layer extends Canvas implements Serializable {
 	public static void reset() {
 		count = 1;
 	}
-	
-	
 }

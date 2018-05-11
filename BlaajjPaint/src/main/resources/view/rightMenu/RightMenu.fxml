@@ -61,7 +61,7 @@
                               <Insets left="20.0" right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="opacityTextField" onInputMethodTextChanged="#OnInputTextChanged">
+                        <TextField fx:id="opacityTextField" onAction="#OnInputTextChanged">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></TextField>
