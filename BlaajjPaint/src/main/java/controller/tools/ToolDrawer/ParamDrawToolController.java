@@ -2,8 +2,9 @@
 Author : Benoit
 Modified by : Adrien
  */
-package controller.tools;
+package controller.tools.ToolDrawer;
 
+import controller.tools.Tool;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;

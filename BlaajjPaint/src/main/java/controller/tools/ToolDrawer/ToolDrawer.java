@@ -1,11 +1,11 @@
-package controller.tools;
+package controller.tools.ToolDrawer;
 
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
-import javafx.scene.SnapshotParameters;
+import controller.tools.Tool;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import utils.SnapshotMaker;
 import utils.UndoException;
 
 /**
@@ -26,19 +26,14 @@ public abstract class ToolDrawer extends Tool {
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 	
-	class Trait implements ICmd {
+	class Trait extends ICmd {
 		private Image undosave;
 		private Image redosave = null;
-		private SnapshotParameters params;
 		
 		public Trait() {
-			// configuration des paramètres utilisés pour la sauvegarde du canevas
-			params = new SnapshotParameters();
-			params.setFill(Color.TRANSPARENT);
-
 			System.out.println("Snap Trait");
-
-			this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+			
+			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
 		}
 		
 		@Override
@@ -51,10 +46,10 @@ public abstract class ToolDrawer extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-
 			System.out.println("Trait undo");
-			redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0,0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
+			
+			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
 			undosave = null;
 		}
@@ -65,12 +60,12 @@ public abstract class ToolDrawer extends Tool {
 				throw new UndoException();
 			}
 			System.out.println("Trait redo");
-			undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0,0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}
-
+		
 		@Override
 		public String toString() {
 			return "Drawing Tool";

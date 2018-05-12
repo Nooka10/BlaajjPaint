@@ -1,9 +1,10 @@
 /*
 Author: Benoît
  */
-package controller.tools;
+package controller.tools.ToolDrawer;
 
 import controller.Project;
+import controller.tools.Tool;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,7 +27,7 @@ public class Eraser extends ToolDrawer {
 	
 	public class EraserStrike extends Trait {
 		public String toString() {
-			return "Eraser Strike";
+			return "Trait de gomme";
 		}
 	}
 	
@@ -43,7 +44,7 @@ public class Eraser extends ToolDrawer {
 	 * Constructeur privé (modèle singleton)
 	 */
 	private Eraser() {
-		toolType = ToolType.ERASER;
+		toolType = Tool.ToolType.ERASER;
 	}
 	
 	@Override

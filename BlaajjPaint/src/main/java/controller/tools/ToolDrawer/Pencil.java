@@ -1,13 +1,12 @@
 /*
 Author: Benoît
  */
-package controller.tools;
+package controller.tools.ToolDrawer;
 
 import controller.Project;
+import controller.tools.Tool;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * Classe implémentant l'outil pinceau
@@ -27,7 +26,7 @@ public class Pencil extends ToolDrawer {
 
 	public class PencilStrike extends Trait {
 		public String toString(){
-			return "Pencil Strike";
+			return "Trait de pinceau";
 		}
 	}
 	
@@ -35,7 +34,7 @@ public class Pencil extends ToolDrawer {
 	 * Constructeur privé (modèle singleton)
 	 */
 	private Pencil() {
-		toolType = ToolType.PENCIL;
+		toolType = Tool.ToolType.PENCIL;
 	}
 	
 	@Override

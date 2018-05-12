@@ -1,10 +1,8 @@
 package controller;
 
 import controller.tools.Tool;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -147,6 +145,7 @@ public class Project implements Serializable {
 	}
 	
 	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
+	//bah elle draw lw workspace
 	public void drawWorkspace() {
 		AnchorPane workspace = new AnchorPane();
 		workspace.getChildren().add(backgroungImage);
@@ -211,10 +210,7 @@ public class Project implements Serializable {
 	 */
 	public void setCurrentLayer(Layer currentLayer) {
 		removeEventHandler(Tool.getCurrentTool());
-		
 		this.currentLayer = currentLayer;
-		
-		
 		addEventHandlers(Tool.getCurrentTool());
 	}
 	

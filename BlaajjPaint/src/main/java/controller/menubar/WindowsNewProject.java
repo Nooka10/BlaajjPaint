@@ -54,7 +54,13 @@ public class WindowsNewProject {
 			}
 		});
 	}
-	
+
+	/**
+	 * Crée, initalise le nouveau projet avec la taille choisie.
+	 * Réactive les bouttons
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void createNewProject(ActionEvent event) {
 
@@ -68,6 +74,9 @@ public class WindowsNewProject {
 		
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close();
+
+		// Réactive les bouttons
+		MainViewController.getInstance().enableButton();
 	}
 	
 	@FXML

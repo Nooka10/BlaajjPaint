@@ -1,6 +1,9 @@
 package controller.tools;
 
 import controller.MainViewController;
+import controller.tools.Shapes.EmptyRectangle;
+import controller.tools.ToolDrawer.Eraser;
+import controller.tools.ToolDrawer.Pencil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,7 +81,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleSelect(ActionEvent event) {
-	
+		Tool.setCurrentTool(Resize.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/menubar/ResizeLayer.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -147,7 +154,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleAddShape(ActionEvent event) {
-	
+		Tool.setCurrentTool(EmptyRectangle.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/tools/ParamShapeTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML
@@ -167,7 +178,8 @@ public class ToolBarController {
 			Tool.setToolHasChanged(false);
 		}
 	}
-	
+
+	@FXML
 	public static void displayError() {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Erreur, aucune image n'est ouverte!");
@@ -176,7 +188,8 @@ public class ToolBarController {
 		
 		alert.showAndWait();
 	}
-	
+
+	@FXML
 	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
 			closeCurrentParamBar();
@@ -190,8 +203,25 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@FXML
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
+	}
+
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert ou créé
+	 */
+	public void enableButton(){
+
+	}
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
+
 	}
 }

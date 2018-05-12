@@ -1,7 +1,6 @@
 package controller.rightMenu;
 
 import controller.Layer;
-import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -20,7 +19,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
+import javax.swing.*;
 import java.util.Collections;
+import java.util.ListIterator;
 
 public class RightMenuController {
 	@FXML
@@ -67,6 +68,10 @@ public class RightMenuController {
 		colorPicker.setValue(Color.BLACK);
 	}
 	
+	public VBox getHistoryList() {
+		return historyList;
+	}
+	
 	@FXML
 	void OnInputTextChanged(ActionEvent event) {
 		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
@@ -104,37 +109,69 @@ public class RightMenuController {
 		colorPicker.setValue(color);
 	}
 	
-	public class NewLayerSave implements ICmd {
+	public class NewLayerSave extends ICmd {
+		
+		Layer oldCurrentLayer;
+		Layer newLayer;
+		
+		/**
+		 * Prends l'ancien current layer
+		 */
+		public NewLayerSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
 		
 		@Override
+		/**
+		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
+		 */
 		public void execute() {
-		
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
 		}
 		
 		@Override
 		public void undo() throws UndoException {
-		
+			Project.getInstance().setCurrentLayer(newLayer);
+			Project.getInstance().deleteCurrentLayer();
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 		}
 		
 		@Override
 		public void redo() throws UndoException {
 		
 		}
+		
+		public String toString() {
+			return "Nouveau Layer";
+		}
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void addNewLayer(ActionEvent event) {
+		NewLayerSave ls = new NewLayerSave();
+		
 		Project.getInstance().addNewLayer();
 		updateLayerList();
+		ls.execute();
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
 		updateLayerList();
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void downLayer(ActionEvent event) {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		if (index < Project.getInstance().getLayers().size() - 1) {
@@ -149,6 +186,9 @@ public class RightMenuController {
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void upLayer(ActionEvent event) {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		
@@ -166,9 +206,9 @@ public class RightMenuController {
 	void fusionLayer(ActionEvent event) {
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
-		if(index != Project.getInstance().getLayers().size()-1){
-			Layer backgroundLayer = Project.getInstance().getLayers().get(index+1);
-			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer );
+		if (index != Project.getInstance().getLayers().size() - 1) {
+			Layer backgroundLayer = Project.getInstance().getLayers().get(index + 1);
+			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer);
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
@@ -231,10 +271,13 @@ public class RightMenuController {
 	
 	public void updateHistoryList() {
 		historyList.getChildren().clear();
-		for (int i = RecordCmd.getInstance().getUndoStack().size() - 1; i >= 0; --i) {
-			addUndoHistory(RecordCmd.getInstance().getUndoStack().get(i));
+		ListIterator<ICmd> li = RecordCmd.getInstance().getUndoStack().listIterator(RecordCmd.getInstance().getUndoStack().size());
+		
+		while (li.hasPrevious()) {
+			ICmd cmd = li.previous();
+			addUndoHistory(cmd);
 		}
-		for (ICmd cmd: RecordCmd.getInstance().getRedoStack()) {
+		for (ICmd cmd : RecordCmd.getInstance().getRedoStack()) {
 			addRedoHistory(cmd);
 		}
 	}
@@ -249,6 +292,7 @@ public class RightMenuController {
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
 			h.setLabel(iCmd.toString());
+			h.setID(iCmd.getID());
 			if (isRedo) {
 				h.changeLabelOpacity(60);
 			}
@@ -256,5 +300,21 @@ public class RightMenuController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert, créé
+	 */
+	public void enableButton(){
+
+	}
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
+
 	}
 }
