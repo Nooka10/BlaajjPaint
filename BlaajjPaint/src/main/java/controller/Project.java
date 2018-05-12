@@ -1,8 +1,9 @@
 package controller;
 
 import controller.tools.Tool;
-
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,14 +11,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics2D;
-import java.awt.Dimension;
-
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Iterator;
@@ -36,6 +34,8 @@ public class Project implements Serializable {
 	private Color currentColor;
 	
 	private static Project projectInstance;
+	
+	private Group workspace;
 	
 	/**
 	 * Projet étant un singleton on peut récupérer son instance unique avec getInstance
@@ -59,6 +59,9 @@ public class Project implements Serializable {
 	
 	//*** GETTER  ***//
 	
+	public Group getWorkspace() {
+		return workspace;
+	}
 	
 	/**
 	 * Retourne la taille de l'image définie dans le projet ( C'est les dimensions qu'aura l'image finale lors de son export )
@@ -97,12 +100,14 @@ public class Project implements Serializable {
 	 *
 	 * @param width
 	 * @param height
-	 * @param isNew
-	 * 		Indique si on doit créer un nouveau calque de fond
+	 * @param isNew  Indique si on doit créer un nouveau calque de fond
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
+		workspace = new Group();
+		workspace.setAutoSizeChildren(true);
+		setClip(width, height, workspace);
 		
 		if (isNew) {
 			setCurrentLayer(new Layer(width, height));
@@ -126,10 +131,18 @@ public class Project implements Serializable {
 		
 		if (isNew) {
 			layers.add(currentLayer);
+			workspace.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
 		
+	}
+	
+	private void setClip(double width, double height, Node node) {
+		Rectangle clip = new Rectangle(width, height);
+		clip.setLayoutX(Math.round((MainViewController.getInstance().getScrollPane().getWidth() - width) / 2));
+		clip.setLayoutY(Math.round((MainViewController.getInstance().getScrollPane().getHeight() - height - MainViewController.getInstance().getParamBar().getHeight()) / 2));
+		node.setClip(clip);
 	}
 	
 	/**
@@ -147,12 +160,11 @@ public class Project implements Serializable {
 	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
 	//bah elle draw lw workspace
 	public void drawWorkspace() {
-		AnchorPane workspace = new AnchorPane();
+		workspace.getChildren().clear();
 		workspace.getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
 		
 		MainViewController.getInstance().getScrollPane().setContent(workspace);
-		
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
@@ -160,10 +172,6 @@ public class Project implements Serializable {
 				workspace.getChildren().add(layer);
 			}
 		}
-		
-		workspace.setMinSize(dimension.width, dimension.height);
-		workspace.setPrefSize(dimension.width, dimension.height);
-		workspace.setMaxSize(dimension.width, dimension.height);
 	}
 	
 	/**
@@ -191,6 +199,7 @@ public class Project implements Serializable {
 	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
+		workspace.getChildren().add(currentLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
 		drawWorkspace();
 	}
@@ -308,6 +317,7 @@ public class Project implements Serializable {
 	
 	public void deleteCurrentLayer() {
 		if (layers.size() != 1) {
+			workspace.getChildren().remove(currentLayer);
 			int index = layers.indexOf(currentLayer);
 			layers.remove(index);
 			if (index >= layers.size()) {
@@ -385,7 +395,6 @@ public class Project implements Serializable {
 			s.writeObject(li.next());
 		}
 	}
-	
 	
 	public void zoom(double factor) {
 		for (Layer l : layers) {

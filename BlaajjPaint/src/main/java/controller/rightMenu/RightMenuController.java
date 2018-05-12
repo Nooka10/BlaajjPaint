@@ -21,6 +21,7 @@ import utils.UndoException;
 
 import javax.swing.*;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 public class RightMenuController {
@@ -271,10 +272,10 @@ public class RightMenuController {
 	
 	public void updateHistoryList() {
 		historyList.getChildren().clear();
-		ListIterator<ICmd> li = RecordCmd.getInstance().getUndoStack().listIterator(RecordCmd.getInstance().getUndoStack().size());
+		Iterator<ICmd> li = RecordCmd.getInstance().getUndoStack().descendingIterator();
 		
-		while (li.hasPrevious()) {
-			ICmd cmd = li.previous();
+		while (li.hasNext()) {
+			ICmd cmd = li.next();
 			addUndoHistory(cmd);
 		}
 		for (ICmd cmd : RecordCmd.getInstance().getRedoStack()) {

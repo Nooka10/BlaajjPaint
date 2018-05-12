@@ -43,6 +43,8 @@ public class MainViewController {
 	@FXML
 	private AnchorPane paramBar;
 	@FXML
+	private AnchorPane anchorPaneCenter;
+	@FXML
 	private ScrollPane scrollPane;
 	@FXML
 	private Label zoomLabel;
@@ -65,6 +67,7 @@ public class MainViewController {
 	@FXML
 	private void initialize() {
 		mainViewControllerInstance = this;
+		anchorPaneCenter.isDisable();
 	}
 	
 	public Main getMain() {
@@ -78,7 +81,11 @@ public class MainViewController {
 	public ScrollPane getScrollPane() {
 		return scrollPane;
 	}
-
+	
+	public AnchorPane getAnchorPaneCenter() {
+		return anchorPaneCenter;
+	}
+	
 	public void resetScrollPane() {
 		scrollPane = new ScrollPane();
 	}

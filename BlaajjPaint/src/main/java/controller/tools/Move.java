@@ -70,7 +70,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				
+				Project.getInstance().getWorkspace().setAutoSizeChildren(false);
 				oldX = event.getX();
 				oldY = event.getY();
 				
@@ -96,6 +96,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				Project.getInstance().getWorkspace().setAutoSizeChildren(true);
 				currentSave.execute();
 			}
 		};
