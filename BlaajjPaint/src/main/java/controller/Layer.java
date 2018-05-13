@@ -7,6 +7,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
@@ -253,5 +254,27 @@ public class Layer extends Canvas implements Serializable {
 	
 	public static void reset() {
 		count = 1;
+	}
+
+	public void crop(double x1, double y1, double x2, double y2){
+		// Récupération du PixelReader - permet de lire les pixels sur le graphics context
+		WritableImage srcMask = new WritableImage((int) getWidth(), (int) getHeight());
+		SnapshotParameters params = new SnapshotParameters();
+		params.setFill(Color.TRANSPARENT);
+		srcMask = snapshot(params, srcMask);
+		PixelReader pixelReader = srcMask.getPixelReader();
+		double x = x1 < x2 ? x1 : x2;
+		double y = y1 < y2 ? y1 : y2;
+		double width = Math.abs(x1 - x2);
+		double height = Math.abs(y1 - y2);
+		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
+
+		Project.getInstance().getLayers().remove(this);
+
+		Layer newLayer = new Layer(new Dimension((int)width, (int)height));
+		newLayer.setLayoutX(x);
+		newLayer.setLayoutY(y);
+		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
+		Project.getInstance().addLayer(newLayer);
 	}
 }
