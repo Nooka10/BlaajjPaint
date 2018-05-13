@@ -1,6 +1,8 @@
 package controller;
 
 import controller.tools.Tool;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
@@ -12,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -36,7 +39,9 @@ public class Project implements Serializable {
 	
 	private static Project projectInstance;
 	
-	private Group workspace;
+	private AnchorPane workspace;
+	
+	private Rectangle redBorder;
 	
 	/**
 	 * Projet étant un singleton on peut récupérer son instance unique avec getInstance
@@ -60,7 +65,7 @@ public class Project implements Serializable {
 	
 	//*** GETTER  ***//
 	
-	public Group getWorkspace() {
+	public AnchorPane getWorkspace() {
 		return workspace;
 	}
 	
@@ -106,7 +111,7 @@ public class Project implements Serializable {
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
-		workspace = new Group();
+		workspace = new AnchorPane();
 		
 		setClip(width, height, workspace);
 		
@@ -141,8 +146,6 @@ public class Project implements Serializable {
 	
 	private void setClip(double width, double height, Node node) {
 		Rectangle clip = new Rectangle(width, height);
-		clip.setLayoutX(Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - width) / 2));
-		clip.setLayoutY(Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - height - MainViewController.getInstance().getParamBar().getHeight()) / 2) + MainViewController.getInstance().getParamBar().getHeight()));
 		node.setClip(clip);
 	}
 	
@@ -163,9 +166,18 @@ public class Project implements Serializable {
 	public void drawWorkspace() {
 		workspace.getChildren().clear();
 		workspace.getChildren().add(backgroungImage);
-		Iterator it = layers.descendingIterator();
+		workspace.prefHeight(dimension.height);
+		workspace.prefWidth(dimension.width);
+		workspace.minHeight(dimension.height);
+		workspace.minWidth(dimension.width);
+		workspace.maxHeight(dimension.height);
+		workspace.maxWidth(dimension.width);
 		
-		MainViewController.getInstance().getScrollPane().setContent(workspace);
+		workspace.setTranslateX(Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - dimension.width) / 2));
+		workspace.setTranslateY(Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - dimension.height - MainViewController.getInstance().getParamBar().getHeight()) / 2) + MainViewController.getInstance().getParamBar().getHeight()));
+		
+		
+		Iterator it = layers.descendingIterator();
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
@@ -173,6 +185,10 @@ public class Project implements Serializable {
 				workspace.getChildren().add(layer);
 			}
 		}
+		
+		workspace.getChildren().add(redBorder);
+		
+		MainViewController.getInstance().getScrollPane().setContent(workspace);
 	}
 	
 	/**
@@ -219,6 +235,44 @@ public class Project implements Serializable {
 	public void setCurrentLayer(Layer currentLayer) {
 		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
+		
+		
+		
+		 redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+		redBorder.setStroke(Color.CADETBLUE);
+		redBorder.setStrokeWidth(1);
+		
+		
+		redBorder.setTranslateX(currentLayer.getBoundsInParent().getMinX());
+		redBorder.setTranslateY(currentLayer.getBoundsInParent().getMinY());
+		redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
+		redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
+		
+		redBorder.setMouseTransparent(true);
+		
+		
+		redBorder.setManaged(false);
+		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+			
+			
+			
+			@Override
+			public void changed(ObservableValue<? extends Bounds> observable,
+			                    Bounds oldValue, Bounds newValue) {
+				redBorder.setTranslateX(currentLayer.getBoundsInParent().getMinX());
+				redBorder.setTranslateY(currentLayer.getBoundsInParent().getMinY());
+				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
+				redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
+			}
+			
+		});
+		
+		workspace.getChildren().add(redBorder);
+		//MainViewController.getInstance().getAnchorPaneCenter().getChildren().add(redBorder);
+		
+		
+		
+		
 		addEventHandlers(Tool.getCurrentTool());
 	}
 	
@@ -246,10 +300,23 @@ public class Project implements Serializable {
 	
 	public void export(File file) {
 		if (file != null) {
-			Layer resultLayer = new Layer(dimension.width, dimension.height);
+			Layer resultLayer = new Layer(1,1);
+			double minX = Double.MAX_VALUE;
+			double minY = Double.MAX_VALUE;
+			
 			for (Layer layer : layers) {
 				resultLayer = resultLayer.mergeLayers(layer);
+				if(layer.getLayoutX() < minX){
+					minX = layer.getLayoutX();
+				}
+				if(layer.getLayoutY() < minY){
+					minY = layer.getLayoutY();
+				}
 			}
+			
+			// redimensionne le calque resultant pour qu'il soit à la taille du projet
+			resultLayer.crop
+			
 			String chosenExtension = "";
 			int i = file.getPath().lastIndexOf('.');
 			if (i > 0) {
@@ -268,12 +335,10 @@ public class Project implements Serializable {
 				
 				params.setFill(Color.WHITE);
 				
-				Image lol = resultLayer.createImageFromCanvasJPG(4).getImage();
+				Image canvas = resultLayer.createImageFromCanvasJPG(1).getImage();
 				
-				PixelReader reader = lol.getPixelReader();
+				PixelReader reader = canvas.getPixelReader();
 				WritableImage newImage = new WritableImage(reader, (int) -resultLayer.getLayoutX(), (int) -resultLayer.getLayoutY(), dimension.width * 4, dimension.height * 4);
-				
-				System.out.println(-resultLayer.getLayoutX());
 				
 				BufferedImage image = SwingFXUtils.fromFXImage(newImage, null);
 				
