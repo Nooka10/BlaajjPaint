@@ -38,7 +38,7 @@
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding></AnchorPane>
-            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" layoutY="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+            <ScrollPane fx:id="scrollPane" layoutY="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
          </children>
          <BorderPane.margin>
             <Insets />

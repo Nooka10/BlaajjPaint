@@ -2,6 +2,7 @@ package controller;
 
 import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -106,12 +107,11 @@ public class Project implements Serializable {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
 		workspace = new Group();
-		workspace.setAutoSizeChildren(true);
+		
 		setClip(width, height, workspace);
 		
-		if (isNew) {
-			setCurrentLayer(new Layer(width, height));
-		}
+		MainViewController.getInstance().getScrollPane().setMaxWidth(width);
+		MainViewController.getInstance().getScrollPane().setMaxHeight(height);
 		
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
@@ -130,6 +130,7 @@ public class Project implements Serializable {
 		}
 		
 		if (isNew) {
+			setCurrentLayer(new Layer(width, height));
 			layers.add(currentLayer);
 			workspace.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
@@ -140,8 +141,8 @@ public class Project implements Serializable {
 	
 	private void setClip(double width, double height, Node node) {
 		Rectangle clip = new Rectangle(width, height);
-		clip.setLayoutX(Math.round((MainViewController.getInstance().getScrollPane().getWidth() - width) / 2));
-		clip.setLayoutY(Math.round((MainViewController.getInstance().getScrollPane().getHeight() - height - MainViewController.getInstance().getParamBar().getHeight()) / 2));
+		clip.setLayoutX(Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - width) / 2));
+		clip.setLayoutY(Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - height - MainViewController.getInstance().getParamBar().getHeight()) / 2) + MainViewController.getInstance().getParamBar().getHeight()));
 		node.setClip(clip);
 	}
 	
@@ -158,7 +159,7 @@ public class Project implements Serializable {
 	}
 	
 	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
-	//bah elle draw lw workspace
+	//bah elle draw le workspace
 	public void drawWorkspace() {
 		workspace.getChildren().clear();
 		workspace.getChildren().add(backgroungImage);
@@ -187,7 +188,6 @@ public class Project implements Serializable {
 	 * Ajoutes un nouveau layer avec les dimensions définies dans le projet
 	 */
 	public void addNewLayer() {
-		
 		addLayer(new Layer(dimension.width, dimension.height));
 	}
 	
@@ -208,7 +208,6 @@ public class Project implements Serializable {
 	 * Retournes la linked list de layers
 	 */
 	public LinkedList<Layer> getLayers() {
-		
 		return layers;
 	}
 	
@@ -247,14 +246,11 @@ public class Project implements Serializable {
 	
 	public void export(File file) {
 		if (file != null) {
-			
 			Layer resultLayer = new Layer(dimension.width, dimension.height);
 			for (Layer layer : layers) {
 				resultLayer = resultLayer.mergeLayers(layer);
 			}
-			
 			String chosenExtension = "";
-			
 			int i = file.getPath().lastIndexOf('.');
 			if (i > 0) {
 				chosenExtension = file.getPath().substring(i + 1);

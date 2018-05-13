@@ -34,8 +34,10 @@ public class Move extends Tool {
 		private double newYSave;
 		
 		public MoveSave() {
-			oldXSave = Project.getInstance().getCurrentLayer().getLayoutX();
-			oldYSave = Project.getInstance().getCurrentLayer().getLayoutY();
+			//oldXSave = Project.getInstance().getCurrentLayer().getLayoutX();
+			//oldYSave = Project.getInstance().getCurrentLayer().getLayoutY();
+			oldXSave = Project.getInstance().getCurrentLayer().getTranslateX();
+			oldYSave = Project.getInstance().getCurrentLayer().getTranslateY();
 		}
 		
 		@Override
@@ -45,18 +47,26 @@ public class Move extends Tool {
 		
 		@Override
 		public void undo() {
+			/*
 			newXSave = Project.getInstance().getCurrentLayer().getLayoutX();
 			newYSave = Project.getInstance().getCurrentLayer().getLayoutY();
 			
 			Project.getInstance().getCurrentLayer().setLayoutX(oldXSave);
 			Project.getInstance().getCurrentLayer().setLayoutY(oldYSave);
+			*/
+			newXSave = Project.getInstance().getCurrentLayer().getTranslateX();
+			newYSave = Project.getInstance().getCurrentLayer().getTranslateY();
 			
+			Project.getInstance().getCurrentLayer().setTranslateX(oldXSave);
+			Project.getInstance().getCurrentLayer().setTranslateY(oldYSave);
 		}
 		
 		@Override
 		public void redo() {
-			Project.getInstance().getCurrentLayer().setLayoutX(newXSave);
-			Project.getInstance().getCurrentLayer().setLayoutY(newYSave);
+			//Project.getInstance().getCurrentLayer().setLayoutX(newXSave);
+			//Project.getInstance().getCurrentLayer().setLayoutY(newYSave);
+			Project.getInstance().getCurrentLayer().setTranslateX(newXSave);
+			Project.getInstance().getCurrentLayer().setTranslateY(newYSave);
 		}
 		
 		@Override
@@ -70,7 +80,6 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getWorkspace().setAutoSizeChildren(false);
 				oldX = event.getX();
 				oldY = event.getY();
 				
@@ -84,8 +93,16 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getCurrentLayer().setLayoutX(Project.getInstance().getCurrentLayer().getLayoutX() + event.getX() - oldX);
-				Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() + event.getY() - oldY);
+				//Project.getInstance().getCurrentLayer().setLayoutX(Project.getInstance().getCurrentLayer().getLayoutX() + event.getX() - oldX);
+				//Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() + event.getY() - oldY);
+				
+				double x = Project.getInstance().getCurrentLayer().getTranslateX() + event.getX() - oldX;
+				double y = Project.getInstance().getCurrentLayer().getTranslateY() + event.getY() - oldY;
+				
+				if (x > -Project.getInstance().getDimension().width && y > -Project.getInstance().getDimension().height) {
+					Project.getInstance().getCurrentLayer().setTranslateX(Project.getInstance().getCurrentLayer().getTranslateX() + event.getX() - oldX);
+					Project.getInstance().getCurrentLayer().setTranslateY(Project.getInstance().getCurrentLayer().getTranslateY() + event.getY() - oldY);
+				}
 				
 			}
 		};
@@ -96,7 +113,6 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getWorkspace().setAutoSizeChildren(true);
 				currentSave.execute();
 			}
 		};
