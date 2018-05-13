@@ -161,7 +161,7 @@ public class Crop extends Tool {
         };
     }
 
-    class CropSave implements ICmd{
+    class CropSave extends ICmd{
         private Image undosave;
         private Image redosave = null;
         private SnapshotParameters params;

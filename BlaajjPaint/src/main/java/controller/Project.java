@@ -2,7 +2,6 @@ package controller;
 
 import controller.tools.Tool;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -12,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -37,6 +37,8 @@ public class Project implements Serializable {
 	private static Project projectInstance;
 	
 	private Group workspace;
+	
+	private AnchorPane anchorPaneWorkspace;
 	
 	/**
 	 * Projet étant un singleton on peut récupérer son instance unique avec getInstance
@@ -101,17 +103,20 @@ public class Project implements Serializable {
 	 *
 	 * @param width
 	 * @param height
-	 * @param isNew  Indique si on doit créer un nouveau calque de fond
+	 * @param isNew
+	 * 		Indique si on doit créer un nouveau calque de fond
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
-		workspace = new Group();
 		
+		anchorPaneWorkspace = new AnchorPane();
+		workspace = new Group();
+		anchorPaneWorkspace.getChildren().add(workspace);
 		setClip(width, height, workspace);
 		
-		MainViewController.getInstance().getScrollPane().setMaxWidth(width);
-		MainViewController.getInstance().getScrollPane().setMaxHeight(height);
+		//MainViewController.getInstance().getScrollPane().setMaxWidth(width);
+		//MainViewController.getInstance().getScrollPane().setMaxHeight(height);
 		
 		backgroungImage = new Canvas(width, height);
 		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
@@ -136,6 +141,7 @@ public class Project implements Serializable {
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
+		MainViewController.getInstance().getScrollPane().setContent(anchorPaneWorkspace);
 		
 	}
 	
@@ -164,8 +170,6 @@ public class Project implements Serializable {
 		workspace.getChildren().clear();
 		workspace.getChildren().add(backgroungImage);
 		Iterator it = layers.descendingIterator();
-		
-		MainViewController.getInstance().getScrollPane().setContent(workspace);
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
