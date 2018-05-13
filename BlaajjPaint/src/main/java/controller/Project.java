@@ -8,16 +8,15 @@ import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -295,8 +294,6 @@ public class Project implements Serializable {
 			
 			// redimensionne le calque resultant pour qu'il soit à la taille du projet
 			resultLayer = resultLayer.crop(-minX, -minY, -minX+dimension.width, -minY+dimension.height);
-			Project.getInstance().addLayer(resultLayer);
-			
 			
 			String chosenExtension = "";
 			int i = file.getPath().lastIndexOf('.');
@@ -318,10 +315,7 @@ public class Project implements Serializable {
 				
 				Image canvas = resultLayer.createImageFromCanvasJPG(1).getImage();
 				
-				PixelReader reader = canvas.getPixelReader();
-				WritableImage newImage = new WritableImage(reader, (int) -resultLayer.getLayoutX(), (int) -resultLayer.getLayoutY(), dimension.width * 4, dimension.height * 4);
-				
-				BufferedImage image = SwingFXUtils.fromFXImage(newImage, null);
+				BufferedImage image = SwingFXUtils.fromFXImage(canvas, null);
 				
 				BufferedImage imageRGB = new BufferedImage(dimension.width, dimension.height, BufferedImage.OPAQUE);
 				
