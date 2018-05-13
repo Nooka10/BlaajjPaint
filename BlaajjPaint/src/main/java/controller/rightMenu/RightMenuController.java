@@ -10,10 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -39,6 +38,9 @@ public class RightMenuController {
 	
 	@FXML
 	private Button addNewLayer;
+	
+	@FXML
+	private Button deleteLayer;
 	
 	@FXML
 	private Button downLayer;
@@ -67,6 +69,11 @@ public class RightMenuController {
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
+		addNewLayer.setTooltip(new Tooltip("Ajouter un nouveau calque"));
+		deleteLayer.setTooltip(new Tooltip("Supprimer le calque séléctionné"));
+		upLayer.setTooltip(new Tooltip("Déplacer le calque vers le haut"));
+		downLayer.setTooltip(new Tooltip("Déplacer le calque vers le bas"));
+		fusion.setTooltip(new Tooltip("Fusionner avec le calque inférieur"));
 	}
 	
 	public VBox getHistoryList() {
