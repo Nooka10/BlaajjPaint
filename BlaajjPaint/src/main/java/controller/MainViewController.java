@@ -69,7 +69,8 @@ public class MainViewController {
 	@FXML
 	private void initialize() {
 		mainViewControllerInstance = this;
-		anchorPaneCenter.isDisable();
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
 	}
 	
 	public Main getMain() {
@@ -168,12 +169,12 @@ public class MainViewController {
 	
 	@FXML
 	private void zoomIn() {
-		Zoom.getInstance().zoomIn(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
+		Zoom.getInstance().zoomIn();
 	}
 	
 	@FXML
 	private void zoomOut() {
-		Zoom.getInstance().zoomOut(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
+		Zoom.getInstance().zoomOut();
 	}
 	
 	
