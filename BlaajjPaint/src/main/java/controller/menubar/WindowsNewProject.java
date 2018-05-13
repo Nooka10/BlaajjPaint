@@ -27,7 +27,7 @@ public class WindowsNewProject {
 	private void initialize() {
 
 
-		MainViewController.getInstance().closePorject();
+		MainViewController.getInstance().closeProject();
 
 		cancel.setCancelButton(true);
 		createButton.setDefaultButton(true);
@@ -54,9 +54,19 @@ public class WindowsNewProject {
 			}
 		});
 	}
-	
+
+	/**
+	 * Crée, initalise le nouveau projet avec la taille choisie.
+	 * Réactive les bouttons
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void createNewProject(ActionEvent event) {
+
+		// Netoyage du projet
+        MainViewController.getInstance().closeProject();
+
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		
@@ -64,6 +74,9 @@ public class WindowsNewProject {
 		
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close();
+
+		// Réactive les bouttons
+		MainViewController.getInstance().enableButton();
 	}
 	
 	@FXML

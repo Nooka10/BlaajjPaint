@@ -117,7 +117,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleClose(ActionEvent event) {
-		MainViewController.getInstance().closePorject();
+		MainViewController.getInstance().closeProject();
 
 	}
 	
@@ -152,6 +152,20 @@ public class MenuBarController {
 	}
 	
 	@FXML
+	public void handleResizeLayer(){
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/ResizeLayer.fxml"));
+			Parent resizeWindow = fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Redimensionner calque");
+			stage.setScene(new Scene(resizeWindow));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
 	public void mergeAllLayer(ActionEvent event) {
 		Layer layer = Project.getInstance().getLayers().getLast();
 		for (int i = Project.getInstance().getLayers().size() - 2; i >= 0; --i)
@@ -179,7 +193,21 @@ public class MenuBarController {
 	@FXML
 	public void handleHelp(ActionEvent event) {
 
+	}
 
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert, créé
+	 */
+	public void enableButton(){
+
+	}
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
 
 	}
 }

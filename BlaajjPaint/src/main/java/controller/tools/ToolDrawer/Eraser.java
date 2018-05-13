@@ -1,9 +1,10 @@
 /*
 Author: Benoît
  */
-package controller.tools;
+package controller.tools.ToolDrawer;
 
 import controller.Project;
+import controller.tools.Tool;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,16 +23,17 @@ public class Eraser extends ToolDrawer {
 	
 	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
-	private GraphicsContext eraserMaskGraphicsContext;
-
+	private GraphicsContext eraserMaskGC;
+	
 	public class EraserStrike extends Trait {
-		public String toString(){
-			return "Eraser Strike";
+		public String toString() {
+			return "Trait de gomme";
 		}
 	}
-
+	
 	/**
 	 * Retourne l'instance unique de la gomme
+	 *
 	 * @return l'instance unique de la gomme
 	 */
 	public static Eraser getInstance() {
@@ -42,7 +44,7 @@ public class Eraser extends ToolDrawer {
 	 * Constructeur privé (modèle singleton)
 	 */
 	private Eraser() {
-		toolType = ToolType.ERASER;
+		toolType = Tool.ToolType.ERASER;
 	}
 	
 	@Override
@@ -54,17 +56,16 @@ public class Eraser extends ToolDrawer {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter().setColor((int) event.getX(), (int) event.getY(), Color.TRANSPARENT);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(event.getX() - thickness / 2, event.getY() - thickness / 2, thickness, thickness);
 				
-				// create eraserMask
+				// crée le masque de suppression
 				eraserMask = new Canvas(Project.getInstance().getCurrentLayer().getWidth(), Project.getInstance().getCurrentLayer().getHeight());
-				eraserMaskGraphicsContext = eraserMask.getGraphicsContext2D();
-				eraserMaskGraphicsContext.setFill(Color.WHITE);
-				eraserMaskGraphicsContext.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
-				eraserMaskGraphicsContext.beginPath();
-				eraserMaskGraphicsContext.moveTo(event.getX(), event.getY());
-				eraserMaskGraphicsContext.setLineWidth(thickness); // définit l'épaisseur de la gomme
-				eraserMaskGraphicsContext.setStroke(Color.BLACK); // définit la couleur de la gomme
-				//eraserMaskGraphicsContext.setGlobalAlpha(opacity / 100);
-				eraserMaskGraphicsContext.stroke();
+				eraserMaskGC = eraserMask.getGraphicsContext2D();
+				eraserMaskGC.setFill(Color.WHITE);
+				eraserMaskGC.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
+				eraserMaskGC.beginPath();
+				eraserMaskGC.moveTo(event.getX(), event.getY());
+				eraserMaskGC.setLineWidth(thickness); // définit l'épaisseur de la gomme
+				eraserMaskGC.setStroke(Color.BLACK); // définit la couleur de la gomme
+				eraserMaskGC.stroke();
 			}
 		};
 	}
@@ -77,8 +78,8 @@ public class Eraser extends ToolDrawer {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter().setColor((int) event.getX(), (int) event.getY(), Color.TRANSPARENT);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(event.getX() - thickness / 2, event.getY() - thickness / 2, thickness, thickness);
 				
-				eraserMaskGraphicsContext.lineTo(event.getX(), event.getY());
-				eraserMaskGraphicsContext.stroke();
+				eraserMaskGC.lineTo(event.getX(), event.getY());
+				eraserMaskGC.stroke();
 			}
 		};
 	}
@@ -88,9 +89,9 @@ public class Eraser extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				eraserMaskGraphicsContext.closePath();
+				eraserMaskGC.closePath();
 				
-				// get image from eraserMask
+				// On récupère l'image du masque de suppression
 				WritableImage srcMask = new WritableImage((int) eraserMask.getWidth(), (int) eraserMask.getHeight());
 				srcMask = eraserMask.snapshot(null, srcMask);
 				
@@ -101,7 +102,8 @@ public class Eraser extends ToolDrawer {
 				
 				PixelWriter writer = Project.getInstance().getCurrentLayer().getGraphicsContext2D().getPixelWriter();
 				
-				// blend image and eraserMask
+				// on fusionne le calque et le masque de suppression en colorant en transparent (donc en effaçant)
+				// les pixels du calque qui ont été coloriés dans le masque de suppression
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
 						Color maskColor = maskReader.getColor(x, y);
@@ -110,7 +112,6 @@ public class Eraser extends ToolDrawer {
 						}
 					}
 				}
-				
 				currentTrait.execute();
 			}
 		};

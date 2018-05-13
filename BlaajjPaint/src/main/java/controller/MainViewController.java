@@ -1,12 +1,11 @@
 package controller;
 
-import controller.history.RecordCmd;
+	import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import controller.tools.Zoom;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -44,6 +43,8 @@ public class MainViewController {
 	@FXML
 	private AnchorPane paramBar;
 	@FXML
+	private AnchorPane anchorPaneCenter;
+	@FXML
 	private ScrollPane scrollPane;
 	@FXML
 	private Label zoomLabel;
@@ -68,6 +69,7 @@ public class MainViewController {
 	@FXML
 	private void initialize() {
 		mainViewControllerInstance = this;
+		anchorPaneCenter.isDisable();
 	}
 	
 	public Main getMain() {
@@ -81,7 +83,11 @@ public class MainViewController {
 	public ScrollPane getScrollPane() {
 		return scrollPane;
 	}
-
+	
+	public AnchorPane getAnchorPaneCenter() {
+		return anchorPaneCenter;
+	}
+	
 	public void resetScrollPane() {
 		scrollPane = new ScrollPane();
 	}
@@ -180,14 +186,21 @@ public class MainViewController {
 		zoomLabel.setText(text);
 	}
 
+
+
 	/**
 	 * Permet de fermer le projet en cours d'execution
+	 * Permet aussi le nettoyage du projet (mise à 0)
 	 */
-	public void closePorject(){
+	public void closeProject(){
 		Project.getInstance().close();
+		RecordCmd.getInstance().clear();
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
 		SaveProjects.getInstance().clear();
+
+		// desactive les bouttons
+		disableButton();
 	}
 
 	public void openProject(){
@@ -204,10 +217,41 @@ public class MainViewController {
 			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
 			System.out.println("path fichier choisi: " + file.getPath());
 
-			closePorject();
+			closeProject();
 			SaveProjects.getInstance().openFile(file);
-
 		}
+
+		// réactive les bouttons
+		enableButton();
+	}
+
+	/**
+	 * Permet la sauvegarde du projet depuis n'importe quelle autre aubjet du package.
+	 */
+	public void saveAs(){
+		menuBarController.handleSaveAs(null);
+	}
+
+
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
+		menuBarController.disableButton();
+		rightMenuController.disableButton();
+		rightMenuController.disableButton();
+	}
+
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert ou créé
+	 */
+	public void enableButton(){
+		menuBarController.enableButton();
+		rightMenuController.enableButton();
+		toolBarController.enableButton();
 	}
 	
 	public AnchorPane getWorkspace() {

@@ -4,11 +4,17 @@ Author: Benoît
 package controller.tools;
 
 import controller.MainViewController;
+import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.input.MouseEvent;
+import utils.UndoException;
 
 /**
- * Classe implémentant l'outil de déplacement
+ * Classe implémentant l'outil pipette
  */
 public class Hand extends Tool {
 	
@@ -19,9 +25,9 @@ public class Hand extends Tool {
 	}
 	
 	private Hand() {
-		toolType = ToolType.HAND;
+		toolType = ToolType.MOVE;
 	}
-	
+
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
@@ -37,6 +43,7 @@ public class Hand extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				// do nothing
 			}
 		};
 	}

@@ -6,158 +6,198 @@
 package controller.tools;
 
 import controller.Layer;
-import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Scene;
+import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import utils.SnapshotMaker;
 import utils.UndoException;
-import javafx.scene.Cursor;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
 public class BucketFill extends Tool {
-    private static BucketFill instance = new BucketFill();
-    private Fill currentFill;
+	/** ATTRIBUTS **/
+	private static BucketFill instance = new BucketFill();
+	private Fill currentFill;
 
-    private BucketFill(){
-        toolType = ToolType.BUCKETFILL;
-    }
+	/**
+	 * Constructeur privé car Singleton
+	 */
+	private BucketFill() {
+		toolType = ToolType.BUCKETFILL;
+	}
 
-    public static BucketFill getInstance(){
-        return instance;
-    }
-    @Override
-    protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
-        return new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event){
-                changeCursor(Cursor.WAIT);
-            }
-        };
-    }
+	/**
+	 * Retourne l'instance du Singleton
+	 * @return l'instance du Singleton
+	 */
+	public static BucketFill getInstance() {
+		return instance;
+	}
 
-    @Override
-    protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
-        return new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                // do nothing
-            }
-        };
-    }
+	/**
+	 * Gestion de l'événement du "l'appuie" de la souris
+	 * @return l'événement qui dois être réalisé lorsque l'on clique lorsque le BucketFill est séléctionné
+	 */
+	@Override
+	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				changeCursor(Cursor.WAIT); // Change le curseur en mode "attente"
+			}
+		};
+	}
 
-    @Override
-    protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
-        return new EventHandler<MouseEvent>() {
+	/**
+	 * Gestion de l'événement du "dragg" de la souris
+	 * @return ne fait rien dans le cas du "BucketFill"
+	 */
+	@Override
+	protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// Ne fait rien
+			}
+		};
+	}
 
-            // ATTRIBUTS EVENTHANDLER BUCKETFILL
-            Stack<Point2D> stack;
-            HashSet<Point2D> marked;
-            Layer layer;
+	/**
+	 * Gestion de l'événement du relachement du clique de la souris
+	 * @return l'événement qui lorsque l'on relache le clique de la souris peint dans la zone du calque
+	 */
+	@Override
+	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			
+			/** ATTRIBUTS DE L'EVENEMENT **/
+			Stack<Point2D> stack; // Stack des points qui devront être traiter
+			HashSet<Point2D> marked; // Map des points traité
+			Layer layer; // Layer sur lequel on doit dessiner (Evite l'appelle constant à Project
+			
+			@Override
+			public void handle(MouseEvent event) {
+				// Set des attributs
+				layer = Project.getInstance().getCurrentLayer();
+				currentFill = new Fill();
+				stack = new Stack<>();
+				marked = new HashSet<>();
 
-            @Override
-            public void handle(MouseEvent event) {
-                layer = Project.getInstance().getCurrentLayer();
-                currentFill = new Fill();
-                stack = new Stack<>();
-                marked = new HashSet<>();
-                PixelWriter pixelWriter = layer.getGraphicsContext2D().getPixelWriter();
-                // PixelReader
-                WritableImage srcMask = new WritableImage((int) layer.getWidth(), (int) layer.getHeight());
-                srcMask = layer.snapshot(null, srcMask);
-                PixelReader pixelReader = srcMask.getPixelReader();
+				// Récupération du PixelWriter - permet d'écrire sur des pixel du graphics context
+				PixelWriter pixelWriter = layer.getGraphicsContext2D().getPixelWriter();
 
-                Color colorSelected = pixelReader.getColor((int)Math.round(event.getX()),(int)Math.round(event.getY()));
-                Color currentColor = Project.getInstance().getCurrentColor();
-                System.out.println(colorSelected + " " + currentColor);
-                stack.push(new Point2D(event.getX(), event.getY()));
+				// Récupération du PixelReader - permet de lire les pixels sur le graphics context
+				WritableImage srcMask = new WritableImage((int) layer.getWidth(), (int) layer.getHeight());
+				srcMask = layer.snapshot(null, srcMask);
+				PixelReader pixelReader = srcMask.getPixelReader();
 
-                while (!stack.isEmpty()) {
-                    Point2D point = stack.pop();
-                    int x = (int) point.getX();
-                    int y = (int) point.getY();
+				// Couleur de l'élément/zone à colorer
+				Color colorSelected = pixelReader.getColor((int) Math.round(event.getX()), (int) Math.round(event.getY()));
+				// Couleur qu'on doit coloré l'élément/zone
+				Color currentColor = Project.getInstance().getCurrentColor();
+				
+				stack.push(new Point2D(event.getX(), event.getY())); // Set de l'élément de base de notre parcours
 
-                    if ((!pixelReader.getColor(x,y).equals(colorSelected))){
-                        System.out.println(colorSelected + " " + currentColor);
-                        continue;
-                    }
+				// Parcours des pixel environnant le point de départ
+				while (!stack.isEmpty()) {
+					Point2D point = stack.pop();
+					// Récupération de la position du point (moins d'accès au fonction)
+					int x = (int) Math.round(point.getX());
+					int y = (int) Math.round(point.getY());
 
-                    pixelWriter.setColor(x, y, currentColor);
+					// Test si le pixel courant à la meme couleur que le point de départ (fait partie de la forme
+					if ((!pixelReader.getColor(x, y).equals(colorSelected))) {
+						continue;
+					}
+					
+					pixelWriter.setColor(x, y, currentColor); // mise en couleur du pixel en cours de traitement
+					
+					marked.add(point); // Marquer le point comme traité
 
-                    marked.add(point);
+					// Ajout des points adjacent le point courant dans la liste de traitement
+					addPointToStack(x - 1, y - 1);
+					addPointToStack(x - 1, y);
+					addPointToStack(x - 1, y + 1);
+					addPointToStack(x, y - 1);
+					addPointToStack(x, y + 1);
+					addPointToStack(x + 1, y - 1);
+					addPointToStack(x + 1, y);
+					addPointToStack(x + 1, y + 1);
+				}
+				// Fin de la coloration - remise en place du curseur et execution de la commande
+				resetOldCursor();
+				currentFill.execute();
+			}
 
-                    addPointToStack(x-1,y-1);
-                    addPointToStack(x-1, y);
-                    addPointToStack(x-1, y+1);
-                    addPointToStack(x, y-1);
-                    addPointToStack(x, y+1);
-                    addPointToStack(x+1, y-1);
-                    addPointToStack(x+1, y);
-                    addPointToStack(x+1, y+1);
-                }
-                resetOldCursor();
-            }
+			/**
+			 * Ajout d'un point dans la stack de traitement
+			 * @param x - position horizontal du point
+			 * @param y - position vertical du point
+			 * @brief Permet de faire des verification si le point et toujours dans l'image et si il a pas déjà été traité
+			 */
+			private void addPointToStack(int x, int y) {
+				Point2D point = new Point2D(x, y);
+				if (marked.contains(point) || x < 0 || x >= layer.getWidth() || y < 0 || y >= layer.getHeight()) {
+					return;
+				}
+				stack.push(point);
+			}
+		};
+	}
 
-            private void addPointToStack(int x, int y){
-                Point2D point = new Point2D(x,y);
-                if(marked.contains(point) ||
-                        x < 0 || x >= layer.getWidth() || y < 0 || y >= layer.getHeight()){
-                    return;
-                }
-                stack.push(point);
-                currentFill.execute();
-            }
-        };
-    }
+	/**
+	 * Commande pour remplir une forme - utile pour le undo redo
+	 */
+	class Fill extends ICmd {
+		private Image undosave;
+		private Image redosave = null;
+		private SnapshotParameters params;
+		
+		public Fill() {
+			params = new SnapshotParameters();
+			params.setFill(Color.TRANSPARENT);
+			
+			this.undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+		}
+		
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			if (undosave == null) {
+				throw new UndoException();
+			}
+			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
+			undosave = null;
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			if (redosave == null) {
+				throw new UndoException();
+			}
+			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+			redosave = null;
+		}
 
-    class Fill implements ICmd{
-        private Image undosave;
-        private Image redosave = null;
-        private SnapshotParameters params;
-
-        public Fill(){
-            params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-
-            this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-        }
-        @Override
-        public void execute() {
-            RecordCmd.getInstance().saveCmd(this);
-        }
-
-        @Override
-        public void undo() throws UndoException {
-            if (undosave == null) {
-                throw new UndoException();
-            }
-            redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
-            undosave = null;
-        }
-
-        @Override
-        public void redo() throws UndoException {
-            if (redosave == null) {
-                throw new UndoException();
-            }
-            undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
-            redosave = null;
-        }
-    }
+		public String toString(){
+			return "Remplissage de l'image";
+		}
+	}
 }

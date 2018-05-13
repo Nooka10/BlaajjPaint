@@ -2,18 +2,34 @@ package controller.rightMenu;
 
 import controller.Layer;
 import controller.Project;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import utils.UndoException;
+
+import javax.swing.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class RightMenuController {
 	@FXML
-	private VBox LayersList;
+	private VBox layersList;
+	
+	@FXML
+	private VBox historyList;
 	
 	@FXML
 	private Button fusion;
@@ -39,6 +55,9 @@ public class RightMenuController {
 	@FXML
 	private AnchorPane rightMenu;
 	
+	private double oldOpacity;
+	
+	private double newOpacity;
 	
 	// LayerList config
 	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -48,15 +67,38 @@ public class RightMenuController {
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
-		
-		opacitySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(newValue.toString()));
-			opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
-		});
-		opacityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			Project.getInstance().getCurrentLayer().setLayerOpacity(Double.parseDouble(newValue));
-			opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
-		});
+	}
+	
+	public VBox getHistoryList() {
+		return historyList;
+	}
+	
+	@FXML
+	void OnInputTextChanged(ActionEvent event) {
+		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
+		Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
+		opacitySlider.setValue(newOpacity);
+	}
+	
+	@FXML
+	void OnMousePressed(MouseEvent event) {
+		oldOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
+		opacityTextField.setText(String.valueOf(oldOpacity));
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
+	}
+	
+	@FXML
+	void OnMouseDragged(MouseEvent event) {
+		newOpacity = opacitySlider.getValue();
+		opacityTextField.setText(String.valueOf(newOpacity));
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(newOpacity);
+	}
+	
+	@FXML
+	void OnMouseReleased(MouseEvent event) {
+		newOpacity = Math.round(opacitySlider.getValue());
+		opacityTextField.setText(String.valueOf(newOpacity));
+		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
 	}
 	
 	@FXML
@@ -68,76 +110,212 @@ public class RightMenuController {
 		colorPicker.setValue(color);
 	}
 	
-	@FXML
-	void addNewLayer(ActionEvent event) {
-		Project.getInstance().addNewLayer();
+	public class NewLayerSave extends ICmd {
+		
+		Layer oldCurrentLayer;
+		Layer newLayer;
+		
+		/**
+		 * Prends l'ancien current layer
+		 */
+		public NewLayerSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
+		
+		@Override
+		/**
+		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
+		 */
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().setCurrentLayer(newLayer);
+			Project.getInstance().deleteCurrentLayer();
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+		
+		}
+		
+		public String toString() {
+			return "Nouveau Layer";
+		}
 	}
 	
 	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
+	void addNewLayer(ActionEvent event) {
+		NewLayerSave ls = new NewLayerSave();
+		
+		Project.getInstance().addNewLayer();
+		updateLayerList();
+		ls.execute();
+	}
+	
+	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void deleteLayer(ActionEvent event) {
 		Project.getInstance().deleteCurrentLayer();
+		updateLayerList();
 	}
 	
 	@FXML
-	void upLayer(ActionEvent event) {
-		Project.getInstance().currentLayerToFront();
-	}
-	
-	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
 	void downLayer(ActionEvent event) {
-		Project.getInstance().currentLayerToBack();
+		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
+		if (index < Project.getInstance().getLayers().size() - 1) {
+			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
+			
+			Node toMove = layersList.getChildren().get(index);
+			layersList.getChildren().remove(index);
+			layersList.getChildren().add(index + 1, toMove);
+			
+			Project.getInstance().drawWorkspace();
+		}
+	}
+	
+	@FXML
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
+	void upLayer(ActionEvent event) {
+		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
+		
+		if (index != 0) {
+			Collections.swap(Project.getInstance().getLayers(), index, index - 1);
+			
+			Node toMove = layersList.getChildren().get(index);
+			layersList.getChildren().remove(index);
+			layersList.getChildren().add(index - 1, toMove);
+			Project.getInstance().drawWorkspace();
+		}
 	}
 	
 	@FXML
 	void fusionLayer(ActionEvent event) {
-		//Project.getInstance().getCurrentLayer().mergeLayers();
-	}
-	
-	private HBox createLayoutUI(Layer layer) {
-		HBox container = new HBox();
-		CheckBox visibility = new CheckBox();
-		Label layerName = new Label(layer.toString());
-		
-		
-		visibility.setSelected(layer.isVisible());
-		opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
-		
-		container.setOnMouseClicked((e) ->
-		{
-			Project.getInstance().setCurrentLayer(layer);
-			opacitySlider.setValue(layer.getLayerOpacity());
-			opacityTextField.setText(String.valueOf(layer.getLayerOpacity()));
+		Layer currentLayer = Project.getInstance().getCurrentLayer();
+		int index = Project.getInstance().getLayers().indexOf(currentLayer);
+		if (index != Project.getInstance().getLayers().size() - 1) {
+			Layer backgroundLayer = Project.getInstance().getLayers().get(index + 1);
+			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer);
+			Project.getInstance().getLayers().remove(currentLayer);
+			Project.getInstance().getLayers().remove(backgroundLayer);
+			Project.getInstance().addLayer(mergeLayer);
 			updateLayerList();
-		});
+		}
 		
-		visibility.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				layer.setVisible(new_val);
-				Project.getInstance().drawWorkspace();
-			}
-		});
-		
-		
-		container.getChildren().addAll(visibility, layerName);
-		
-		return container;
 	}
 	
 	public void updateLayerList() {
-		clearLayerList();
+		layersList.getChildren().clear();
 		for (Layer layer : Project.getInstance().getLayers()) {
-			HBox newEl = createLayoutUI(layer);
-			LayersList.getChildren().add(newEl);
+			addNewLayer(layer);
+		}
+		
+		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
+		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
+	}
+	
+	public void deleteLayer(int index) {
+		layersList.getChildren().remove(index);
+	}
+	
+	public void addNewLayer(Layer layer) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/Layer.fxml"));
+			Parent newLayer = fxmlLoader.load();
+			LayerController l = fxmlLoader.getController();
+			l.setLayerName(layer);
+			layersList.getChildren().add(newLayer);
+			
 			if (layer.equals(Project.getInstance().getCurrentLayer())) {
-				newEl.setBackground(focusBackground);
-				// System.out.println("current Layer: " + layer.toString());
+				l.getLayerElem().setBackground(focusBackground);
 			} else {
-				newEl.setBackground(unfocusBackground);
+				l.getLayerElem().setBackground(unfocusBackground);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void clearLayerList() {
+		layersList.getChildren().clear();
+	}
+	
+	public void clearHistoryList() {
+		historyList.getChildren().clear();
+	}
+	
+	public void setOpacitySlider(double opacitySlider) {
+		this.opacitySlider.setValue(opacitySlider);
+	}
+	
+	public void setOpacityTextField(String opacityTextField) {
+		this.opacityTextField.setText(opacityTextField);
+	}
+	
+	public void addUndoHistory(ICmd iCmd) {
+		addHistory(iCmd, false);
+	}
+	
+	public void updateHistoryList() {
+		historyList.getChildren().clear();
+		Iterator<ICmd> li = RecordCmd.getInstance().getUndoStack().descendingIterator();
+		
+		while (li.hasNext()) {
+			ICmd cmd = li.next();
+			addUndoHistory(cmd);
+		}
+		for (ICmd cmd : RecordCmd.getInstance().getRedoStack()) {
+			addRedoHistory(cmd);
+		}
+	}
+	
+	public void addRedoHistory(ICmd iCmd) {
+		addHistory(iCmd, true);
+	}
+	
+	private void addHistory(ICmd iCmd, boolean isRedo) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
+			Parent newHistory = fxmlLoader.load();
+			HistoryController h = fxmlLoader.getController();
+			h.setLabel(iCmd.toString());
+			h.setID(iCmd.getID());
+			if (isRedo) {
+				h.changeLabelOpacity(60);
+			}
+			historyList.getChildren().add(newHistory);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public void clearLayerList(){
-		LayersList.getChildren().clear();
+	/**
+	 * Permet d'activer les bouttons.
+	 * A appeler dès qu'un project est ouvert, créé
+	 */
+	public void enableButton(){
+
+	}
+
+	/**
+	 * Permet de déscativer les bouttons.
+	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 */
+	public void disableButton(){
+
 	}
 }
