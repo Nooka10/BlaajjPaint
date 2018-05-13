@@ -38,7 +38,11 @@ public class Crop extends Tool {
         if(cropSave != null) {
             Project.getInstance().deleteCurrentLayer();
             Project.getInstance().setCurrentLayer(oldCurrentLayer);
-            oldCurrentLayer.crop(startX, startY, posX, posY);
+            Layer cropLayer = oldCurrentLayer.crop(startX, startY, posX, posY);
+            Project.getInstance().getLayers().remove(oldCurrentLayer);
+            Project.getInstance().addLayer(cropLayer);
+    
+    
             cropSave = null;
             selectionCropLayer = null;
         }
@@ -161,7 +165,7 @@ public class Crop extends Tool {
         };
     }
 
-    class CropSave implements ICmd{
+    class CropSave extends ICmd{
         private Image undosave;
         private Image redosave = null;
         private SnapshotParameters params;

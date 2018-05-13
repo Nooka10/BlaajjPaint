@@ -301,8 +301,8 @@ public class Project implements Serializable {
 	public void export(File file) {
 		if (file != null) {
 			Layer resultLayer = new Layer(1,1);
-			double minX = Double.MAX_VALUE;
-			double minY = Double.MAX_VALUE;
+			double minX = 0;
+			double minY = 0;
 			
 			for (Layer layer : layers) {
 				resultLayer = resultLayer.mergeLayers(layer);
@@ -315,7 +315,9 @@ public class Project implements Serializable {
 			}
 			
 			// redimensionne le calque resultant pour qu'il soit à la taille du projet
-			resultLayer.crop
+			resultLayer = resultLayer.crop(-minX, -minY, -minX+dimension.width, -minY+dimension.height);
+			Project.getInstance().addLayer(resultLayer);
+			
 			
 			String chosenExtension = "";
 			int i = file.getPath().lastIndexOf('.');
@@ -325,7 +327,7 @@ public class Project implements Serializable {
 			
 			if (chosenExtension.equals("png")) {
 				try {
-					ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(4), null), chosenExtension, file);
+					ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(1), null), chosenExtension, file);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
@@ -350,7 +352,8 @@ public class Project implements Serializable {
 				try {
 					ImageIO.write(imageRGB, "jpg", file);
 					graphics.dispose();
-				} catch (IOException e) {
+				}catch (IOException ex) {
+					ex.printStackTrace();
 				}
 				
 				
