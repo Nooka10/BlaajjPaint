@@ -6,15 +6,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -31,8 +28,8 @@ public class Project implements Serializable {
 	
 	private LinkedList<Layer> layers;
 	
-	private Canvas backgroungImage; // TODO surement overkill de faire un canevas pour ca
-	// TODO: effectivement... utiliser une BackgroundImage semble plus logique non?^
+	private Background backgroundImage;
+	
 	private Layer currentLayer;
 	
 	private Color currentColor;
@@ -40,6 +37,8 @@ public class Project implements Serializable {
 	private static Project projectInstance;
 	
 	private AnchorPane workspace;
+	
+	private Group workspaceGroup;
 	
 	private Rectangle redBorder;
 	
@@ -112,48 +111,44 @@ public class Project implements Serializable {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
 		workspace = new AnchorPane();
+		workspaceGroup = new Group();
 		
-		setClip(width, height, workspace);
+		MainViewController.getInstance().getScrollPane().setContent(workspace);
+		workspace.getChildren().add(workspaceGroup);
+		
+		Rectangle clip = new Rectangle(width, height);
+		double x = Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - width) / 2);
+		double y = Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - height - MainViewController.getInstance().getParamBar().getHeight()) / 2));
+		workspace.setClip(clip);
+		workspace.setTranslateX(x);
+		workspace.setTranslateY(y);
 		
 		MainViewController.getInstance().getScrollPane().setMaxWidth(width);
 		MainViewController.getInstance().getScrollPane().setMaxHeight(height);
 		
-		backgroungImage = new Canvas(width, height);
-		GraphicsContext gc = backgroungImage.getGraphicsContext2D();
-		gc.setFill(Color.WHITE);
-		gc.fillRect(0, 0, width, height);
-		gc.setFill(Color.LIGHTGRAY);
+		Image image = new Image("/outils/background.png");
+		BackgroundSize bgSize = new BackgroundSize(128, 128, false, false, false, false);
+		BackgroundImage bgImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, bgSize);
+		backgroundImage = new Background(bgImage);
 		
-		
-		int rectSize = 10;
-		for (int i = 0; i < width; i = i + rectSize) {
-			for (int j = 0; j < height; j = j + rectSize) {
-				if (i % (rectSize * 2) == 0 ^ j % (rectSize * 2) == 0) {
-					gc.fillRect(i, j, rectSize, rectSize);
-				}
-			}
-		}
+		//MainViewController.getInstance().getScrollPane().setBackground(backgroundImage);
+		workspace.setBackground(backgroundImage);
 		
 		if (isNew) {
 			setCurrentLayer(new Layer(width, height));
 			layers.add(currentLayer);
-			workspace.getChildren().add(currentLayer);
+			workspaceGroup.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
 		
 	}
 	
-	private void setClip(double width, double height, Node node) {
-		Rectangle clip = new Rectangle(width, height);
-		node.setClip(clip);
-	}
-	
 	/**
 	 * Méthode qui ferme un projet.
 	 */
 	public void close() {
-		backgroungImage = null;
+		backgroundImage = null;
 		dimension = null;
 		layers = null;
 		currentLayer = null;
@@ -164,31 +159,23 @@ public class Project implements Serializable {
 	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
 	//bah elle draw le workspace
 	public void drawWorkspace() {
-		workspace.getChildren().clear();
-		workspace.getChildren().add(backgroungImage);
-		workspace.prefHeight(dimension.height);
-		workspace.prefWidth(dimension.width);
-		workspace.minHeight(dimension.height);
-		workspace.minWidth(dimension.width);
-		workspace.maxHeight(dimension.height);
-		workspace.maxWidth(dimension.width);
-		
-		workspace.setTranslateX(Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - dimension.width) / 2));
-		workspace.setTranslateY(Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - dimension.height - MainViewController.getInstance().getParamBar().getHeight()) / 2) + MainViewController.getInstance().getParamBar().getHeight()));
-		
+		workspaceGroup.getChildren().clear();
+		//workspace.prefHeight(dimension.height);
+		//workspace.prefWidth(dimension.width);
+		//workspace.minHeight(dimension.height);
+		//workspace.minWidth(dimension.width);
+		//workspace.maxHeight(dimension.height);
+		//workspace.maxWidth(dimension.width);
 		
 		Iterator it = layers.descendingIterator();
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
-				workspace.getChildren().add(layer);
+				workspaceGroup.getChildren().add(layer);
 			}
 		}
-		
-		workspace.getChildren().add(redBorder);
-		
-		MainViewController.getInstance().getScrollPane().setContent(workspace);
+		workspaceGroup.getChildren().add(redBorder);
 	}
 	
 	/**
@@ -215,7 +202,7 @@ public class Project implements Serializable {
 	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
-		workspace.getChildren().add(currentLayer);
+		workspaceGroup.getChildren().add(currentLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
 		drawWorkspace();
 	}
@@ -233,12 +220,11 @@ public class Project implements Serializable {
 	 * @param currentLayer
 	 */
 	public void setCurrentLayer(Layer currentLayer) {
+		workspaceGroup.getChildren().remove(redBorder);
 		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
 		
-		
-		
-		 redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+		redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
 		redBorder.setStroke(Color.CADETBLUE);
 		redBorder.setStrokeWidth(1);
 		
@@ -253,9 +239,6 @@ public class Project implements Serializable {
 		
 		redBorder.setManaged(false);
 		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
-			
-			
-			
 			@Override
 			public void changed(ObservableValue<? extends Bounds> observable,
 			                    Bounds oldValue, Bounds newValue) {
@@ -264,14 +247,10 @@ public class Project implements Serializable {
 				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
 				redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
 			}
-			
 		});
 		
-		workspace.getChildren().add(redBorder);
+		workspaceGroup.getChildren().add(redBorder);
 		//MainViewController.getInstance().getAnchorPaneCenter().getChildren().add(redBorder);
-		
-		
-		
 		
 		addEventHandlers(Tool.getCurrentTool());
 	}
@@ -355,8 +334,6 @@ public class Project implements Serializable {
 				}catch (IOException ex) {
 					ex.printStackTrace();
 				}
-				
-				
 			}
 		}
 	}
@@ -381,7 +358,7 @@ public class Project implements Serializable {
 	
 	public void deleteCurrentLayer() {
 		if (layers.size() != 1) {
-			workspace.getChildren().remove(currentLayer);
+			workspaceGroup.getChildren().remove(currentLayer);
 			int index = layers.indexOf(currentLayer);
 			layers.remove(index);
 			if (index >= layers.size()) {
@@ -392,11 +369,6 @@ public class Project implements Serializable {
 			drawWorkspace();
 		}
 	}
-	
-	public Canvas getBackgroungImage() {
-		return backgroungImage;
-	}
-	
 	
 	//*** SERIALISATION  ***//
 	
@@ -461,11 +433,18 @@ public class Project implements Serializable {
 	}
 	
 	public void zoom(double factor) {
+		
 		for (Layer l : layers) {
 			l.setScaleX(l.getScaleX() * factor);
 			l.setScaleY(l.getScaleY() * factor);
 		}
-		backgroungImage.setScaleX(backgroungImage.getScaleX() * factor);
-		backgroungImage.setScaleY(backgroungImage.getScaleY() * factor);
+		
+		workspaceGroup.setScaleX(workspaceGroup.getScaleX() * factor);
+		workspaceGroup.setScaleY(workspaceGroup.getScaleY() * factor);
+		workspaceGroup.setScaleZ(workspaceGroup.getScaleZ() * factor);
+		//workspace.setScaleX(workspace.getScaleX() * factor);
+		//workspace.setScaleY(workspace.getScaleY() * factor);
+		//workspace.setScaleZ(workspace.getScaleZ() * factor);
+		
 	}
 }
