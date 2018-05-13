@@ -208,7 +208,7 @@ public class RightMenuController {
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	void mergeLayer(ActionEvent event) {
+	public void mergeLayer(ActionEvent event) {
 		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
@@ -372,6 +372,4 @@ public class RightMenuController {
 			return "Fusion de deux calques";
 		}
 	}
-	
-	
 }

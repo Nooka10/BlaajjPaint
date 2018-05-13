@@ -4,22 +4,14 @@ import controller.Layer;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
-import controller.tools.TextTool;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import sun.dc.pr.PRError;
 import utils.UndoException;
 
 
@@ -42,6 +34,52 @@ public class ResizeLayerController {
 	
 	private double ratioImage;
 	
+	private class ResizeSave extends ICmd{
+		
+			private Layer currentLayer;
+			private double oldWidth;
+			private double oldHeight;
+			private Image oldImage;
+			private double newWidth;
+			private double newHeight;
+		private Image newImage;
+		
+		private ResizeSave() {
+				currentLayer = Project.getInstance().getCurrentLayer();
+				oldWidth = currentLayer.getWidth();
+				oldHeight = currentLayer.getHeight();
+				oldImage = currentLayer.createImageFromCanvas(1);
+			}
+			
+			@Override
+			public void execute() {
+				newWidth = currentLayer.getWidth();
+				newHeight = currentLayer.getHeight();
+				newImage = currentLayer.createImageFromCanvas(1);
+				RecordCmd.getInstance().saveCmd(this);
+			}
+			
+			@Override
+			public void undo() throws UndoException {
+				currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
+				currentLayer.setWidth(oldWidth);
+				currentLayer.setHeight(oldHeight);
+				currentLayer.getGraphicsContext2D().drawImage(oldImage, 0, 0);
+			}
+			
+			@Override
+			public void redo() throws UndoException {
+				currentLayer.getGraphicsContext2D().clearRect(0, 0, oldWidth, oldHeight);
+				currentLayer.setWidth(newWidth);
+				currentLayer.setHeight(newHeight);
+				currentLayer.getGraphicsContext2D().drawImage(newImage, 0, 0);
+			}
+			
+			public String toString() {
+				return "Redimensionnement de " + currentLayer.toString();
+			}
+		
+	}
 	
 	
 	@FXML
@@ -104,6 +142,9 @@ public class ResizeLayerController {
 	public void validateResize() {
 		if (!textFieldWidth.getText().isEmpty() && !textFieldHeight.getText().isEmpty()) {
 			
+			ResizeSave rs = new ResizeSave();
+			Layer currentLayer = Project.getInstance().getCurrentLayer();
+			
 			if (checkBoxResizeImage.isSelected()) {
 				Image image = Project.getInstance().getCurrentLayer().createImageFromCanvas(1);
 				ImageView image2 = new ImageView(image);
@@ -111,21 +152,22 @@ public class ResizeLayerController {
 				image2.setFitWidth(Double.valueOf(textFieldWidth.getText()));
 				image2.setFitHeight(Double.valueOf(textFieldHeight.getText()));
 				
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getCurrentLayer().getWidth(), Project.getInstance().getCurrentLayer().getHeight());
-				Project.getInstance().getCurrentLayer().setWidth(Double.valueOf(textFieldWidth.getText()));
-				Project.getInstance().getCurrentLayer().setHeight(Double.valueOf(textFieldHeight.getText()));
+				currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
+				currentLayer.setWidth(Double.valueOf(textFieldWidth.getText()));
+				currentLayer.setHeight(Double.valueOf(textFieldHeight.getText()));
 				
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(image2.getImage(), 0, 0, image2.getFitWidth(), image2.getFitHeight());
+				currentLayer.getGraphicsContext2D().drawImage(image2.getImage(), 0, 0, image2.getFitWidth(), image2.getFitHeight());
 				
 			} else {
-				Project.getInstance().getCurrentLayer().setWidth(Double.valueOf(textFieldWidth.getText()));
-				Project.getInstance().getCurrentLayer().setHeight(Double.valueOf(textFieldHeight.getText()));
-				
+				currentLayer.setWidth(Double.valueOf(textFieldWidth.getText()));
+				currentLayer.setHeight(Double.valueOf(textFieldHeight.getText()));
 			}
+			rs.execute();
 		}
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
 		stage.close();
 	}
+	
 	
 	
 }

@@ -272,6 +272,7 @@ public class Project implements Serializable {
 		
 		
 		addEventHandlers(Tool.getCurrentTool());
+		drawWorkspace();
 	}
 	
 	public void addEventHandlers(Tool tool) {
