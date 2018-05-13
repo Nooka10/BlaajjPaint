@@ -140,7 +140,8 @@ public class RightMenuController {
 		
 		@Override
 		public void redo() throws UndoException {
-		
+			Project.getInstance().addLayer(newLayer);
+			updateLayerList();
 		}
 		
 		public String toString() {
@@ -204,16 +205,22 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void fusionLayer(ActionEvent event) {
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
+	void mergeLayer(ActionEvent event) {
+		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
 		if (index != Project.getInstance().getLayers().size() - 1) {
+			MergeSave ms = new MergeSave();
 			Layer backgroundLayer = Project.getInstance().getLayers().get(index + 1);
 			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer);
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
 			updateLayerList();
+			ms.execute();
 		}
 		
 	}
@@ -318,4 +325,53 @@ public class RightMenuController {
 	public void disableButton(){
 
 	}
+	
+	public class MergeSave extends ICmd {
+		
+		private Layer oldCurrentLayer1;
+		private Layer oldCurrentLayer2;
+		private Layer newLayer;
+		private int index;
+		
+		/**
+		 * Prends les deux calques à fusionner
+		 */
+		public MergeSave() {
+			oldCurrentLayer1 = Project.getInstance().getCurrentLayer();
+			index = Project.getInstance().getLayers().indexOf(oldCurrentLayer1);
+			oldCurrentLayer2 = Project.getInstance().getLayers().get(index + 1);
+		}
+		
+		@Override
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().getLayers().add(index, oldCurrentLayer2);
+			Project.getInstance().getLayers().add(index, oldCurrentLayer1);
+			
+			Project.getInstance().getLayers().remove(newLayer);
+			
+			Project.getInstance().setCurrentLayer(oldCurrentLayer1);
+			updateLayerList();
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().getLayers().remove(oldCurrentLayer1);
+			Project.getInstance().getLayers().remove(oldCurrentLayer2);
+			Project.getInstance().getLayers().add(index, newLayer);
+			Project.getInstance().setCurrentLayer(newLayer);
+			updateLayerList();
+			}
+		
+		public String toString() {
+			return "Fusion de deux calques";
+		}
+	}
+	
+	
 }

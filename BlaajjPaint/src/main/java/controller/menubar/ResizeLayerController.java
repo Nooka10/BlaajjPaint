@@ -1,6 +1,9 @@
 package controller.menubar;
 
+import controller.Layer;
 import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import controller.tools.TextTool;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import sun.dc.pr.PRError;
+import utils.UndoException;
 
 
 public class ResizeLayerController {
@@ -37,6 +41,8 @@ public class ResizeLayerController {
 	private Button validateResizeButton;
 	
 	private double ratioImage;
+	
+	
 	
 	@FXML
 	private void initialize() {
