@@ -28,13 +28,21 @@ public class Layer extends Canvas implements Serializable {
 	 * @param width  la largeur de notre calque
 	 * @param height la hauteur de notre calque
 	 */
+	public Layer(int width, int height, String nom) {
+		this(width, height);
+	}
+	
+	/**
+	 * Constructeur
+	 *
+	 * @param width
+	 * 		la largeur de notre calque
+	 * @param height
+	 * 		la hauteur de notre calque
+	 */
 	public Layer(int width, int height) {
 		super(width, height);
 		id = count++;
-	}
-	
-	public Layer(Dimension dimension) {
-		this(dimension.width, dimension.height);
 	}
 	
 	/**

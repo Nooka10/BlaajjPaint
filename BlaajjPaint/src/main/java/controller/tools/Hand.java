@@ -48,11 +48,7 @@ public class Hand extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//x = event.getSceneX();
-				//y = event.getSceneY();
-				
-				dragStartScreen = new Point((int)event.getX(), (int)event.getY());
-				dragEndScreen = null;
+				MainViewController.getInstance().getScrollPane().setPannable(true);
 			}
 		};
 	}
@@ -62,6 +58,7 @@ public class Hand extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				/*
 				System.out.println("============= Move camera ============");
 				try {
 					dragEndScreen = new Point((int)event.getX(), (int)event.getY());
@@ -91,7 +88,7 @@ public class Hand extends Tool {
 			}
 		};
 	}
-	
+	/*
 	private Point transformPoint(Point p1) throws NoninvertibleTransformException {
 //        System.out.println("Model -> Screen Transformation:");
 //        showMatrix(coordTransform);
@@ -103,13 +100,13 @@ public class Hand extends Tool {
 		inverse.transform(p1, p2);
 		return p2;
 	}
-	
+	*/
 	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// do nothing
+				MainViewController.getInstance().getScrollPane().setPannable(false);
 			}
 		};
 	}
