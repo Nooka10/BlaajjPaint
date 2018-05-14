@@ -10,10 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -39,6 +38,9 @@ public class RightMenuController {
 	
 	@FXML
 	private Button addNewLayer;
+	
+	@FXML
+	private Button deleteLayer;
 	
 	@FXML
 	private Button downLayer;
@@ -67,6 +69,11 @@ public class RightMenuController {
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
+		addNewLayer.setTooltip(new Tooltip("Ajouter un nouveau calque"));
+		deleteLayer.setTooltip(new Tooltip("Supprimer le calque séléctionné"));
+		upLayer.setTooltip(new Tooltip("Déplacer le calque vers le haut"));
+		downLayer.setTooltip(new Tooltip("Déplacer le calque vers le bas"));
+		fusion.setTooltip(new Tooltip("Fusionner avec le calque inférieur"));
 	}
 	
 	public VBox getHistoryList() {
@@ -110,43 +117,6 @@ public class RightMenuController {
 		colorPicker.setValue(color);
 	}
 	
-	public class NewLayerSave extends ICmd {
-		
-		Layer oldCurrentLayer;
-		Layer newLayer;
-		
-		/**
-		 * Prends l'ancien current layer
-		 */
-		public NewLayerSave() {
-			oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		}
-		
-		@Override
-		/**
-		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
-		 */
-		public void execute() {
-			newLayer = Project.getInstance().getCurrentLayer();
-			RecordCmd.getInstance().saveCmd(this);
-		}
-		
-		@Override
-		public void undo() throws UndoException {
-			Project.getInstance().setCurrentLayer(newLayer);
-			Project.getInstance().deleteCurrentLayer();
-			Project.getInstance().setCurrentLayer(oldCurrentLayer);
-		}
-		
-		@Override
-		public void redo() throws UndoException {
-		
-		}
-		
-		public String toString() {
-			return "Nouveau Layer";
-		}
-	}
 	
 	@FXML
 	/**
@@ -154,7 +124,6 @@ public class RightMenuController {
 	 */
 	void addNewLayer(ActionEvent event) {
 		NewLayerSave ls = new NewLayerSave();
-		
 		Project.getInstance().addNewLayer();
 		updateLayerList();
 		ls.execute();
@@ -164,9 +133,13 @@ public class RightMenuController {
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	void deleteLayer(ActionEvent event) {
-		Project.getInstance().deleteCurrentLayer();
-		updateLayerList();
+	void deleteLayer() {
+		if (Project.getInstance().getLayers().size() != 1) {
+			DeleteLayerSave dls = new DeleteLayerSave();
+			Project.getInstance().deleteCurrentLayer();
+			dls.execute();
+			updateLayerList();
+		}
 	}
 	
 	@FXML
@@ -204,16 +177,22 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void fusionLayer(ActionEvent event) {
+	/**
+	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
+	 */
+	public void mergeLayer(ActionEvent event) {
+		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
 		if (index != Project.getInstance().getLayers().size() - 1) {
+			MergeSave ms = new MergeSave();
 			Layer backgroundLayer = Project.getInstance().getLayers().get(index + 1);
 			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer);
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
 			updateLayerList();
+			ms.execute();
 		}
 		
 	}
@@ -223,7 +202,6 @@ public class RightMenuController {
 		for (Layer layer : Project.getInstance().getLayers()) {
 			addNewLayer(layer);
 		}
-		
 		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
 		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
 	}
@@ -317,5 +295,128 @@ public class RightMenuController {
 	 */
 	public void disableButton(){
 
+	}
+	
+	public class NewLayerSave extends ICmd {
+		
+		Layer oldCurrentLayer;
+		Layer newLayer;
+		
+		/**
+		 * Prends l'ancien current layer
+		 */
+		public NewLayerSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
+		
+		@Override
+		/**
+		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
+		 */
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().setCurrentLayer(newLayer);
+			Project.getInstance().deleteCurrentLayer();
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().addLayer(newLayer);
+			updateLayerList();
+		}
+		
+		public String toString() {
+			return "Nouveau Calque";
+		}
+	}
+	
+	public class DeleteLayerSave extends ICmd {
+		
+		private Layer oldCurrentLayer;
+		private Layer newLayer;
+		private int index;
+		
+		private DeleteLayerSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+			index = Project.getInstance().getLayers().indexOf(oldCurrentLayer);
+		}
+		
+		@Override
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().getLayers().add(index, oldCurrentLayer);
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+			updateLayerList();
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().getLayers().remove(oldCurrentLayer);
+			Project.getInstance().setCurrentLayer(newLayer);
+			updateLayerList();
+		}
+		
+		public String toString() {
+			return "Suppression de " + oldCurrentLayer;
+		}
+	}
+	
+	
+	public class MergeSave extends ICmd {
+		
+		private Layer oldCurrentLayer1;
+		private Layer oldCurrentLayer2;
+		private Layer newLayer;
+		private int index;
+		
+		/**
+		 * Prends les deux calques à fusionner
+		 */
+		public MergeSave() {
+			oldCurrentLayer1 = Project.getInstance().getCurrentLayer();
+			index = Project.getInstance().getLayers().indexOf(oldCurrentLayer1);
+			oldCurrentLayer2 = Project.getInstance().getLayers().get(index + 1);
+		}
+		
+		@Override
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().getLayers().add(index, oldCurrentLayer2);
+			Project.getInstance().getLayers().add(index, oldCurrentLayer1);
+			
+			Project.getInstance().getLayers().remove(newLayer);
+			
+			Project.getInstance().setCurrentLayer(oldCurrentLayer1);
+			updateLayerList();
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().getLayers().remove(oldCurrentLayer1);
+			Project.getInstance().getLayers().remove(oldCurrentLayer2);
+			Project.getInstance().getLayers().add(index, newLayer);
+			Project.getInstance().setCurrentLayer(newLayer);
+			updateLayerList();
+			}
+		
+		public String toString() {
+			return "Fusion de deux calques";
+		}
 	}
 }

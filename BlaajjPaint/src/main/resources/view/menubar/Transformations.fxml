@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<Menu fx:id="transformations" mnemonicParsing="false" text="Transformations" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menubar.Transformations">
+	<items>
+		<Menu mnemonicParsing="false" text="Rotation">
+			<items>
+				<MenuItem mnemonicParsing="false" text="Degrés">
+					<graphic>
+						<TextField fx:id="degrees"/>
+					</graphic>
+				</MenuItem>
+				<MenuItem mnemonicParsing="false">
+					<graphic>
+						<Button fx:id="validateRotate" text="Valider" onAction="#handleValidateRotate"/>
+					</graphic>
+				</MenuItem>
+			</items>
+		</Menu>
+		<MenuItem mnemonicParsing="false" text="Symétrie verticale" onAction="#handleVerticalSymmetry"/>
+		<MenuItem mnemonicParsing="false" text="Symétrie horizontale" onAction="#handleHorizontalSymmetry"/>
+	</items>
+</Menu>
