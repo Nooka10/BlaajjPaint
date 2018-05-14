@@ -117,44 +117,6 @@ public class RightMenuController {
 		colorPicker.setValue(color);
 	}
 	
-	public class NewLayerSave extends ICmd {
-		
-		Layer oldCurrentLayer;
-		Layer newLayer;
-		
-		/**
-		 * Prends l'ancien current layer
-		 */
-		public NewLayerSave() {
-			oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		}
-		
-		@Override
-		/**
-		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
-		 */
-		public void execute() {
-			newLayer = Project.getInstance().getCurrentLayer();
-			RecordCmd.getInstance().saveCmd(this);
-		}
-		
-		@Override
-		public void undo() throws UndoException {
-			Project.getInstance().setCurrentLayer(newLayer);
-			Project.getInstance().deleteCurrentLayer();
-			Project.getInstance().setCurrentLayer(oldCurrentLayer);
-		}
-		
-		@Override
-		public void redo() throws UndoException {
-			Project.getInstance().addLayer(newLayer);
-			updateLayerList();
-		}
-		
-		public String toString() {
-			return "Nouveau Layer";
-		}
-	}
 	
 	@FXML
 	/**
@@ -162,7 +124,6 @@ public class RightMenuController {
 	 */
 	void addNewLayer(ActionEvent event) {
 		NewLayerSave ls = new NewLayerSave();
-		
 		Project.getInstance().addNewLayer();
 		updateLayerList();
 		ls.execute();
@@ -172,9 +133,13 @@ public class RightMenuController {
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	void deleteLayer(ActionEvent event) {
-		Project.getInstance().deleteCurrentLayer();
-		updateLayerList();
+	void deleteLayer() {
+		if (Project.getInstance().getLayers().size() != 1) {
+			DeleteLayerSave dls = new DeleteLayerSave();
+			Project.getInstance().deleteCurrentLayer();
+			dls.execute();
+			updateLayerList();
+		}
 	}
 	
 	@FXML
@@ -237,7 +202,6 @@ public class RightMenuController {
 		for (Layer layer : Project.getInstance().getLayers()) {
 			addNewLayer(layer);
 		}
-		
 		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
 		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
 	}
@@ -332,6 +296,82 @@ public class RightMenuController {
 	public void disableButton(){
 
 	}
+	
+	public class NewLayerSave extends ICmd {
+		
+		Layer oldCurrentLayer;
+		Layer newLayer;
+		
+		/**
+		 * Prends l'ancien current layer
+		 */
+		public NewLayerSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
+		
+		@Override
+		/**
+		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
+		 */
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().setCurrentLayer(newLayer);
+			Project.getInstance().deleteCurrentLayer();
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().addLayer(newLayer);
+			updateLayerList();
+		}
+		
+		public String toString() {
+			return "Nouveau Calque";
+		}
+	}
+	
+	public class DeleteLayerSave extends ICmd {
+		
+		private Layer oldCurrentLayer;
+		private Layer newLayer;
+		private int index;
+		
+		private DeleteLayerSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+			index = Project.getInstance().getLayers().indexOf(oldCurrentLayer);
+		}
+		
+		@Override
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().getLayers().add(index, oldCurrentLayer);
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+			updateLayerList();
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().getLayers().remove(oldCurrentLayer);
+			Project.getInstance().setCurrentLayer(newLayer);
+			updateLayerList();
+		}
+		
+		public String toString() {
+			return "Suppression de " + oldCurrentLayer;
+		}
+	}
+	
 	
 	public class MergeSave extends ICmd {
 		

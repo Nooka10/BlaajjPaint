@@ -79,9 +79,12 @@ public class Transformations {
 			RotateSave rs = new RotateSave();
 			Image image = currentLayer.createImageFromCanvas(1);
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
+			
+			currentLayer.getGraphicsContext2D().save();
 			Rotate r = new Rotate(Double.valueOf(degrees.getText()), currentLayer.getWidth() / 2, currentLayer.getHeight() / 2);
 			currentLayer.getGraphicsContext2D().setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 			currentLayer.getGraphicsContext2D().drawImage(image, 0, 0);
+			currentLayer.getGraphicsContext2D().restore();
 			rs.execute();
 		}
 	}
