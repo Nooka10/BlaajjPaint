@@ -149,12 +149,12 @@ public class RightMenuController {
 	void downLayer(ActionEvent event) {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		if (index < Project.getInstance().getLayers().size() - 1) {
+
+			new LayerPosSave(index).execute();
+
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
-			
-			Node toMove = layersList.getChildren().get(index);
-			layersList.getChildren().remove(index);
-			layersList.getChildren().add(index + 1, toMove);
-			
+
+			updateLayerList();
 			Project.getInstance().drawWorkspace();
 		}
 	}
@@ -167,15 +167,50 @@ public class RightMenuController {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		
 		if (index != 0) {
+
+			new LayerPosSave(index - 1).execute();
+
 			Collections.swap(Project.getInstance().getLayers(), index, index - 1);
-			
-			Node toMove = layersList.getChildren().get(index);
-			layersList.getChildren().remove(index);
-			layersList.getChildren().add(index - 1, toMove);
+
+			updateLayerList();
 			Project.getInstance().drawWorkspace();
 		}
 	}
-	
+
+	public class LayerPosSave extends ICmd {
+
+		private int index;
+
+		public LayerPosSave(int index) {
+			this.index = index;
+		}
+
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+
+		@Override
+		public void undo() throws UndoException {
+			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
+
+			updateLayerList();
+			Project.getInstance().drawWorkspace();
+		}
+
+		@Override
+		public void redo() throws UndoException {
+			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
+
+			updateLayerList();
+			Project.getInstance().drawWorkspace();
+		}
+
+		public String toString() {
+			return "Ordre des Calque";
+		}
+	}
+
 	@FXML
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
