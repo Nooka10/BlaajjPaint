@@ -74,7 +74,7 @@ public class Crop extends Tool {
             gc.clearRect(0, 0, selectionCropLayer.getWidth(), selectionCropLayer.getWidth());
             gc.setStroke(Color.BLUE);
             gc.strokeRect(x, y, width, height);
-            Project.getInstance().drawWorkspace(); // Refresh du calque
+            //Project.getInstance().drawWorkspace(); // Refresh du calque
         }
     }
 
