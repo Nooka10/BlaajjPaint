@@ -18,7 +18,7 @@ public abstract class Tool {
 	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers(); // l'évènement déclanché lorsqu'on relache le bouton de la souris
 	
 	public enum ToolType {PENCIL, ERASER, PIPETTE, ZOOM, MOVE, BUCKETFILL, TEXT, FILLEDRECTANGLE,
-		EMPTYRECTANGLE, FILLEDELLIPSE, EMPTYELLIPSE, RESIZE, OTHER} // énumération de tout les types d'outils gérés
+		EMPTYRECTANGLE, FILLEDELLIPSE, EMPTYELLIPSE, RESIZE, CROP, OTHER} // énumération de tout les types d'outils gérés
 	
 	public static boolean toolHasChanged = false; // Vrai lorsqu'on vient de changer d'outil
 	

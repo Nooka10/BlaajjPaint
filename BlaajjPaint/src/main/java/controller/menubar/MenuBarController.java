@@ -133,7 +133,8 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleNewLayer(ActionEvent event) {
-		Project.getInstance().addNewLayer();
+		// peut être mieux fait dans project si on a le temps
+		MainViewController.getInstance().getRightMenuController().addNewLayer();
 	}
 	
 	@FXML

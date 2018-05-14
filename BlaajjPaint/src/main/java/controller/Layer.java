@@ -266,13 +266,27 @@ public class Layer extends Canvas implements Serializable {
 		double y = y1 < y2 ? y1 : y2;
 		double width = Math.abs(x1 - x2);
 		double height = Math.abs(y1 - y2);
+		// Test si les position sont dans le calque
+		if(x < 0){
+			x = 0;
+		}
+		if(y < 0){
+			y = 0;
+		}
+		if(x + width > getWidth()){
+			width = width - (x + width - getWidth());
+		}
+		if(y + height > getHeight()){
+			height = height - (y + height - getHeight());
+		}
+
 		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
 
 		Project.getInstance().getLayers().remove(this);
 
 		Layer newLayer = new Layer(new Dimension((int)width, (int)height));
-		newLayer.setLayoutX(x);
-		newLayer.setLayoutY(y);
+		newLayer.setLayoutX(x + this.getLayoutX());
+		newLayer.setLayoutY(y + this.getLayoutY());
 		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
 		Project.getInstance().addLayer(newLayer);
 	}

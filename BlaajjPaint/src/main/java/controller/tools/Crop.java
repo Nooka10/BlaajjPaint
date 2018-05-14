@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
+import java.awt.*;
+
 public class Crop extends Tool {
     private static Crop instance = new Crop();
     private CropSave cropSave;
@@ -39,12 +41,16 @@ public class Crop extends Tool {
             Project.getInstance().deleteCurrentLayer();
             Project.getInstance().setCurrentLayer(oldCurrentLayer);
             oldCurrentLayer.crop(startX, startY, posX, posY);
-            cropSave = null;
-            selectionCropLayer = null;
+            cancel();
         }
     }
 
     public void cancel(){
+        reset();
+        initCrop();
+    }
+
+    private void reset(){
         if(Project.getInstance().getCurrentLayer().equals(selectionCropLayer)) {
             // Suppression du calque d'ajout de text (textLayer)
             Project.getInstance().deleteCurrentLayer();
@@ -75,23 +81,29 @@ public class Crop extends Tool {
     @Override
     public void CallbackOldToolChanged() {
         super.CallbackOldToolChanged();
-        cancel();
+        reset();
     }
 
     @Override
     public void CallbackNewToolChanged(){
+        super.CallbackNewToolChanged();
         initCrop();
     }
 
     public void initCrop(){
         oldCurrentLayer = Project.getInstance().getCurrentLayer();
-        selectionCropLayer = new Layer(Project.getInstance().getDimension());
+        selectionCropLayer = new Layer(new Dimension((int) oldCurrentLayer.getWidth(), (int)oldCurrentLayer.getHeight()));
+        selectionCropLayer.setLayoutX(oldCurrentLayer.getLayoutX());
+        selectionCropLayer.setLayoutY(oldCurrentLayer.getLayoutY());
         selectionCropLayer.setVisible(true);
 
-        oldCurrentLayer = Project.getInstance().getCurrentLayer();
         Project.getInstance().setCurrentLayer(selectionCropLayer);
         Project.getInstance().getLayers().addFirst(selectionCropLayer);
         Project.getInstance().drawWorkspace();
+        startX = 0;
+        startY = 0;
+        posX = 0;
+        posY = 0;
     }
 
     @Override
@@ -161,7 +173,7 @@ public class Crop extends Tool {
         };
     }
 
-    class CropSave implements ICmd{
+    class CropSave extends ICmd{
         private Image undosave;
         private Image redosave = null;
         private SnapshotParameters params;
