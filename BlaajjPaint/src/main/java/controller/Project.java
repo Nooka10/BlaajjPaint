@@ -410,7 +410,7 @@ public class Project implements Serializable {
 		
 		
 		// Calques
-		s.writeInt(layers.size()); // Nombre de qualques
+		s.writeInt(layers.size()); // Nombre de calques
 		
 		Iterator li = layers.descendingIterator();
 		
@@ -427,16 +427,5 @@ public class Project implements Serializable {
 		workspace.setScaleX(workspace.getScaleX() * factor);
 		workspace.setScaleY(workspace.getScaleY() * factor);
 		workspace.setScaleZ(workspace.getScaleZ() * factor);
-	}
-	
-	private static double clamp(double value, double min, double max) {
-		
-		if (Double.compare(value, min) < 0)
-			return min;
-		
-		if (Double.compare(value, max) > 0)
-			return max;
-		
-		return value;
 	}
 }
