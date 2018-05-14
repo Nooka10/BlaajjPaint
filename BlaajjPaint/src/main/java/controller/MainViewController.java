@@ -143,7 +143,9 @@ public class MainViewController {
 		
 		// Add new layer
 		if (cntrlMajC.match(event)) {
-			Project.getInstance().addNewLayer();
+			// Appelle de la fonction addNewLayer de RightMenu (action du clic sur le bouton + des calques)
+			// Peut être mieux fait et mettre dans project si on a du temps
+			MainViewController.getInstance().getRightMenuController().addNewLayer();
 		}
 		
 		// delete current layer

@@ -122,7 +122,7 @@ public class RightMenuController {
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	void addNewLayer(ActionEvent event) {
+	public void addNewLayer() {
 		NewLayerSave ls = new NewLayerSave();
 		Project.getInstance().addNewLayer();
 		updateLayerList();

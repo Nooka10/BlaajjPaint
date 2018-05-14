@@ -339,7 +339,7 @@ public class Project implements Serializable {
 			javafx.scene.image.Image image;
 			image = new Image(file.toURI().toString());
 			
-			Layer newLayer = new Layer(new Dimension((int) image.getWidth(), (int) image.getHeight()));
+			Layer newLayer = new Layer((int) image.getWidth(), (int) image.getHeight());
 			addLayer(newLayer);
 			
 			newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
@@ -411,7 +411,7 @@ public class Project implements Serializable {
 		s.writeInt(dimension.height);
 		
 		// Calques
-		s.writeInt(layers.size()); // Nombre de qualques
+		s.writeInt(layers.size()); // Nombre de calques
 		
 		Iterator li = layers.descendingIterator();
 		
@@ -445,16 +445,5 @@ public class Project implements Serializable {
 		workspace.setScaleY(workspace.getScaleY() * factor);
 		workspace.setScaleZ(workspace.getScaleZ() * factor);
 		*/
-	}
-	
-	private static double clamp(double value, double min, double max) {
-		
-		if (Double.compare(value, min) < 0)
-			return min;
-		
-		if (Double.compare(value, max) > 0)
-			return max;
-		
-		return value;
 	}
 }

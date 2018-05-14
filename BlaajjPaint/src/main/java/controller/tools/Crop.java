@@ -36,31 +36,34 @@ public class Crop extends Tool {
 
     public void validate(){
         if(cropSave != null) {
-            Project.getInstance().deleteCurrentLayer();
+            oldCurrentLayer.crop(startX, startY, posX, posY);
             Project.getInstance().setCurrentLayer(oldCurrentLayer);
-            Layer cropLayer = oldCurrentLayer.crop(startX, startY, posX, posY);
-            Project.getInstance().getLayers().remove(oldCurrentLayer);
-            Project.getInstance().addLayer(cropLayer);
-    
-    
-            cropSave = null;
-            selectionCropLayer = null;
+            Project.getInstance().getLayers().remove(selectionCropLayer);
+            Project.getInstance().drawWorkspace();
+
+            MainViewController.getInstance().getRightMenuController().updateLayerList();
+
+            cancel();
         }
     }
 
     public void cancel(){
+        reset();
+        initCrop();
+    }
+
+    private void reset(){
         if(Project.getInstance().getCurrentLayer().equals(selectionCropLayer)) {
             // Suppression du calque d'ajout de text (textLayer)
-            Project.getInstance().deleteCurrentLayer();
-            // Le calque courant redevient l'ancien calque courant
+            Project.getInstance().getLayers().remove(selectionCropLayer);
             Project.getInstance().setCurrentLayer(oldCurrentLayer);
             // redessine les layers et list de layers
             MainViewController.getInstance().getRightMenuController().updateLayerList();
-            Project.getInstance().drawWorkspace();
         }
         cropSave = null;
         selectionCropLayer = null;
     }
+
 
     private void drawRectOnLayer() {
         if(cropSave != null) {
@@ -69,33 +72,39 @@ public class Crop extends Tool {
             double x = startX <= posX ? startX : posX;
             double y = startY <= posY ? startY : posY;
             GraphicsContext gc = selectionCropLayer.getGraphicsContext2D();
-            gc.clearRect(0, 0, selectionCropLayer.getWidth(), selectionCropLayer.getWidth());
+            gc.clearRect(0, 0, selectionCropLayer.getWidth(), selectionCropLayer.getHeight());
             gc.setStroke(Color.BLUE);
             gc.strokeRect(x, y, width, height);
-            //Project.getInstance().drawWorkspace(); // Refresh du calque
         }
     }
 
     @Override
     public void CallbackOldToolChanged() {
         super.CallbackOldToolChanged();
-        cancel();
+        reset();
     }
 
     @Override
     public void CallbackNewToolChanged(){
+        super.CallbackNewToolChanged();
         initCrop();
     }
 
     public void initCrop(){
         oldCurrentLayer = Project.getInstance().getCurrentLayer();
-        selectionCropLayer = new Layer(Project.getInstance().getDimension());
+        selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int) oldCurrentLayer.getHeight());
+        selectionCropLayer.setLayoutX(oldCurrentLayer.getLayoutX());
+        selectionCropLayer.setLayoutY(oldCurrentLayer.getLayoutY());
         selectionCropLayer.setVisible(true);
 
         oldCurrentLayer = Project.getInstance().getCurrentLayer();
         Project.getInstance().setCurrentLayer(selectionCropLayer);
         Project.getInstance().getLayers().addFirst(selectionCropLayer);
         Project.getInstance().drawWorkspace();
+        startX = 0;
+        startY = 0;
+        posX = 0;
+        posY = 0;
     }
 
     @Override

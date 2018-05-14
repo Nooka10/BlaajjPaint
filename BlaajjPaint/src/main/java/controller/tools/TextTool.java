@@ -96,7 +96,6 @@ public class TextTool extends Tool {
 			graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
 			graphics.setFont(font); // changement de la police d'écriture
 			graphics.fillText(text, x, y); // positionnement et ajout du text
-			Project.getInstance().drawWorkspace(); // Refresh du calque
 		}
 	}
 	
@@ -123,7 +122,23 @@ public class TextTool extends Tool {
 	 */
 	@Override
 	public void CallbackOldToolChanged() {
+		super.CallbackOldToolChanged();
 		validate();
+	}
+
+	@Override
+	public void CallbackNewToolChanged(){
+		super.CallbackNewToolChanged();
+		initTextTool();
+	}
+
+	public void initTextTool(){
+		oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		textLayer = new Layer(Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
+		textLayer.setVisible(true);
+		Project.getInstance().setCurrentLayer(textLayer);
+		Project.getInstance().getLayers().addFirst(textLayer);
+		Project.getInstance().drawWorkspace();
 	}
 	
 	@Override
@@ -133,17 +148,15 @@ public class TextTool extends Tool {
 			public void handle(MouseEvent event) {
 				// premier clique - set des valeurs et création du calque
 				if (addText == null) {
+					if(textLayer == null){
+						initTextTool();
+					}
 					// Si le text est vide, mettre un text pour voir ou va être situé le text
 					if (text == null || text.equals("")) {
 						text = "Text";
 					}
 					addText = new AddText();
-					oldCurrentLayer = Project.getInstance().getCurrentLayer();
-					textLayer = new Layer(Project.getInstance().getDimension());
-					textLayer.setVisible(true);
-					Project.getInstance().setCurrentLayer(textLayer);
-					Project.getInstance().getLayers().addFirst(textLayer);
-					Project.getInstance().drawWorkspace();
+
 				}
 				// récupération de la position du clique
 				x = (int) event.getX();
