@@ -13,7 +13,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,6 +21,7 @@ import java.io.Serializable;
 public class Layer extends Canvas implements Serializable {
 	private int id; // l'id du calque
 	private static int count = 1; // le nombre de calques qui ont été créés
+	private String nomCalque;
 	
 	/**
 	 * Constructeur
@@ -31,6 +31,7 @@ public class Layer extends Canvas implements Serializable {
 	 */
 	public Layer(int width, int height, String nom) {
 		this(width, height);
+		nomCalque = "Calque " + id + ", " + nom;
 	}
 	
 	/**
@@ -44,6 +45,7 @@ public class Layer extends Canvas implements Serializable {
 	public Layer(int width, int height) {
 		super(width, height);
 		id = count++;
+		nomCalque = "Calque " + id;
 	}
 	
 	/**

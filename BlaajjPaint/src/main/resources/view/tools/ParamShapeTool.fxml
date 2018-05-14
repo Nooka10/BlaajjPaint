@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
@@ -8,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="paramShapeTools" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.Shapes.ParamShapeController">
+<HBox fx:id="paramShapeTools" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.Shapes.ParamShapeController">
    <children>
       <ToggleButton fx:id="emptyRect" mnemonicParsing="false" onAction="#handleEmptyRect" selected="true" text="EmptyRect" />
       <ToggleButton fx:id="filledRect" mnemonicParsing="false" onAction="#handleFilledRect" text="FilledRect" />
@@ -19,16 +24,16 @@
             <Font size="18.0" />
          </font>
          <HBox.margin>
-            <Insets right="10.0" />
+            <Insets />
          </HBox.margin>
       </Label>
       <Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="1.0" minorTickCount="1" onMouseReleased="#sliderOnMouseRelased" snapToTicks="true" value="1.0">
          <HBox.margin>
-            <Insets top="7.0" />
+            <Insets top="5.0" />
          </HBox.margin></Slider>
       <TextField fx:id="thicknessTextField" onAction="#sliderOnTextChange" prefWidth="60.0" />
    </children>
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="15.0" left="10.0" right="10.0" top="10.0" />
    </padding>
 </HBox>

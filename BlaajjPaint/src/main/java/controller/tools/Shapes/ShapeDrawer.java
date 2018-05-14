@@ -99,7 +99,7 @@ public abstract class ShapeDrawer extends Tool {
 				throw new UndoException();
 			}
 			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
-			Layer redoLayer = new Layer((int) redosave.getWidth(), (int) redosave.getHeight());
+			Layer redoLayer = new Layer((int) redosave.getWidth(), (int) redosave.getHeight(), "Forme");
 			redoLayer.getGraphicsContext2D().drawImage(redosave, 0, 0);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			Project.getInstance().addLayer(redoLayer);
@@ -113,7 +113,7 @@ public abstract class ShapeDrawer extends Tool {
 	 */
 	@Override
 	public void CallbackNewToolChanged() {
-		shapeLayer = new Layer(Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
+		shapeLayer = new Layer(Project.getInstance().getDimension().width, Project.getInstance().getDimension().height, "Forme");
 		Project.getInstance().removeEventHandler(Tool.getCurrentTool());
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);

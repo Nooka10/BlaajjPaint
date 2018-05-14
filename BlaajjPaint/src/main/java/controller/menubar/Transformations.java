@@ -40,10 +40,9 @@ public class Transformations {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
 			currentLayer.getGraphicsContext2D().save();
-			
 			currentLayer.getGraphicsContext2D().setTransform(getTransform);
 			currentLayer.getGraphicsContext2D().drawImage(image, 0, 0);
 			currentLayer.getGraphicsContext2D().restore();
@@ -51,10 +50,9 @@ public class Transformations {
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
 			currentLayer.getGraphicsContext2D().save();
-			
 			Rotate r = new Rotate(angleDegres, currentLayer.getWidth() / 2, currentLayer.getHeight() / 2);
 			currentLayer.getGraphicsContext2D().setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 			currentLayer.getGraphicsContext2D().drawImage(image, 0, 0);
@@ -111,13 +109,13 @@ public class Transformations {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Rotate r = new Rotate(180, currentLayer.getWidth() / 2, currentLayer.getHeight() / 2, 0, Rotate.Y_AXIS);
 			currentLayer.getTransforms().add(r);
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Rotate r = new Rotate(180, currentLayer.getWidth() / 2, currentLayer.getHeight() / 2, 0, Rotate.Y_AXIS);
 			currentLayer.getTransforms().add(r);
 		}
@@ -151,13 +149,13 @@ public class Transformations {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Rotate r = new Rotate(180, currentLayer.getWidth() / 2, currentLayer.getHeight() / 2, 0, Rotate.X_AXIS);
 			currentLayer.getTransforms().add(r);
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Rotate r = new Rotate(180, currentLayer.getWidth() / 2, currentLayer.getHeight() / 2, 0, Rotate.X_AXIS);
 			currentLayer.getTransforms().add(r);
 		}
