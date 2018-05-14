@@ -59,7 +59,7 @@ public class Eraser extends ToolDrawer {
 		};
 	}
 	
-	public void startErase(MouseEvent event){
+	private void startErase(MouseEvent event){
 		// crée le masque de suppression
 		eraserMask = new Canvas(Project.getInstance().getCurrentLayer().getWidth(), Project.getInstance().getCurrentLayer().getHeight());
 		eraserMaskGC = eraserMask.getGraphicsContext2D();
@@ -98,7 +98,7 @@ public class Eraser extends ToolDrawer {
 		};
 	}
 	
-	public void closeErase(MouseEvent event){
+	private void closeErase(MouseEvent event){
 		eraserMaskGC.closePath();
 		
 		// On récupère l'image du masque de suppression
