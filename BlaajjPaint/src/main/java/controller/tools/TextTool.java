@@ -96,7 +96,6 @@ public class TextTool extends Tool {
 			graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
 			graphics.setFont(font); // changement de la police d'écriture
 			graphics.fillText(text, x, y); // positionnement et ajout du text
-			Project.getInstance().drawWorkspace(); // Refresh du calque
 		}
 	}
 	

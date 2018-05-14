@@ -5,6 +5,7 @@ import controller.history.RecordCmd;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -212,7 +213,7 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	
-	/**
+	/** 
 	 * SERIALISATION
 	 **/
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
@@ -233,7 +234,7 @@ public class Layer extends Canvas implements Serializable {
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
 		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
-		
+
 	}
 	
 	private void writeObject(ObjectOutputStream s) throws IOException {
@@ -290,13 +291,24 @@ public class Layer extends Canvas implements Serializable {
 
 		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
 
-		
+		/*Project.getInstance().getLayers().remove(this);
 
 		Layer newLayer = new Layer((int)width, (int)height);
 		newLayer.setLayoutX(x + this.getLayoutX());
 		newLayer.setLayoutY(y + this.getLayoutY());
 		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
+		Project.getInstance().addLayer(newLayer);*/
 
-		return newLayer;
+		this.setWidth(width);
+		this.setHeight(height);
+		
+		this.setLayoutX(x + this.getLayoutX());
+		this.setLayoutY(y + this.getLayoutY());
+
+		GraphicsContext gc = getGraphicsContext2D();
+		gc.clearRect(0,0,this.getWidth(),this.getHeight());
+		gc.drawImage(newImage,0,0);
+
+		return this;
 	}
 }
