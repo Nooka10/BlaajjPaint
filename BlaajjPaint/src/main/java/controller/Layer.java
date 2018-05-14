@@ -234,7 +234,6 @@ public class Layer extends Canvas implements Serializable {
 		
 		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
 		
-		
 	}
 	
 	private void writeObject(ObjectOutputStream s) throws IOException {
