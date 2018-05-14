@@ -28,7 +28,7 @@ import java.util.Stack;
 public class BucketFill extends Tool {
 	/** ATTRIBUTS **/
 	private static BucketFill instance = new BucketFill();
-	private Fill currentFill;
+	private FillSave currentFill;
 
 	/**
 	 * Constructeur privé car Singleton
@@ -90,7 +90,7 @@ public class BucketFill extends Tool {
 			public void handle(MouseEvent event) {
 				// Set des attributs
 				layer = Project.getInstance().getCurrentLayer();
-				currentFill = new Fill();
+				currentFill = new FillSave();
 				stack = new Stack<>();
 				marked = new HashSet<>();
 
@@ -159,20 +159,19 @@ public class BucketFill extends Tool {
 	/**
 	 * Commande pour remplir une forme - utile pour le undo redo
 	 */
-	class Fill extends ICmd {
+	private class FillSave extends ICmd {
 		private Image undosave;
 		private Image redosave = null;
-		private SnapshotParameters params;
+		private Layer currentLayer;
 		
-		public Fill() {
-			params = new SnapshotParameters();
-			params.setFill(Color.TRANSPARENT);
-			
-			this.undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+		private FillSave() {
+			currentLayer = Project.getInstance().getCurrentLayer();
+			undosave = SnapshotMaker.makeSnapshot(currentLayer);
 		}
 		
 		@Override
 		public void execute() {
+			redosave = SnapshotMaker.makeSnapshot(currentLayer);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		
@@ -181,9 +180,8 @@ public class BucketFill extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
-			undosave = null;
+			currentLayer.getGraphicsContext2D().clearRect(0,0, currentLayer.getWidth(), currentLayer.getHeight());
+			currentLayer.getGraphicsContext2D().drawImage(undosave, 0, 0);
 		}
 		
 		@Override
@@ -191,9 +189,8 @@ public class BucketFill extends Tool {
 			if (redosave == null) {
 				throw new UndoException();
 			}
-			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			currentLayer.getGraphicsContext2D().clearRect(0,0, currentLayer.getWidth(), currentLayer.getHeight());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
-			redosave = null;
 		}
 
 		public String toString(){

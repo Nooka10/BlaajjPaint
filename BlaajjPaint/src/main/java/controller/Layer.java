@@ -121,6 +121,7 @@ public class Layer extends Canvas implements Serializable {
 		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
 		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
 		
+		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
 		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY));
 		
@@ -255,7 +256,7 @@ public class Layer extends Canvas implements Serializable {
 		count = 1;
 	}
 
-	public void crop(double x1, double y1, double x2, double y2){
+	public Layer crop(double x1, double y1, double x2, double y2){
 		// Récupération du PixelReader - permet de lire les pixels sur le graphics context
 		WritableImage srcMask = new WritableImage((int) getWidth(), (int) getHeight());
 		SnapshotParameters params = new SnapshotParameters();
@@ -282,12 +283,13 @@ public class Layer extends Canvas implements Serializable {
 
 		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
 
-		Project.getInstance().getLayers().remove(this);
+		
 
 		Layer newLayer = new Layer(new Dimension((int)width, (int)height));
 		newLayer.setLayoutX(x + this.getLayoutX());
 		newLayer.setLayoutY(y + this.getLayoutY());
 		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
-		Project.getInstance().addLayer(newLayer);
+
+		return newLayer;
 	}
 }
