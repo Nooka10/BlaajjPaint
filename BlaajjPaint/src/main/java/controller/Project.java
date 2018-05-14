@@ -5,7 +5,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
-import javafx.scene.Group;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -14,9 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import javax.imageio.ImageIO;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,8 +34,6 @@ public class Project implements Serializable {
 	private static Project projectInstance;
 	
 	private AnchorPane workspace;
-	
-	private Group workspaceGroup;
 	
 	private Rectangle redBorder;
 	
@@ -110,10 +106,8 @@ public class Project implements Serializable {
 		layers = new LinkedList<>();
 		dimension = new Dimension(width, height);
 		workspace = new AnchorPane();
-		workspaceGroup = new Group();
 		
 		MainViewController.getInstance().getScrollPane().setContent(workspace);
-		workspace.getChildren().add(workspaceGroup);
 		
 		Rectangle clip = new Rectangle(width, height);
 		double x = Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - width) / 2);
@@ -136,7 +130,7 @@ public class Project implements Serializable {
 		if (isNew) {
 			setCurrentLayer(new Layer(width, height));
 			layers.add(currentLayer);
-			workspaceGroup.getChildren().add(currentLayer);
+			workspace.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
@@ -158,7 +152,7 @@ public class Project implements Serializable {
 	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
 	//bah elle draw le workspace
 	public void drawWorkspace() {
-		workspaceGroup.getChildren().clear();
+		workspace.getChildren().clear();
 		//workspace.prefHeight(dimension.height);
 		//workspace.prefWidth(dimension.width);
 		//workspace.minHeight(dimension.height);
@@ -171,10 +165,10 @@ public class Project implements Serializable {
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
 			if (layer.isVisible()) {
-				workspaceGroup.getChildren().add(layer);
+				workspace.getChildren().add(layer);
 			}
 		}
-		workspaceGroup.getChildren().add(redBorder);
+		workspace.getChildren().add(redBorder);
 	}
 	
 	/**
@@ -201,7 +195,7 @@ public class Project implements Serializable {
 	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
-		workspaceGroup.getChildren().add(currentLayer);
+		workspace.getChildren().add(currentLayer);
 		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
 		drawWorkspace();
 	}
@@ -219,7 +213,7 @@ public class Project implements Serializable {
 	 * @param currentLayer
 	 */
 	public void setCurrentLayer(Layer currentLayer) {
-		workspaceGroup.getChildren().remove(redBorder);
+		workspace.getChildren().remove(redBorder);
 		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
 		
@@ -248,7 +242,7 @@ public class Project implements Serializable {
 			}
 		});
 		
-		workspaceGroup.getChildren().add(redBorder);
+		workspace.getChildren().add(redBorder);
 		//MainViewController.getInstance().getAnchorPaneCenter().getChildren().add(redBorder);
 		
 		addEventHandlers(Tool.getCurrentTool());
@@ -353,7 +347,7 @@ public class Project implements Serializable {
 	
 	public void deleteCurrentLayer() {
 		if (layers.size() != 1) {
-			workspaceGroup.getChildren().remove(currentLayer);
+			workspace.getChildren().remove(currentLayer);
 			int index = layers.indexOf(currentLayer);
 			layers.remove(index);
 			if (index >= layers.size()) {
@@ -417,29 +411,33 @@ public class Project implements Serializable {
 		
 		
 		// Calques
-		s.writeInt(layers.size());        // Nombre de qualques
+		s.writeInt(layers.size()); // Nombre de qualques
 		
 		Iterator li = layers.descendingIterator();
 		
 		while (li.hasNext()) {
-			//System.out.println(li.next());
 			s.writeObject(li.next());
 		}
 	}
 	
 	public void zoom(double factor) {
-		
 		for (Layer l : layers) {
 			l.setScaleX(l.getScaleX() * factor);
 			l.setScaleY(l.getScaleY() * factor);
 		}
+		workspace.setScaleX(workspace.getScaleX() * factor);
+		workspace.setScaleY(workspace.getScaleY() * factor);
+		workspace.setScaleZ(workspace.getScaleZ() * factor);
+	}
+	
+	private static double clamp(double value, double min, double max) {
 		
-		workspaceGroup.setScaleX(workspaceGroup.getScaleX() * factor);
-		workspaceGroup.setScaleY(workspaceGroup.getScaleY() * factor);
-		workspaceGroup.setScaleZ(workspaceGroup.getScaleZ() * factor);
-		//workspace.setScaleX(workspace.getScaleX() * factor);
-		//workspace.setScaleY(workspace.getScaleY() * factor);
-		//workspace.setScaleZ(workspace.getScaleZ() * factor);
+		if (Double.compare(value, min) < 0)
+			return min;
 		
+		if (Double.compare(value, max) > 0)
+			return max;
+		
+		return value;
 	}
 }

@@ -36,29 +36,10 @@ public class Zoom extends Tool {
 	
 	private void zoom(double zoomFactor) {
 		
-		Bounds viewPort = MainViewController.getInstance().getScrollPane().getViewportBounds();
-		Bounds contentSize = Project.getInstance().getWorkspace().getBoundsInParent();
-		
-		double centerPosX = (contentSize.getWidth() - viewPort.getWidth()) * MainViewController.getInstance().getScrollPane().getHvalue() + viewPort.getWidth() / 2;
-		double centerPosY = (contentSize.getHeight() - viewPort.getHeight()) * MainViewController.getInstance().getScrollPane().getVvalue() + viewPort.getHeight() / 2;
-		
-		Project.getInstance().zoom(zoomFactor);
 		zoom *= zoomFactor;
-		
-		double newCenterX = centerPosX * zoomFactor;
-		double newCenterY = centerPosY * zoomFactor;
-		
-		MainViewController.getInstance().getScrollPane().setHvalue((newCenterX - viewPort.getWidth() / 2) / (contentSize.getWidth() * zoomFactor - viewPort.getWidth()));
-		MainViewController.getInstance().getScrollPane().setVvalue((newCenterY - viewPort.getHeight() / 2) / (contentSize.getHeight() * zoomFactor - viewPort.getHeight()));
-		
 		Project.getInstance().zoom(zoomFactor);
-		MainViewController.getInstance().setTextZoomLabel(Math.round(zoom * 100) + "%");
-		
-		
-		//zoom *= zoomFactor;
-		//Project.getInstance().zoom(zoomFactor);
 		//MainViewController.getInstance().moveView(posX, posY);
-		//MainViewController.getInstance().setTextZoomLabel(Math.round(zoom * 100) + "%");
+		MainViewController.getInstance().setTextZoomLabel(Math.round(zoom * 100) + "%");
 	}
 	
 	@Override
