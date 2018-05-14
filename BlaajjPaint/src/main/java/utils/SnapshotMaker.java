@@ -16,10 +16,10 @@ public class SnapshotMaker {
 	}
 	
 	public static Image makeSnapshot(Layer layer){
-		double opacity = Project.getInstance().getCurrentLayer().getOpacity();
-		Project.getInstance().getCurrentLayer().setOpacity(1);
-		Image snapshot = Project.getInstance().getCurrentLayer().snapshot(params, null);
-		Project.getInstance().getCurrentLayer().setOpacity(opacity);
+		double opacity = layer.getOpacity();
+		layer.setOpacity(1);
+		Image snapshot = layer.snapshot(params, null);
+		layer.setOpacity(opacity);
 		return snapshot;
 	}
 }
