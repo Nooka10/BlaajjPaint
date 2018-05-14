@@ -72,7 +72,7 @@ public class Hand extends Tool {
 					coordTransform.translate(dx, dy);
 					dragStartScreen = dragEndScreen;
 					dragEndScreen = null;
-					//targetComponent.repaint();
+					Project.getInstance().drawWorkspace();
 				} catch (NoninvertibleTransformException ex) {
 					ex.printStackTrace();
 				}
