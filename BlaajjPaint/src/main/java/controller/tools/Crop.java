@@ -11,7 +11,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import utils.SnapshotMaker;
 import utils.UndoException;
+
+import java.beans.PropertyEditor;
 
 public class Crop extends Tool {
     private static Crop instance = new Crop();
@@ -42,7 +45,7 @@ public class Crop extends Tool {
             Project.getInstance().drawWorkspace();
 
             MainViewController.getInstance().getRightMenuController().updateLayerList();
-
+            cropSave.execute();
             cancel();
         }
     }
@@ -118,7 +121,7 @@ public class Crop extends Tool {
                     if(selectionCropLayer == null){
                         initCrop();
                     }
-                    cropSave = new CropSave();
+                    cropSave = new CropSave(oldCurrentLayer);
                     startX = event.getX();
                     startY = event.getY();
                     posX = event.getX();
@@ -177,14 +180,21 @@ public class Crop extends Tool {
     class CropSave extends ICmd{
         private Image undosave;
         private Image redosave = null;
-        private SnapshotParameters params;
+        private double widthLayer;
+        private double heightLayer;
+        private double layoutXLayer;
+        private double layoutYLayer;
+        private Layer layerCroped;
 
-        public CropSave(){
-            params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-
-            this.undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
+        public CropSave(Layer layerToCrop){
+            undosave = SnapshotMaker.makeSnapshot(layerToCrop);
+            widthLayer = layerToCrop.getWidth();
+            heightLayer = layerToCrop.getHeight();
+            layoutXLayer = layerToCrop.getLayoutX();
+            layoutYLayer = layerToCrop.getLayoutY();
+            layerCroped = layerToCrop;
         }
+
         @Override
         public void execute() {
             RecordCmd.getInstance().saveCmd(this);
@@ -195,8 +205,23 @@ public class Crop extends Tool {
             if (undosave == null) {
                 throw new UndoException();
             }
-            redosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
+            redosave = SnapshotMaker.makeSnapshot(layerCroped);
+            Layer currentLayer = layerCroped;
+            double widthTemp = currentLayer.getWidth();
+            double heightTemp = currentLayer.getHeight();
+            double layoutXTemp = currentLayer.getLayoutX();
+            double layoutYTemp = currentLayer.getLayoutY();
+            layerCroped.setWidth(widthLayer);
+            layerCroped.setHeight(heightLayer);
+            layerCroped.setLayoutX(layoutXLayer);
+            layerCroped.setLayoutY(layoutYLayer);
+            layerCroped.getGraphicsContext2D().clearRect(0, 0, widthLayer, heightLayer);
+            layerCroped.getGraphicsContext2D().drawImage(undosave, 0, 0);
+            widthLayer = widthTemp;
+            heightLayer = heightTemp;
+            layoutXLayer = layoutXTemp;
+            layoutYLayer = layoutYTemp;
+
             undosave = null;
         }
 
@@ -205,8 +230,23 @@ public class Crop extends Tool {
             if (redosave == null) {
                 throw new UndoException();
             }
-            undosave = Project.getInstance().getCurrentLayer().snapshot(params, null);
-            Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+
+            undosave = SnapshotMaker.makeSnapshot(layerCroped);
+            Layer currentLayer = layerCroped;
+            double widthTemp = currentLayer.getWidth();
+            double heightTemp = currentLayer.getHeight();
+            double layoutXTemp = currentLayer.getLayoutX();
+            double layoutYTemp = currentLayer.getLayoutY();
+            layerCroped.getGraphicsContext2D().clearRect(0, 0, layerCroped.getWidth(), layerCroped.getHeight());
+            layerCroped.setWidth(widthLayer);
+            layerCroped.setHeight(heightLayer);
+            layerCroped.setLayoutX(layoutXLayer);
+            layerCroped.setLayoutY(layoutYLayer);
+            layerCroped.getGraphicsContext2D().drawImage(redosave, 0, 0);
+            widthLayer = widthTemp;
+            heightLayer = heightTemp;
+            layoutXLayer = layoutXTemp;
+            layoutYLayer = layoutYTemp;
             redosave = null;
         }
 

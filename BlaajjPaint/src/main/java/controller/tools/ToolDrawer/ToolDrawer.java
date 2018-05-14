@@ -49,7 +49,7 @@ public abstract class ToolDrawer extends Tool {
 			System.out.println("Trait undo");
 			
 			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
 			undosave = null;
 		}
@@ -61,7 +61,7 @@ public abstract class ToolDrawer extends Tool {
 			}
 			System.out.println("Trait redo");
 			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().width);
+			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getDimension().width, Project.getInstance().getDimension().height);
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;
 		}
