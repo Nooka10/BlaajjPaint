@@ -339,7 +339,7 @@ public class Project implements Serializable {
 			javafx.scene.image.Image image;
 			image = new Image(file.toURI().toString());
 			
-			Layer newLayer = new Layer(new Dimension((int) image.getWidth(), (int) image.getHeight()));
+			Layer newLayer = new Layer((int) image.getWidth(), (int) image.getHeight());
 			addLayer(newLayer);
 			
 			newLayer.getGraphicsContext2D().drawImage(image, 0, 0);

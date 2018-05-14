@@ -92,7 +92,7 @@ public class Crop extends Tool {
 
     public void initCrop(){
         oldCurrentLayer = Project.getInstance().getCurrentLayer();
-        selectionCropLayer = new Layer(new Dimension((int) oldCurrentLayer.getWidth(), (int)oldCurrentLayer.getHeight()));
+        selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int)oldCurrentLayer.getHeight());
         selectionCropLayer.setLayoutX(oldCurrentLayer.getLayoutX());
         selectionCropLayer.setLayoutY(oldCurrentLayer.getLayoutY());
         selectionCropLayer.setVisible(true);

@@ -293,7 +293,7 @@ public class Layer extends Canvas implements Serializable {
 
 		
 
-		Layer newLayer = new Layer(new Dimension((int)width, (int)height));
+		Layer newLayer = new Layer((int)width, (int)height);
 		newLayer.setLayoutX(x + this.getLayoutX());
 		newLayer.setLayoutY(y + this.getLayoutY());
 		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
