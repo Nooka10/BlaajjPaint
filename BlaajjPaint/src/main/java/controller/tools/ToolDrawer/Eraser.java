@@ -53,13 +53,13 @@ public class Eraser extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				currentTrait = new EraserStrike();
 				startErase(event);
 			}
 		};
 	}
 	
 	public void startErase(MouseEvent event){
-		currentTrait = new EraserStrike();
 		// crée le masque de suppression
 		eraserMask = new Canvas(Project.getInstance().getCurrentLayer().getWidth(), Project.getInstance().getCurrentLayer().getHeight());
 		eraserMaskGC = eraserMask.getGraphicsContext2D();
