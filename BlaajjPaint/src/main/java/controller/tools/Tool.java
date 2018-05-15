@@ -13,22 +13,24 @@ import javafx.scene.input.MouseEvent;
  */
 public abstract class Tool {
 	
-	protected final EventHandler<MouseEvent> currentOnMousePressedEventHandler = createMousePressedEventHandlers(); // l'évènement déclanché lorsqu'on appuie sur le bouton de la la souris
-	protected final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers(); // l'évènement déclanché lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
-	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers(); // l'évènement déclanché lorsqu'on relache le bouton de la souris
-	
-	public enum ToolType {
-		PENCIL, ERASER, PIPETTE, MOVE, BUCKETFILL, TEXT, FILLEDRECTANGLE,
-		EMPTYRECTANGLE, FILLEDELLIPSE, EMPTYELLIPSE, CROP, OTHER
-	} // énumération de tout les types d'outils gérés
-	
-	public static boolean toolHasChanged = false; // Vrai lorsqu'on vient de changer d'outil
+	private static boolean toolHasChanged = false; // Vrai lorsqu'on vient de changer d'outil
 	
 	protected ToolType toolType = ToolType.OTHER; // le type de l'outil
 	
 	private static Tool currentTool; // l'outil actuellement sélectionné
 	
 	private Cursor oldCursor;
+	
+	protected final EventHandler<MouseEvent> currentOnMousePressedEventHandler = createMousePressedEventHandlers(); // l'évènement déclanché lorsqu'on appuie sur le bouton de la la souris
+	
+	protected final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers(); // l'évènement déclanché lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
+	
+	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers(); // l'évènement déclanché lorsqu'on relache le bouton de la souris
+	
+	protected enum ToolType {
+		PENCIL, ERASER, PIPETTE, MOVE, BUCKETFILL, TEXT, FILLEDRECTANGLE,
+		EMPTYRECTANGLE, FILLEDELLIPSE, EMPTYELLIPSE, CROP, OTHER
+	} // énumération de tout les types d'outils gérés
 	
 	/**
 	 * Retourne l'outil actuellement sélectionné
@@ -50,7 +52,6 @@ public abstract class Tool {
 	 */
 	public void CallbackNewToolChanged() {
 	}
-	
 	
 	/**
 	 * Remplace l'outil actuellement sélectionné par celui passé en paramètre

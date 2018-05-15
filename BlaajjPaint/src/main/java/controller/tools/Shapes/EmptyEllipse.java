@@ -3,8 +3,8 @@ package controller.tools.Shapes;
 import controller.Project;
 
 public class EmptyEllipse extends ShapeDrawer {
-
-    private static EmptyEllipse toolInstance = new EmptyEllipse(); // l'instance unique de l'ellipse vide
+	
+	private static EmptyEllipse toolInstance = null; // l'instance unique de l'ellipse vide
 
     private double thickness; // l'épaisseur de l'outil
 
@@ -14,6 +14,9 @@ public class EmptyEllipse extends ShapeDrawer {
      * @return l'instance unique de l'ellipse vide
      */
     public static EmptyEllipse getInstance() {
+	    if (toolInstance == null) {
+		    toolInstance = new EmptyEllipse();
+	    }
         return toolInstance;
     }
 

@@ -8,33 +8,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Classe Singleton gérant l'historique des commandes. L'utiliser uniquement avec getCurrentTool(), le constructeur est public
+ * Classe implémentant le modèle Singleton et gérant l'historique des commandes.
  */
 public class RecordCmd {
-	/**
-	 * La taille max de chaque pile
-	 */
-	private static final int MAX_CMD_HISTORY = 100;
 	
-	/**
-	 * La pile des commandes exécutées
-	 */
-	private LinkedList<ICmd> undoStack = new LinkedList<>();
+	private static final int MAX_CMD_HISTORY = 100; // taille maximale des piles undo et redo
 	
-	/**
-	 * La pile des commandes réexécutables
-	 */
-	private LinkedList<ICmd> redoStack = new LinkedList<>();
+	private LinkedList<ICmd> undoStack = new LinkedList<>(); // pile des commandes exécutées
 	
-	/**
-	 * Le logger de cette classe
-	 */
-	private static final Logger LOG = Logger.getLogger(RecordCmd.class.getName());
+	private LinkedList<ICmd> redoStack = new LinkedList<>(); // pile des commandes ré-exécutables
 	
-	/**
-	 * L'instance unique de la classe
-	 */
-	private static RecordCmd instance = null;
+	private static final Logger LOG = Logger.getLogger(RecordCmd.class.getName()); // Le logger de cette classe
+	
+	private static RecordCmd recordCdmInstance = null; // L'instance unique de RecordCmd (modèle Singleton)
 	
 	/**
 	 * Constructeur privé (modèle Singleton)
@@ -43,15 +29,14 @@ public class RecordCmd {
 	}
 	
 	/**
-	 * retourne l'instance unique du singleton RecordCmd. La crée au besoin la première fois.
+	 * Retourne l'instance unique du singleton RecordCmd. La crée au besoin la première fois.
+	 * @return
 	 */
 	public static RecordCmd getInstance() {
-		
-		if (instance == null) {
-			instance = new RecordCmd();
+		if (recordCdmInstance == null) {
+			recordCdmInstance = new RecordCmd();
 		}
-		
-		return instance;
+		return recordCdmInstance;
 	}
 	
 	/**

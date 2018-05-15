@@ -25,16 +25,6 @@ public class WindowsNewProject {
 	
 	@FXML
 	private void initialize() {
-
-
-		MainViewController.getInstance().closeProject();
-
-		cancel.setCancelButton(true);
-		createButton.setDefaultButton(true);
-		
-		//width.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-		//height.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-		
 		width.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -62,11 +52,10 @@ public class WindowsNewProject {
 	 * @param event
 	 */
 	@FXML
-	void createNewProject(ActionEvent event) {
-
-		// Netoyage du projet
+	private void createNewProject(ActionEvent event) {
+		// Nettoyage du projet
         MainViewController.getInstance().closeProject();
-
+		
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		
@@ -80,7 +69,7 @@ public class WindowsNewProject {
 	}
 	
 	@FXML
-	void cancel(ActionEvent event) {
+	private void cancel(ActionEvent event) {
 		Stage stage = (Stage) cancel.getScene().getWindow();
 		// do what you have to do
 		stage.close();

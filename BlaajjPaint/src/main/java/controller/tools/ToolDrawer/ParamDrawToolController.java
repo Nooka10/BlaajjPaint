@@ -21,10 +21,13 @@ public class ParamDrawToolController {
 	private HBox paramDrawTools;
 	
 	private ToolDrawer tool = (ToolDrawer) Tool.getCurrentTool();
+	
 	@FXML
 	private void initialize() {
 		thicknessTextField.setText(String.valueOf(tool.thickness));
 		thicknessSlider.setValue(tool.thickness);
+		
+		// FIXME: À changer pour utiliser FXML !!!
 		
 		// Handle Slider value change events.
 		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {

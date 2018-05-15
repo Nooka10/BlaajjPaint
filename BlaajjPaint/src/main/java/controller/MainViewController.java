@@ -16,21 +16,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import main.Main;
+import utils.SaveProject;
 
 import java.io.File;
 
 public class MainViewController {
 	
-	private static MainViewController mainViewControllerInstance = new MainViewController(); // L'instance unique du singleton MainViewController
+	private static MainViewController mainViewControllerInstance = null; // L'instance unique du singleton MainViewController
 	private Main main; // Reference to the main application
-	@FXML
-	private javafx.scene.canvas.Canvas canvas;
-	@FXML
-	private Parent menuBar;
-	@FXML
-	private Parent toolBar;
-	@FXML
-	private Parent rightMenu;
 	@FXML
 	private MenuBarController menuBarController; // le lien vers le menuBarController est fait automatiquement.
 	@FXML
@@ -38,15 +31,11 @@ public class MainViewController {
 	@FXML
 	private RightMenuController rightMenuController; // le lien vers le rightMenuController est fait automatiquement.
 	@FXML
-	private BorderPane mainView;
-	@FXML
 	private AnchorPane paramBar;
 	@FXML
 	private AnchorPane anchorPaneCenter;
 	@FXML
 	private ScrollPane scrollPane;
-	@FXML
-	private Label zoomLabel;
 	@FXML
 	private AnchorPane workspace;
 	
@@ -62,6 +51,9 @@ public class MainViewController {
 	 * @return l'instance unique du singleton MainViewController
 	 */
 	public static MainViewController getInstance() {
+		if (mainViewControllerInstance == null) {
+			mainViewControllerInstance = new MainViewController();
+		}
 		return mainViewControllerInstance;
 	}
 	
@@ -172,7 +164,7 @@ public class MainViewController {
 		RecordCmd.getInstance().clear();
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
-		SaveProjects.getInstance().clear();
+		SaveProject.getInstance().clear();
 
 		// desactive les bouttons
 		disableButton();
@@ -193,7 +185,7 @@ public class MainViewController {
 			System.out.println("path fichier choisi: " + file.getPath());
 
 			closeProject();
-			SaveProjects.getInstance().openFile(file);
+			SaveProject.getInstance().openFile(file);
 		}
 
 		// réactive les bouttons

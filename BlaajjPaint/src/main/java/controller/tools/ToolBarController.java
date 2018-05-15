@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -20,52 +19,31 @@ import java.io.IOException;
  * resizing, deleting and so on.
  */
 public class ToolBarController {
-
+	
+	@FXML
+	public AnchorPane toolBar;
+	@FXML
+	public ToggleButton handTool;
+	@FXML
+	public ToggleGroup ToolBarButtons;
+	@FXML
+	public ToggleButton moveTool;
+	@FXML
+	public ToggleButton cropTool;
+	@FXML
+	public ToggleButton pipetteTool;
+	@FXML
+	public ToggleButton pencilTool;
+	@FXML
+	public ToggleButton eraseTool;
+	@FXML
+	public ToggleButton bucketFillTool;
+	@FXML
+	public ToggleButton textTool;
+	@FXML
+	public ToggleButton shapeTool;
+	@FXML
 	private Parent paramBar;
-	
-	/* Attributs  FXML */
-	
-	@FXML
-	private ToggleButton pencilTool;
-	
-	@FXML
-	private ToggleButton eraseTool;
-	
-	@FXML
-	private ToggleButton textTool;
-	
-	@FXML
-	private ToggleButton lassoTool;
-	
-	@FXML
-	private ToggleButton mouseTool;
-	
-	@FXML
-	private ToggleButton moveTool;
-	
-	@FXML
-	private AnchorPane toolBar;
-	
-	@FXML
-	private ToggleGroup ToolBarButtons;
-	
-	@FXML
-	private ToggleButton shapeTool;
-	
-	@FXML
-	private ToggleButton handTool;
-	
-	@FXML
-	private ToggleButton bucketFillTool;
-	
-	@FXML
-	private ToggleButton selectTool;
-	
-	@FXML
-	private ToggleButton cropTool;
-	
-	@FXML
-	private ToggleButton pipetteTool;
 	
 	@FXML
 	public void handleMoveView(ActionEvent event) {
@@ -74,12 +52,6 @@ public class ToolBarController {
 			closeCurrentParamBar();
 			Tool.setToolHasChanged(false);
 		}
-	}
-	
-	
-	@FXML
-	public void handleLasso(ActionEvent event) {
-	
 	}
 	
 	@FXML
@@ -137,11 +109,6 @@ public class ToolBarController {
 	}
 	
 	@FXML
-	public void handleMouse(ActionEvent event) {
-	
-	}
-	
-	@FXML
 	public void handleAddShape(ActionEvent event) {
 		Tool.setCurrentTool(EmptyRectangle.getInstance());
 		if (Tool.getToolHasChanged()) {
@@ -158,17 +125,7 @@ public class ToolBarController {
 			Tool.setToolHasChanged(false);
 		}
 	}
-
-	@FXML
-	public static void displayError() {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle("Erreur, aucune image n'est ouverte!");
-		alert.setHeaderText(null);
-		alert.setContentText("Commencez par créer un nouveau projet ou ouvrir un projet existant.");
-		
-		alert.showAndWait();
-	}
-
+	
 	@FXML
 	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
@@ -204,4 +161,6 @@ public class ToolBarController {
 	public void disableButton(){
 
 	}
+	
+	
 }

@@ -1,7 +1,8 @@
-package controller;
+package utils;
 
 
-import controller.menubar.MenuBarController;
+import controller.MainViewController;
+import controller.Project;
 
 import java.io.*;
 
@@ -15,23 +16,25 @@ import java.io.*;
  *
  * Singleton pour être accessible depuis n'importe quelle classe du projet ou et avoir qu'une seule instance.
  */
-public class SaveProjects {
+public class SaveProject {
 	
 	private Project projectInstance = Project.getInstance();			// instance du projet à sauvegarder
 	private File saveFile;												// Fichier de sauvegarde
 
 	//***  SINGLETON  ***//
-	private static SaveProjects ourInstance = new SaveProjects();
+	private static SaveProject saveProjectInstance = null;
 	
-	public static SaveProjects getInstance() {
-		return ourInstance;
+	public static SaveProject getInstance() {
+		if (saveProjectInstance == null) {
+			saveProjectInstance = new SaveProject();
+		}
+		return saveProjectInstance;
 	}
 	
-	private SaveProjects() {
+	private SaveProject() {
 		saveFile = null;
 	}
-
-
+	
 	/**
 	 * Enregiste le projet dans un fichier spécifié.
 	 * Le fichier spécifié est stocké en cas d'appelle de la méthode save.

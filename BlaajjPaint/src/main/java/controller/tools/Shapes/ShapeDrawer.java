@@ -17,17 +17,21 @@ import utils.UndoException;
  */
 public abstract class ShapeDrawer extends Tool {
 	
-	protected Layer shapeLayer; //  calque intermédiaire pour le dessin des formes
+	protected Layer shapeLayer; //  calque temporaire utilisé pour le dessin des formes durant leur création
 	protected ShapeSave currentShapeSave; // La forme actuellement dessinée, à sauver
-	//position du clique de départ de la forme
+	
+	//position du clic de départ de la forme
 	protected double beginPointX;
 	protected double beginPointY;
+	
 	//point de départ de la forme
 	protected double startPosX;
 	protected double startPosY;
+	
 	//dimensions de la forme
 	protected double width;
 	protected double height;
+	
 	//nom de la forme destiné à l'affichage de l'historique
 	protected String tooltipHistory = "Dessin de forme";
 	protected String nomForme;

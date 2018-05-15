@@ -1,8 +1,6 @@
 package controller.tools.Shapes;
 
-import controller.Project;
 import controller.tools.Tool;
-import controller.tools.ToolDrawer.ToolDrawer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
@@ -12,8 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class ParamShapeController {
-
-
     @FXML
     public ToggleButton filledRect;
     @FXML
@@ -28,8 +24,8 @@ public class ParamShapeController {
     private TextField thicknessTextField;
     @FXML
     private HBox paramShapeTools;
-
-    @FXML
+	
+	@FXML
     private void initialize() {
         thicknessTextField.setText(String.valueOf(EmptyRectangle.getInstance().getThickness()));
         thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
@@ -52,9 +48,6 @@ public class ParamShapeController {
         Tool.setCurrentTool(EmptyRectangle.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
-            filledRect.setSelected(false);
-            emptyEllipse.setSelected(false);
-            filledEllipse.setSelected(false);
         }
     }
 
@@ -63,9 +56,6 @@ public class ParamShapeController {
         Tool.setCurrentTool(FilledRectangle.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
-            emptyRect.setSelected(false);
-            emptyEllipse.setSelected(false);
-            filledEllipse.setSelected(false);
         }
     }
 
@@ -74,9 +64,6 @@ public class ParamShapeController {
         Tool.setCurrentTool(EmptyEllipse.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
-            emptyRect.setSelected(false);
-            filledRect.setSelected(false);
-            filledEllipse.setSelected(false);
         }
     }
 
@@ -85,9 +72,6 @@ public class ParamShapeController {
         Tool.setCurrentTool(FilledEllipse.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
-            emptyRect.setSelected(false);
-            filledRect.setSelected(false);
-            emptyEllipse.setSelected(false);
         }
     }
 }

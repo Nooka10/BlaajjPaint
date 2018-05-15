@@ -20,17 +20,11 @@ import javafx.scene.shape.StrokeLineCap;
  */
 public class Eraser extends ToolDrawer {
 	
-	private static Eraser toolInstance = new Eraser(); // l'instance unique de la gomme
+	private static Eraser toolInstance = null; // l'instance unique de la gomme
 	
 	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
 	private GraphicsContext eraserMaskGC;
-	
-	public class EraserStrike extends Trait {
-		public String toString() {
-			return "Trait de gomme";
-		}
-	}
 	
 	/**
 	 * Retourne l'instance unique de la gomme
@@ -38,6 +32,9 @@ public class Eraser extends ToolDrawer {
 	 * @return l'instance unique de la gomme
 	 */
 	public static Eraser getInstance() {
+		if (toolInstance == null) {
+			toolInstance = new Eraser();
+		}
 		return toolInstance;
 	}
 	
@@ -121,6 +118,12 @@ public class Eraser extends ToolDrawer {
 					writer.setColor(x, y, Color.TRANSPARENT);
 				}
 			}
+		}
+	}
+	
+	public class EraserStrike extends Trait {
+		public String toString() {
+			return "Trait de gomme";
 		}
 	}
 }

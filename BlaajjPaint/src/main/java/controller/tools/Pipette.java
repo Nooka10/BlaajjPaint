@@ -17,9 +17,12 @@ import javafx.scene.paint.Color;
  */
 public class Pipette extends Tool {
 	
-	private static Pipette toolInstance = new Pipette();
+	private static Pipette toolInstance = null;
 	
 	public static Pipette getInstance() {
+		if (toolInstance == null) {
+			toolInstance = new Pipette();
+		}
 		return toolInstance;
 	}
 	

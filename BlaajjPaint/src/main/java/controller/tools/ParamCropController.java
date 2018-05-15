@@ -5,13 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class ParamCropController {
-
     @FXML
-    private Button cancelButton;
-
+    public Button cancelButton;
     @FXML
-    private Button validateButton;
-
+    public Button validateButton;
+    
     @FXML
     void cancel(ActionEvent event) {
         Crop.getInstance().cancel();

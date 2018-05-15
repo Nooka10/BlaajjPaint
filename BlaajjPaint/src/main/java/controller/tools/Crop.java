@@ -6,7 +6,6 @@ import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.EventHandler;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -14,27 +13,25 @@ import javafx.scene.paint.Color;
 import utils.SnapshotMaker;
 import utils.UndoException;
 
-import java.beans.PropertyEditor;
-
 public class Crop extends Tool {
-    private static Crop instance = new Crop();
+	private static Crop toolInstance = null;
     private CropSave cropSave;
-
     private Layer oldCurrentLayer;
     private Layer selectionCropLayer;
     private double startX;
     private double startY;
     private double posX;
     private double posY;
-
-
-
+    
     private Crop() {
         toolType = ToolType.CROP;
     }
 
     public static Crop getInstance(){
-        return instance;
+	    if (toolInstance == null) {
+		    toolInstance = new Crop();
+	    }
+	    return toolInstance;
     }
 
     public void validate(){

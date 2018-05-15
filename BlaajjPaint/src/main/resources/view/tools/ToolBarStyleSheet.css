@@ -62,13 +62,6 @@
 	-fx-background-repeat   :stretch;
 }
 
-#zoomTool {
-	-fx-background-image    :url('../../outils/zoom.png');
-	-fx-background-size     : 25px;
-	-fx-background-position :center;
-	-fx-background-repeat   :stretch;
-}
-
 /*
 .toggle-button:selected {
 	-fx-background-color: grey;

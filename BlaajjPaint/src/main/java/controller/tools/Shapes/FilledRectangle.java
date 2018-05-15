@@ -3,8 +3,8 @@ package controller.tools.Shapes;
 import controller.Project;
 
 public class FilledRectangle extends ShapeDrawer {
-
-    private static FilledRectangle toolInstance = new FilledRectangle(); // l'instance unique du pinceau
+    
+    private static FilledRectangle toolInstance = null; // l'instance unique du pinceau
 
     /**
      * Retourne l'instance unique du rectangle
@@ -12,6 +12,9 @@ public class FilledRectangle extends ShapeDrawer {
      * @return l'instance unique du rectangle
      */
     public static FilledRectangle getInstance() {
+        if (toolInstance == null) {
+            toolInstance = new FilledRectangle();
+        }
         return toolInstance;
     }
 

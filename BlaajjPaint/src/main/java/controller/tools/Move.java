@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class Move extends Tool {
 	
-	private static Move toolInstance = new Move();
+	private static Move toolInstance = null;
 	
 	private double oldX;
 	
@@ -20,6 +20,9 @@ public class Move extends Tool {
 	private MoveSave currentSave;
 	
 	public static Move getInstance() {
+		if(toolInstance == null){
+			toolInstance = new Move();
+		}
 		return toolInstance;
 	}
 	

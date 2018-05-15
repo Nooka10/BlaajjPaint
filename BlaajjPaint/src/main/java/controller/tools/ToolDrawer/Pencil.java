@@ -4,6 +4,7 @@ Author: Benoît
 package controller.tools.ToolDrawer;
 
 import controller.Project;
+import controller.tools.BucketFill;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +15,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 public class Pencil extends ToolDrawer {
 	
-	private static Pencil toolInstance = new Pencil(); // l'instance unique du pinceau
+	private static Pencil toolInstance = null; // l'instance unique du pinceau
 	
 	/**
 	 * Retourne l'instance unique du pinceau
@@ -22,6 +23,9 @@ public class Pencil extends ToolDrawer {
 	 * @return l'instance unique du pinceau
 	 */
 	public static Pencil getInstance() {
+		if (toolInstance  == null) {
+			toolInstance  = new Pencil();
+		}
 		return toolInstance;
 	}
 

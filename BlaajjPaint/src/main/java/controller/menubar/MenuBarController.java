@@ -3,7 +3,7 @@ package controller.menubar;
 import controller.Layer;
 import controller.MainViewController;
 import controller.Project;
-import controller.SaveProjects;
+import utils.SaveProject;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
@@ -50,7 +50,7 @@ public class MenuBarController {
 	public void handleSave(ActionEvent event) {
 		System.out.println("appeler la fonction de sauvegarde!");
 		
-		SaveProjects.getInstance().save();
+		SaveProject.getInstance().save();
 		// FIXME appeler fonction sauvegarder
 	}
 	
@@ -73,7 +73,7 @@ public class MenuBarController {
 				file = new File(file.getPath() + ".blaajj");
 			}
 			
-			SaveProjects.getInstance().saveAs(file);
+			SaveProject.getInstance().saveAs(file);
 			//mainApp.savePersonDataToFile(file);
 			// FIXME: appeler fct sauvegarder
 		}

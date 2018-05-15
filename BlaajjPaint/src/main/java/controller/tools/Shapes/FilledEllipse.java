@@ -3,8 +3,8 @@ package controller.tools.Shapes;
 import controller.Project;
 
 public class FilledEllipse extends ShapeDrawer {
-
-    private static FilledEllipse toolInstance = new FilledEllipse(); // l'instance unique du pinceau
+    
+    private static FilledEllipse toolInstance = null; // l'instance unique du pinceau
 
     /**
      * Retourne l'instance unique de l'ellipse
@@ -12,6 +12,9 @@ public class FilledEllipse extends ShapeDrawer {
      * @return l'instance unique de l'ellipse
      */
     public static FilledEllipse getInstance() {
+        if (toolInstance == null) {
+            toolInstance = new FilledEllipse();
+        }
         return toolInstance;
     }
 

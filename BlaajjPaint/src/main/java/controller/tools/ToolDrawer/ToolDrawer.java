@@ -30,7 +30,7 @@ public abstract class ToolDrawer extends Tool {
 		private Image undosave;
 		private Image redosave = null;
 		
-		public Trait() {
+		Trait() {
 			System.out.println("Snap Trait");
 			
 			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());

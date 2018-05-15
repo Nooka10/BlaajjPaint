@@ -20,10 +20,8 @@ import javafx.scene.text.Font;
 import utils.SnapshotMaker;
 import utils.UndoException;
 
-
 public class TextTool extends Tool {
-	/** ATTRIBUTS **/
-	private static TextTool instance = new TextTool();
+	private static TextTool toolInstance = null;
 	private AddText addText;
 	
 	private Font font;
@@ -46,7 +44,10 @@ public class TextTool extends Tool {
 	 * @return l'instance de l'objet
 	 */
 	public static TextTool getInstance() {
-		return instance;
+		if (toolInstance == null) {
+			toolInstance = new TextTool();
+		}
+		return toolInstance;
 	}
 	
 	/**

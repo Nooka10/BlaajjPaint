@@ -3,8 +3,8 @@ package controller.tools.Shapes;
 import controller.Project;
 
 public class EmptyRectangle extends ShapeDrawer {
-
-    private static EmptyRectangle toolInstance = new EmptyRectangle(); // l'instance unique du rectangle vide
+    
+    private static EmptyRectangle toolInstance = null; // l'instance unique du rectangle vide
 
     private double thickness; // l'épaisseur de l'outil
 
@@ -14,6 +14,9 @@ public class EmptyRectangle extends ShapeDrawer {
      * @return l'instance unique du rectangle vide
      */
     public static EmptyRectangle getInstance() {
+        if (toolInstance == null) {
+            toolInstance = new EmptyRectangle();
+        }
         return toolInstance;
     }
 

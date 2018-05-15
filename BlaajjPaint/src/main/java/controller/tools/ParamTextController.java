@@ -1,8 +1,3 @@
-/**
- * @file ParamTextController
- * @author
- */
-
 package controller.tools;
 
 import javafx.beans.value.ChangeListener;
@@ -11,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -19,11 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 
-import javax.xml.soap.Text;
-
 public class ParamTextController {
 
-    // ATTRIBUT DU CONTROLER
     @FXML
     private Slider sliderSizeFont;
 
@@ -35,12 +26,6 @@ public class ParamTextController {
 
     @FXML
     private TextField textValue;
-
-    @FXML
-    private Button validateButton;
-
-    @FXML
-    private Button cancelButton;
 
     private TextTool textTool = TextTool.getInstance();
 
@@ -88,8 +73,6 @@ public class ParamTextController {
         textTool.validate();
     }
     
-    
-
     @FXML
     void changeValue(KeyEvent event) {
         textTool.changeTextValue(textValue.getText());
@@ -99,6 +82,4 @@ public class ParamTextController {
     void cancelTextCreation(ActionEvent event){
         textTool.cancel();
     }
-
-
 }

@@ -1,7 +1,6 @@
 package utils;
 
 import controller.Layer;
-import controller.Project;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -22,4 +21,6 @@ public class SnapshotMaker {
 		layer.setOpacity(opacity);
 		return snapshot;
 	}
+	
+	// TODO: déplacer le snapshot de la gomme ici!
 }

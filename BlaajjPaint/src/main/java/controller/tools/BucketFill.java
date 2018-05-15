@@ -27,7 +27,7 @@ import java.util.Stack;
 
 public class BucketFill extends Tool {
 	/** ATTRIBUTS **/
-	private static BucketFill instance = new BucketFill();
+	private static BucketFill toolInstance  = null;
 	private FillSave currentFill;
 
 	/**
@@ -42,7 +42,10 @@ public class BucketFill extends Tool {
 	 * @return l'instance du Singleton
 	 */
 	public static BucketFill getInstance() {
-		return instance;
+		if (toolInstance  == null) {
+			toolInstance  = new BucketFill();
+		}
+		return toolInstance ;
 	}
 
 	/**

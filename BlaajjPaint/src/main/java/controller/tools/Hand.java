@@ -12,9 +12,12 @@ import javafx.scene.input.MouseEvent;
  */
 public class Hand extends Tool {
 	
-	private static Hand toolInstance = new Hand();
+	private static Hand toolInstance = null;
 	
 	public static Hand getInstance() {
+		if (toolInstance == null) {
+			toolInstance = new Hand();
+		}
 		return toolInstance;
 	}
 	
