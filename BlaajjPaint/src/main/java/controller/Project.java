@@ -434,31 +434,4 @@ public class Project implements Serializable {
 			s.writeObject(li.next());
 		}
 	}
-	
-	public void zoom(double factor) {
-		double c1 = clip.getWidth()*factor;
-		double c2 = clip.getHeight()*factor;
-		clip = new Rectangle(c1, c2);
-		double x = Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - c1) / 2);
-		double y = Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - c2 - MainViewController.getInstance().getParamBar().getHeight()) / 2));
-		workspace.setClip(clip);
-		workspace.setTranslateX(x);
-		workspace.setTranslateY(y);
-		
-		for (Layer l : layers) {
-			l.setScaleX(l.getScaleX() * factor);
-			l.setScaleY(l.getScaleY() * factor);
-			//l.setTranslateX(Math.round((MainViewController.getInstance().getAnchorPaneCenter().getWidth() - l.getWidth()*factor) / 2));
-			//l.setTranslateY(Math.round(((MainViewController.getInstance().getAnchorPaneCenter().getHeight() - l.getHeight()*factor - MainViewController.getInstance().getParamBar().getHeight()) / 2)));
-		}
-		workspace.setMinSize(workspace.getWidth() * factor, workspace.getHeight()*factor);
-		workspace.setPrefSize(workspace.getWidth() * factor, workspace.getHeight()*factor);
-		workspace.setMaxSize(workspace.getWidth() * factor, workspace.getHeight()*factor);
-		
-		drawWorkspace();
-		/*
-		workspace.setScaleY(workspace.getScaleY() * factor);
-		workspace.setScaleZ(workspace.getScaleZ() * factor);
-		*/
-	}
 }

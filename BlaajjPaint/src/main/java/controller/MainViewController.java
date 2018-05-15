@@ -1,10 +1,9 @@
 package controller;
 
-	import controller.history.RecordCmd;
+import controller.history.RecordCmd;
 import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
-import controller.tools.Zoom;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -162,34 +161,7 @@ public class MainViewController {
 		if (event.getCode() == KeyCode.E) {
 			toolBarController.handleEraser(null);
 		}
-		
-		// select zoom tool
-		if (event.getCode() == KeyCode.Z) {
-			toolBarController.handleZoom(null);
-		}
 	}
-	
-	@FXML
-	private void zoomIn() {
-		Zoom.getInstance().zoomIn();
-	}
-	
-	@FXML
-	private void zoomOut() {
-		Zoom.getInstance().zoomOut();
-	}
-	
-	
-	public void moveView(double x, double y){
-		scrollPane.vvalueProperty().setValue(x);// - Project.getInstance().getHeight / 2);
-		scrollPane.hvalueProperty().setValue(y);// - Project.getInstance().getWidth / 2);
-	}
-	
-	public void setTextZoomLabel(String text) {
-		zoomLabel.setText(text);
-	}
-
-
 
 	/**
 	 * Permet de fermer le projet en cours d'execution

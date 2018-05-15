@@ -26,7 +26,7 @@ public class ToolBarController {
 	/* Attributs  FXML */
 	
 	@FXML
-	private ToggleButton brushTool;
+	private ToggleButton pencilTool;
 	
 	@FXML
 	private ToggleButton eraseTool;
@@ -66,9 +66,6 @@ public class ToolBarController {
 	
 	@FXML
 	private ToggleButton pipetteTool;
-	
-	@FXML
-	private ToggleButton zoomTool;
 	
 	@FXML
 	public void handleMoveView(ActionEvent event) {
@@ -156,15 +153,6 @@ public class ToolBarController {
 	@FXML
 	public void handleHand(ActionEvent event) {
 		Tool.setCurrentTool(Hand.getInstance());
-		if (Tool.getToolHasChanged()) {
-			closeCurrentParamBar();
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleZoom(ActionEvent event) {
-		Tool.setCurrentTool(Zoom.getInstance());
 		if (Tool.getToolHasChanged()) {
 			closeCurrentParamBar();
 			Tool.setToolHasChanged(false);

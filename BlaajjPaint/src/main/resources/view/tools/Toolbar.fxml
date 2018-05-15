@@ -12,24 +12,22 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="#mainPaneId" fx:id="toolBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="370.0" minWidth="70.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolBarController">
+<AnchorPane id="#mainPaneId" fx:id="toolBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="420.0" minWidth="70.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolBarController">
 	<children>
 		<ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" style="-fx-background-color: #707070;" stylesheets="@ToolBarStyleSheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
-				<ToggleButton id="handTool" fx:id="handTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleHand" styleClass="menuButton">
+				<ToggleButton id="handTool" fx:id="handTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleHand" styleClass="menuButton">
                <toggleGroup>
                   <ToggleGroup fx:id="ToolBarButtons" />
                </toggleGroup></ToggleButton>
-				<ToggleButton id="moveTool" fx:id="moveTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMoveView" styleClass="menuButton" textAlignment="CENTER" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="selectionTool" fx:id="selectTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="cropTool" fx:id="cropTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCrop" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="pipetteTool" fx:id="pipetteTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePipette" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="brushTool" fx:id="brushTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePencil" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="eraseTool" fx:id="eraseTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleEraser" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="fingerTool" fx:id="bucketFillTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBucketFill" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="textTool" fx:id="textTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddText" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="shapesTool" fx:id="shapeTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddShape" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
-				<ToggleButton id="zoomTool" fx:id="zoomTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#handleZoom" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="moveTool" fx:id="moveTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleMoveView" styleClass="menuButton" textAlignment="CENTER" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="cropTool" fx:id="cropTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleCrop" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="pipetteTool" fx:id="pipetteTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handlePipette" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="pencilTool" fx:id="pencilTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handlePencil" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="eraseTool" fx:id="eraseTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleEraser" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="bucketFillTool" fx:id="bucketFillTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleBucketFill" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="textTool" fx:id="textTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleAddText" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
+				<ToggleButton id="shapesTool" fx:id="shapeTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleAddShape" styleClass="menuButton" toggleGroup="$ToolBarButtons" />
 			</items>
          <padding>
             <Insets bottom="10.0" top="10.0" />

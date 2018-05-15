@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="mainView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" onKeyPressed="#KeyPressed" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" > <!-- fx:controller="controller.MainViewController"-->
+<BorderPane fx:id="mainView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" onKeyPressed="#KeyPressed" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!-- fx:controller="controller.MainViewController"-->
 	<left>
 		<AnchorPane maxWidth="70.0" minWidth="70.0" prefWidth="70.0" BorderPane.alignment="CENTER_LEFT">
 			<children>
@@ -45,26 +45,4 @@
          </BorderPane.margin>
       </AnchorPane>
    </center>
-   <bottom>
-      <HBox maxHeight="30.0" minHeight="30.0" prefHeight="30.0" BorderPane.alignment="BOTTOM_CENTER">
-         <children>
-            <Pane minWidth="300.0" />
-            <Button mnemonicParsing="false" onAction="#zoomOut" text="-">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin></Button>
-            <Label fx:id="zoomLabel" text="100%">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin></Label>
-            <Button mnemonicParsing="false" onAction="#zoomIn" text="+">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin></Button>
-         </children>
-         <padding>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </padding>
-      </HBox>
-   </bottom>
 </BorderPane>
