@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rightMenu" maxWidth="250.0" minWidth="250.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
+<AnchorPane fx:id="rightMenu" maxWidth="250.0" minWidth="250.0" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.RightMenuController">
 	<children>
 		<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
@@ -30,7 +35,7 @@
 								<Font name="System Bold" size="24.0" />
 							</font>
 						</Label>
-						<ScrollPane fitToWidth="true" maxHeight="300.0" minHeight="150.0">
+						<ScrollPane fitToWidth="true" maxHeight="300.0" minHeight="150.0" prefHeight="300.0">
 							<content>
 								<VBox fx:id="historyList" minHeight="50.0" />
 							</content>
@@ -65,7 +70,7 @@
 							</children>
 						</HBox>
 						<Slider fx:id="opacitySlider" blockIncrement="5.0" majorTickUnit="5.0" minorTickCount="1" onMouseDragged="#OnMouseDragged" onMousePressed="#OnMousePressed" onMouseReleased="#OnMouseReleased" snapToTicks="true" value="100.0" />
-						<ScrollPane fitToWidth="true" maxHeight="300.0" minHeight="150.0">
+						<ScrollPane fitToWidth="true" maxHeight="300.0" minHeight="150.0" prefHeight="300.0">
 							<content>
 								<VBox fx:id="layersList" minHeight="50.0" />
 							</content>

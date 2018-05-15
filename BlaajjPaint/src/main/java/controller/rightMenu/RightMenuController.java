@@ -8,20 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import utils.UndoException;
 
-import javax.swing.*;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.ListIterator;
 
 public class RightMenuController {
 	@FXML
@@ -191,7 +186,7 @@ public class RightMenuController {
 		}
 
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
 
 			updateLayerList();
@@ -199,7 +194,7 @@ public class RightMenuController {
 		}
 
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
 
 			updateLayerList();
@@ -241,11 +236,7 @@ public class RightMenuController {
 		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
 	}
 	
-	public void deleteLayer(int index) {
-		layersList.getChildren().remove(index);
-	}
-	
-	public void addNewLayer(Layer layer) {
+	private void addNewLayer(Layer layer) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/Layer.fxml"));
 			Parent newLayer = fxmlLoader.load();

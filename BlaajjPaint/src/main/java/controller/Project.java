@@ -128,7 +128,7 @@ public class Project implements Serializable {
 		workspace.setBackground(backgroundImage);
 		
 		if (isNew) {
-			setCurrentLayer(new Layer(width, height));
+			setCurrentLayer(new Layer(width, height, false));
 			layers.add(currentLayer);
 			workspace.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
@@ -185,7 +185,7 @@ public class Project implements Serializable {
 	 * Ajoutes un nouveau layer avec les dimensions définies dans le projet
 	 */
 	public void addNewLayer() {
-		addLayer(new Layer(dimension.width, dimension.height));
+		addLayer(new Layer(dimension.width, dimension.height, false));
 	}
 	
 	/**
@@ -197,7 +197,7 @@ public class Project implements Serializable {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		workspace.getChildren().add(currentLayer);
-		MainViewController.getInstance().getRightMenuController().addNewLayer(newLayer);
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
 	
@@ -274,7 +274,7 @@ public class Project implements Serializable {
 	
 	public void export(File file) {
 		if (file != null) {
-			Layer resultLayer = new Layer(1,1);
+			Layer resultLayer = new Layer(1,1, false); // fixme: 1,1 la taille?? certain?
 			double minX = 0;
 			double minY = 0;
 			
@@ -339,7 +339,7 @@ public class Project implements Serializable {
 			javafx.scene.image.Image image;
 			image = new Image(file.toURI().toString());
 			
-			Layer newLayer = new Layer((int) image.getWidth(), (int) image.getHeight());
+			Layer newLayer = new Layer((int) image.getWidth(), (int) image.getHeight(), false);
 			addLayer(newLayer);
 			
 			newLayer.getGraphicsContext2D().drawImage(image, 0, 0);
@@ -355,7 +355,7 @@ public class Project implements Serializable {
 				index--;
 			}
 			setCurrentLayer(layers.get(index));
-			MainViewController.getInstance().getRightMenuController().deleteLayer(index);
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
 	}

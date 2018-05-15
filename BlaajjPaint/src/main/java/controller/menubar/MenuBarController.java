@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -22,6 +23,8 @@ import java.util.LinkedList;
 
 public class MenuBarController {
 	
+	@FXML
+	public Menu transformations;
 	@FXML
 	private MenuBar menuBar;
 	
@@ -72,7 +75,7 @@ public class MenuBarController {
 			
 			SaveProjects.getInstance().saveAs(file);
 			//mainApp.savePersonDataToFile(file);
-			System.out.println("appeler la fonction de sauvegarde! Me donne pas d'ordre"); // FIXME: appeler fct sauvegarder
+			// FIXME: appeler fct sauvegarder
 		}
 	}
 	
@@ -173,7 +176,7 @@ public class MenuBarController {
 	@FXML
 	public void mergeAllLayer(ActionEvent event) {
 		MergeAllSave mas = new MergeAllSave();
-		Layer resultLayer = new Layer(1,1);
+		Layer resultLayer = new Layer(1,1, false); // FIXME: 1,1 la taille??
 		
 		for (Layer layer : Project.getInstance().getLayers()) {
 			resultLayer = resultLayer.mergeLayers(layer);
@@ -189,6 +192,7 @@ public class MenuBarController {
 	@FXML
 	public void hideCurrentLayer(ActionEvent event) {
 		Project.getInstance().getCurrentLayer().setVisible(false);
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	@FXML

@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 public class Layer extends Canvas implements Serializable {
 	private int id; // l'id du calque
-	private static int count = 1; // le nombre de calques qui ont été créés
+	private static int count = 0; // le nombre de calques qui ont été créés
 	private String nomCalque;
 	
 	/**
@@ -28,23 +28,27 @@ public class Layer extends Canvas implements Serializable {
 	 *
 	 * @param width  la largeur de notre calque
 	 * @param height la hauteur de notre calque
+	 * @param nom le nom à donner au calque (nom affiché dans la liste de calque)
+	 * @param calqueTemporaire booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
 	 */
-	public Layer(int width, int height, String nom) {
-		this(width, height);
+	public Layer(int width, int height, String nom, boolean calqueTemporaire) {
+		this(width, height, calqueTemporaire);
 		nomCalque = "Calque " + id + ", " + nom;
 	}
 	
 	/**
 	 * Constructeur
 	 *
-	 * @param width
-	 * 		la largeur de notre calque
-	 * @param height
-	 * 		la hauteur de notre calque
+	 * @param width la largeur de notre calque
+	 * @param height la hauteur de notre calque
+	 * @param calqueTemporaire booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
 	 */
-	public Layer(int width, int height) {
+	public Layer(int width, int height, boolean calqueTemporaire) {
 		super(width, height);
-		id = count++;
+		if (!calqueTemporaire) {
+			count++;
+		}
+		id = count;
 		nomCalque = "Calque " + id;
 	}
 	
@@ -54,8 +58,7 @@ public class Layer extends Canvas implements Serializable {
 	 * @param toCopy le calque à copier
 	 */
 	public Layer(Layer toCopy) {
-		super(toCopy.getWidth(), toCopy.getHeight());
-		id = count++;
+		this((int)toCopy.getWidth(), (int)toCopy.getHeight(), false);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
 		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4), 0, 0, getWidth(), getHeight());
@@ -134,7 +137,7 @@ public class Layer extends Canvas implements Serializable {
 		
 		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
-		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY));
+		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), true);
 		
 		// dessine les deux calques sur notre nouveau calque fusion
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
@@ -211,7 +214,7 @@ public class Layer extends Canvas implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Calque " + id;
+		return nomCalque;
 	}
 	
 	
@@ -263,7 +266,7 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	public static void reset() {
-		count = 1;
+		count = 0;
 	}
 
 	public Layer crop(double x1, double y1, double x2, double y2){

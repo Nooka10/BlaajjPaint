@@ -21,9 +21,9 @@ public class EmptyRectangle extends ShapeDrawer {
      * Constructeur privé (modèle singleton)
      */
     private EmptyRectangle() {
-
         toolType = ToolType.EMPTYRECTANGLE;
         tooltipHistory = "Rectangle vide";
+        nomForme = "Rectangle vide";
     }
 
     public double getThickness(){

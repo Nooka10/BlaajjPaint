@@ -33,19 +33,6 @@ public class ParamShapeController {
     private void initialize() {
         thicknessTextField.setText(String.valueOf(EmptyRectangle.getInstance().getThickness()));
         thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
-        /*
-        // Handle Slider value change events.
-        thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            tool.setThickness(Double.parseDouble(newValue.toString()));
-            thicknessTextField.setText(String.valueOf(tool.getThickness()));
-            ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
-        });
-         Handle TextField text changes.
-        thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            tool.setThickness(Double.parseDouble(newValue));
-            thicknessSlider.setValue(tool.getThickness());
-           ((ShapeDrawer) Tool.getCurrentTool()).setThickness(tool.getThickness());
-        });*/
     }
 
     public void sliderOnTextChange(ActionEvent actionEvent) {
