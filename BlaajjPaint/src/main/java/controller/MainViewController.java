@@ -181,8 +181,8 @@ public class MainViewController {
 	
 	
 	public void moveView(double x, double y){
-		scrollPane.vvalueProperty().setValue(x);// - Project.getInstance().getDimension().height / 2);
-		scrollPane.hvalueProperty().setValue(y);// - Project.getInstance().getDimension().width / 2);
+		scrollPane.vvalueProperty().setValue(x);// - Project.getInstance().getHeight / 2);
+		scrollPane.hvalueProperty().setValue(y);// - Project.getInstance().getWidth / 2);
 	}
 	
 	public void setTextZoomLabel(String text) {

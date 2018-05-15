@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,7 +21,9 @@ import java.util.LinkedList;
 
 public class Project implements Serializable {
 	
-	private Dimension dimension;
+	private int width;
+	
+	private int height;
 	
 	private LinkedList<Layer> layers;
 	
@@ -64,13 +67,20 @@ public class Project implements Serializable {
 	}
 	
 	/**
-	 * Retourne la taille de l'image définie dans le projet ( C'est les dimensions qu'aura l'image finale lors de son export )
-	 *
-	 * @return
+	 * Retourne la largeur du workspace (l'image finale qui sera exportée).
+	 * @return la largeur du workspace
 	 */
-	public Dimension getDimension() {
-		
-		return dimension;
+	public int getWidth() {
+		return width;
+	}
+	
+	/**
+	 * Retourne la hauteur du workspace (l'image finale qui sera exportée).
+	 *
+	 * @return la hauteur du workspace
+	 */
+	public int getHeight() {
+		return height;
 	}
 	
 	/**
@@ -104,7 +114,8 @@ public class Project implements Serializable {
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
-		dimension = new Dimension(width, height);
+		this.width = width;
+		this.height = height;
 		workspace = new AnchorPane();
 		
 		MainViewController.getInstance().getScrollPane().setContent(workspace);
@@ -142,9 +153,13 @@ public class Project implements Serializable {
 	 */
 	public void close() {
 		backgroundImage = null;
-		dimension = null;
+		width = 0;
+		height = 0;
 		layers = null;
 		currentLayer = null;
+		workspace = null;
+		redBorder = null;
+		clip = null;
 		
 		Layer.reset();
 	}
@@ -153,12 +168,12 @@ public class Project implements Serializable {
 	//bah elle draw le workspace
 	public void drawWorkspace() {
 		workspace.getChildren().clear();
-		//workspace.prefHeight(dimension.height);
-		//workspace.prefWidth(dimension.width);
-		//workspace.minHeight(dimension.height);
-		//workspace.minWidth(dimension.width);
-		//workspace.maxHeight(dimension.height);
-		//workspace.maxWidth(dimension.width);
+		//workspace.prefHeight(height);
+		//workspace.prefWidth(width);
+		//workspace.minHeight(height);
+		//workspace.minWidth(width);
+		//workspace.maxHeight(height);
+		//workspace.maxWidth(width);
 		
 		Iterator it = layers.descendingIterator();
 		
@@ -185,7 +200,7 @@ public class Project implements Serializable {
 	 * Ajoutes un nouveau layer avec les dimensions définies dans le projet
 	 */
 	public void addNewLayer() {
-		addLayer(new Layer(dimension.width, dimension.height, false));
+		addLayer(new Layer(width, height, false));
 	}
 	
 	/**
@@ -289,7 +304,7 @@ public class Project implements Serializable {
 			}
 			
 			// redimensionne le calque resultant pour qu'il soit à la taille du projet
-			resultLayer = resultLayer.crop(-minX, -minY, -minX+dimension.width, -minY+dimension.height);
+			resultLayer = resultLayer.crop(-minX, -minY, -minX + width, -minY + height);
 			
 			String chosenExtension = "";
 			int i = file.getPath().lastIndexOf('.');
@@ -313,11 +328,11 @@ public class Project implements Serializable {
 				
 				BufferedImage image = SwingFXUtils.fromFXImage(canvas, null);
 				
-				BufferedImage imageRGB = new BufferedImage(dimension.width, dimension.height, BufferedImage.OPAQUE);
+				BufferedImage imageRGB = new BufferedImage(width, height, BufferedImage.OPAQUE);
 				
 				Graphics2D graphics = imageRGB.createGraphics();
 				
-				graphics.drawImage(image, 0, 0, dimension.width, dimension.height, null);
+				graphics.drawImage(image, 0, 0, width, height, null);
 				try {
 					ImageIO.write(imageRGB, "jpg", file);
 					graphics.dispose();
@@ -407,8 +422,8 @@ public class Project implements Serializable {
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		//s.defaultWriteObject();
 		// Dimentions du projet
-		s.writeInt(dimension.width);
-		s.writeInt(dimension.height);
+		s.writeInt(width);
+		s.writeInt(height);
 		
 		// Calques
 		s.writeInt(layers.size()); // Nombre de calques

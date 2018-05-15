@@ -113,7 +113,7 @@ public abstract class ShapeDrawer extends Tool {
 	 */
 	@Override
 	public void CallbackNewToolChanged() {
-		shapeLayer = new Layer(Project.getInstance().getDimension().width, Project.getInstance().getDimension().height, nomForme, false); //fixme: problème avec l'id du calque lorsqu'on change de forme...
+		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, false); //fixme: problème avec l'id du calque lorsqu'on change de forme...
 		Project.getInstance().removeEventHandler(Tool.getCurrentTool());
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);

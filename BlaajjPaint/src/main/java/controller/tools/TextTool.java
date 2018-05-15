@@ -134,7 +134,7 @@ public class TextTool extends Tool {
 
 	public void initTextTool(){
 		oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		textLayer = new Layer(Project.getInstance().getDimension().width, Project.getInstance().getDimension().height, "Texte", false);
+		textLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), "Texte", false);
 		textLayer.setVisible(true);
 		Project.getInstance().setCurrentLayer(textLayer);
 		Project.getInstance().getLayers().addFirst(textLayer);
