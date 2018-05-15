@@ -33,6 +33,7 @@
 				<MenuItem id="menuBar_fusionnerCalques" mnemonicParsing="false" onAction="#handleFusionLayer" text="Fusionner avec le calque inférieur" />
 				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques" />
 				<MenuItem id="menuBar_masquerCalques" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque séléctionné" />
+				<fx:include fx:id="transformations" source="Transformations.fxml"/>
 			</items>
 		</Menu>
 		<Menu mnemonicParsing="false" text="Aide">

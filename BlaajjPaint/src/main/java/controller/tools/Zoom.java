@@ -6,6 +6,7 @@ package controller.tools;
 import controller.MainViewController;
 import controller.Project;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -25,19 +26,19 @@ public class Zoom extends Tool {
 	
 	private double zoom = 1.0;
 	
-	public void zoomIn(double posX, double posY) {
-		zoom(posX, posY, 1.2);
+	public void zoomIn() {
+		zoom(1.2);
 	}
 	
-	public void zoomOut(double posX, double posY) {
-		zoom(posX, posY, 1 / 1.2);
+	public void zoomOut() {
+		zoom(1 / 1.2);
 	}
 	
-	private void zoom(double posX, double posY, double zoomFactor) {
-		zoom *= zoomFactor;
+	private void zoom(double zoomFactor) {
 		
+		zoom *= zoomFactor;
 		Project.getInstance().zoom(zoomFactor);
-		MainViewController.getInstance().moveView(posX, posY);
+		//MainViewController.getInstance().moveView(posX, posY);
 		MainViewController.getInstance().setTextZoomLabel(Math.round(zoom * 100) + "%");
 	}
 	
@@ -47,9 +48,9 @@ public class Zoom extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.isShiftDown()) {
-					zoomOut(event.getX(), event.getY());
+					zoomOut();
 				} else {
-					zoomIn(event.getX(), event.getY());
+					zoomIn();
 				}
 			}
 		};
@@ -60,7 +61,7 @@ public class Zoom extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				// do nothing
 			}
 		};
 	}
@@ -70,7 +71,7 @@ public class Zoom extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				// do nothing
 			}
 		};
 	}

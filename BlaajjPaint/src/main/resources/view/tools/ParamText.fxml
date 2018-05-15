@@ -16,7 +16,7 @@
       </Slider>
       <TextField fx:id="textFieldSizeFont" maxWidth="80.0" text="40" />
       <ChoiceBox id="Font" fx:id="fontList" prefWidth="150.0" />
-      <TextField fx:id="textValue" onAction="#changeValue" onKeyReleased="#changeValue" promptText="Text" />
+      <TextField fx:id="textValue" onAction="#validateText" onKeyReleased="#changeValue" promptText="Text" />
       <Button fx:id="validateButton" mnemonicParsing="false" onAction="#validateText" text="Validate" />
       <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelTextCreation" text="Annuler" />
    </children>

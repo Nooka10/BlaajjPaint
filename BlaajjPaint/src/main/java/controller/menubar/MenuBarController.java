@@ -4,6 +4,7 @@ import controller.Layer;
 import controller.MainViewController;
 import controller.Project;
 import controller.SaveProjects;
+import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +15,10 @@ import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Main;
+import utils.UndoException;
 
 import java.io.File;
+import java.util.LinkedList;
 
 public class MenuBarController {
 	
@@ -43,7 +46,7 @@ public class MenuBarController {
 	@FXML
 	public void handleSave(ActionEvent event) {
 		System.out.println("appeler la fonction de sauvegarde!");
-
+		
 		SaveProjects.getInstance().save();
 		// FIXME appeler fonction sauvegarder
 	}
@@ -66,7 +69,7 @@ public class MenuBarController {
 			if (!file.getPath().endsWith(".blaajj")) {
 				file = new File(file.getPath() + ".blaajj");
 			}
-
+			
 			SaveProjects.getInstance().saveAs(file);
 			//mainApp.savePersonDataToFile(file);
 			System.out.println("appeler la fonction de sauvegarde! Me donne pas d'ordre"); // FIXME: appeler fct sauvegarder
@@ -109,16 +112,17 @@ public class MenuBarController {
 		
 		Project.getInstance().importImage(file);
 	}
-
-
+	
+	
 	/**
 	 * Fermeture du projet en cours d'execution.
+	 *
 	 * @param event
 	 */
 	@FXML
 	public void handleClose(ActionEvent event) {
 		MainViewController.getInstance().closeProject();
-
+		
 	}
 	
 	@FXML
@@ -133,7 +137,8 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleNewLayer(ActionEvent event) {
-		Project.getInstance().addNewLayer();
+		// peut être mieux fait dans project si on a le temps
+		MainViewController.getInstance().getRightMenuController().addNewLayer();
 	}
 	
 	@FXML
@@ -148,11 +153,11 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleFusionLayer(ActionEvent event) {
-		// to do
+		MainViewController.getInstance().getRightMenuController().mergeLayer(event);
 	}
 	
 	@FXML
-	public void handleResizeLayer(){
+	public void handleResizeLayer() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/ResizeLayer.fxml"));
 			Parent resizeWindow = fxmlLoader.load();
@@ -167,17 +172,18 @@ public class MenuBarController {
 	
 	@FXML
 	public void mergeAllLayer(ActionEvent event) {
-		Layer layer = Project.getInstance().getLayers().getLast();
-		for (int i = Project.getInstance().getLayers().size() - 2; i >= 0; --i)
-			
-			Project.getInstance().getLayers().get(i).mergeLayers(layer);
+		MergeAllSave mas = new MergeAllSave();
+		Layer resultLayer = new Layer(1,1);
 		
+		for (Layer layer : Project.getInstance().getLayers()) {
+			resultLayer = resultLayer.mergeLayers(layer);
+		}
 		Project.getInstance().getLayers().clear();
-		Project.getInstance().getLayers().add(layer);
-		
+		Project.getInstance().addLayer(resultLayer);
 		
 		Project.getInstance().drawWorkspace();
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		mas.execute();
 	}
 	
 	@FXML
@@ -192,22 +198,66 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleHelp(ActionEvent event) {
-
+	
 	}
-
+	
 	/**
-	 * Permet d'activer les bouttons.
-	 * A appeler dès qu'un project est ouvert, créé
+	 * Permet d'activer les bouttons. A appeler dès qu'un project est ouvert, créé
 	 */
-	public void enableButton(){
-
+	public void enableButton() {
+	
 	}
-
+	
 	/**
-	 * Permet de déscativer les bouttons.
-	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 * Permet de déscativer les bouttons. A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
-	public void disableButton(){
-
+	public void disableButton() {
+	
 	}
+	
+	public class MergeAllSave extends ICmd {
+		
+		private LinkedList<Layer> allMergedLayers;
+		private Layer oldCurrentLayer;
+		private Layer newLayer;
+		
+		/**
+		 * Prend tous les calques qui vont être fusionnés
+		 */
+		public MergeAllSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+			allMergedLayers = new LinkedList<>();
+			allMergedLayers.addAll(Project.getInstance().getLayers());
+		}
+		
+		@Override
+		public void execute() {
+			newLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().getLayers().clear();
+			for (Layer layer : allMergedLayers) {
+				Project.getInstance().getLayers().add(layer);
+			}
+			
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().getLayers().clear();
+			Project.getInstance().getLayers().add(newLayer);
+			Project.getInstance().setCurrentLayer(newLayer);
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
+		}
+		
+		public String toString() {
+			return "Aplatissement de tous les calques";
+		}
+	}
+	
 }

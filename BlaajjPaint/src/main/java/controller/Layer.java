@@ -5,13 +5,14 @@ import controller.history.RecordCmd;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 public class Layer extends Canvas implements Serializable {
 	private int id; // l'id du calque
 	private static int count = 1; // le nombre de calques qui ont été créés
+	private String nomCalque;
 	
 	/**
 	 * Constructeur
@@ -27,13 +29,23 @@ public class Layer extends Canvas implements Serializable {
 	 * @param width  la largeur de notre calque
 	 * @param height la hauteur de notre calque
 	 */
+	public Layer(int width, int height, String nom) {
+		this(width, height);
+		nomCalque = "Calque " + id + ", " + nom;
+	}
+	
+	/**
+	 * Constructeur
+	 *
+	 * @param width
+	 * 		la largeur de notre calque
+	 * @param height
+	 * 		la hauteur de notre calque
+	 */
 	public Layer(int width, int height) {
 		super(width, height);
 		id = count++;
-	}
-	
-	public Layer(Dimension dimension) {
-		this(dimension.width, dimension.height);
+		nomCalque = "Calque " + id;
 	}
 	
 	/**
@@ -120,6 +132,7 @@ public class Layer extends Canvas implements Serializable {
 		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
 		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
 		
+		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
 		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY));
 		
@@ -202,7 +215,7 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	
-	/**
+	/** 
 	 * SERIALISATION
 	 **/
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
@@ -223,8 +236,7 @@ public class Layer extends Canvas implements Serializable {
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
 		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
-		
-		
+
 	}
 	
 	private void writeObject(ObjectOutputStream s) throws IOException {
@@ -252,5 +264,53 @@ public class Layer extends Canvas implements Serializable {
 	
 	public static void reset() {
 		count = 1;
+	}
+
+	public Layer crop(double x1, double y1, double x2, double y2){
+		// Récupération du PixelReader - permet de lire les pixels sur le graphics context
+		WritableImage srcMask = new WritableImage((int) getWidth(), (int) getHeight());
+		SnapshotParameters params = new SnapshotParameters();
+		params.setFill(Color.TRANSPARENT);
+		srcMask = snapshot(params, srcMask);
+		PixelReader pixelReader = srcMask.getPixelReader();
+		double x = x1 < x2 ? x1 : x2;
+		double y = y1 < y2 ? y1 : y2;
+		double width = Math.abs(x1 - x2);
+		double height = Math.abs(y1 - y2);
+		// Test si les position sont dans le calque
+		if(x < 0){
+			x = 0;
+		}
+		if(y < 0){
+			y = 0;
+		}
+		if(x + width > getWidth()){
+			width = width - (x + width - getWidth());
+		}
+		if(y + height > getHeight()){
+			height = height - (y + height - getHeight());
+		}
+
+		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
+
+		/*Project.getInstance().getLayers().remove(this);
+
+		Layer newLayer = new Layer((int)width, (int)height);
+		newLayer.setLayoutX(x + this.getLayoutX());
+		newLayer.setLayoutY(y + this.getLayoutY());
+		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
+		Project.getInstance().addLayer(newLayer);*/
+
+		this.setWidth(width);
+		this.setHeight(height);
+		
+		this.setLayoutX(x + this.getLayoutX());
+		this.setLayoutY(y + this.getLayoutY());
+
+		GraphicsContext gc = getGraphicsContext2D();
+		gc.clearRect(0,0,this.getWidth(),this.getHeight());
+		gc.drawImage(newImage,0,0);
+
+		return this;
 	}
 }

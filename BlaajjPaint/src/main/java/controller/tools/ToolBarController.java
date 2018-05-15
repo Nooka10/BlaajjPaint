@@ -79,14 +79,6 @@ public class ToolBarController {
 		}
 	}
 	
-	@FXML
-	public void handleSelect(ActionEvent event) {
-		Tool.setCurrentTool(Resize.getInstance());
-		if (Tool.getToolHasChanged()) {
-			addParamBar("/view/menubar/ResizeLayer.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
 	
 	@FXML
 	public void handleLasso(ActionEvent event) {
@@ -95,7 +87,11 @@ public class ToolBarController {
 	
 	@FXML
 	public void handleCrop(ActionEvent event) {
-	
+		Tool.setCurrentTool(Crop.getInstance());
+		if(Tool.getToolHasChanged()){
+			addParamBar("/view/tools/ParamCrop.fxml");
+			Tool.setToolHasChanged(false);
+		}
 	}
 	
 	@FXML

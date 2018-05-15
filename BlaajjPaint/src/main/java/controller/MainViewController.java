@@ -43,9 +43,13 @@ public class MainViewController {
 	@FXML
 	private AnchorPane paramBar;
 	@FXML
+	private AnchorPane anchorPaneCenter;
+	@FXML
 	private ScrollPane scrollPane;
 	@FXML
 	private Label zoomLabel;
+	@FXML
+	private AnchorPane workspace;
 	
 	/**
 	 * Constructeur privé (modèle Singleton)
@@ -65,6 +69,8 @@ public class MainViewController {
 	@FXML
 	private void initialize() {
 		mainViewControllerInstance = this;
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
 	}
 	
 	public Main getMain() {
@@ -78,7 +84,11 @@ public class MainViewController {
 	public ScrollPane getScrollPane() {
 		return scrollPane;
 	}
-
+	
+	public AnchorPane getAnchorPaneCenter() {
+		return anchorPaneCenter;
+	}
+	
 	public void resetScrollPane() {
 		scrollPane = new ScrollPane();
 	}
@@ -133,7 +143,9 @@ public class MainViewController {
 		
 		// Add new layer
 		if (cntrlMajC.match(event)) {
-			Project.getInstance().addNewLayer();
+			// Appelle de la fonction addNewLayer de RightMenu (action du clic sur le bouton + des calques)
+			// Peut être mieux fait et mettre dans project si on a du temps
+			MainViewController.getInstance().getRightMenuController().addNewLayer();
 		}
 		
 		// delete current layer
@@ -159,12 +171,12 @@ public class MainViewController {
 	
 	@FXML
 	private void zoomIn() {
-		Zoom.getInstance().zoomIn(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
+		Zoom.getInstance().zoomIn();
 	}
 	
 	@FXML
 	private void zoomOut() {
-		Zoom.getInstance().zoomOut(Project.getInstance().getCurrentLayer().getWidth() / 2, Project.getInstance().getCurrentLayer().getHeight() / 2);
+		Zoom.getInstance().zoomOut();
 	}
 	
 	
@@ -243,5 +255,9 @@ public class MainViewController {
 		menuBarController.enableButton();
 		rightMenuController.enableButton();
 		toolBarController.enableButton();
+	}
+	
+	public AnchorPane getWorkspace() {
+		return workspace;
 	}
 }

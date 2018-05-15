@@ -50,7 +50,6 @@ public class Move extends Tool {
 			
 			Project.getInstance().getCurrentLayer().setLayoutX(oldXSave);
 			Project.getInstance().getCurrentLayer().setLayoutY(oldYSave);
-			
 		}
 		
 		@Override
@@ -70,7 +69,6 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				
 				oldX = event.getX();
 				oldY = event.getY();
 				
@@ -86,7 +84,6 @@ public class Move extends Tool {
 			public void handle(MouseEvent event) {
 				Project.getInstance().getCurrentLayer().setLayoutX(Project.getInstance().getCurrentLayer().getLayoutX() + event.getX() - oldX);
 				Project.getInstance().getCurrentLayer().setLayoutY(Project.getInstance().getCurrentLayer().getLayoutY() + event.getY() - oldY);
-				
 			}
 		};
 	}
