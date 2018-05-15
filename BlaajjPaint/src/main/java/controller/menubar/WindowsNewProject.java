@@ -58,7 +58,7 @@ public class WindowsNewProject {
 	/**
 	 * Crée, initalise le nouveau projet avec la taille choisie.
 	 * Réactive les bouttons
-	 * 
+	 *
 	 * @param event
 	 */
 	@FXML
