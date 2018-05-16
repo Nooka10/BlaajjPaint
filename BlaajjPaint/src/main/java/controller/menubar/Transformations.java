@@ -80,14 +80,6 @@ public class Transformations {
 		});
 	}
 	
-	public void disableButtons(){
-		transformations.setDisable(false);
-	}
-	
-	public void enableButtons(){
-		transformations.setDisable(true);
-	}
-	
 	@FXML
 	public void handleValidateRotate(ActionEvent event) {
 		if (!degrees.getText().isEmpty()) {

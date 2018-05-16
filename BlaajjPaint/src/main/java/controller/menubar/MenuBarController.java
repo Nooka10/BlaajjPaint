@@ -27,8 +27,6 @@ import java.util.LinkedList;
 public class MenuBarController {
 	
 	@FXML
-	private Menu menuBar_transformations;
-	@FXML
 	public MenuBar menuBar;
 	@FXML
 	private MenuItem menuBar_nouveau;
@@ -62,6 +60,8 @@ public class MenuBarController {
 	private MenuItem menuBar_aplatirCalques;
 	@FXML
 	private MenuItem menuBar_masquerCalques;
+	@FXML
+	private Menu menuBar_transformations;
 	@FXML
 	private MenuItem menuBar_aPropos;
 	@FXML
@@ -302,6 +302,7 @@ public class MenuBarController {
 		menuBar_fusionnerCalques.setDisable(false);
 		menuBar_aplatirCalques.setDisable(false);
 		menuBar_masquerCalques.setDisable(false);
+		menuBar_transformations.setDisable(false);
 	}
 	
 	/**
@@ -322,7 +323,7 @@ public class MenuBarController {
 		menuBar_fusionnerCalques.setDisable(true);
 		menuBar_aplatirCalques.setDisable(true);
 		menuBar_masquerCalques.setDisable(true);
-		menuBar_transformations.setDisable(false);
+		menuBar_transformations.setDisable(true);
 	}
 	
 	public class MergeAllSave extends ICmd {
