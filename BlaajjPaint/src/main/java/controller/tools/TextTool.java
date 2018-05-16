@@ -33,6 +33,9 @@ public class TextTool extends Tool {
 	 */
 	private TextTool() {
 		toolType = ToolType.TEXT;
+		MainViewController.getInstance().getRightMenuController().getColorPicker().setOnHiding(event -> {
+			changeTextOnLayer();
+		});
 	}
 	
 	/**
@@ -91,6 +94,7 @@ public class TextTool extends Tool {
 	private void changeTextOnLayer() {
 		// Test si la personne commencé l'ajout du text (nécessite le clique sur le calque)
 		if (addText != null) {
+			System.out.println(Project.getInstance().getCurrentColor());
 			GraphicsContext graphics = textLayer.getGraphicsContext2D(); // récupération du graphics context
 			// Nettoyage du calque (permet de déplacer le text)
 			graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());

@@ -114,6 +114,14 @@ public class RightMenuController {
 	public void setColorPickerColor(Color color) {
 		colorPicker.setValue(color);
 	}
+
+	/**
+	 * Retourne le color picker
+	 * @return ColorPicker
+	 */
+	public ColorPicker getColorPicker(){
+		return colorPicker;
+	}
 	
 	
 	/**
