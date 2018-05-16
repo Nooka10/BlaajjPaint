@@ -1,8 +1,3 @@
-/**
- * @file BucketFill
- * @authors Blaajj
- */
-
 package controller.tools;
 
 import controller.Layer;
@@ -25,6 +20,9 @@ import utils.UndoException;
 import java.util.HashSet;
 import java.util.Stack;
 
+/**
+ * Outil permettant de remplir une zone coloré de meme couleur dans une autre couleur
+ */
 public class BucketFill extends Tool {
 	/** ATTRIBUTS **/
 	private static BucketFill toolInstance  = null;

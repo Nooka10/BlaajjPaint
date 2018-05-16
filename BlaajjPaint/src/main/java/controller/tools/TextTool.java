@@ -1,8 +1,3 @@
-/**
- * @file TextTool
- * @authors Blaajj
- */
-
 package controller.tools;
 
 import controller.Layer;
@@ -20,6 +15,9 @@ import javafx.scene.text.Font;
 import utils.SnapshotMaker;
 import utils.UndoException;
 
+/**
+ * Outil permettant de mettre du text dans l'image
+ */
 public class TextTool extends Tool {
 	private static TextTool toolInstance = null;
 	private AddText addText;

@@ -13,6 +13,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 
+/**
+ * Controlleur permettant de controller les paramètres du texte. (ParamBar)
+ */
 public class ParamTextController {
 
     @FXML
@@ -62,22 +65,38 @@ public class ParamTextController {
         });
     }
 
+    /**
+     * Evenement appellé par le slider changeant la taille de la police d'écriture
+     * @param event
+     */
     @FXML
     void changeFontSlider(MouseEvent event) {
         textTool.setFont(new Font(fontList.getValue(),sliderSizeFont.getValue()));
         textFieldSizeFont.setText(String.valueOf(Math.round(sliderSizeFont.getValue())));
     }
 
+    /**
+     * Evenement lors de la validation de l'ajout du texte
+     * @param event
+     */
     @FXML
     void validateText(ActionEvent event) {
         textTool.validate();
     }
-    
+
+    /**
+     * Evenement lorsque le text change dans le textField
+     * @param event
+     */
     @FXML
     void changeValue(KeyEvent event) {
         textTool.changeTextValue(textValue.getText());
     }
 
+    /**
+     * Evenement appelé par l'appuie du boutton annuler
+     * @param event
+     */
     @FXML
     void cancelTextCreation(ActionEvent event){
         textTool.cancel();

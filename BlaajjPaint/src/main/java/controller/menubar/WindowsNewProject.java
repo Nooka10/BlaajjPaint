@@ -10,6 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controleur de la fenêtre qui apparait lors de la demande de création d'un nouveau projet
+ */
 public class WindowsNewProject {
 	@FXML
 	private Button cancel;
@@ -67,7 +70,11 @@ public class WindowsNewProject {
 		// Réactive les bouttons
 		MainViewController.getInstance().enableButton();
 	}
-	
+
+	/**
+	 * Annule la création d'un nouveau projet. Appellé par le boutton "Annulé"
+	 * @param event
+	 */
 	@FXML
 	private void cancel(ActionEvent event) {
 		Stage stage = (Stage) cancel.getScene().getWindow();
