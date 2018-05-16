@@ -21,13 +21,22 @@ import utils.UndoException;
 import java.io.File;
 import java.util.LinkedList;
 
+/**
+ * Controller associé au fichier FXML MenuBar.fxml et controlant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
+ */
 public class MenuBarController {
 	
 	@FXML
 	public Menu transformations;
-	@FXML
-	private MenuBar menuBar;
 	
+	@FXML
+	public MenuBar menuBar;
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Nouveau</b>.
+	 * Crée un nouveau projet selon la largeur et la hauteur entrés par l'utilisateur.
+	 * @param event
+	 */
 	@FXML
 	public void handleNew(ActionEvent event) {
 		try {
@@ -146,7 +155,7 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleDuplicateLayer(ActionEvent event) {
-		Project.getInstance().addLayer(new Layer(Project.getInstance().getCurrentLayer()));
+		Project.getInstance().addLayer(new Layer(Project.getInstance().getCurrentLayer(), false));
 	}
 	
 	@FXML
