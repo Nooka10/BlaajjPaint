@@ -23,14 +23,14 @@ public class RecordCmd {
 	private static RecordCmd recordCdmInstance = null; // L'instance unique de RecordCmd (modèle Singleton)
 	
 	/**
-	 * Constructeur privé (modèle Singleton)
+	 * Constructeur privé (modèle Singleton).
 	 */
 	private RecordCmd() {
 	}
 	
 	/**
-	 * Retourne l'instance unique du singleton RecordCmd. La crée au besoin la première fois.
-	 * @return
+	 * Retourne l'instance unique du singleton RecordCmd. La crée si elle n'existe pas déjà.
+	 * @return l'instance unique du singleton RecordCmd.
 	 */
 	public static RecordCmd getInstance() {
 		if (recordCdmInstance == null) {

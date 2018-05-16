@@ -3,7 +3,7 @@ package controller.history;
 import utils.UndoException;
 
 /**
- *
+ * 
  */
 public abstract class ICmd {
 	
@@ -11,32 +11,32 @@ public abstract class ICmd {
 	private int id; // id unique à chaque commande
 	
 	/**
-	 * Constructeur. Construit une commande et lui attribue son id unique
+	 * Constructeur. Construit une commande et lui attribue son id unique.
 	 */
 	public ICmd() {
 		id = ++nbCmd;
 	}
 	
 	/**
-	 * Retourne l'id de la commande
-	 * @return un entier, l'id de la commande
+	 * Retourne l'id de la commande.
+	 * @return un entier, l'id de la commande.
 	 */
 	public int getID() {
 		return id;
 	}
 	
 	/**
-	 * Exécute la Cmd et l'enregistre dans le singleton RecordCmd
+	 * Exécute la Cmd et l'enregistre dans le singleton RecordCmd.
 	 */
 	public abstract void execute();
 	
 	/**
-	 * Fait revenir l'objet à l'état dans lequel il était avant l'exécution de la commande
+	 * Fait revenir l'objet à l'état dans lequel il était avant l'exécution de la commande.
 	 */
 	public abstract void undo() throws UndoException;
 	
 	/**
-	 * Fait revenir l'objet à l'état dans lequel il était après l'exécution de la commande
+	 * Fait revenir l'objet à l'état dans lequel il était après l'exécution de la commande.
 	 */
 	public abstract void redo() throws UndoException;
 }
