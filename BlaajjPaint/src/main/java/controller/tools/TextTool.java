@@ -119,7 +119,7 @@ public class TextTool extends Tool {
 		// redessine les layers et list de layers
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().getLayersList().setDisable(false);
+		MainViewController.getInstance().getRightMenuController().activateLayerListClick();
 		
 		// reset des attributs
 			textLayer = null;
@@ -151,7 +151,7 @@ public class TextTool extends Tool {
 		Project.getInstance().setCurrentLayer(textLayer);
 		Project.getInstance().getLayers().addFirst(textLayer);
 		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().getLayersList().setDisable(true);
+		MainViewController.getInstance().getRightMenuController().disableLayerListClick();
 	}
 	
 	@Override

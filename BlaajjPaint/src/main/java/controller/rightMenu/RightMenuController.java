@@ -75,40 +75,44 @@ public class RightMenuController {
 		fusion.setTooltip(new Tooltip("Fusionner avec le calque inférieur"));
 	}
 	
-	public VBox getLayersList() {
-		return layersList;
+	public void activateLayerListClick() {
+		layersList.setDisable(false);
+	}
+	
+	public void disableLayerListClick() {
+		layersList.setDisable(true);
 	}
 	
 	@FXML
-	void OnInputTextChanged(ActionEvent event) {
+	void OnInputTextChanged() {
 		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
 		Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
 		opacitySlider.setValue(newOpacity);
 	}
 	
 	@FXML
-	void OnMousePressed(MouseEvent event) {
+	void OnMousePressed() {
 		oldOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
 		opacityTextField.setText(String.valueOf(oldOpacity));
 		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
 	}
 	
 	@FXML
-	void OnMouseDragged(MouseEvent event) {
+	void OnMouseDragged() {
 		newOpacity = opacitySlider.getValue();
 		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().updateLayerOpacity(newOpacity);
 	}
 	
 	@FXML
-	void OnMouseReleased(MouseEvent event) {
+	void OnMouseReleased() {
 		newOpacity = Math.round(opacitySlider.getValue());
 		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
 	}
 	
 	@FXML
-	void selectColor(ActionEvent event) {
+	void selectColor() {
 		Project.getInstance().setCurrentColor(colorPicker.getValue());
 	}
 	
@@ -117,10 +121,10 @@ public class RightMenuController {
 	}
 	
 	
-	@FXML
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
+	@FXML
 	public void addNewLayer() {
 		NewLayerSave ls = new NewLayerSave();
 		Project.getInstance().addNewLayer();
@@ -128,10 +132,10 @@ public class RightMenuController {
 		ls.execute();
 	}
 	
-	@FXML
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
+	@FXML
 	void deleteLayer() {
 		if (Project.getInstance().getLayers().size() != 1) {
 			DeleteLayerSave dls = new DeleteLayerSave();
@@ -141,11 +145,11 @@ public class RightMenuController {
 		}
 	}
 	
-	@FXML
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	void downLayer(ActionEvent event) {
+	@FXML
+	void downLayer() {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		if (index < Project.getInstance().getLayers().size() - 1) {
 
@@ -158,11 +162,11 @@ public class RightMenuController {
 		}
 	}
 	
-	@FXML
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	void upLayer(ActionEvent event) {
+	@FXML
+	void upLayer() {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		
 		if (index != 0) {
@@ -211,10 +215,10 @@ public class RightMenuController {
 		}
 	}
 
-	@FXML
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
+	@FXML
 	public void mergeLayer() {
 		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
@@ -322,6 +326,8 @@ public class RightMenuController {
 		upLayer.setDisable(false);
 		downLayer.setDisable(false);
 		fusion.setDisable(false);
+		opacityTextField.setDisable(false);
+		opacitySlider.setDisable(false);
 	}
 
 	/**
@@ -334,6 +340,8 @@ public class RightMenuController {
 		upLayer.setDisable(true);
 		downLayer.setDisable(true);
 		fusion.setDisable(true);
+		opacityTextField.setDisable(true);
+		opacitySlider.setDisable(true);
 	}
 	
 	public class NewLayerSave extends ICmd {
@@ -348,10 +356,10 @@ public class RightMenuController {
 			oldCurrentLayer = Project.getInstance().getCurrentLayer();
 		}
 		
-		@Override
 		/**
 		 * Sauvegarde le nouveau current layer, a appeler juste après avoir ajouté le nouveau current layer
 		 */
+		@Override
 		public void execute() {
 			newLayer = Project.getInstance().getCurrentLayer();
 			RecordCmd.getInstance().saveCmd(this);
@@ -437,7 +445,7 @@ public class RightMenuController {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Project.getInstance().getLayers().add(index, oldCurrentLayer2);
 			Project.getInstance().getLayers().add(index, oldCurrentLayer1);
 			
@@ -448,7 +456,7 @@ public class RightMenuController {
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Project.getInstance().getLayers().remove(oldCurrentLayer1);
 			Project.getInstance().getLayers().remove(oldCurrentLayer2);
 			Project.getInstance().getLayers().add(index, newLayer);
