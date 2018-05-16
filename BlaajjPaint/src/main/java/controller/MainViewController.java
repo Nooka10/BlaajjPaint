@@ -66,6 +66,10 @@ public class MainViewController {
 		return main;
 	}
 	
+	public MenuBarController getMenuBarController() {
+		return menuBarController;
+	}
+	
 	public void setMain(Main main) {
 		this.main = main;
 	}

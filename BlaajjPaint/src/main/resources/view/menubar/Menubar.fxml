@@ -30,7 +30,7 @@
 				<MenuItem fx:id="menuBar_redimensionnerCalque" mnemonicParsing="false" onAction="#handleResizeLayer" text="Redimensionner"/>
 				<MenuItem fx:id="menuBar_fusionnerCalques" mnemonicParsing="false" onAction="#handleFusionLayer" text="Fusionner avec le calque inférieur"/>
 				<MenuItem fx:id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques"/>
-				<MenuItem fx:id="menuBar_masquerCalques" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque séléctionné"/>
+				<MenuItem fx:id="menuBar_masquerCalques" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque sélectionné"/>
 				<fx:include fx:id="menuBar_transformations" source="Transformations.fxml"/>
 			</items>
 		</Menu>

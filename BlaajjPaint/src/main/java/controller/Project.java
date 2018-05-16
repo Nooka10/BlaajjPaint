@@ -262,6 +262,7 @@ public class Project implements Serializable {
 		//MainViewController.getInstance().getAnchorPaneCenter().getChildren().add(redBorder);
 		
 		addEventHandlers(Tool.getCurrentTool());
+		MainViewController.getInstance().getMenuBarController().changeHideButtonText();
 		drawWorkspace();
 	}
 	

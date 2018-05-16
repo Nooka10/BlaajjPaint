@@ -273,7 +273,17 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void hideCurrentLayer() {
-		Project.getInstance().getCurrentLayer().setVisible(false);
+		Project.getInstance().getCurrentLayer().setVisible(!Project.getInstance().getCurrentLayer().isVisible());
+		changeHideButtonText();
+		Project.getInstance().drawWorkspace();
+	}
+	
+	public void changeHideButtonText() {
+		if (Project.getInstance().getCurrentLayer().isVisible()) {
+			menuBar_masquerCalques.setText("Masquer le calque sélectionné");
+		} else {
+			menuBar_masquerCalques.setText("Afficher le calque sélectionné");
+		}
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
