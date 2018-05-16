@@ -65,8 +65,12 @@ public class TextTool extends Tool {
 	public void validate() {
 		// Test si l'outil est en cours d'édition
 		if (addText != null) {
+			Layer newLayer = new Layer(textLayer, false); // Devient un calque non-temporaire
+			Project.getInstance().addLayer(newLayer);
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
+			Project.getInstance().drawWorkspace();
 			cancel();
-			Project.getInstance().addLayer(new Layer(textLayer, false));
+			Project.getInstance().setCurrentLayer(newLayer);
 		}
 	}
 	
@@ -99,7 +103,15 @@ public class TextTool extends Tool {
 	 * Annulation de l'ajout du text
 	 */
 	public void cancel() {
-		if(Project.getInstance().getCurrentLayer().equals(textLayer)) {
+		if(textLayer != null){
+			reset();
+			initTextTool();
+		}
+	}
+
+	public void reset(){
+		// Si le calque temporaire est initialisé, remettre dans l'état inital
+		if(textLayer != null){
 			// Suppression du calque d'ajout de text (textLayer)
 			Project.getInstance().getLayers().remove(textLayer);
 			// Le calque courant redevient l'ancien calque courant
@@ -107,11 +119,13 @@ public class TextTool extends Tool {
 			// redessine les layers et list de layers
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			Project.getInstance().drawWorkspace();
+			textLayer = null;
 			// reset des attributs
 			addText = null;
 			text = "";
 		}
 	}
+
 	
 	/**
 	 * Si outil quitté, valide l'ajout du text si l'uilisateur à au moins cliquer sur l'interface pour rajouter le text,
@@ -120,11 +134,7 @@ public class TextTool extends Tool {
 	@Override
 	public void CallbackOldToolChanged() {
 		super.CallbackOldToolChanged();
-		if(addText == null){
-			cancel();
-		} else {
-			validate();
-		}
+		reset();
 	}
 
 	@Override
