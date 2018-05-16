@@ -6,9 +6,9 @@ import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,7 +16,8 @@ import javafx.stage.Stage;
 import utils.UndoException;
 
 /**
- *
+ * Controller associé au fichier FXML ResizeLayer.fxml et controlant l'ensemble des actions associées à la fenêtre de redimensionnement ouvert
+ * lorsque l'utilisateur clique sur le menu <b>Calque -> Redimensionner</b>.
  */
 public class ResizeLayerController {
 	
@@ -35,6 +36,9 @@ public class ResizeLayerController {
 	@FXML
 	private Button validateResizeButton;
 	
+	@FXML
+	public Button cancelButton;
+	
 	private double ratioImage;
 	
 	/**
@@ -48,52 +52,71 @@ public class ResizeLayerController {
 		ratioImage = width / height;
 		
 		// affiche la taille du calque actuel
-		textFieldWidth.setText(Double.toString(width));
-		textFieldHeight.setText(Double.toString(height));
+		textFieldWidth.setText(Integer.toString((int) width));
+		textFieldHeight.setText(Integer.toString((int) height));
 		
-		textFieldHeight.setDisable(true);
-		
+		// Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le text de textFieldWidth est modifié
 		textFieldWidth.textProperty().addListener(new ChangeListener<String>() {
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue,
-			                    String newValue) {
-				if (!newValue.matches("\\d*")) {
-					textFieldWidth.setText(oldValue);
-				} else {
-					if (textFieldHeight.isDisable()) {
-						if (!textFieldWidth.getText().isEmpty()) {
-							textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
-						}
-					}
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
+					textFieldWidth.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
+				} else if (checkWidthHeightValidity()) { // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
+					calculateHeightValue();
 				}
 			}
 		});
 		
+		// Ajoute un changeListener à textFieldHeight -> la méthode changed() est appelée à chaque fois que le text de textFieldHeight est modifié
 		textFieldHeight.textProperty().addListener(new ChangeListener<String>() {
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue,
-			                    String newValue) {
-				if (!newValue.matches("\\d*")) {
-					textFieldHeight.setText(oldValue);
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
+					textFieldHeight.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
+				} else {
+					checkWidthHeightValidity(); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 				}
 			}
 		});
 	}
 	
-	public void checkBoxRationChange(ActionEvent actionEvent) {
-		textFieldHeight.setDisable(checkBoxRatio.isSelected());
-		
-		if (textFieldHeight.isDisable()) {
-			if (!textFieldWidth.getText().isEmpty()) {
-				textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
-			}
+	private boolean checkWidthHeightValidity() {
+		if (textFieldWidth.getText().isEmpty() || textFieldHeight.getText().isEmpty() ||
+				Integer.parseInt(textFieldWidth.getText()) == 0 || Integer.parseInt(textFieldHeight.getText()) == 0) {
+			validateResizeButton.setDisable(true);
+			return false;
+		} else {
+			validateResizeButton.setDisable(false);
+			return true;
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique dans la checkBox "Garder le ratio". Active/désactive le textField Hauteur.
+	 */
+	public void checkBoxRatioChange() {
+		textFieldHeight.setDisable(checkBoxRatio.isSelected());
+		
+		calculateHeightValue();
+	}
+	
+	/**
+	 * Calcule la valeur a afficher dans le champs hauteur en fonction de la largeur, si la checkbox "Garder le ratio" est cochée.
+	 */
+	private void calculateHeightValue() {
+		// vrai si le checkBox "Ajuster l'image" est sélectionné et que textfieldWidth n'est pas vide --> l'utilisateur ne choisi pas la hauteur
+		if (checkBoxRatio.isSelected() && !textFieldWidth.getText().isEmpty() && Integer.parseInt(textFieldWidth.getText()) != 0) {
+			// la hauteur est calculée à partir du ratio et de la largeur choisie par l'utilisateur
+				textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
+		}
+	}
+	
+	/**
+	 * Vérifie
+		 */
 	@FXML
 	public void validateResize() {
-		if (!textFieldWidth.getText().isEmpty() && !textFieldHeight.getText().isEmpty()) {
-			
+		if (checkWidthHeightValidity()) {
 			ResizeSave rs = new ResizeSave();
 			Layer currentLayer = Project.getInstance().getCurrentLayer();
 			
@@ -115,7 +138,12 @@ public class ResizeLayerController {
 				currentLayer.setHeight(Double.valueOf(textFieldHeight.getText()));
 			}
 			rs.execute();
+			
+			cancel();
 		}
+	}
+	
+	public void cancel() {
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
 		stage.close();
 	}

@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
 <AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menubar.ResizeLayerController">
    <children>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+            AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER">
                <children>
@@ -24,10 +15,13 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-               <TextField fx:id="textFieldWidth" maxWidth="80.0" text="" />
+                  <TextField fx:id="textFieldWidth" maxWidth="80.0"/>
                </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               </VBox.margin>
                <padding>
-                  <Insets bottom="10.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                </padding>
             </HBox>
             <HBox alignment="CENTER">
@@ -40,28 +34,42 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-               <TextField fx:id="textFieldHeight" disable="true" maxWidth="80.0" text="" />
+                  <TextField fx:id="textFieldHeight" disable="true" maxWidth="80.0"/>
                </children>
                <padding>
-                  <Insets bottom="10.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                </padding>
             </HBox>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" spacing="5.0">
                <children>
                <CheckBox fx:id="checkBoxResizeImage" mnemonicParsing="false" selected="true" text="Ajuster l'image">
                      <padding>
                         <Insets bottom="10.0" />
                      </padding>
                   </CheckBox>
-               <CheckBox fx:id="checkBoxRatio" mnemonicParsing="false" onAction="#checkBoxRationChange" selected="true" text="Garder ratio">
+                  <CheckBox fx:id="checkBoxRatio" mnemonicParsing="false" onAction="#checkBoxRatioChange" selected="true" text="Garder le ratio">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </CheckBox>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               </padding>
             </VBox>
-         <Button fx:id="validateResizeButton" mnemonicParsing="false" onAction="#validateResize" text="Valider" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Annuler"/>
+                  <Button fx:id="validateResizeButton" defaultButton="true" mnemonicParsing="false" onAction="#validateResize" text="Valider"/>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               </VBox.margin>
+            </HBox>
          </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+         </padding>
       </VBox>
    </children>
 </AnchorPane>
