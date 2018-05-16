@@ -10,8 +10,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import utils.Utils;
 import utils.UndoException;
+import utils.Utils;
 
 /**
  * Outil pour rogner un calque grâce à une séléction réctangulaire implémentant le modèle Singleton)
@@ -124,8 +124,11 @@ public class Crop extends Tool {
         oldCurrentLayer = Project.getInstance().getCurrentLayer();
         // Création du calque temporaire utilisé pour la séléction
         selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int) oldCurrentLayer.getHeight(), true);
-        selectionCropLayer.setLayoutX(oldCurrentLayer.getLayoutX());
-        selectionCropLayer.setLayoutY(oldCurrentLayer.getLayoutY());
+	    //selectionCropLayer.setLayoutX(oldCurrentLayer.getLayoutX());
+	    //selectionCropLayer.setLayoutY(oldCurrentLayer.getLayoutY());
+	    selectionCropLayer.setTranslateX(oldCurrentLayer.getTranslateX());
+	    selectionCropLayer.setTranslateY(oldCurrentLayer.getTranslateY());
+    
         selectionCropLayer.setVisible(true);
 
         oldCurrentLayer = Project.getInstance().getCurrentLayer();
@@ -227,9 +230,11 @@ public class Crop extends Tool {
             undosave = Utils.makeSnapshot(layerToCrop);
             widthLayer = layerToCrop.getWidth();
             heightLayer = layerToCrop.getHeight();
-            layoutXLayer = layerToCrop.getLayoutX();
-            layoutYLayer = layerToCrop.getLayoutY();
-            layerCroped = layerToCrop;
+            //layoutXLayer = layerToCrop.getLayoutX();
+            //layoutYLayer = layerToCrop.getLayoutY();
+	        layoutXLayer = layerToCrop.getTranslateX();
+	        layoutYLayer = layerToCrop.getTranslateY();
+	        layerCroped = layerToCrop;
         }
 
         @Override
@@ -248,14 +253,19 @@ public class Crop extends Tool {
             // Sauvegarde des dimensions
             double widthTemp = currentLayer.getWidth();
             double heightTemp = currentLayer.getHeight();
-            double layoutXTemp = currentLayer.getLayoutX();
-            double layoutYTemp = currentLayer.getLayoutY();
+	        //double layoutXTemp = currentLayer.getLayoutX();
+	        //double layoutYTemp = currentLayer.getLayoutY();
+	
+	        double layoutXTemp = currentLayer.getTranslateX();
+	        double layoutYTemp = currentLayer.getTranslateY();
             // Remise à jour des anciennes dimensions et décallage
             layerCroped.setWidth(widthLayer);
             layerCroped.setHeight(heightLayer);
-            layerCroped.setLayoutX(layoutXLayer);
-            layerCroped.setLayoutY(layoutYLayer);
-            // Netoyage du calque
+	        // layerCroped.setLayoutX(layoutXLayer);
+	        // layerCroped.setLayoutY(layoutYLayer);
+	        layerCroped.setTranslateX(layoutXLayer);
+	        layerCroped.setTranslateY(layoutYLayer);
+	        // Netoyage du calque
             layerCroped.getGraphicsContext2D().clearRect(0, 0, widthLayer, heightLayer);
             // Remise de l'image du calque durant l'opération précédente
             layerCroped.getGraphicsContext2D().drawImage(undosave, 0, 0);
@@ -280,17 +290,21 @@ public class Crop extends Tool {
             // Sauvegarde des dimensions
             double widthTemp = currentLayer.getWidth();
             double heightTemp = currentLayer.getHeight();
-            double layoutXTemp = currentLayer.getLayoutX();
-            double layoutYTemp = currentLayer.getLayoutY();
+	        //double layoutXTemp = currentLayer.getLayoutX();
+	        //double layoutYTemp = currentLayer.getLayoutY();
+	        double layoutXTemp = currentLayer.getTranslateX();
+	        double layoutYTemp = currentLayer.getTranslateY();
             // Netoyage du calque - ne pas change de place (ou changer les attribut width et height) peut être amélioré
             layerCroped.getGraphicsContext2D().clearRect(0, 0, layerCroped.getWidth(), layerCroped.getHeight());
             // Remise à jour des anciennes dimensions et décallage (calque undo)
             layerCroped.setWidth(widthLayer);
             layerCroped.setHeight(heightLayer);
-            layerCroped.setLayoutX(layoutXLayer);
-            layerCroped.setLayoutY(layoutYLayer);
-
-            // Remise de l'image du calque durant l'opération précédente
+	        //layerCroped.setLayoutX(layoutXLayer);
+	        //layerCroped.setLayoutY(layoutYLayer);
+	        layerCroped.setTranslateX(layoutXLayer);
+	        layerCroped.setTranslateY(layoutYLayer);
+	
+	        // Remise de l'image du calque durant l'opération précédente
             layerCroped.getGraphicsContext2D().drawImage(redosave, 0, 0);
             widthLayer = widthTemp;
             heightLayer = heightTemp;

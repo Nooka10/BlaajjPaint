@@ -113,7 +113,7 @@ public class ResizeLayerController {
 			Layer currentLayer = Project.getInstance().getCurrentLayer();
 			
 			if (checkBoxResizeImage.isSelected()) {
-				Image image = Project.getInstance().getCurrentLayer().createImageFromCanvas(1);
+				Image image = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
 				ImageView image2 = new ImageView(image);
 				
 				image2.setFitWidth(Double.valueOf(textFieldWidth.getText()));
@@ -162,14 +162,14 @@ public class ResizeLayerController {
 			currentLayer = Project.getInstance().getCurrentLayer();
 			oldWidth = currentLayer.getWidth();
 			oldHeight = currentLayer.getHeight();
-			oldImage = currentLayer.createImageFromCanvas(1);
+			oldImage = Utils.makeSnapshot(currentLayer);
 		}
 		
 		@Override
 		public void execute() {
 			newWidth = currentLayer.getWidth();
 			newHeight = currentLayer.getHeight();
-			newImage = currentLayer.createImageFromCanvas(1);
+			newImage = Utils.makeSnapshot(currentLayer);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		

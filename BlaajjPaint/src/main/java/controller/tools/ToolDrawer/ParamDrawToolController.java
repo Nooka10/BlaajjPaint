@@ -32,23 +32,6 @@ public class ParamDrawToolController {
 	private void initialize() {
 		thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));
 		thicknessSlider.setValue(tool.thickness);
-		
-		// FIXME: À changer pour utiliser FXML !!!
-		
-		/*
-		// Handle Slider value change events.
-		thicknessSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			tool.thickness = Double.parseDouble(newValue.toString());
-			thicknessTextField.setText(String.valueOf(tool.thickness));
-			((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
-		});
-		// Handle TextField text changes.
-		thicknessTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			tool.thickness = Double.parseDouble(newValue);
-			thicknessSlider.setValue(tool.thickness);
-			((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
-		});
-		*/
 	}
 	
 	public void textFieldOnTextChange() {

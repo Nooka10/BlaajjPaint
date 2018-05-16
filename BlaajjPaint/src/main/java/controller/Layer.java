@@ -7,10 +7,10 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -69,10 +69,13 @@ public class Layer extends Canvas implements Serializable {
 		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.descriptionCalque, calqueTemporaire);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
-		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4), 0, 0, getWidth(), getHeight());
+		this.getGraphicsContext2D().drawImage(Utils.makeSnapshot(toCopy), 0, 0, getWidth(), getHeight());
 		setVisible(visibility);
-		setLayoutX(toCopy.getLayoutX());
-		setLayoutY(toCopy.getLayoutY());
+		//setLayoutX(toCopy.getLayoutX());
+		//setLayoutY(toCopy.getLayoutY());
+		
+		setTranslateX(toCopy.getTranslateX());
+		setTranslateY(toCopy.getTranslateY());
 		toCopy.setVisible(visibility);
 	}
 	
@@ -87,72 +90,46 @@ public class Layer extends Canvas implements Serializable {
 		return id;
 	}
 	
-	// TODO : Antoine
-	public Image createImageFromCanvas(int scale) {
-		
-		final WritableImage image = new WritableImage(
-				Math.round((int) getWidth() * scale),
-				Math.round((int) getHeight() * scale));
-		
-		final SnapshotParameters spa = new SnapshotParameters();
-		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
-		spa.setFill(Color.TRANSPARENT);
-		final ImageView view = new ImageView(snapshot(spa, image));
-		view.setFitWidth(getWidth());
-		view.setFitHeight(getHeight());
-		
-		snapshot(spa, image);
-		return image;
-		//return view.getImage();
-	}
-	
-	
-	// TODO : false, rend une image 4x plus grande
-	public ImageView createImageFromCanvasJPG(int scale) {
-		final WritableImage image = new WritableImage(
-				(int) getWidth() * scale,
-				(int) getHeight() * scale);
-		
-		final SnapshotParameters spa = new SnapshotParameters();
-		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
-		spa.setFill(Color.WHITE);
-		
-		final ImageView view = new ImageView(snapshot(spa, image));
-		
-		view.setFitWidth(getWidth());
-		view.setFitHeight(getHeight());
-		view.setPreserveRatio(true);
-		
-		return view;
-	}
-	
 	/**
 	 * Permet de fusionner deux calques
 	 *
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
 	public Layer mergeLayers(Layer backgroundLayer, boolean mergeSurCalqueTemporaire) {
-		Image image1 = createImageFromCanvas(4);
-		Image image2 = backgroundLayer.createImageFromCanvas(4);
+		Image image1 = Utils.makeSnapshot(this);
+		Image image2 = Utils.makeSnapshot(backgroundLayer);
 		
 		// prend le décalage (layout) minimum des deux calques
-		double minX = getLayoutX() < backgroundLayer.getLayoutX() ? getLayoutX() : backgroundLayer.getLayoutX();
-		double minY = getLayoutY() < backgroundLayer.getLayoutY() ? getLayoutY() : backgroundLayer.getLayoutY();
+		//double minX = getLayoutX() < backgroundLayer.getLayoutX() ? getLayoutX() : backgroundLayer.getLayoutX();
+		//double minY = getLayoutY() < backgroundLayer.getLayoutY() ? getLayoutY() : backgroundLayer.getLayoutY();
 		
 		// prend le décalage (layout) maximum des deux calques
-		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
-		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
+		//double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
+		//double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
+		
+		// prend le décalage (layout) minimum des deux calques
+		double minX = getTranslateX() < backgroundLayer.getTranslateX() ? getTranslateX() : backgroundLayer.getTranslateX();
+		double minY = getTranslateY() < backgroundLayer.getTranslateY() ? getTranslateY() : backgroundLayer.getTranslateY();
+		
+		// prend le décalage (layout) maximum des deux calques
+		double maxX = getTranslateX() + getWidth() > backgroundLayer.getTranslateX() + backgroundLayer.getWidth() ? getTranslateX() + getWidth() : backgroundLayer.getTranslateX() + backgroundLayer.getWidth();
+		double maxY = getTranslateY() + getHeight() > backgroundLayer.getTranslateY() + backgroundLayer.getHeight() ? getTranslateY() + getHeight() : backgroundLayer.getTranslateY() + backgroundLayer.getHeight();
+		
 		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
 		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeSurCalqueTemporaire);
 		
 		// dessine les deux calques sur notre nouveau calque fusion
-		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
-		mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
+		//mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
+		//mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
+		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getTranslateX() - minX, backgroundLayer.getTranslateY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
+		mergeLayer.getGraphicsContext2D().drawImage(image1, getTranslateX() - minX, getTranslateY() - minY, getWidth(), getHeight());
 		
 		// place le calque fusionné avec le bon décalage
-		mergeLayer.setLayoutX(minX);
-		mergeLayer.setLayoutY(minY);
+		//mergeLayer.setLayoutX(minX);
+		//mergeLayer.setLayoutY(minY);
+		mergeLayer.setTranslateX(minX);
+		mergeLayer.setTranslateY(minY);
 		
 		return mergeLayer;
 	}
@@ -234,9 +211,11 @@ public class Layer extends Canvas implements Serializable {
 		nomCalque = (String) s.readObject();
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
-
-		super.setLayoutX(s.readDouble());
-		super.setLayoutY(s.readDouble());
+		
+		//super.setLayoutX(s.readDouble());
+		//super.setLayoutY(s.readDouble());
+		super.setTranslateX(s.readDouble());
+		super.setTranslateY(s.readDouble());
 
 
 		double tmpOpacity = s.readDouble();
@@ -263,9 +242,12 @@ public class Layer extends Canvas implements Serializable {
 		s.writeObject(nomCalque);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
-
-		s.writeDouble(getLayoutX());
-		s.writeDouble(getLayoutY());
+		
+		//s.writeDouble(getLayoutX());
+		//s.writeDouble(getLayoutY());
+		
+		s.writeDouble(getTranslateX());
+		s.writeDouble(getTranslateY());
 		
 		double tmpOpacity = super.getOpacity();
 		boolean tmpVisible = super.isVisible();
@@ -275,7 +257,7 @@ public class Layer extends Canvas implements Serializable {
 		
 		this.setVisible(true);
 		this.setOpacity(1);                            // enlève l'opacité pour la sauvegardes
-		ImageIO.write(SwingFXUtils.fromFXImage(createImageFromCanvas(1), null), "png", s);
+		ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(this), null), "png", s);
 		this.setOpacity(tmpOpacity);                // Remet l'opacité
 		this.setVisible(tmpVisible);                // Remet la visibilité
 		
@@ -296,7 +278,7 @@ public class Layer extends Canvas implements Serializable {
 		double y = y1 < y2 ? y1 : y2;
 		double width = Math.abs(x1 - x2);
 		double height = Math.abs(y1 - y2);
-		// Test si les position sont dans le calque
+		// Test si les positions sont dans le calque
 		if(x < 0){
 			x = 0;
 		}
@@ -311,21 +293,15 @@ public class Layer extends Canvas implements Serializable {
 		}
 
 		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
-
-		/*Project.getInstance().getLayers().remove(this);
-
-		Layer newLayer = new Layer((int)width, (int)height);
-		newLayer.setLayoutX(x + this.getLayoutX());
-		newLayer.setLayoutY(y + this.getLayoutY());
-		newLayer.getGraphicsContext2D().drawImage(newImage, 0,0);
-		Project.getInstance().addLayer(newLayer);*/
-
+		
 		this.setWidth(width);
 		this.setHeight(height);
 		
-		this.setLayoutX(x + this.getLayoutX());
-		this.setLayoutY(y + this.getLayoutY());
-
+		//this.setLayoutX(x + this.getLayoutX());
+		//this.setLayoutY(y + this.getLayoutY());
+		this.setTranslateX(x + this.getTranslateX());
+		this.setTranslateY(y + this.getTranslateY());
+		
 		GraphicsContext gc = getGraphicsContext2D();
 		gc.clearRect(0,0,this.getWidth(),this.getHeight());
 		gc.drawImage(newImage,0,0);
