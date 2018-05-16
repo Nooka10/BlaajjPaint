@@ -222,8 +222,9 @@ public class Layer extends Canvas implements Serializable {
 	 * SERIALISATION
 	 **/
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-		//s.defaultReadObject();
-		id = (s.readInt());
+
+		id = s.readInt();
+		nomCalque = (String) s.readObject();
 		super.setWidth(s.readDouble());
 		super.setHeight(s.readDouble());
 
@@ -241,10 +242,18 @@ public class Layer extends Canvas implements Serializable {
 		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
 
 	}
-	
+
+	/**
+	 * Permet de serialiser le projet en écrivant dans un flux, à l'aide de l'interface Serializable
+	 *
+	 * @param s flux d'écriture
+	 *
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		//s.defaultWriteObject();
 		s.writeInt(id);
+		s.writeObject(nomCalque);
 		s.writeDouble(super.getWidth());
 		s.writeDouble(super.getHeight());
 

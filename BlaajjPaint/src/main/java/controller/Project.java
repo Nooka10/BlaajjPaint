@@ -378,9 +378,9 @@ public class Project implements Serializable {
 	//*** SERIALISATION  ***//
 	
 	/**
-	 * Permet de dé-serialiser la projet à l'aide de l'interface Serializable
+	 * Permet de dé-serialiser en lisant un flux, la projet à l'aide de l'interface Serializable
 	 *
-	 * @param s
+	 * @param s flux de lecture
 	 *
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -411,11 +411,11 @@ public class Project implements Serializable {
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		drawWorkspace();
 	}
-	
+
 	/**
-	 * Permet de serialiser la projet à l'aide de l'interface Serializable
+	 * Permet de serialiser le projet en écrivant dans un flux, à l'aide de l'interface Serializable
 	 *
-	 * @param s
+	 * @param s flux d'écriture
 	 *
 	 * @throws IOException
 	 */
