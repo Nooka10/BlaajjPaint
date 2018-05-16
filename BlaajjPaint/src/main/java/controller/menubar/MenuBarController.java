@@ -268,7 +268,7 @@ public class MenuBarController {
 	
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Masquer le calque sélectionné</b>.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Masquer/afficher le calque sélectionné</b>.
 	 * Masque le calque sélectionné. Il n'est pas possible d'utiliser un outil sur un calque masqué.
 	 */
 	@FXML
@@ -278,6 +278,10 @@ public class MenuBarController {
 		Project.getInstance().drawWorkspace();
 	}
 	
+	/**
+	 * Modifie le texte du bouton <b>Calque -> Masquer/Afficher le calque sélectionné</b> en fonction de la visibilité du calque sélectionné.
+	 * Affiche "Masquer le calque sélectionné" si le calque sélectionner est visible et "Afficher le calque sélectionné" sinon.
+	 */
 	public void changeHideButtonText() {
 		if (Project.getInstance().getCurrentLayer().isVisible()) {
 			menuBar_masquerCalques.setText("Masquer le calque sélectionné");
@@ -343,17 +347,17 @@ public class MenuBarController {
 	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b>.
 	 */
 	public class MergeAllSave extends ICmd {
-		private LinkedList<Layer> allMergedLayers;
-		private Layer oldCurrentLayer;
-		private Layer newLayer;
+		private LinkedList<Layer> allMergedLayers; // liste de tous les layers qui ont été aplatis
+		private Layer oldCurrentLayer; // enregistre l'ancien calque courant (sélectionné)
+		private Layer newLayer; // le nouveau calque sur lequel seront fusionnés tous les calques du projet
 		
 		/**
-		 * Prend tous les calques qui vont être fusionnés
+		 * Construit une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b>.
 		 */
 		public MergeAllSave() {
 			oldCurrentLayer = Project.getInstance().getCurrentLayer();
 			allMergedLayers = new LinkedList<>();
-			allMergedLayers.addAll(Project.getInstance().getLayers());
+			allMergedLayers.addAll(Project.getInstance().getLayers()); // ajoute tous les calques du projet à la liste allMergedLayers
 		}
 		
 		@Override
@@ -368,7 +372,6 @@ public class MenuBarController {
 			for (Layer layer : allMergedLayers) {
 				Project.getInstance().getLayers().add(layer);
 			}
-			
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
@@ -381,9 +384,9 @@ public class MenuBarController {
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 		
+		@Override
 		public String toString() {
 			return "Aplatissement de tous les calques";
 		}
 	}
-	
 }
