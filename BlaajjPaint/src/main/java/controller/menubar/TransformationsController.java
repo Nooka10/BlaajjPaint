@@ -73,7 +73,7 @@ public class TransformationsController {
 	 */
 	@FXML
 	public void handleVerticalSymmetry() {
-		TransformationSave rs = new VerticalSymmetySave(180, Rotate.X_AXIS);
+		TransformationSave rs = new VerticalSymmetrySave(180, Rotate.X_AXIS);
 		rs.execute();
 	}
 	
@@ -88,7 +88,8 @@ public class TransformationsController {
 	}
 	
 	/**
-	 *
+	 * Classe abstraite implémentant une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b>.
+	 * Classe mère des sous-classes RotateSave, VerticalSymmetrySave et HorizontalSymmetrySave.
 	 */
 	private abstract class TransformationSave extends ICmd{
 		protected Layer currentLayer;
@@ -97,6 +98,11 @@ public class TransformationsController {
 		private int angleDegree;
 		private Point3D axis;
 		
+		/**
+		 * Construit une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b>.
+		 * @param angleDegree, l'angle appliqué à la transformation.
+		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 */
 		private TransformationSave(int angleDegree, Point3D axis){
 			currentLayer = Project.getInstance().getCurrentLayer();
 			imageBefore = Utils.makeSnapshot(currentLayer);
@@ -106,7 +112,6 @@ public class TransformationsController {
 		
 		@Override
 		public void execute() {
-			
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
 			currentLayer.getGraphicsContext2D().save();
 			Rotate r = new Rotate(angleDegree, currentLayer.getWidth() / 2, currentLayer.getHeight() / 2, 0, axis);
@@ -129,34 +134,63 @@ public class TransformationsController {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
 			currentLayer.getGraphicsContext2D().drawImage(imageAfter, 0, 0);
 		}
-		
-		abstract public String toString();
 	}
 	
+	/**
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b>.
+	 * Effectue la rotation du calque actuellement sélectionné selon l'angle et l'axe fournis.
+	 */
 	private class RotateSave extends TransformationSave {
+		/**
+		 * Construit une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b>.
+		 * @param angleDegree, l'angle appliqué à la rotation.
+		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 */
 		private RotateSave(int angleDegree, Point3D axis){
 			super(angleDegree,axis);
 		}
 		
+		@Override
 		public String toString() {
 			return "Rotation de " + currentLayer;
 		}
 	}
 	
-	private class VerticalSymmetySave extends TransformationSave {
-		private VerticalSymmetySave(int angleDegree, Point3D axis){
+	/**
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie verticale</b>.
+	 * Effectue la symétrie du calque actuellement sélectionné selon l'axe horizontal (axe des X).
+	 */
+	private class VerticalSymmetrySave extends TransformationSave {
+		/**
+		 * Construit une commande sauvegardant 'action du menu <b>Calque -> Transformations -> Symétrie verticale</b>.
+		 * @param angleDegree, l'angle appliqué à la rotation.
+		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 */
+		private VerticalSymmetrySave(int angleDegree, Point3D axis){
 			super(angleDegree,axis);
 		}
 		
+		@Override
 		public String toString() {
 			return "Symétrie verticale de " + currentLayer;
 		}
 	}
 	
+	/**
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b>.
+	 * Effectue la symétrie du calque actuellement sélectionné selon l'axe horizontal (axe des X).
+	 */
 	private class HorizontalSymmetrySave extends TransformationSave {
+		/**
+		 * Construit une commande sauvegardant 'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b>.
+		 * @param angleDegree, l'angle appliqué à la rotation.
+		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 */
 		private HorizontalSymmetrySave(int angleDegree, Point3D axis){
 			super(angleDegree,axis);
 		}
+		
+		@Override
 		public String toString() {
 			return "Symétrie horizontale de " + currentLayer;
 		}

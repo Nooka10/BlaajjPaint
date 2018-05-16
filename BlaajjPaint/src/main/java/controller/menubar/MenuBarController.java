@@ -291,6 +291,10 @@ public class MenuBarController {
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Aide -> À propose</b>.
+	 * Ouvre une fenêtre affichant quelques informations sur l'application (nom, version et auteurs).
+	 */
 	@FXML
 	public void handleAboutUs() {
 		try {
