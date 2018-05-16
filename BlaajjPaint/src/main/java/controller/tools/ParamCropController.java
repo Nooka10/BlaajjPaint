@@ -13,6 +13,10 @@ public class ParamCropController {
     @FXML
     public Button validateButton;
 	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
+	
 	@FXML
 	private void initialize() {
 	

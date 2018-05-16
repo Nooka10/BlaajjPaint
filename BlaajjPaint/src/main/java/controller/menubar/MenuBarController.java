@@ -354,7 +354,7 @@ public class MenuBarController {
 		/**
 		 * Construit une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b>.
 		 */
-		public MergeAllSave() {
+		private MergeAllSave() {
 			oldCurrentLayer = Project.getInstance().getCurrentLayer();
 			allMergedLayers = new LinkedList<>();
 			allMergedLayers.addAll(Project.getInstance().getLayers()); // ajoute tous les calques du projet à la liste allMergedLayers

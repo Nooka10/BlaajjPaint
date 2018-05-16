@@ -6,6 +6,7 @@ import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
@@ -14,7 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import utils.UndoException;
 
-
+/**
+ *
+ */
 public class ResizeLayerController {
 	
 	@FXML
@@ -34,86 +37,28 @@ public class ResizeLayerController {
 	
 	private double ratioImage;
 	
-	private class ResizeSave extends ICmd{
-		
-			private Layer currentLayer;
-			private double oldWidth;
-			private double oldHeight;
-			private Image oldImage;
-			private double newWidth;
-			private double newHeight;
-		private Image newImage;
-		
-		private ResizeSave() {
-				currentLayer = Project.getInstance().getCurrentLayer();
-				oldWidth = currentLayer.getWidth();
-				oldHeight = currentLayer.getHeight();
-				oldImage = currentLayer.createImageFromCanvas(1);
-			}
-			
-			@Override
-			public void execute() {
-				newWidth = currentLayer.getWidth();
-				newHeight = currentLayer.getHeight();
-				newImage = currentLayer.createImageFromCanvas(1);
-				RecordCmd.getInstance().saveCmd(this);
-			}
-			
-			@Override
-			public void undo() throws UndoException {
-				currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
-				currentLayer.setWidth(oldWidth);
-				currentLayer.setHeight(oldHeight);
-				currentLayer.getGraphicsContext2D().drawImage(oldImage, 0, 0);
-			}
-			
-			@Override
-			public void redo() throws UndoException {
-				currentLayer.getGraphicsContext2D().clearRect(0, 0, oldWidth, oldHeight);
-				currentLayer.setWidth(newWidth);
-				currentLayer.setHeight(newHeight);
-				currentLayer.getGraphicsContext2D().drawImage(newImage, 0, 0);
-			}
-			
-			public String toString() {
-				return "Redimensionnement de " + currentLayer.toString();
-			}
-		
-	}
-	
-	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
 	@FXML
 	private void initialize() {
+		double width = Project.getInstance().getCurrentLayer().getWidth();
+		double height = Project.getInstance().getCurrentLayer().getHeight();
 		
-		int width = (int) Project.getInstance().getCurrentLayer().getWidth();
-		int height = (int) Project.getInstance().getCurrentLayer().getHeight();
-		
-		ratioImage = (double) width / height;
+		ratioImage = width / height;
 		
 		// affiche la taille du calque actuel
-		textFieldWidth.setText(Integer.toString(width));
-		textFieldHeight.setText(Integer.toString(height));
+		textFieldWidth.setText(Double.toString(width));
+		textFieldHeight.setText(Double.toString(height));
 		
 		textFieldHeight.setDisable(true);
-		
-		checkBoxRatio.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				textFieldHeight.setDisable(checkBoxRatio.isSelected());
-				
-				if (textFieldHeight.isDisable()) {
-					if (!textFieldWidth.getText().isEmpty()) {
-						textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
-					}
-				}
-			}
-		});
 		
 		textFieldWidth.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 			                    String newValue) {
 				if (!newValue.matches("\\d*")) {
-					textFieldWidth.setText(newValue.replaceAll("[^\\d]", ""));
+					textFieldWidth.setText(oldValue);
 				} else {
 					if (textFieldHeight.isDisable()) {
 						if (!textFieldWidth.getText().isEmpty()) {
@@ -129,14 +74,21 @@ public class ResizeLayerController {
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 			                    String newValue) {
 				if (!newValue.matches("\\d*")) {
-					textFieldHeight.setText(newValue.replaceAll("[^\\d]", ""));
+					textFieldHeight.setText(oldValue);
 				}
 			}
 		});
-		
-		
 	}
 	
+	public void checkBoxRationChange(ActionEvent actionEvent) {
+		textFieldHeight.setDisable(checkBoxRatio.isSelected());
+		
+		if (textFieldHeight.isDisable()) {
+			if (!textFieldWidth.getText().isEmpty()) {
+				textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
+			}
+		}
+	}
 	
 	@FXML
 	public void validateResize() {
@@ -169,5 +121,49 @@ public class ResizeLayerController {
 	}
 	
 	
-	
+	private class ResizeSave extends ICmd{
+		private Layer currentLayer;
+		private double oldWidth;
+		private double oldHeight;
+		private Image oldImage;
+		private double newWidth;
+		private double newHeight;
+		private Image newImage;
+		
+		private ResizeSave() {
+			currentLayer = Project.getInstance().getCurrentLayer();
+			oldWidth = currentLayer.getWidth();
+			oldHeight = currentLayer.getHeight();
+			oldImage = currentLayer.createImageFromCanvas(1);
+		}
+		
+		@Override
+		public void execute() {
+			newWidth = currentLayer.getWidth();
+			newHeight = currentLayer.getHeight();
+			newImage = currentLayer.createImageFromCanvas(1);
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
+			currentLayer.setWidth(oldWidth);
+			currentLayer.setHeight(oldHeight);
+			currentLayer.getGraphicsContext2D().drawImage(oldImage, 0, 0);
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			currentLayer.getGraphicsContext2D().clearRect(0, 0, oldWidth, oldHeight);
+			currentLayer.setWidth(newWidth);
+			currentLayer.setHeight(newHeight);
+			currentLayer.getGraphicsContext2D().drawImage(newImage, 0, 0);
+		}
+		
+		public String toString() {
+			return "Redimensionnement de " + currentLayer.toString();
+		}
+		
+	}
 }

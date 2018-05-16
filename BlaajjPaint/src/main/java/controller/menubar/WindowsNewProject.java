@@ -26,6 +26,10 @@ public class WindowsNewProject {
 	@FXML
 	private TextField height;
 	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
+	
 	@FXML
 	private void initialize() {
 		width.textProperty().addListener(new ChangeListener<String>() {
@@ -33,7 +37,7 @@ public class WindowsNewProject {
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 			                    String newValue) {
 				if (!newValue.matches("\\d*")) {
-					width.setText(newValue.replaceAll("[^\\d]", ""));
+					width.setText(oldValue);
 				}
 			}
 		});
@@ -42,7 +46,7 @@ public class WindowsNewProject {
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 			                    String newValue) {
 				if (!newValue.matches("\\d*")) {
-					height.setText(newValue.replaceAll("[^\\d]", ""));
+					height.setText(oldValue);
 				}
 			}
 		});

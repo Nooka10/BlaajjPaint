@@ -61,6 +61,10 @@ public class RightMenuController {
 	
 	private final static Background unfocusBackground = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
 	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
+	
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);

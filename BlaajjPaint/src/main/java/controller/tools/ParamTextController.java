@@ -31,7 +31,11 @@ public class ParamTextController {
     private TextField textValue;
 
     private TextTool textTool = TextTool.getInstance();
-
+    
+    /**
+     * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+     */
+    
     @FXML
     private void initialize() {
         // Récupération de la liste des polices d'écriture
@@ -56,7 +60,7 @@ public class ParamTextController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!newValue.matches("\\d*")) {
-                    textFieldSizeFont.setText(newValue.replaceAll("[^\\d]", ""));
+                    textFieldSizeFont.setText(oldValue);
                 } else if(!newValue.equals("")){
                     textTool.setFont(new Font(fontList.getValue(),Integer.parseInt(newValue)));
                     sliderSizeFont.setValue(Integer.parseInt(textFieldSizeFont.getText()));

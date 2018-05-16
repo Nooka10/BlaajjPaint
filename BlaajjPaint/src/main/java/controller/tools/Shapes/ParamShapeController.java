@@ -24,8 +24,12 @@ public class ParamShapeController {
     private TextField thicknessTextField;
     @FXML
     private HBox paramShapeTools;
-	
-	@FXML
+    
+    /**
+     * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+     */
+    
+    @FXML
     private void initialize() {
         thicknessTextField.setText(String.valueOf(EmptyRectangle.getInstance().getThickness()));
         thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());

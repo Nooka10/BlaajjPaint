@@ -67,6 +67,10 @@ public class Transformations {
 		}
 	}
 	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
+	
 	@FXML
 	private void initialize() {
 		degrees.textProperty().addListener(new ChangeListener<String>() {
@@ -74,7 +78,7 @@ public class Transformations {
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 			                    String newValue) {
 				if (!newValue.matches("[-]?[0-9]")) {
-					degrees.setText(newValue.replace("[^-][^0-9]", ""));
+					degrees.setText(oldValue);
 				}
 			}
 		});

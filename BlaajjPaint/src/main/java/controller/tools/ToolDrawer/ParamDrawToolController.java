@@ -22,6 +22,10 @@ public class ParamDrawToolController {
 	
 	private ToolDrawer tool = (ToolDrawer) Tool.getCurrentTool();
 	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
+	
 	@FXML
 	private void initialize() {
 		thicknessTextField.setText(String.valueOf(tool.thickness));

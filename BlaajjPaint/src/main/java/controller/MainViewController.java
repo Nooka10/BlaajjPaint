@@ -54,6 +54,9 @@ public class MainViewController {
 		return mainViewControllerInstance;
 	}
 	
+	/**
+	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
 	@FXML
 	private void initialize() {
 		mainViewControllerInstance = this;
