@@ -17,11 +17,9 @@ import java.io.*;
  * Singleton pour être accessible depuis n'importe quelle classe du projet ou et avoir qu'une seule instance.
  */
 public class SaveProject {
-	
-	private Project projectInstance = Project.getInstance();			// instance du projet à sauvegarder
-	private File saveFile;												// Fichier de sauvegarde
+	private Project projectInstance = null; // instance du projet à sauvegarder
+	private File saveFile; // Fichier de sauvegarde
 
-	//***  SINGLETON  ***//
 	private static SaveProject saveProjectInstance = null;
 	
 	public static SaveProject getInstance() {
@@ -91,5 +89,6 @@ public class SaveProject {
 	 */
 	public void clear() {
 		saveFile = null;
+		// FIXME: pourquoi tu garde l'instance actuelle du projet?
 	}
 }

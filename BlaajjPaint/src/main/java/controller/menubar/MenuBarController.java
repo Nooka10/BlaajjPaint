@@ -266,7 +266,6 @@ public class MenuBarController {
 		mas.execute();
 	}
 	
-	
 	/**
 	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Masquer/afficher le calque sélectionné</b>.
 	 * Masque le calque sélectionné. Il n'est pas possible d'utiliser un outil sur un calque masqué.

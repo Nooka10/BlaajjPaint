@@ -125,6 +125,6 @@ public class RecordCmd {
 	public void clear() {
 		undoStack.clear();
 		redoStack.clear();
-		MainViewController.getInstance().getRightMenuController().clearHistoryList();
+		MainViewController.getInstance().getRightMenuController().clearHistoryList(); // vide l'historique sans le redessiner
 	}
 }

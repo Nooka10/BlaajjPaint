@@ -62,7 +62,7 @@ public class MainViewController {
 		mainViewControllerInstance = this;
 		scrollPane.setFitToHeight(true);
 		scrollPane.setFitToWidth(true);
-		disableButton();
+		disableButtons();
 	}
 	
 	public Main getMain() {
@@ -165,14 +165,13 @@ public class MainViewController {
 	 * Permet aussi le nettoyage du projet (mise à 0)
 	 */
 	public void closeProject(){
-		Project.getInstance().close();
-		RecordCmd.getInstance().clear();
-		MainViewController.getInstance().getRightMenuController().clearLayerList();
-		MainViewController.getInstance().getScrollPane().setContent(null);
-		SaveProject.getInstance().clear();
+		Project.getInstance().close(); // ferme le projet actuellement ouvert
+		RecordCmd.getInstance().clear(); // supprimer l'historique des commandes (la liste des undo/redo)
+		SaveProject.getInstance().clear(); // réinitialise la sauvegarde
+		scrollPane.setContent(null);
+		rightMenuController.clearLayerList(); // vide l'historique sans le redessiner
 		
-		// désactive les boutons
-		disableButton();
+		disableButtons(); // désactive les boutons de la GUI qui ne peuvent pas être utilisés sans avoir un projet ouvert
 	}
 
 	public void openProject(){
@@ -191,7 +190,7 @@ public class MainViewController {
 		}
 
 		// réactive les boutons
-		enableButton();
+		enableButtons();
 	}
 
 	/**
@@ -206,7 +205,7 @@ public class MainViewController {
 	 * Permet de déscativer les boutons.
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
-	public void disableButton(){
+	public void disableButtons(){
 		menuBarController.disableButton();
 		rightMenuController.disableButton();
 		toolBarController.disableButton();
@@ -216,7 +215,7 @@ public class MainViewController {
 	 * Permet d'activer les boutons.
 	 * A appeler dès qu'un project est ouvert ou créé
 	 */
-	public void enableButton(){
+	public void enableButtons(){
 		menuBarController.enableButton();
 		rightMenuController.enableButton();
 		toolBarController.enableButton();

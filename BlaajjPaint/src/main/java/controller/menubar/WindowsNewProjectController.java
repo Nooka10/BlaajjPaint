@@ -4,7 +4,6 @@ import controller.MainViewController;
 import controller.Project;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -54,40 +53,33 @@ public class WindowsNewProjectController {
 			}
 		});
 	}
-
+	
 	/**
-	 * Crée, initalise le nouveau projet avec la taille choisie.
-	 * Réactive les boutons
-	 *
-	 * @param event
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><créer</b>.
+	 * Crée un nouveau projet aux dimensions qui ont été indiquées par l'utilisateur puis ferme la fenêtre.
 	 */
 	@FXML
-	private void handleCreateNewProject(ActionEvent event) {
-		if (Utils.checkWidthHeightValidity(width, height, createButton)) {
-			// Nettoyage du projet
-			MainViewController.getInstance().closeProject();
-			
-			int width = Integer.parseInt(this.width.getText());
-			int height = Integer.parseInt(this.height.getText());
-			
-			Project.getInstance().initData(width, height, true);
-			
-			Stage stage = (Stage) createButton.getScene().getWindow();
-			stage.close();
-			
-			// Réactive les boutons
-			MainViewController.getInstance().enableButton();
-		}
+	private void handleCreateNewProject() {
+		MainViewController.getInstance().closeProject(); // ferme le projet actuellement ouvert s'il y en a un.
+		
+		int width = Integer.parseInt(this.width.getText());
+		int height = Integer.parseInt(this.height.getText());
+		
+		Project.getInstance().initData(width, height, true); // initialise le nouveau projet
+		
+		MainViewController.getInstance().enableButtons(); // réactive les boutons de la GUI qui ne peuvent pas être utilisés sans avoir un projet ouvert
+		
+		Stage stage = (Stage) createButton.getScene().getWindow();
+		stage.close(); // ferme la fenêtre
 	}
-
+	
 	/**
-	 * Annule la création d'un nouveau projet. Appellé par le boutton "Annulé"
-	 * @param event
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Annuler</b>.
+	 * Annule la création d'un nouveau projet et ferme la fenêtre.
 	 */
 	@FXML
-	private void handleCancel(ActionEvent event) {
+	private void handleCancel() {
 		Stage stage = (Stage) cancel.getScene().getWindow();
-		// do what you have to do
-		stage.close();
+		stage.close(); // ferme la fenêtre
 	}
 }

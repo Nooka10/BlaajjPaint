@@ -286,8 +286,8 @@ public class RightMenuController {
 	
 	public void updateHistoryList() {
 		historyList.getChildren().clear();
-		Iterator<ICmd> li = RecordCmd.getInstance().getUndoStack().descendingIterator();
 		
+		Iterator<ICmd> li = RecordCmd.getInstance().getUndoStack().descendingIterator();
 		while (li.hasNext()) {
 			ICmd cmd = li.next();
 			addUndoHistory(cmd);

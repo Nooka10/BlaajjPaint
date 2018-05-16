@@ -153,16 +153,17 @@ public class Project implements Serializable {
 	 * Méthode qui ferme un projet.
 	 */
 	public void close() {
-		backgroundImage = null;
 		width = 0;
 		height = 0;
 		layers = null;
+		backgroundImage = null;
 		currentLayer = null;
+		Layer.reset(); // réinitialise le compteur définissant les ids des calques
+		projectInstance = null;
 		workspace = null;
 		redBorder = null;
 		clip = null;
 		
-		Layer.reset();
 	}
 	
 	//TODO: METTRE UN COMMENTAIRE PERTINENT SUR CETTE FONCTION JE CAPTES PAS CE QU'ELLE FAIT EN DéTAIL
@@ -385,9 +386,7 @@ public class Project implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-		
-		// pour pas recréer une instance de projet
-		projectInstance = this;
+		projectInstance = this; // pour pas recréer une instance de projet
 		
 		initData(s.readInt(), s.readInt(), false);
 		
