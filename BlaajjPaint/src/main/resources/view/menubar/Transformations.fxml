@@ -18,7 +18,7 @@
 				</MenuItem>
 				<MenuItem mnemonicParsing="false">
 					<graphic>
-						<Button fx:id="validateRotate" defaultButton="true" onAction="#handleValidateRotate" text="Valider" />
+						<Button defaultButton="true" onAction="#handleValidateRotate" text="Valider" />
 					</graphic>
 				</MenuItem>
 			</items>

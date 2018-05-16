@@ -5,15 +5,12 @@ import controller.menubar.MenuBarController;
 import controller.rightMenu.RightMenuController;
 import controller.tools.ToolBarController;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import main.Main;
 import utils.SaveProject;
@@ -62,6 +59,7 @@ public class MainViewController {
 		mainViewControllerInstance = this;
 		scrollPane.setFitToHeight(true);
 		scrollPane.setFitToWidth(true);
+		disableButton();
 	}
 	
 	public Main getMain() {
@@ -104,32 +102,32 @@ public class MainViewController {
 		
 		// New
 		if (cntrlN.match(event)) {
-			menuBarController.handleNew(null);
+			menuBarController.handleNew();
 		}
 		
 		// Open
 		if (cntrlO.match(event)) {
-			menuBarController.handleOpen(null);
+			menuBarController.handleOpen();
 		}
 		
 		// Undo
 		if (cntrlZ.match(event)) {
-			menuBarController.handleUndo(null);
+			menuBarController.handleUndo();
 		}
 		
 		// Redo
 		if (cntrlMajZ.match(event)) {
-			menuBarController.handleRedo(null);
+			menuBarController.handleRedo();
 		}
 		
 		// Save As
 		if (cntrlMajS.match(event)) {
-			menuBarController.handleSaveAs(null);
+			menuBarController.handleSaveAs();
 		}
 
 		// Save
 		if (cntrlS.match(event)) {
-			menuBarController.handleSave(null);
+			menuBarController.handleSave();
 		}
 		
 		// Add new layer
@@ -165,8 +163,8 @@ public class MainViewController {
 		MainViewController.getInstance().getRightMenuController().clearLayerList();
 		MainViewController.getInstance().getScrollPane().setContent(null);
 		SaveProject.getInstance().clear();
-
-		// desactive les bouttons
+		
+		// désactive les bouttons
 		disableButton();
 	}
 
@@ -181,9 +179,6 @@ public class MainViewController {
 		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
 
 		if (file != null) {
-			// main.loadBlaajjFile(file); // FIXME: appeler fonction ouvrir
-			System.out.println("path fichier choisi: " + file.getPath());
-
 			closeProject();
 			SaveProject.getInstance().openFile(file);
 		}
@@ -196,11 +191,10 @@ public class MainViewController {
 	 * Permet la sauvegarde du projet depuis n'importe quelle autre aubjet du package.
 	 */
 	public void saveAs(){
-		menuBarController.handleSaveAs(null);
+		menuBarController.handleSaveAs();
 	}
-
-
-
+	
+	
 	/**
 	 * Permet de déscativer les bouttons.
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
@@ -208,7 +202,7 @@ public class MainViewController {
 	public void disableButton(){
 		menuBarController.disableButton();
 		rightMenuController.disableButton();
-		rightMenuController.disableButton();
+		toolBarController.disableButton();
 	}
 
 	/**
