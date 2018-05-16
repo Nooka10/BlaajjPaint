@@ -103,16 +103,24 @@ public class RecordCmd {
 		MainViewController.getInstance().getRightMenuController().updateHistoryList();
 	}
 	
+	/**
+	 * Retourne la pile contenant, au plus, les MAX_CMD_HISTORY dernières commandes enregistrées pouvant être annulées.
+	 * @return la pile des dernières commandes enregistrées pouvant être annulées.
+	 */
 	public LinkedList<ICmd> getUndoStack() {
 		return undoStack;
 	}
 	
+	/**
+	 * Retourne la pile contenant, au plus, les MAX_CMD_HISTORY dernières commandes ayant été annulées (undo).
+	 * @return la pile des dernières commandes ayant été annulées (undo).
+	 */
 	public LinkedList<ICmd> getRedoStack() {
 		return redoStack;
 	}
 	
 	/**
-	 * Nettoie la classe (remet à 0)
+	 * Réinitialise l'état de la classe.
 	 */
 	public void clear() {
 		undoStack.clear();

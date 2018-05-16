@@ -117,7 +117,7 @@ public abstract class ShapeDrawer extends Tool {
 	 */
 	@Override
 	public void CallbackNewToolChanged() {
-		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, false); //fixme: problème avec l'id du calque lorsqu'on change de forme...
+		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, true);
 		Project.getInstance().removeEventHandler(Tool.getCurrentTool());
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
@@ -188,6 +188,7 @@ public abstract class ShapeDrawer extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				Project.getInstance().getLayers().remove(shapeLayer);
+                shapeLayer = new Layer(shapeLayer, false);
 				Project.getInstance().addLayer(shapeLayer);
 				MainViewController.getInstance().getRightMenuController().updateLayerList();
 				CallbackNewToolChanged();
