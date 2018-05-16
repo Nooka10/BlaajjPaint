@@ -230,7 +230,6 @@ public class Project implements Serializable {
 		redBorder.setStroke(Color.CADETBLUE);
 		redBorder.setStrokeWidth(1);
 		
-		
 		redBorder.setTranslateX(currentLayer.getBoundsInParent().getMinX());
 		redBorder.setTranslateY(currentLayer.getBoundsInParent().getMinY());
 		redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
