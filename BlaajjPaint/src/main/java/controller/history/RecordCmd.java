@@ -40,7 +40,7 @@ public class RecordCmd {
 	}
 	
 	/**
-	 * Appelle la fonction <b>handleUndo()</b> sur la dernière <b>Cmd</b> sauvée. Si aucune <b>Cmd</b> ne se trouve dans la pile, il ne fait rien. Si le handleUndo lèves
+	 * Appelle la fonction <b>undo()</b> sur la dernière <b>Cmd</b> sauvée. Si aucune <b>Cmd</b> ne se trouve dans la pile, il ne fait rien. Si le handleUndo lèves
 	 * une exception celle-ci est capturée et consignée dans les logs et la <b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void undo() {
@@ -64,7 +64,7 @@ public class RecordCmd {
 	}
 	
 	/**
-	 * Apelle la fonction <b>handleRedo()</b> sur le dernier <b>Cmd</b> de la pile de handleRedo. Si aucune <b>Cmd</b> ne se trouves dans la pile il ne fait rien. Si le
+	 * Apelle la fonction <b>redo()</b> sur le dernier <b>Cmd</b> de la pile de handleRedo. Si aucune <b>Cmd</b> ne se trouves dans la pile il ne fait rien. Si le
 	 * handleRedo lèves une exception celle-ci est capturée et consignée dans les logs et l'<b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void redo() {

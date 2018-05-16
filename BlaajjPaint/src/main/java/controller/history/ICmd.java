@@ -3,7 +3,9 @@ package controller.history;
 import utils.UndoException;
 
 /**
- * 
+ * Dans notre projet, chaque outil produis une "sauvegarde" pour l'historique. Cette "sauvegarde" hérite de ICmd et surcharge
+ * les fonctions execute, undo, redo et toString afin qu'on puisse respectivement appliquer, défaire ou réappliquer une modification sous
+ * forme d'historique de commandes.
  */
 public abstract class ICmd {
 	
