@@ -68,7 +68,7 @@ public class TextTool extends Tool {
 		// Test si l'outil est en cours d'édition
 		if (addText != null) {
 			cancel();
-
+			Project.getInstance().addLayer(new Layer(textLayer, false));
 		}
 	}
 	
