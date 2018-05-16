@@ -66,11 +66,12 @@ public class TextTool extends Tool {
 		// Test si l'outil est en cours d'édition
 		if (addText != null) {
 			Layer newLayer = new Layer(textLayer, false); // Devient un calque non-temporaire
+			reset();
 			Project.getInstance().addLayer(newLayer);
+			Project.getInstance().setCurrentLayer(newLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			Project.getInstance().drawWorkspace();
-			cancel();
-			Project.getInstance().setCurrentLayer(newLayer);
+			initTextTool();
 		}
 	}
 	
