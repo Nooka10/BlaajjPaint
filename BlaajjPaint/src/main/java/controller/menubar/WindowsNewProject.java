@@ -50,7 +50,7 @@ public class WindowsNewProject {
 
 	/**
 	 * Crée, initalise le nouveau projet avec la taille choisie.
-	 * Réactive les bouttons
+	 * Réactive les boutons
 	 *
 	 * @param event
 	 */
@@ -67,7 +67,7 @@ public class WindowsNewProject {
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close();
 
-		// Réactive les bouttons
+		// Réactive les boutons
 		MainViewController.getInstance().enableButton();
 	}
 

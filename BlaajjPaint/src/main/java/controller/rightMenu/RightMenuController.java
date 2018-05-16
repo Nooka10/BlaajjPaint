@@ -210,14 +210,14 @@ public class RightMenuController {
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
-	public void mergeLayer(ActionEvent event) {
+	public void mergeLayer() {
 		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
 		if (index != Project.getInstance().getLayers().size() - 1) {
 			MergeSave ms = new MergeSave();
 			Layer backgroundLayer = Project.getInstance().getLayers().get(index + 1);
-			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer);
+			Layer mergeLayer = currentLayer.mergeLayers(backgroundLayer, false);
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
@@ -308,7 +308,7 @@ public class RightMenuController {
 	}
 
 	/**
-	 * Permet d'activer les bouttons.
+	 * Permet d'activer les boutons.
 	 * A appeler dès qu'un project est ouvert, créé
 	 */
 	public void enableButton(){
@@ -320,7 +320,7 @@ public class RightMenuController {
 	}
 
 	/**
-	 * Permet de désactiver les bouttons.
+	 * Permet de désactiver les boutons.
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
 	public void disableButton(){

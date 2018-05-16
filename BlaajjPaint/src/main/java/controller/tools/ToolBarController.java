@@ -147,7 +147,7 @@ public class ToolBarController {
 	}
 
 	/**
-	 * Permet d'activer les bouttons.
+	 * Permet d'activer les boutons.
 	 * A appeler dès qu'un project est ouvert ou créé
 	 */
 	public void enableButton(){
@@ -163,7 +163,7 @@ public class ToolBarController {
 	}
 
 	/**
-	 * Permet de déscativer les bouttons.
+	 * Permet de déscativer les boutons.
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
 	public void disableButton(){

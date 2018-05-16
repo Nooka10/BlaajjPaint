@@ -73,8 +73,8 @@ public class Transformations {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 			                    String newValue) {
-				if (!newValue.matches("[-]\\d*")) {
-					degrees.setText(newValue.replaceAll("[-][^\\d]", ""));
+				if (!newValue.matches("[-]?[0-9]")) {
+					degrees.setText(newValue.replace("[^-][^0-9]", ""));
 				}
 			}
 		});

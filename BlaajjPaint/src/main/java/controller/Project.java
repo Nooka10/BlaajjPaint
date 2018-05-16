@@ -289,12 +289,12 @@ public class Project implements Serializable {
 	
 	public void export(File file) {
 		if (file != null) {
-			Layer resultLayer = new Layer(1,1, false); // fixme: 1,1 la taille?? certain?
+			Layer resultLayer = new Layer(1,1, true); // fixme: 1,1 la taille?? certain?
 			double minX = 0;
 			double minY = 0;
 			
 			for (Layer layer : layers) {
-				resultLayer = resultLayer.mergeLayers(layer);
+				resultLayer = resultLayer.mergeLayers(layer, true);
 				if(layer.getLayoutX() < minX){
 					minX = layer.getLayoutX();
 				}

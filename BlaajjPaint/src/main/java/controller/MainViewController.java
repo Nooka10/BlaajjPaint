@@ -164,7 +164,7 @@ public class MainViewController {
 		MainViewController.getInstance().getScrollPane().setContent(null);
 		SaveProject.getInstance().clear();
 		
-		// désactive les bouttons
+		// désactive les boutons
 		disableButton();
 	}
 
@@ -183,7 +183,7 @@ public class MainViewController {
 			SaveProject.getInstance().openFile(file);
 		}
 
-		// réactive les bouttons
+		// réactive les boutons
 		enableButton();
 	}
 
@@ -196,7 +196,7 @@ public class MainViewController {
 	
 	
 	/**
-	 * Permet de déscativer les bouttons.
+	 * Permet de déscativer les boutons.
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
 	public void disableButton(){
@@ -206,7 +206,7 @@ public class MainViewController {
 	}
 
 	/**
-	 * Permet d'activer les bouttons.
+	 * Permet d'activer les boutons.
 	 * A appeler dès qu'un project est ouvert ou créé
 	 */
 	public void enableButton(){

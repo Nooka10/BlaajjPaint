@@ -22,19 +22,7 @@ public class Layer extends Canvas implements Serializable {
 	private int id; // l'id du calque
 	private static int count = 0; // le nombre de calques qui ont été créés
 	private String nomCalque;
-	
-	/**
-	 * Constructeur
-	 *
-	 * @param width  la largeur de notre calque
-	 * @param height la hauteur de notre calque
-	 * @param nom le nom à donner au calque (nom affiché dans la liste de calque)
-	 * @param calqueTemporaire booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
-	 */
-	public Layer(int width, int height, String nom, boolean calqueTemporaire) {
-		this(width, height, calqueTemporaire);
-		nomCalque = "Calque " + id + ", " + nom;
-	}
+	private String descriptionCalque;
 	
 	/**
 	 * Constructeur
@@ -49,7 +37,27 @@ public class Layer extends Canvas implements Serializable {
 			count++;
 		}
 		id = count;
-		nomCalque = "Calque " + id;
+		if (calqueTemporaire) {
+			nomCalque = "Calque temporaire";
+		} else {
+			nomCalque = "Calque " + id;
+		}
+	}
+	
+	/**
+	 * Constructeur
+	 *
+	 * @param width  la largeur de notre calque
+	 * @param height la hauteur de notre calque
+	 * @param descriptionCalque le descriptionCalque à donner au calque (descriptionCalque affiché dans la liste de calque)
+	 * @param calqueTemporaire booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
+	 */
+	public Layer(int width, int height, String descriptionCalque, boolean calqueTemporaire) {
+		this(width, height, calqueTemporaire);
+		if (!calqueTemporaire) {
+			nomCalque = "Calque " + id + ", " + descriptionCalque;
+		}
+		this.descriptionCalque = descriptionCalque;
 	}
 	
 	/**
@@ -58,7 +66,7 @@ public class Layer extends Canvas implements Serializable {
 	 * @param toCopy le calque à copier
 	 */
 	public Layer(Layer toCopy, boolean calqueTemporaire) {
-		this((int)toCopy.getWidth(), (int)toCopy.getHeight(), calqueTemporaire);
+		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.descriptionCalque, calqueTemporaire);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
 		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4), 0, 0, getWidth(), getHeight());
@@ -123,7 +131,7 @@ public class Layer extends Canvas implements Serializable {
 	 *
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
-	public Layer mergeLayers(Layer backgroundLayer) {
+	public Layer mergeLayers(Layer backgroundLayer, boolean mergeSurCalqueTemporaire) {
 		Image image1 = createImageFromCanvas(4);
 		Image image2 = backgroundLayer.createImageFromCanvas(4);
 		
@@ -135,9 +143,8 @@ public class Layer extends Canvas implements Serializable {
 		double maxX = getLayoutX() + getWidth() > backgroundLayer.getLayoutX() + backgroundLayer.getWidth() ? getLayoutX() + getWidth() : backgroundLayer.getLayoutX() + backgroundLayer.getWidth();
 		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
 		
-		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
-		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), true);
+		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeSurCalqueTemporaire); // FIXME: icii
 		
 		// dessine les deux calques sur notre nouveau calque fusion
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
