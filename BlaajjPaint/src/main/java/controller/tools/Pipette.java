@@ -42,7 +42,7 @@ public class Pipette extends Tool {
 						WritableImage srcMask = new WritableImage(Project.getInstance().getWidth(), Project.getInstance().getHeight());
 						final SnapshotParameters spa = new SnapshotParameters();
 						spa.setFill(Color.TRANSPARENT);
-						srcMask = item.snapshot(spa, srcMask);
+						srcMask = item.snapshot(spa, srcMask); // FIXME: changer le snapshot pour utiliser Utils!!
 						
 						PixelReader maskReader = srcMask.getPixelReader();
 						

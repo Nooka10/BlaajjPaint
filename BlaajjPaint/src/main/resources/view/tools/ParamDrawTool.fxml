@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
@@ -26,7 +31,7 @@
             <Tooltip text="Gérer l'épaisseur de l'outil" />
          </tooltip>
 		</Slider>
-		<TextField fx:id="thicknessTextField" onAction="#textFieldOnTextChange" prefWidth="60.0">
+		<TextField fx:id="thicknessTextField" prefWidth="60.0">
          <tooltip>
             <Tooltip text="Gérer l'épaisseur de l'outil" />
          </tooltip></TextField>

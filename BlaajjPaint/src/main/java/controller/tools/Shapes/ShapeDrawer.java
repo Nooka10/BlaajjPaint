@@ -193,7 +193,6 @@ public abstract class ShapeDrawer extends Tool {
 				MainViewController.getInstance().getRightMenuController().updateLayerList();
 				CallbackNewToolChanged();
 				currentShapeSave.execute();
-				
 			}
 		};
 	}

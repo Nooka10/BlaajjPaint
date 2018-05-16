@@ -24,6 +24,8 @@ public class Utils {
 		return snapshot;
 	}
 	
+	// TODO: déplacer le snapshot de la gomme et de la pipette ici!
+	
 	public static boolean checkWidthHeightValidity(TextField width, TextField height, Button validate) {
 		if (width.getText().isEmpty() || height.getText().isEmpty() ||
 				Integer.parseInt(width.getText()) == 0 || Integer.parseInt(height.getText()) == 0) {
@@ -35,5 +37,17 @@ public class Utils {
 		}
 	}
 	
-	// TODO: déplacer le snapshot de la gomme ici!
+	public static boolean checkTextFieldValueGTZero(TextField textField, Button validate) {
+		if (textField.getText().isEmpty() || Integer.parseInt(textField.getText()) == 0) {
+			validate.setDisable(true);
+			return false;
+		} else {
+			validate.setDisable(false);
+			return true;
+		}
+	}
+	
+	public static boolean checkTextFieldValueGTZero(TextField textField) {
+		return !(textField.getText().isEmpty() || Integer.parseInt(textField.getText()) == 0);
+	}
 }

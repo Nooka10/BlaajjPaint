@@ -34,7 +34,7 @@
          <tooltip>
             <Tooltip text="Gérer l'épaisseur des bordures des formes vides" />
          </tooltip></Slider>
-      <TextField fx:id="thicknessTextField" onAction="#textFieldOnTextChange" prefWidth="60.0">
+      <TextField fx:id="thicknessTextField" prefWidth="60.0">
          <tooltip>
             <Tooltip text="Gérer l'épaisseur des bordures des formes vides" />
          </tooltip></TextField>

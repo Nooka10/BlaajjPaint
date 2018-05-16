@@ -24,19 +24,17 @@ public class ParamCropController {
 
     /**
      * Evenement appellé par le boutton Annuler qui annule le rognage actuel
-     * @param event
      */
     @FXML
-    void cancel(ActionEvent event) {
+    void cancel() {
         Crop.getInstance().cancel();
     }
 
     /**
      * Evenement appellé par le boutton Valider qui valide le rognage du calque
-     * @param event
      */
     @FXML
-    void validate(ActionEvent event) {
+    void validate() {
         Crop.getInstance().validate();
     }
 }
