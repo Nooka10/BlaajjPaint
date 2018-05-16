@@ -292,8 +292,16 @@ public class MenuBarController {
 	}
 	
 	@FXML
-	public void handleAPropos() {
-	
+	public void handleAboutUs() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/AboutUs.fxml"));
+			Parent aboutUsWindow = fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(aboutUsWindow));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
