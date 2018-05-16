@@ -34,14 +34,14 @@ public class ParamShapeController {
         thicknessTextField.setText(String.valueOf(Math.round(EmptyRectangle.getInstance().getThickness())));
         thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
 	
-	    // Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le text de textFieldWidth est modifié
+	    // Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le texte de textFieldWidth est modifié
 	    thicknessTextField.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 			    // vrai si l'utilisateur n'a pas entré un chiffre ou que le contenu de thicknessTextField n'est pas valides
 			    if (!newValue.matches("\\d*") || !Utils.checkTextFieldValueGTZero(thicknessTextField)) {
 				    thicknessTextField.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
-			    } else { // vrai si l'utilisateur a entré un chiffre et que le contenu de thicknessTextField est valides
+			    } else { // vrai si l'utilisateur a entré un chiffre et que le contenu de thicknessTextField est valide
 				    int thickness = Integer.parseInt(thicknessTextField.getText());
 				    if (thickness > 200) {
 					    thickness = 200;

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
@@ -12,7 +15,7 @@
 			<items>
 				<MenuItem mnemonicParsing="false" text="Degrés">
 					<graphic>
-						<TextField fx:id="degrees">
+						<TextField fx:id="degreesTextField">
                      <tooltip>
                         <Tooltip text="Angle de rotation du calque" />
                      </tooltip></TextField>
@@ -20,7 +23,7 @@
 				</MenuItem>
 				<MenuItem mnemonicParsing="false">
 					<graphic>
-						<Button defaultButton="true" onAction="#handleValidateRotate" text="Valider">
+						<Button fx:id="ValidateButton" defaultButton="true" disable="true" onAction="#handleValidateRotate" text="Valider">
                      <tooltip>
                         <Tooltip text="Valider la transformation" />
                      </tooltip></Button>

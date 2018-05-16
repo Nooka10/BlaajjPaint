@@ -28,25 +28,23 @@ public class ParamDrawToolController {
 	/**
 	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
-	
 	@FXML
 	private void initialize() {
 		thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));
 		thicknessSlider.setValue(tool.thickness);
 		
-		// Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le text de textFieldWidth est modifié
+		// Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le texte de textFieldWidth est modifié
 		thicknessTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (!newValue.matches("\\d*") || !Utils.checkTextFieldValueGTZero(thicknessTextField)) { // vrai si l'utilisateur n'a pas entré un chiffre
-					thicknessTextField.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
-					
-					// vrai si l'utilisateur a entré un chiffre et que le contenu de textFieldSizeFont est valides
-				} else {
+				// vrai si l'utilisateur n'a pas entré un chiffre ou que le contenu de textFieldSizeFont n'est pas valide
+				if (!newValue.matches("\\d*") || !Utils.checkTextFieldValueGTZero(thicknessTextField)) {
+					thicknessTextField.setText(oldValue); // on annule la dernière modification
+				} else { // vrai si l'utilisateur a entré un chiffre et que le contenu de thicknessTextField est valide
 					tool.thickness = Double.parseDouble(thicknessTextField.getText());
 					if (tool.thickness > 200) {
 						tool.thickness = 200;
-						thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));
+						thicknessTextField.setText("200");
 					}
 					thicknessSlider.setValue(tool.thickness);
 					((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
@@ -54,7 +52,6 @@ public class ParamDrawToolController {
 			}
 		});
 	}
-	
 	
 	public void sliderValueChanged() {
 		tool.thickness = thicknessSlider.getValue();

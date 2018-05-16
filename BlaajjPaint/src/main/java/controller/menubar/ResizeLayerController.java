@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * Controller associé au fichier FXML ResizeLayer.fxml et controlant l'ensemble des actions associées à la fenêtre de redimensionnement ouvert
+ * Controller associé au fichier FXML ResizeLayer.fxml et contrôlant l'ensemble des actions associées à la fenêtre de redimensionnement ouvert
  * lorsque l'utilisateur clique sur le menu <b>Calque -> Redimensionner</b>.
  */
 public class ResizeLayerController {
@@ -55,7 +55,7 @@ public class ResizeLayerController {
 		textFieldWidth.setText(Integer.toString((int) width));
 		textFieldHeight.setText(Integer.toString((int) height));
 		
-		// Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le text de textFieldWidth est modifié
+		// Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le texte de textFieldWidth est modifié
 		textFieldWidth.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -67,7 +67,7 @@ public class ResizeLayerController {
 			}
 		});
 		
-		// Ajoute un changeListener à textFieldHeight -> la méthode changed() est appelée à chaque fois que le text de textFieldHeight est modifié
+		// Ajoute un changeListener à textFieldHeight -> la méthode changed() est appelée à chaque fois que le texte de textFieldHeight est modifié
 		textFieldHeight.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -104,7 +104,7 @@ public class ResizeLayerController {
 	 * Méthode appelée lorsque l'utilisateur clique sur le bouton "Valider".
 	 * Effectue le redimensionnement si la largeur et la hauteur entrées sont valides.
 	 * Redimensionne tous les calques du projet si la checkbox "Ajuster l'image" est cochée, sinon, ne redimensionne que le calque actuellement sélectionné.
-	 * Ferme la fenêtre une fois le redimenssionnement effectué.
+	 * Ferme la fenêtre une fois le redimensionnement effectué.
 	 */
 	@FXML
 	public void validateResize() {
@@ -136,7 +136,7 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Méthode appelée lrosque l'utilisateur clique sur le bouton "Annuler". Annule le le redimenssionnement et ferme la fenêtre.
+	 * Méthode appelée lrosque l'utilisateur clique sur le bouton "Annuler". Annule le le redimensionnement et ferme la fenêtre.
 	 */
 	public void cancel() {
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
@@ -144,7 +144,7 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du redimenssionnement.
+	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement.
 	 */
 	private class ResizeSave extends ICmd{
 		private Layer currentLayer;
@@ -156,7 +156,7 @@ public class ResizeLayerController {
 		private Image newImage;
 		
 		/**
-		 * Construit une commande sauvegardant l'action du redimenssionnement.
+		 * Construit une commande sauvegardant l'action du redimensionnement.
 		 */
 		private ResizeSave() {
 			currentLayer = Project.getInstance().getCurrentLayer();

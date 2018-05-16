@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.LinkedList;
 
 /**
- * Controller associé au fichier FXML MenuBar.fxml et controlant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
+ * Controller associé au fichier FXML MenuBar.fxml et contrôlant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
  */
 public class MenuBarController {
 	

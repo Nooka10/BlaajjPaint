@@ -59,7 +59,7 @@ public class ParamTextController {
                 }
         );
 	
-	    // Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le text de textFieldWidth est modifié
+	    // Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le texte de textFieldWidth est modifié
 	    textFieldSizeFont.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -67,7 +67,7 @@ public class ParamTextController {
 			    if (!newValue.matches("\\d*") || !Utils.checkTextFieldValueGTZero(textFieldSizeFont, validateButton)) {
 				    textFieldSizeFont.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
 				
-				    // vrai si l'utilisateur a entré un chiffre et que le contenu de textFieldSizeFont est valides
+				    // vrai si l'utilisateur a entré un chiffre et que le contenu de textFieldSizeFont est valide
 			    } else {
 				    if (Integer.parseInt(newValue) > 500) {
 					    textFieldSizeFont.setText(String.valueOf(500));
@@ -97,7 +97,7 @@ public class ParamTextController {
     }
 
     /**
-     * Evenement lorsque le text change dans le textField
+     * Evenement lorsque le textechange dans le textField
      */
     @FXML
     void changeValue() {
