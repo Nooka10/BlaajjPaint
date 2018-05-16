@@ -57,8 +57,8 @@ public class Layer extends Canvas implements Serializable {
 	 *
 	 * @param toCopy le calque à copier
 	 */
-	public Layer(Layer toCopy) {
-		this((int)toCopy.getWidth(), (int)toCopy.getHeight(), false);
+	public Layer(Layer toCopy, boolean calqueTemporaire) {
+		this((int)toCopy.getWidth(), (int)toCopy.getHeight(), calqueTemporaire);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
 		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4), 0, 0, getWidth(), getHeight());
