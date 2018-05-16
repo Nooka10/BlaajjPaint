@@ -15,7 +15,7 @@ public class AboutUsController {
 	 * Ferme la fenêtre "À propos".
 	 */
 	@FXML
-	private void close() {
+	private void handleClose() {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
 	}

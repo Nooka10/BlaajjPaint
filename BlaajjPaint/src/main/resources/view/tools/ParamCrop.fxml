@@ -7,11 +7,11 @@
 
 <HBox spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamCropController">
    <children>
-      <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancel" prefWidth="100.0" text="Annuler">
+      <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefWidth="100.0" text="Annuler">
          <tooltip>
             <Tooltip text="Annulé le rognage de l'image" />
          </tooltip></Button>
-      <Button fx:id="validateButton" defaultButton="true" mnemonicParsing="false" onAction="#validate" prefWidth="100.0" text="Valider">
+      <Button fx:id="validateButton" defaultButton="true" mnemonicParsing="false" onAction="#handleValidate" prefWidth="100.0" text="Valider">
          <tooltip>
             <Tooltip text="Valider le rognage de l'image" />
          </tooltip></Button>

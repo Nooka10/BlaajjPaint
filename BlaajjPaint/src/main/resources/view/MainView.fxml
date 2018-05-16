@@ -13,7 +13,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="mainView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" onKeyPressed="#KeyPressed" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!-- fx:controller="controller.MainViewController"-->
+<BorderPane fx:id="mainView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" onKeyPressed="#handleOnKeyPressed"
+            stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!-- fx:controller="controller.MainViewController"-->
 	<left>
 		<AnchorPane maxWidth="70.0" minWidth="70.0" prefWidth="70.0" BorderPane.alignment="CENTER_LEFT">
 			<children>

@@ -120,14 +120,14 @@ public class Layer extends Canvas implements Serializable {
 		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeSurCalqueTemporaire);
 		
 		// dessine les deux calques sur notre nouveau calque fusion
-		//mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
-		//mergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
+		//handleMergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
+		//handleMergeLayer.getGraphicsContext2D().drawImage(image1, getLayoutX() - minX, getLayoutY() - minY, getWidth(), getHeight());
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getTranslateX() - minX, backgroundLayer.getTranslateY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
 		mergeLayer.getGraphicsContext2D().drawImage(image1, getTranslateX() - minX, getTranslateY() - minY, getWidth(), getHeight());
 		
 		// place le calque fusionné avec le bon décalage
-		//mergeLayer.setLayoutX(minX);
-		//mergeLayer.setLayoutY(minY);
+		//handleMergeLayer.setLayoutX(minX);
+		//handleMergeLayer.setLayoutY(minY);
 		mergeLayer.setTranslateX(minX);
 		mergeLayer.setTranslateY(minY);
 		

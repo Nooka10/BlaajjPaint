@@ -4,13 +4,11 @@ import controller.Layer;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import utils.UndoException;
@@ -62,7 +60,7 @@ public class RightMenuController {
 	private final static Background unfocusBackground = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	
 	@FXML
@@ -79,35 +77,35 @@ public class RightMenuController {
 	}
 	
 	@FXML
-	void OnInputTextChanged() {
+	void handleOnInputTextChanged() {
 		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
 		Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
 		opacitySlider.setValue(newOpacity);
 	}
 	
 	@FXML
-	void OnMousePressed() {
+	void handleOnMousePressed() {
 		oldOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
 		opacityTextField.setText(String.valueOf(oldOpacity));
 		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
 	}
 	
 	@FXML
-	void OnMouseDragged() {
+	void handleOnMouseDragged() {
 		newOpacity = opacitySlider.getValue();
 		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().updateLayerOpacity(newOpacity);
 	}
 	
 	@FXML
-	void OnMouseReleased() {
+	void handleOnMouseReleased() {
 		newOpacity = Math.round(opacitySlider.getValue());
 		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
 	}
 	
 	@FXML
-	void selectColor() {
+	void handleSelectColor() {
 		Project.getInstance().setCurrentColor(colorPicker.getValue());
 	}
 	
@@ -128,7 +126,7 @@ public class RightMenuController {
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
 	@FXML
-	public void addNewLayer() {
+	public void handleAddNewLayer() {
 		NewLayerSave ls = new NewLayerSave();
 		Project.getInstance().addNewLayer();
 		updateLayerList();
@@ -139,7 +137,7 @@ public class RightMenuController {
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
 	@FXML
-	void deleteLayer() {
+	void handleDeleteLayer() {
 		if (Project.getInstance().getLayers().size() != 1) {
 			DeleteLayerSave dls = new DeleteLayerSave();
 			Project.getInstance().deleteCurrentLayer();
@@ -152,7 +150,7 @@ public class RightMenuController {
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
 	@FXML
-	void downLayer() {
+	void handleDownLayer() {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		if (index < Project.getInstance().getLayers().size() - 1) {
 
@@ -169,7 +167,7 @@ public class RightMenuController {
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
 	@FXML
-	void upLayer() {
+	void handleUpLayer() {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		
 		if (index != 0) {
@@ -222,7 +220,7 @@ public class RightMenuController {
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
 	@FXML
-	public void mergeLayer() {
+	public void handleMergeLayer() {
 		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
@@ -242,13 +240,13 @@ public class RightMenuController {
 	public void updateLayerList() {
 		layersList.getChildren().clear();
 		for (Layer layer : Project.getInstance().getLayers()) {
-			addNewLayer(layer);
+			handleAddNewLayer(layer);
 		}
 		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
 		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
 	}
 	
-	private void addNewLayer(Layer layer) {
+	private void handleAddNewLayer(Layer layer) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/Layer.fxml"));
 			Parent newLayer = fxmlLoader.load();

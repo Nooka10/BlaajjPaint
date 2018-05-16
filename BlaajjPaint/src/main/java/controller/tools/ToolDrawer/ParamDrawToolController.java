@@ -26,7 +26,7 @@ public class ParamDrawToolController {
 	private ToolDrawer tool = (ToolDrawer) Tool.getCurrentTool();
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	@FXML
 	private void initialize() {
@@ -53,7 +53,7 @@ public class ParamDrawToolController {
 		});
 	}
 	
-	public void sliderValueChanged() {
+	public void handleSliderValueChanged() {
 		tool.thickness = thicknessSlider.getValue();
 		thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));
 		((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);

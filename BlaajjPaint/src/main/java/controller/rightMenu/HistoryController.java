@@ -17,7 +17,7 @@ public class HistoryController {
 	private Label label;
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	
 	@FXML

@@ -72,7 +72,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
-            <Button fx:id="closeButton" cancelButton="true" defaultButton="true" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#close" text="Fermer">
+            <Button fx:id="closeButton" cancelButton="true" defaultButton="true" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleClose" text="Fermer">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>

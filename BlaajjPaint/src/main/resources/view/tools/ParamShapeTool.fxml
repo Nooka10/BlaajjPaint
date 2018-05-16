@@ -27,7 +27,7 @@
             <Insets />
          </HBox.margin>
       </Label>
-      <Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="1.0" minorTickCount="1" onMouseDragged="#sliderValueChanged" onMousePressed="#sliderValueChanged" onMouseReleased="#sliderValueChanged" snapToTicks="true" value="1.0">
+      <Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="1.0" minorTickCount="1" onMouseDragged="#handleSliderValueChanged" onMousePressed="#handleSliderValueChanged" onMouseReleased="#handleSliderValueChanged" snapToTicks="true" value="1.0">
          <HBox.margin>
             <Insets top="5.0" />
          </HBox.margin>

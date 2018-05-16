@@ -36,11 +36,11 @@
                </tooltip></TextField>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="createButton" defaultButton="true" mnemonicParsing="false" onAction="#createNewProject" prefWidth="70.0" text="Créer" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="80.0">
+                  <Button fx:id="createButton" defaultButton="true" mnemonicParsing="false" onAction="#handleCreateNewProject" prefWidth="70.0" text="Créer" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="80.0">
                      <tooltip>
                         <Tooltip text="Créer le nouveau projet" />
                      </tooltip></Button>
-                  <Button fx:id="cancel" cancelButton="true" mnemonicParsing="false" onAction="#cancel" prefWidth="70.0" text="Annuler" AnchorPane.rightAnchor="0.0">
+                  <Button fx:id="cancel" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefWidth="70.0" text="Annuler" AnchorPane.rightAnchor="0.0">
                      <tooltip>
                         <Tooltip text="Annuler la création du projet" />
                      </tooltip></Button>

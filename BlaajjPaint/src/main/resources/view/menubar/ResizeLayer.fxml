@@ -62,7 +62,7 @@
                         <Tooltip text="Ajuster l'image à la nouvelle taille" />
                      </tooltip>
                   </CheckBox>
-                  <CheckBox fx:id="checkBoxRatio" mnemonicParsing="false" onAction="#checkBoxRatioChange" selected="true" text="Garder le ratio">
+                  <CheckBox fx:id="checkBoxRatio" mnemonicParsing="false" onAction="#handleCheckBoxRatioChange" selected="true" text="Garder le ratio">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
@@ -77,11 +77,11 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Annuler">
+                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Annuler">
                      <tooltip>
                         <Tooltip text="Annuler le changement de taille" />
                      </tooltip></Button>
-                  <Button fx:id="validateResizeButton" defaultButton="true" mnemonicParsing="false" onAction="#validateResize" text="Valider">
+                  <Button fx:id="validateResizeButton" defaultButton="true" mnemonicParsing="false" onAction="#handleValidateResize" text="Valider">
                      <tooltip>
                         <Tooltip text="Valider le changement de taille" />
                      </tooltip></Button>

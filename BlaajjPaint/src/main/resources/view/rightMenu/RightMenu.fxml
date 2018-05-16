@@ -18,7 +18,7 @@
 	<children>
 		<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
-				<ColorPicker fx:id="colorPicker" minWidth="230.0" onAction="#selectColor" stylesheets="@RightMenuStyleSheet.css">
+				<ColorPicker fx:id="colorPicker" minWidth="230.0" onAction="#handleSelectColor" stylesheets="@RightMenuStyleSheet.css">
 					<styleClass>
 						<String fx:value="menuButton" />
 						<String fx:value="colorPicker" />
@@ -61,7 +61,7 @@
 										<Insets left="20.0" right="5.0" />
 									</HBox.margin>
 								</Label>
-								<TextField fx:id="opacityTextField" onAction="#OnInputTextChanged">
+								<TextField fx:id="opacityTextField" onAction="#handleOnInputTextChanged">
 									<HBox.margin>
 										<Insets right="5.0" />
 									</HBox.margin>
@@ -71,7 +71,7 @@
 								</TextField>
 							</children>
 						</HBox>
-						<Slider fx:id="opacitySlider" blockIncrement="5.0" majorTickUnit="5.0" minorTickCount="1" onMouseDragged="#OnMouseDragged" onMousePressed="#OnMousePressed" onMouseReleased="#OnMouseReleased" snapToTicks="true" value="100.0">
+						<Slider fx:id="opacitySlider" blockIncrement="5.0" majorTickUnit="5.0" minorTickCount="1" onMouseDragged="#handleOnMouseDragged" onMousePressed="#handleOnMousePressed" onMouseReleased="#handleOnMouseReleased" snapToTicks="true" value="100.0">
                      <tooltip>
                         <Tooltip text="Opacité du calque actif" />
                      </tooltip></Slider>
@@ -90,7 +90,7 @@
 				</VBox>
 				<HBox spacing="3.0">
 					<children>
-						<Button fx:id="addNewLayer" mnemonicParsing="false" onAction="#addNewLayer" text="+">
+						<Button fx:id="addNewLayer" mnemonicParsing="false" onAction="#handleAddNewLayer" text="+">
 							<HBox.margin>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</HBox.margin>
@@ -98,7 +98,7 @@
                         <Tooltip text="Ajouter un calque" />
                      </tooltip>
 						</Button>
-						<Button fx:id="deleteLayer" mnemonicParsing="false" onAction="#deleteLayer" text="-">
+						<Button fx:id="deleteLayer" mnemonicParsing="false" onAction="#handleDeleteLayer" text="-">
 							<HBox.margin>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</HBox.margin>
@@ -106,7 +106,7 @@
                         <Tooltip text="Enlever un calque" />
                      </tooltip>
 						</Button>
-						<Button fx:id="upLayer" mnemonicParsing="false" onAction="#upLayer" text="^">
+						<Button fx:id="upLayer" mnemonicParsing="false" onAction="#handleUpLayer" text="^">
 							<HBox.margin>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</HBox.margin>
@@ -114,7 +114,7 @@
                         <Tooltip text="Monter le calque" />
                      </tooltip>
 						</Button>
-						<Button fx:id="downLayer" mnemonicParsing="false" onAction="#downLayer" text="v">
+						<Button fx:id="downLayer" mnemonicParsing="false" onAction="#handleDownLayer" text="v">
 							<HBox.margin>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</HBox.margin>
@@ -122,7 +122,7 @@
                         <Tooltip text="Descendre le calque" />
                      </tooltip>
 						</Button>
-						<Button fx:id="fusion" mnemonicParsing="false" onAction="#mergeLayer" text="fusion">
+						<Button fx:id="fusion" mnemonicParsing="false" onAction="#handleMergeLayer" text="fusion">
 							<HBox.margin>
 								<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 							</HBox.margin>

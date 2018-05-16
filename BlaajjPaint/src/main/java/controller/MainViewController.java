@@ -55,7 +55,7 @@ public class MainViewController {
 	}
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	@FXML
 	private void initialize() {
@@ -98,7 +98,7 @@ public class MainViewController {
 	}
 	
 	@FXML
-	private void KeyPressed(KeyEvent event) {
+	private void handleOnKeyPressed(KeyEvent event) {
 		KeyCombination cntrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_DOWN);
 		KeyCombination cntrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_DOWN);
@@ -139,9 +139,9 @@ public class MainViewController {
 		
 		// Add new layer
 		if (cntrlMajC.match(event)) {
-			// Appelle de la fonction addNewLayer de RightMenu (action du clic sur le bouton + des calques)
+			// Appelle de la fonction handleAddNewLayer de RightMenu (action du clic sur le bouton + des calques)
 			// Peut être mieux fait et mettre dans project si on a du temps
-			MainViewController.getInstance().getRightMenuController().addNewLayer();
+			MainViewController.getInstance().getRightMenuController().handleAddNewLayer();
 		}
 		
 		// delete current layer

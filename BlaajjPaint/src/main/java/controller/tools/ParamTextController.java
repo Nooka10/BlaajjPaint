@@ -38,7 +38,7 @@ public class ParamTextController {
     private TextTool textTool = TextTool.getInstance();
     
     /**
-     * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+     * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
      */
     @FXML
     private void initialize() {
@@ -83,7 +83,7 @@ public class ParamTextController {
      * Evenement appellé par le slider changeant la taille de la police d'écriture
      */
     @FXML
-    void changeFontSlider() {
+    void handleChangeFontSlider() {
         textTool.setFont(new Font(fontList.getValue(),sliderSizeFont.getValue()));
         textFieldSizeFont.setText(String.valueOf(Math.round(sliderSizeFont.getValue())));
     }
@@ -92,7 +92,7 @@ public class ParamTextController {
      * Evenement lors de la validation de l'ajout du texte
      */
     @FXML
-    void validateText() {
+    void handleValidateText() {
         textTool.validate();
     }
 
@@ -100,7 +100,7 @@ public class ParamTextController {
      * Evenement lorsque le textechange dans le textField
      */
     @FXML
-    void changeValue() {
+    void handleOnChangeValue() {
         textTool.changeTextValue(textValue.getText());
     }
 
@@ -108,7 +108,7 @@ public class ParamTextController {
      * Evenement appelé par l'appuie du boutton annuler
      */
     @FXML
-    void cancelTextCreation() {
+    void handleCancelTextCreation() {
         textTool.cancel();
     }
 }

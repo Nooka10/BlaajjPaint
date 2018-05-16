@@ -10,7 +10,7 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamTextController">
    <children>
-      <Slider fx:id="sliderSizeFont" max="500.0" min="10.0" onMouseDragged="#changeFontSlider" onMousePressed="#changeFontSlider" onMouseReleased="#changeFontSlider" showTickMarks="true" value="40.0">
+      <Slider fx:id="sliderSizeFont" max="500.0" min="10.0" onMouseDragged="#handleChangeFontSlider" onMousePressed="#handleChangeFontSlider" onMouseReleased="#handleChangeFontSlider" showTickMarks="true" value="40.0">
          <HBox.margin>
             <Insets />
          </HBox.margin>
@@ -26,15 +26,15 @@
          <tooltip>
             <Tooltip text="Changer la police d'écriture" />
          </tooltip></ChoiceBox>
-      <TextField fx:id="textValue" onAction="#validateText" onKeyReleased="#changeValue" promptText="Text">
+      <TextField fx:id="textValue" onAction="#handleValidateText" onKeyReleased="#handleOnChangeValue" promptText="Text">
          <tooltip>
             <Tooltip text="Changer le contenu du texte" />
          </tooltip></TextField>
-      <Button fx:id="validateButton" mnemonicParsing="false" onAction="#validateText" text="Validate">
+      <Button fx:id="validateButton" mnemonicParsing="false" onAction="#handleValidateText" text="Validate">
          <tooltip>
             <Tooltip text="Valider l'ajout du texte" />
          </tooltip></Button>
-      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelTextCreation" text="Annuler">
+      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelTextCreation" text="Annuler">
          <tooltip>
             <Tooltip text="Annuler l'ajout du texte" />
          </tooltip></Button>

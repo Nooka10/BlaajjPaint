@@ -42,7 +42,7 @@ public class ResizeLayerController {
 	private double ratioImage;
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	@FXML
 	private void initialize() {
@@ -83,7 +83,7 @@ public class ResizeLayerController {
 	/**
 	 * Méthode appelée lorsque l'utilisateur clique dans la checkBox "Garder le ratio". Active/désactive le textField Hauteur.
 	 */
-	public void checkBoxRatioChange() {
+	public void handleCheckBoxRatioChange() {
 		textFieldHeight.setDisable(checkBoxRatio.isSelected());
 		
 		calculateHeightValue();
@@ -107,7 +107,7 @@ public class ResizeLayerController {
 	 * Ferme la fenêtre une fois le redimensionnement effectué.
 	 */
 	@FXML
-	public void validateResize() {
+	public void handleValidateResize() {
 		if (Utils.checkWidthHeightValidity(textFieldWidth, textFieldHeight, validateResizeButton)) {
 			ResizeSave rs = new ResizeSave();
 			Layer currentLayer = Project.getInstance().getCurrentLayer();
@@ -131,14 +131,14 @@ public class ResizeLayerController {
 			}
 			rs.execute();
 			
-			cancel();
+			handleCancel();
 		}
 	}
 	
 	/**
 	 * Méthode appelée lrosque l'utilisateur clique sur le bouton "Annuler". Annule le le redimensionnement et ferme la fenêtre.
 	 */
-	public void cancel() {
+	public void handleCancel() {
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
 		stage.close();
 	}

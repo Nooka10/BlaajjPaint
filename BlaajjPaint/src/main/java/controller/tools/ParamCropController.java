@@ -14,7 +14,7 @@ public class ParamCropController {
     public Button validateButton;
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	
 	@FXML
@@ -26,7 +26,7 @@ public class ParamCropController {
      * Evenement appellé par le boutton Annuler qui annule le rognage actuel
      */
     @FXML
-    void cancel() {
+    void handleCancel() {
         Crop.getInstance().cancel();
     }
 
@@ -34,7 +34,7 @@ public class ParamCropController {
      * Evenement appellé par le boutton Valider qui valide le rognage du calque
      */
     @FXML
-    void validate() {
+    void handleValidate() {
         Crop.getInstance().validate();
     }
 }

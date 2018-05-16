@@ -12,7 +12,8 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * Controleur de la fenêtre qui apparait lors de la demande de création d'un nouveau projet
+ * Controller associé au fichier FXML WindowsNewProject.fxml et contrôlant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le
+ * bouton du menu <b>Fichier -> Nouveau</b>.
  */
 public class WindowsNewProjectController {
 	@FXML
@@ -28,9 +29,8 @@ public class WindowsNewProjectController {
 	private TextField height;
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
-	
 	@FXML
 	private void initialize() {
 		width.textProperty().addListener(new ChangeListener<String>() {
@@ -62,7 +62,7 @@ public class WindowsNewProjectController {
 	 * @param event
 	 */
 	@FXML
-	private void createNewProject(ActionEvent event) {
+	private void handleCreateNewProject(ActionEvent event) {
 		if (Utils.checkWidthHeightValidity(width, height, createButton)) {
 			// Nettoyage du projet
 			MainViewController.getInstance().closeProject();
@@ -85,7 +85,7 @@ public class WindowsNewProjectController {
 	 * @param event
 	 */
 	@FXML
-	private void cancel(ActionEvent event) {
+	private void handleCancel(ActionEvent event) {
 		Stage stage = (Stage) cancel.getScene().getWindow();
 		// do what you have to do
 		stage.close();

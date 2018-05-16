@@ -192,7 +192,7 @@ public class MenuBarController {
 	@FXML
 	public void handleNewLayer() {
 		// peut être mieux fait dans project si on a le temps
-		MainViewController.getInstance().getRightMenuController().addNewLayer();
+		MainViewController.getInstance().getRightMenuController().handleAddNewLayer();
 	}
 	
 	/**
@@ -237,7 +237,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleFusionLayer() {
-		MainViewController.getInstance().getRightMenuController().mergeLayer();
+		MainViewController.getInstance().getRightMenuController().handleMergeLayer();
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class MenuBarController {
 	 * Fusionne tous les calques du projet en un nouveau calque. Tous les calques existants sont supprimés.
 	 */
 	@FXML
-	public void mergeAllLayer() {
+	public void handleMergeAllLayer() {
 		MergeAllSave mas = new MergeAllSave();
 		Layer resultLayer = new Layer(1, 1, true); // FIXME: 1,1 la taille??
 		
@@ -272,7 +272,7 @@ public class MenuBarController {
 	 * Masque le calque sélectionné. Il n'est pas possible d'utiliser un outil sur un calque masqué.
 	 */
 	@FXML
-	public void hideCurrentLayer() {
+	public void handleHideCurrentLayer() {
 		Project.getInstance().getCurrentLayer().setVisible(!Project.getInstance().getCurrentLayer().isVisible());
 		changeHideButtonText();
 		Project.getInstance().drawWorkspace();

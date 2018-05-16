@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import utils.Utils;
 
@@ -20,6 +21,8 @@ public class ParamShapeController {
     @FXML
     public ToggleButton emptyRect;
     @FXML
+	public ToggleGroup Forme;
+	@FXML
     private Slider thicknessSlider;
     @FXML
     private TextField thicknessTextField;
@@ -27,7 +30,7 @@ public class ParamShapeController {
     private HBox paramShapeTools;
     
     /**
-     * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+     * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
      */
     @FXML
     private void initialize() {
@@ -55,7 +58,7 @@ public class ParamShapeController {
 	    });
     }
     
-    public void sliderValueChanged() {
+    public void handleSliderValueChanged() {
         thicknessTextField.setText(String.valueOf(Math.round(thicknessSlider.getValue())));
         EmptyRectangle.getInstance().setThickness(thicknessSlider.getValue());
         EmptyEllipse.getInstance().setThickness(thicknessSlider.getValue());

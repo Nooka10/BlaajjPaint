@@ -16,7 +16,7 @@ import javafx.scene.transform.Rotate;
 import utils.Utils;
 
 /**
- * Controller associé au fichier FXML TransformationsController.fxml et contrôlant l'ensemble des actions associées au sous menu <b>Calque -> TransformationsController</b>.
+ * Controller associé au fichier FXML TransformationsController.fxml et contrôlant l'ensemble des actions associées au sous-menu <b>Calque -> Transformations</b>.
  */
 public class TransformationsController {
 	
@@ -28,7 +28,7 @@ public class TransformationsController {
 	private TextField degreesTextField;
 	
 	/**
-	 * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	@FXML
 	private void initialize() {
