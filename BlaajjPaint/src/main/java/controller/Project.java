@@ -169,15 +169,7 @@ public class Project implements Serializable {
 	//bah elle draw le workspace
 	public void drawWorkspace() {
 		workspace.getChildren().clear();
-		//workspace.prefHeight(height);
-		//workspace.prefWidth(width);
-		//workspace.minHeight(height);
-		//workspace.minWidth(width);
-		//workspace.maxHeight(height);
-		//workspace.maxWidth(width);
-		
 		Iterator it = layers.descendingIterator();
-		
 		
 		while (it.hasNext()) {
 			Layer layer = (Layer) it.next();
@@ -295,11 +287,19 @@ public class Project implements Serializable {
 			
 			for (Layer layer : layers) {
 				resultLayer = resultLayer.mergeLayers(layer, true);
+				/*
 				if(layer.getLayoutX() < minX){
 					minX = layer.getLayoutX();
 				}
 				if(layer.getLayoutY() < minY){
 					minY = layer.getLayoutY();
+				}
+				*/
+				if(layer.getTranslateX() < minX){
+					minX = layer.getTranslateX();
+				}
+				if(layer.getTranslateY() < minY){
+					minY = layer.getTranslateY();
 				}
 			}
 			
