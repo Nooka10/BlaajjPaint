@@ -67,11 +67,8 @@ public class TextTool extends Tool {
 	public void validate() {
 		// Test si l'outil est en cours d'édition
 		if (addText != null) {
-			text = ""; // reset du text
-			addText.execute(); // exécution de la cmd (historique)
-			MainViewController.getInstance().getRightMenuController().updateLayerList(); // ajout du calque à la liste de rightMenu
-			Project.getInstance().drawWorkspace(); // redessine les calque
-			addText = null; // fin de l'ajout du text
+			cancel();
+			
 		}
 	}
 	
@@ -104,9 +101,9 @@ public class TextTool extends Tool {
 	 * Annulation de l'ajout du text
 	 */
 	public void cancel() {
-		if (addText != null) {
+		if(Project.getInstance().getCurrentLayer().equals(textLayer)) {
 			// Suppression du calque d'ajout de text (textLayer)
-			Project.getInstance().deleteCurrentLayer();
+			Project.getInstance().getLayers().remove(textLayer);
 			// Le calque courant redevient l'ancien calque courant
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 			// redessine les layers et list de layers
@@ -119,12 +116,17 @@ public class TextTool extends Tool {
 	}
 	
 	/**
-	 * Si outil quitté, valide l'ajout du text
+	 * Si outil quitté, valide l'ajout du text si l'uilisateur à au moins cliquer sur l'interface pour rajouter le text,
+	 * autrement annule l'ajout du text (suppression du calque)
 	 */
 	@Override
 	public void CallbackOldToolChanged() {
 		super.CallbackOldToolChanged();
-		validate();
+		if(addText == null){
+			cancel();
+		} else {
+			validate();
+		}
 	}
 
 	@Override
@@ -135,7 +137,7 @@ public class TextTool extends Tool {
 
 	public void initTextTool(){
 		oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		textLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), "Texte", false);
+		textLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), "Texte", true);
 		textLayer.setVisible(true);
 		Project.getInstance().setCurrentLayer(textLayer);
 		Project.getInstance().getLayers().addFirst(textLayer);
