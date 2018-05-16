@@ -151,7 +151,15 @@ public class ToolBarController {
 	 * A appeler dès qu'un project est ouvert ou créé
 	 */
 	public void enableButton(){
-
+		handTool.setDisable(false);
+		moveTool.setDisable(false);
+		cropTool.setDisable(false);
+		pipetteTool.setDisable(false);
+		pencilTool.setDisable(false);
+		eraseTool.setDisable(false);
+		bucketFillTool.setDisable(false);
+		textTool.setDisable(false);
+		shapeTool.setDisable(false);
 	}
 
 	/**
@@ -159,7 +167,15 @@ public class ToolBarController {
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
 	public void disableButton(){
-
+		handTool.setDisable(true);
+		moveTool.setDisable(true);
+		cropTool.setDisable(true);
+		pipetteTool.setDisable(true);
+		pencilTool.setDisable(true);
+		eraseTool.setDisable(true);
+		bucketFillTool.setDisable(true);
+		textTool.setDisable(true);
+		shapeTool.setDisable(true);
 	}
 	
 	

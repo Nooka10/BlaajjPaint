@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Affine;
@@ -17,6 +18,7 @@ import utils.UndoException;
 
 public class Transformations {
 	
+	public Menu transformations;
 	@FXML
 	private TextField degrees;
 	
@@ -164,7 +166,6 @@ public class Transformations {
 			return "Symétrie horizontale de " + currentLayer;
 		}
 	}
-	
 	
 	@FXML
 	public void handleHorizontalSymmetry() {

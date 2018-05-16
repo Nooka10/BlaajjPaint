@@ -312,15 +312,23 @@ public class RightMenuController {
 	 * A appeler dès qu'un project est ouvert, créé
 	 */
 	public void enableButton(){
-
+		addNewLayer.setDisable(false);
+		deleteLayer.setDisable(false);
+		upLayer.setDisable(false);
+		downLayer.setDisable(false);
+		fusion.setDisable(false);
 	}
 
 	/**
-	 * Permet de déscativer les bouttons.
+	 * Permet de désactiver les bouttons.
 	 * A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
 	public void disableButton(){
-
+		addNewLayer.setDisable(true);
+		deleteLayer.setDisable(true);
+		upLayer.setDisable(true);
+		downLayer.setDisable(true);
+		fusion.setDisable(true);
 	}
 	
 	public class NewLayerSave extends ICmd {

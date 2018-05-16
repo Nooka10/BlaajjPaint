@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-
-<MenuBar fx:id="menuBar" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menubar.MenuBarController">
+<?import javafx.scene.control.*?>
+<MenuBar fx:id="menuBar" styleClass="menuBackground" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="controller.menubar.MenuBarController">
 	<menus>
 		<Menu mnemonicParsing="false" text="Fichier">
 			<items>
-				<MenuItem id="menuBar_nouveau" mnemonicParsing="false" onAction="#handleNew" text="Nouveau" />
-				<MenuItem id="menuBar_ouvrir" mnemonicParsing="false" onAction="#handleOpen" text="Ouvrir" />
-				<MenuItem id="menuBar_enregistrer" mnemonicParsing="false" onAction="#handleSave" text="Enregistrer" />
-				<MenuItem id="menuBar_enregistrerSous" mnemonicParsing="false" onAction="#handleSaveAs" text="Enregister sous" />
-				<MenuItem id="menuBar_exporter" mnemonicParsing="false" onAction="#handleExport" text="Exporter" />
-				<MenuItem id="menuBar_importer" mnemonicParsing="false" onAction="#handleImportImage" text="Importer une image" />
-				<MenuItem id="menuBar_fermer" mnemonicParsing="false" onAction="#handleClose" text="Fermer" />
+				<MenuItem fx:id="menuBar_nouveau" mnemonicParsing="false" onAction="#handleNew" text="Nouveau"/>
+				<MenuItem fx:id="menuBar_ouvrir" mnemonicParsing="false" onAction="#handleOpen" text="Ouvrir"/>
+				<MenuItem fx:id="menuBar_enregistrer" mnemonicParsing="false" onAction="#handleSave" text="Enregistrer"/>
+				<MenuItem fx:id="menuBar_enregistrerSous" mnemonicParsing="false" onAction="#handleSaveAs" text="Enregister sous"/>
+				<MenuItem fx:id="menuBar_exporter" mnemonicParsing="false" onAction="#handleExport" text="Exporter"/>
+				<MenuItem fx:id="menuBar_importer" mnemonicParsing="false" onAction="#handleImportImage" text="Importer une image"/>
+				<MenuItem fx:id="menuBar_fermer" mnemonicParsing="false" onAction="#handleClose" text="Fermer"/>
 			</items>
 		</Menu>
 		<Menu mnemonicParsing="false" text="Edition">
 			<items>
-				<MenuItem id="menuBar_undo" mnemonicParsing="false" onAction="#handleUndo" text="Undo" />
-				<MenuItem id="menuBar_redo" mnemonicParsing="false" onAction="#handleRedo" text="Redo" />
+				<MenuItem fx:id="menuBar_undo" mnemonicParsing="false" onAction="#handleUndo" text="Undo"/>
+				<MenuItem fx:id="menuBar_redo" mnemonicParsing="false" onAction="#handleRedo" text="Redo"/>
 			</items>
 		</Menu>
 		<Menu mnemonicParsing="false" text="Calque">
 			<items>
-				<MenuItem id="menuBar_nouveauCalque" mnemonicParsing="false" onAction="#handleNewLayer" text="Nouveau" />
-				<MenuItem id="menuBar_dupliquerCalque" mnemonicParsing="false" onAction="#handleDuplicateLayer" text="Dupliquer" />
-				<MenuItem id="menuBar_supprimerCalque" mnemonicParsing="false" onAction="#handleDeleteLayer" text="Supprimer" />
-				<MenuItem id="menuBar_redimensionnerCalque" mnemonicParsing="false" onAction="#handleResizeLayer" text="Redimensionner" />
-				<MenuItem id="menuBar_fusionnerCalques" mnemonicParsing="false" onAction="#handleFusionLayer" text="Fusionner avec le calque inférieur" />
-				<MenuItem id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques" />
-				<MenuItem id="menuBar_masquerCalques" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque séléctionné" />
-				<fx:include fx:id="transformations" source="Transformations.fxml"/>
+				<MenuItem fx:id="menuBar_nouveauCalque" mnemonicParsing="false" onAction="#handleNewLayer" text="Nouveau"/>
+				<MenuItem fx:id="menuBar_dupliquerCalque" mnemonicParsing="false" onAction="#handleDuplicateLayer" text="Dupliquer"/>
+				<MenuItem fx:id="menuBar_supprimerCalque" mnemonicParsing="false" onAction="#handleDeleteLayer" text="Supprimer"/>
+				<MenuItem fx:id="menuBar_redimensionnerCalque" mnemonicParsing="false" onAction="#handleResizeLayer" text="Redimensionner"/>
+				<MenuItem fx:id="menuBar_fusionnerCalques" mnemonicParsing="false" onAction="#handleFusionLayer" text="Fusionner avec le calque inférieur"/>
+				<MenuItem fx:id="menuBar_aplatirCalques" mnemonicParsing="false" onAction="#mergeAllLayer" text="Aplatir les calques"/>
+				<MenuItem fx:id="menuBar_masquerCalques" mnemonicParsing="false" onAction="#hideCurrentLayer" text="Masquer le calque séléctionné"/>
+				<fx:include fx:id="menuBar_transformations" source="Transformations.fxml"/>
 			</items>
 		</Menu>
 		<Menu mnemonicParsing="false" text="Aide">
 			<items>
-				<MenuItem id="menuBar_aPropos" mnemonicParsing="false" onAction="#handleAPropos" text="A propos" />
-				<MenuItem id="menuBar_manuel" mnemonicParsing="false" onAction="#handleHelp" text="Manuel utilisateur" />
+				<MenuItem fx:id="menuBar_aPropos" mnemonicParsing="false" onAction="#handleAPropos" text="A propos"/>
+				<MenuItem fx:id="menuBar_manuel" mnemonicParsing="false" onAction="#handleHelp" text="Manuel utilisateur"/>
 			</items>
 		</Menu>
 	</menus>
