@@ -53,6 +53,7 @@ public class Pencil extends ToolDrawer {
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineCap(StrokeLineCap.ROUND);
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
+				Project.getInstance().getCurrentLayer().getGraphicsContext2D().lineTo(event.getX(), event.getY());
 				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
 			}
 		};
