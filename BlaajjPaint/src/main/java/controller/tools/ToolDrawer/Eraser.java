@@ -67,6 +67,7 @@ public class Eraser extends ToolDrawer {
 		eraserMaskGC.setLineCap(StrokeLineCap.ROUND);
 		eraserMaskGC.setLineWidth(thickness); // définit l'épaisseur de la gomme
 		eraserMaskGC.setStroke(Color.BLACK); // définit la couleur de la gomme
+		eraserMaskGC.lineTo(event.getX(), event.getY());
 		eraserMaskGC.stroke();
 	}
 	
