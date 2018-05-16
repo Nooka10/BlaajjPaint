@@ -9,6 +9,11 @@ public class ParamCropController {
     public Button cancelButton;
     @FXML
     public Button validateButton;
+	
+	@FXML
+	private void initialize() {
+	
+	}
     
     @FXML
     void cancel(ActionEvent event) {
@@ -19,10 +24,4 @@ public class ParamCropController {
     void validate(ActionEvent event) {
         Crop.getInstance().validate();
     }
-
-    @FXML
-    private void initialize(){
-
-    }
-
 }
