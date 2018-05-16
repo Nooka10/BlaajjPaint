@@ -6,7 +6,7 @@ public class EmptyEllipse extends ShapeDrawer {
 	
 	private static EmptyEllipse toolInstance = null; // l'instance unique de l'ellipse vide
 
-    private double thickness; // l'épaisseur de l'outil
+    private double thickness = 1; // l'épaisseur de l'outil
 
     /**
      * Retourne l'instance unique de l'ellipse vide

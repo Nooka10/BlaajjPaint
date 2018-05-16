@@ -12,8 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import utils.Utils;
 import utils.UndoException;
+import utils.Utils;
 
 /**
  * Outil permettant de mettre du text dans l'image
@@ -21,7 +21,6 @@ import utils.UndoException;
 public class TextTool extends Tool {
 	private static TextTool toolInstance = null;
 	private AddText addText;
-	
 	private Font font;
 	private Layer textLayer;
 	private Layer oldCurrentLayer;
@@ -112,35 +111,36 @@ public class TextTool extends Tool {
 
 	public void reset(){
 		// Si le calque temporaire est initialisé, remettre dans l'état inital
-		if(textLayer != null){
-			// Suppression du calque d'ajout de text (textLayer)
-			Project.getInstance().getLayers().remove(textLayer);
-			// Le calque courant redevient l'ancien calque courant
-			Project.getInstance().setCurrentLayer(oldCurrentLayer);
-			// redessine les layers et list de layers
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
-			Project.getInstance().drawWorkspace();
+		//if(textLayer != null){
+		// Suppression du calque d'ajout de text (textLayer)
+		Project.getInstance().getLayers().remove(textLayer);
+		// Le calque courant redevient l'ancien calque courant
+		Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		// redessine les layers et list de layers
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		Project.getInstance().drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().getLayersList().setDisable(false);
+		
+		// reset des attributs
 			textLayer = null;
-			// reset des attributs
+		oldCurrentLayer = null;
 			addText = null;
 			text = "";
-		}
+		//}
 	}
 
 	
 	/**
-	 * Si outil quitté, valide l'ajout du text si l'uilisateur à au moins cliquer sur l'interface pour rajouter le text,
+	 * Si outil quitté, valide l'ajout du text si l'utilisateur à au moins cliquer sur l'interface pour rajouter le text,
 	 * autrement annule l'ajout du text (suppression du calque)
 	 */
 	@Override
 	public void CallbackOldToolChanged() {
-		super.CallbackOldToolChanged();
 		reset();
 	}
 
 	@Override
 	public void CallbackNewToolChanged(){
-		super.CallbackNewToolChanged();
 		initTextTool();
 	}
 
@@ -151,6 +151,7 @@ public class TextTool extends Tool {
 		Project.getInstance().setCurrentLayer(textLayer);
 		Project.getInstance().getLayers().addFirst(textLayer);
 		Project.getInstance().drawWorkspace();
+		MainViewController.getInstance().getRightMenuController().getLayersList().setDisable(true);
 	}
 	
 	@Override

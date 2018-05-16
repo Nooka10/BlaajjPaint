@@ -288,7 +288,7 @@ public class Project implements Serializable {
 	
 	public void export(File file) {
 		if (file != null) {
-			Layer resultLayer = new Layer(1,1, true); // fixme: 1,1 la taille?? certain?
+			Layer resultLayer = new Layer(1,1, true);
 			double minX = 0;
 			double minY = 0;
 			

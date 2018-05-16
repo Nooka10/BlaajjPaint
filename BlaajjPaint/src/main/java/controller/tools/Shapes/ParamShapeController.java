@@ -1,12 +1,10 @@
 package controller.tools.Shapes;
 
 import controller.tools.Tool;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class ParamShapeController {
@@ -28,27 +26,26 @@ public class ParamShapeController {
     /**
      * Initialise le controlleur. Appelé automatiquement par javaFX lors de la création du FXML.
      */
-    
     @FXML
     private void initialize() {
-        thicknessTextField.setText(String.valueOf(EmptyRectangle.getInstance().getThickness()));
+        thicknessTextField.setText(String.valueOf(Math.round(EmptyRectangle.getInstance().getThickness())));
         thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
     }
-
-    public void sliderOnTextChange(ActionEvent actionEvent) {
+    
+    public void textFieldOnTextChange() {
         EmptyRectangle.getInstance().setThickness(Double.parseDouble(thicknessTextField.getText()));
         EmptyEllipse.getInstance().setThickness(Double.parseDouble(thicknessTextField.getText()));
         thicknessSlider.setValue(EmptyRectangle.getInstance().getThickness());
     }
-
-    public void sliderOnMouseRelased(MouseEvent mouseEvent) {
-        thicknessTextField.setText(String.valueOf(thicknessSlider.getValue()));
+    
+    public void sliderValueChanged() {
+        thicknessTextField.setText(String.valueOf(Math.round(thicknessSlider.getValue())));
         EmptyRectangle.getInstance().setThickness(thicknessSlider.getValue());
         EmptyEllipse.getInstance().setThickness(thicknessSlider.getValue());
     }
 
     @FXML
-    public void handleEmptyRect(ActionEvent actionEvent) {
+    public void handleEmptyRect() {
         Tool.setCurrentTool(EmptyRectangle.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
@@ -56,7 +53,7 @@ public class ParamShapeController {
     }
 
     @FXML
-    public void handleFilledRect(ActionEvent actionEvent) {
+    public void handleFilledRect() {
         Tool.setCurrentTool(FilledRectangle.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
@@ -64,7 +61,7 @@ public class ParamShapeController {
     }
 
     @FXML
-    public void handleEmptyEllipse(ActionEvent actionEvent) {
+    public void handleEmptyEllipse() {
         Tool.setCurrentTool(EmptyEllipse.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);
@@ -72,7 +69,7 @@ public class ParamShapeController {
     }
 
     @FXML
-    public void handleFilledEllipse(ActionEvent actionEvent) {
+    public void handleFilledEllipse() {
         Tool.setCurrentTool(FilledEllipse.getInstance());
         if (Tool.getToolHasChanged()) {
             Tool.setToolHasChanged(false);

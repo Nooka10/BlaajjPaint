@@ -6,7 +6,7 @@ public class EmptyRectangle extends ShapeDrawer {
     
     private static EmptyRectangle toolInstance = null; // l'instance unique du rectangle vide
 
-    private double thickness; // l'épaisseur de l'outil
+    private double thickness = 1; // l'épaisseur de l'outil
 
     /**
      * Retourne l'instance unique du rectangle vide

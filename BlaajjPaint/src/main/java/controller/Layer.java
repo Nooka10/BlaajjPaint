@@ -144,7 +144,7 @@ public class Layer extends Canvas implements Serializable {
 		double maxY = getLayoutY() + getHeight() > backgroundLayer.getLayoutY() + backgroundLayer.getHeight() ? getLayoutY() + getHeight() : backgroundLayer.getLayoutY() + backgroundLayer.getHeight();
 		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
-		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeSurCalqueTemporaire); // FIXME: icii
+		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeSurCalqueTemporaire);
 		
 		// dessine les deux calques sur notre nouveau calque fusion
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getLayoutX() - minX, backgroundLayer.getLayoutY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());

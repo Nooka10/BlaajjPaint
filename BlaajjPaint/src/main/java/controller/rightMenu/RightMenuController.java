@@ -75,8 +75,8 @@ public class RightMenuController {
 		fusion.setTooltip(new Tooltip("Fusionner avec le calque inférieur"));
 	}
 	
-	public VBox getHistoryList() {
-		return historyList;
+	public VBox getLayersList() {
+		return layersList;
 	}
 	
 	@FXML
