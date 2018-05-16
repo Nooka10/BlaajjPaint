@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
@@ -18,10 +15,22 @@
       <ToggleButton fx:id="emptyRect" mnemonicParsing="false" onAction="#handleEmptyRect" selected="true" text="EmptyRect">
          <toggleGroup>
             <ToggleGroup fx:id="Forme" />
-         </toggleGroup></ToggleButton>
-      <ToggleButton fx:id="filledRect" mnemonicParsing="false" onAction="#handleFilledRect" text="FilledRect" toggleGroup="$Forme" />
-      <ToggleButton fx:id="emptyEllipse" mnemonicParsing="false" onAction="#handleEmptyEllipse" text="EmptyEllipse" toggleGroup="$Forme" />
-      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="FilledEllipse" toggleGroup="$Forme" />
+         </toggleGroup>
+         <tooltip>
+            <Tooltip text="Ajouter un réctangle vide" />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="filledRect" mnemonicParsing="false" onAction="#handleFilledRect" text="FilledRect" toggleGroup="$Forme">
+         <tooltip>
+            <Tooltip text="Ajouter un réctangle plein" />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="emptyEllipse" mnemonicParsing="false" onAction="#handleEmptyEllipse" text="EmptyEllipse" toggleGroup="$Forme">
+         <tooltip>
+            <Tooltip text="Ajouter une ellipse vide" />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="FilledEllipse" toggleGroup="$Forme">
+         <tooltip>
+            <Tooltip text="Ajouter une ellipse pleine" />
+         </tooltip></ToggleButton>
       <Label text="Épaisseur">
          <font>
             <Font size="18.0" />
@@ -33,8 +42,14 @@
       <Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="1.0" minorTickCount="1" onMouseDragged="#sliderValueChanged" onMousePressed="#sliderValueChanged" onMouseReleased="#sliderValueChanged" snapToTicks="true" value="1.0">
          <HBox.margin>
             <Insets top="5.0" />
-         </HBox.margin></Slider>
-      <TextField fx:id="thicknessTextField" onAction="#textFieldOnTextChange" prefWidth="60.0" />
+         </HBox.margin>
+         <tooltip>
+            <Tooltip text="Gérer l'épaisseur des bordures des formes vides" />
+         </tooltip></Slider>
+      <TextField fx:id="thicknessTextField" onAction="#textFieldOnTextChange" prefWidth="60.0">
+         <tooltip>
+            <Tooltip text="Gérer l'épaisseur des bordures des formes vides" />
+         </tooltip></TextField>
    </children>
    <padding>
       <Insets bottom="15.0" left="10.0" right="10.0" top="10.0" />

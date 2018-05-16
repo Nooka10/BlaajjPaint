@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamTextController">
@@ -13,12 +14,30 @@
          <HBox.margin>
             <Insets />
          </HBox.margin>
+         <tooltip>
+            <Tooltip text="Changer la taille de police d'écriture" />
+         </tooltip>
       </Slider>
-      <TextField fx:id="textFieldSizeFont" maxWidth="80.0" text="40" />
-      <ChoiceBox id="Font" fx:id="fontList" prefWidth="150.0" />
-      <TextField fx:id="textValue" onAction="#validateText" onKeyReleased="#changeValue" promptText="Text" />
-      <Button fx:id="validateButton" mnemonicParsing="false" onAction="#validateText" text="Validate" />
-      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelTextCreation" text="Annuler" />
+      <TextField fx:id="textFieldSizeFont" maxWidth="80.0" text="40">
+         <tooltip>
+            <Tooltip text="Changer la taille de police d'écriture" />
+         </tooltip></TextField>
+      <ChoiceBox id="Font" fx:id="fontList" prefWidth="150.0">
+         <tooltip>
+            <Tooltip text="Changer la police d'écriture" />
+         </tooltip></ChoiceBox>
+      <TextField fx:id="textValue" onAction="#validateText" onKeyReleased="#changeValue" promptText="Text">
+         <tooltip>
+            <Tooltip text="Changer le contenu du texte" />
+         </tooltip></TextField>
+      <Button fx:id="validateButton" mnemonicParsing="false" onAction="#validateText" text="Validate">
+         <tooltip>
+            <Tooltip text="Valider l'ajout du texte" />
+         </tooltip></Button>
+      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelTextCreation" text="Annuler">
+         <tooltip>
+            <Tooltip text="Annuler l'ajout du texte" />
+         </tooltip></Button>
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

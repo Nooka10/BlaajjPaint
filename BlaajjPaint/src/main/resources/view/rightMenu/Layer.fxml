@@ -2,14 +2,22 @@
 
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.rightMenu.LayerController">
 	<children>
-		<HBox fx:id="layerElem" onMouseClicked="#handleMouseClicked" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-		      AnchorPane.topAnchor="0.0">
+		<HBox fx:id="layerElem" onMouseClicked="#handleMouseClicked" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
-				<CheckBox fx:id="visibility" mnemonicParsing="false" onAction="#handleVisibilityChange"/>
-				<Label fx:id="label"/>
+				<CheckBox fx:id="visibility" mnemonicParsing="false" onAction="#handleVisibilityChange">
+               <tooltip>
+                  <Tooltip text="Changer la visibilité du calque" />
+               </tooltip></CheckBox>
+				<Label fx:id="label">
+               <tooltip>
+                  <Tooltip text="Cliquez pour définir ce calque comme le calque courant" />
+               </tooltip></Label>
 			</children>
 		</HBox>
 	</children>

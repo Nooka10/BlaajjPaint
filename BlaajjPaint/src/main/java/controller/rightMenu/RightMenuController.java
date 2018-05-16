@@ -68,11 +68,6 @@ public class RightMenuController {
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
-		addNewLayer.setTooltip(new Tooltip("Ajouter un nouveau calque"));
-		deleteLayer.setTooltip(new Tooltip("Supprimer le calque séléctionné"));
-		upLayer.setTooltip(new Tooltip("Déplacer le calque vers le haut"));
-		downLayer.setTooltip(new Tooltip("Déplacer le calque vers le bas"));
-		fusion.setTooltip(new Tooltip("Fusionner avec le calque inférieur"));
 	}
 	
 	public void activateLayerListClick() {
