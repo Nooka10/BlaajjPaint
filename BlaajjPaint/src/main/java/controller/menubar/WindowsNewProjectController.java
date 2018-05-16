@@ -14,7 +14,7 @@ import utils.Utils;
 /**
  * Controleur de la fenêtre qui apparait lors de la demande de création d'un nouveau projet
  */
-public class WindowsNewProject {
+public class WindowsNewProjectController {
 	@FXML
 	private Button cancel;
 	

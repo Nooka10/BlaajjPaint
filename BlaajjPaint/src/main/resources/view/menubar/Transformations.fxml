@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 
-<Menu fx:id="transformations" mnemonicParsing="false" text="Transformations" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menubar.Transformations">
+<Menu fx:id="transformations" mnemonicParsing="false" text="Transformations" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.menubar.TransformationsController">
 	<items>
 		<Menu mnemonicParsing="false" text="Rotation">
 			<items>
