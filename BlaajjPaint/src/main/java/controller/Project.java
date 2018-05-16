@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -313,7 +314,7 @@ public class Project implements Serializable {
 			
 			if (chosenExtension.equals("png")) {
 				try {
-					ImageIO.write(SwingFXUtils.fromFXImage(resultLayer.createImageFromCanvas(1), null), chosenExtension, file);
+					ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(resultLayer), null), chosenExtension, file);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
@@ -322,8 +323,8 @@ public class Project implements Serializable {
 				SnapshotParameters params = new SnapshotParameters();
 				
 				params.setFill(Color.WHITE);
-				
-				Image canvas = resultLayer.createImageFromCanvasJPG(1).getImage();
+				//TODO : antoine, ne marche plus à cause de benoit
+				Image canvas = Utils.makeSnapshot(resultLayer);
 				
 				BufferedImage image = SwingFXUtils.fromFXImage(canvas, null);
 				

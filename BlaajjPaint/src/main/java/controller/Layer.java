@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class Layer extends Canvas implements Serializable {
 		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.descriptionCalque, calqueTemporaire);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
-		this.getGraphicsContext2D().drawImage(toCopy.createImageFromCanvas(4), 0, 0, getWidth(), getHeight());
+		this.getGraphicsContext2D().drawImage(Utils.makeSnapshot(toCopy), 0, 0, getWidth(), getHeight());
 		setVisible(visibility);
 		setLayoutX(toCopy.getLayoutX());
 		setLayoutY(toCopy.getLayoutY());
@@ -87,53 +88,14 @@ public class Layer extends Canvas implements Serializable {
 		return id;
 	}
 	
-	// TODO : Antoine
-	public Image createImageFromCanvas(int scale) {
-		
-		final WritableImage image = new WritableImage(
-				Math.round((int) getWidth() * scale),
-				Math.round((int) getHeight() * scale));
-		
-		final SnapshotParameters spa = new SnapshotParameters();
-		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
-		spa.setFill(Color.TRANSPARENT);
-		final ImageView view = new ImageView(snapshot(spa, image));
-		view.setFitWidth(getWidth());
-		view.setFitHeight(getHeight());
-		
-		snapshot(spa, image);
-		return image;
-		//return view.getImage();
-	}
-	
-	
-	// TODO : false, rend une image 4x plus grande
-	public ImageView createImageFromCanvasJPG(int scale) {
-		final WritableImage image = new WritableImage(
-				(int) getWidth() * scale,
-				(int) getHeight() * scale);
-		
-		final SnapshotParameters spa = new SnapshotParameters();
-		spa.setTransform(javafx.scene.transform.Transform.scale(scale, scale));
-		spa.setFill(Color.WHITE);
-		
-		final ImageView view = new ImageView(snapshot(spa, image));
-		
-		view.setFitWidth(getWidth());
-		view.setFitHeight(getHeight());
-		view.setPreserveRatio(true);
-		
-		return view;
-	}
-	
 	/**
 	 * Permet de fusionner deux calques
 	 *
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
 	public Layer mergeLayers(Layer backgroundLayer, boolean mergeSurCalqueTemporaire) {
-		Image image1 = createImageFromCanvas(4);
-		Image image2 = backgroundLayer.createImageFromCanvas(4);
+		Image image1 = Utils.makeSnapshot(this);
+		Image image2 = Utils.makeSnapshot(backgroundLayer);
 		
 		// prend le décalage (layout) minimum des deux calques
 		double minX = getLayoutX() < backgroundLayer.getLayoutX() ? getLayoutX() : backgroundLayer.getLayoutX();
@@ -275,7 +237,7 @@ public class Layer extends Canvas implements Serializable {
 		
 		this.setVisible(true);
 		this.setOpacity(1);                            // enlève l'opacité pour la sauvegardes
-		ImageIO.write(SwingFXUtils.fromFXImage(createImageFromCanvas(1), null), "png", s);
+		ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(this), null), "png", s);
 		this.setOpacity(tmpOpacity);                // Remet l'opacité
 		this.setVisible(tmpVisible);                // Remet la visibilité
 		
