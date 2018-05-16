@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import utils.UndoException;
+import utils.Utils;
 
 /**
  * Controller associé au fichier FXML ResizeLayer.fxml et controlant l'ensemble des actions associées à la fenêtre de redimensionnement ouvert
@@ -61,7 +62,7 @@ public class ResizeLayerController {
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
 					textFieldWidth.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
-				} else if (checkWidthHeightValidity()) { // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
+				} else if (Utils.checkWidthHeightValidity(textFieldWidth, textFieldHeight, validateResizeButton)) { // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 					calculateHeightValue();
 				}
 			}
@@ -74,21 +75,10 @@ public class ResizeLayerController {
 				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
 					textFieldHeight.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
 				} else {
-					checkWidthHeightValidity(); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
+					Utils.checkWidthHeightValidity(textFieldWidth, textFieldHeight, validateResizeButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 				}
 			}
 		});
-	}
-	
-	private boolean checkWidthHeightValidity() {
-		if (textFieldWidth.getText().isEmpty() || textFieldHeight.getText().isEmpty() ||
-				Integer.parseInt(textFieldWidth.getText()) == 0 || Integer.parseInt(textFieldHeight.getText()) == 0) {
-			validateResizeButton.setDisable(true);
-			return false;
-		} else {
-			validateResizeButton.setDisable(false);
-			return true;
-		}
 	}
 	
 	/**
@@ -116,7 +106,7 @@ public class ResizeLayerController {
 		 */
 	@FXML
 	public void validateResize() {
-		if (checkWidthHeightValidity()) {
+		if (Utils.checkWidthHeightValidity(textFieldWidth, textFieldHeight, validateResizeButton)) {
 			ResizeSave rs = new ResizeSave();
 			Layer currentLayer = Project.getInstance().getCurrentLayer();
 			

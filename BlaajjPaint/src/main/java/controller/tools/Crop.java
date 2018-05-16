@@ -10,7 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import utils.SnapshotMaker;
+import utils.Utils;
 import utils.UndoException;
 
 /**
@@ -224,7 +224,7 @@ public class Crop extends Tool {
          * @param layerToCrop - layer sur lequel on va rogner
          */
         public CropSave(Layer layerToCrop){
-            undosave = SnapshotMaker.makeSnapshot(layerToCrop);
+            undosave = Utils.makeSnapshot(layerToCrop);
             widthLayer = layerToCrop.getWidth();
             heightLayer = layerToCrop.getHeight();
             layoutXLayer = layerToCrop.getLayoutX();
@@ -242,7 +242,7 @@ public class Crop extends Tool {
             if (undosave == null) {
                 throw new UndoException();
             }
-            redosave = SnapshotMaker.makeSnapshot(layerCroped);
+            redosave = Utils.makeSnapshot(layerCroped);
             // Sauvegarde du calque sur lequel on va rogner
             Layer currentLayer = layerCroped;
             // Sauvegarde des dimensions
@@ -274,7 +274,7 @@ public class Crop extends Tool {
                 throw new UndoException();
             }
 
-            undosave = SnapshotMaker.makeSnapshot(layerCroped);
+            undosave = Utils.makeSnapshot(layerCroped);
             // Sauvegarde du calque sur lequel on va rogner
             Layer currentLayer = layerCroped;
             // Sauvegarde des dimensions

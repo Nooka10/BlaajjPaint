@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utils.Utils;
 
 /**
  * Controleur de la fenêtre qui apparait lors de la demande de création d'un nouveau projet
@@ -34,19 +35,21 @@ public class WindowsNewProject {
 	private void initialize() {
 		width.textProperty().addListener(new ChangeListener<String>() {
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue,
-			                    String newValue) {
-				if (!newValue.matches("\\d*")) {
-					width.setText(oldValue);
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
+					width.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
+				} else {
+					Utils.checkWidthHeightValidity(width, height, createButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 				}
 			}
 		});
 		height.textProperty().addListener(new ChangeListener<String>() {
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue,
-			                    String newValue) {
-				if (!newValue.matches("\\d*")) {
-					height.setText(oldValue);
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
+					height.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
+				} else {
+					Utils.checkWidthHeightValidity(width, height, createButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 				}
 			}
 		});
@@ -60,19 +63,21 @@ public class WindowsNewProject {
 	 */
 	@FXML
 	private void createNewProject(ActionEvent event) {
-		// Nettoyage du projet
-        MainViewController.getInstance().closeProject();
-		
-		int width = Integer.parseInt(this.width.getText());
-		int height = Integer.parseInt(this.height.getText());
-		
-		Project.getInstance().initData(width, height, true);
-		
-		Stage stage = (Stage) createButton.getScene().getWindow();
-		stage.close();
-
-		// Réactive les boutons
-		MainViewController.getInstance().enableButton();
+		if (Utils.checkWidthHeightValidity(width, height, createButton)) {
+			// Nettoyage du projet
+			MainViewController.getInstance().closeProject();
+			
+			int width = Integer.parseInt(this.width.getText());
+			int height = Integer.parseInt(this.height.getText());
+			
+			Project.getInstance().initData(width, height, true);
+			
+			Stage stage = (Stage) createButton.getScene().getWindow();
+			stage.close();
+			
+			// Réactive les boutons
+			MainViewController.getInstance().enableButton();
+		}
 	}
 
 	/**

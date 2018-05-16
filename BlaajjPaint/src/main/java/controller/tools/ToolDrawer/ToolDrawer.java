@@ -5,7 +5,7 @@ import controller.history.ICmd;
 import controller.history.RecordCmd;
 import controller.tools.Tool;
 import javafx.scene.image.Image;
-import utils.SnapshotMaker;
+import utils.Utils;
 import utils.UndoException;
 
 /**
@@ -33,7 +33,7 @@ public abstract class ToolDrawer extends Tool {
 		Trait() {
 			System.out.println("Snap Trait");
 			
-			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
 		}
 		
 		@Override
@@ -48,7 +48,7 @@ public abstract class ToolDrawer extends Tool {
 			}
 			System.out.println("Trait undo");
 			
-			redosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getWidth(), Project.getInstance().getHeight());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
 			undosave = null;
@@ -60,7 +60,7 @@ public abstract class ToolDrawer extends Tool {
 				throw new UndoException();
 			}
 			System.out.println("Trait redo");
-			undosave = SnapshotMaker.makeSnapshot(Project.getInstance().getCurrentLayer());
+			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getWidth(), Project.getInstance().getHeight());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
 			redosave = null;

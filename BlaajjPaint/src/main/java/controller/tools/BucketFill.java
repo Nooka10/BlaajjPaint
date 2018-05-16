@@ -7,14 +7,13 @@ import controller.history.RecordCmd;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import utils.SnapshotMaker;
+import utils.Utils;
 import utils.UndoException;
 
 import java.util.HashSet;
@@ -167,12 +166,12 @@ public class BucketFill extends Tool {
 		
 		private FillSave() {
 			currentLayer = Project.getInstance().getCurrentLayer();
-			undosave = SnapshotMaker.makeSnapshot(currentLayer);
+			undosave = Utils.makeSnapshot(currentLayer);
 		}
 		
 		@Override
 		public void execute() {
-			redosave = SnapshotMaker.makeSnapshot(currentLayer);
+			redosave = Utils.makeSnapshot(currentLayer);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		
