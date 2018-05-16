@@ -39,7 +39,7 @@ public class Pipette extends Tool {
 				
 				for (Layer item : Project.getInstance().getLayers()) {
 					if (item.isVisible()) {
-						WritableImage srcMask = new WritableImage((int) item.getWidth(), (int) item.getHeight());
+						WritableImage srcMask = new WritableImage(Project.getInstance().getWidth(), Project.getInstance().getHeight());
 						final SnapshotParameters spa = new SnapshotParameters();
 						spa.setFill(Color.TRANSPARENT);
 						srcMask = item.snapshot(spa, srcMask);
