@@ -82,6 +82,7 @@ public class Transformations {
 			currentLayer.getTransforms().add(r);
 		}
 		
+		@Override
 		public String toString() {
 			return "Symétrie verticale de " + currentLayer;
 		}
@@ -122,6 +123,7 @@ public class Transformations {
 			currentLayer.getTransforms().add(r);
 		}
 		
+		@Override
 		public String toString() {
 			return "Symétrie horizontale de " + currentLayer;
 		}
@@ -175,6 +177,7 @@ public class Transformations {
 			
 		}
 		
+		@Override
 		public String toString() {
 			return "Rotation de " + currentLayer;
 		}

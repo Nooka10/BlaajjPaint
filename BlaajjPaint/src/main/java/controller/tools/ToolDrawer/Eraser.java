@@ -123,6 +123,7 @@ public class Eraser extends ToolDrawer {
 	}
 	
 	public class EraserStrike extends Trait {
+		@Override
 		public String toString() {
 			return "Trait de gomme";
 		}

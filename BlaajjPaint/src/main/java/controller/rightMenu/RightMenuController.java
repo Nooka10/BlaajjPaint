@@ -204,7 +204,8 @@ public class RightMenuController {
 			updateLayerList();
 			Project.getInstance().drawWorkspace();
 		}
-
+		
+		@Override
 		public String toString() {
 			return "Ordre des Calque";
 		}
@@ -369,6 +370,7 @@ public class RightMenuController {
 			updateLayerList();
 		}
 		
+		@Override
 		public String toString() {
 			return "Nouveau Calque";
 		}
@@ -405,6 +407,7 @@ public class RightMenuController {
 			updateLayerList();
 		}
 		
+		@Override
 		public String toString() {
 			return "Suppression de " + oldCurrentLayer;
 		}
@@ -451,8 +454,9 @@ public class RightMenuController {
 			Project.getInstance().getLayers().add(index, newLayer);
 			Project.getInstance().setCurrentLayer(newLayer);
 			updateLayerList();
-			}
+		}
 		
+		@Override
 		public String toString() {
 			return "Fusion de deux calques";
 		}

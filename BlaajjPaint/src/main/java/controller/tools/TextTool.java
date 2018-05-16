@@ -239,6 +239,7 @@ public class TextTool extends Tool {
 			redosave = null;
 		}
 		
+		@Override
 		public String toString() {
 			return "Ajout de texte";
 		}

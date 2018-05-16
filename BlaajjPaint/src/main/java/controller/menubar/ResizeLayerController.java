@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import utils.UndoException;
 import utils.Utils;
 
 /**
@@ -102,8 +101,11 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Vérifie
-		 */
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton "Valider".
+	 * Effectue le redimensionnement si la largeur et la hauteur entrées sont valides.
+	 * Redimensionne tous les calques du projet si la checkbox "Ajuster l'image" est cochée, sinon, ne redimensionne que le calque actuellement sélectionné.
+	 * Ferme la fenêtre une fois le redimenssionnement effectué.
+	 */
 	@FXML
 	public void validateResize() {
 		if (Utils.checkWidthHeightValidity(textFieldWidth, textFieldHeight, validateResizeButton)) {
@@ -133,12 +135,17 @@ public class ResizeLayerController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lrosque l'utilisateur clique sur le bouton "Annuler". Annule le le redimenssionnement et ferme la fenêtre.
+	 */
 	public void cancel() {
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
 		stage.close();
 	}
 	
-	
+	/**
+	 * Classe interne implémentant une commande sauvegardant l'action du redimenssionnement.
+	 */
 	private class ResizeSave extends ICmd{
 		private Layer currentLayer;
 		private double oldWidth;
@@ -148,6 +155,9 @@ public class ResizeLayerController {
 		private double newHeight;
 		private Image newImage;
 		
+		/**
+		 * Construit une commande sauvegardant l'action du redimenssionnement.
+		 */
 		private ResizeSave() {
 			currentLayer = Project.getInstance().getCurrentLayer();
 			oldWidth = currentLayer.getWidth();
@@ -164,7 +174,7 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
 			currentLayer.setWidth(oldWidth);
 			currentLayer.setHeight(oldHeight);
@@ -172,13 +182,14 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, oldWidth, oldHeight);
 			currentLayer.setWidth(newWidth);
 			currentLayer.setHeight(newHeight);
 			currentLayer.getGraphicsContext2D().drawImage(newImage, 0, 0);
 		}
 		
+		@Override
 		public String toString() {
 			return "Redimensionnement de " + currentLayer.toString();
 		}
