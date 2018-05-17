@@ -2,12 +2,15 @@ package controller.menubar;
 
 import controller.MainViewController;
 import controller.Project;
+import controller.history.ICmd;
+import controller.history.RecordCmd;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utils.UndoException;
 import utils.Utils;
 
 /**
@@ -26,12 +29,15 @@ public class WindowsNewProjectController {
 	
 	@FXML
 	private TextField height;
+
+	private NewProjectSave newProjectSave;
 	
 	/**
 	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
 	 */
 	@FXML
 	private void initialize() {
+		newProjectSave = new NewProjectSave();
 		width.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -73,6 +79,7 @@ public class WindowsNewProjectController {
 		
 		Stage stage = (Stage) createButton.getScene().getWindow();
 		stage.close(); // ferme la fenêtre
+		newProjectSave.execute();
 	}
 	
 	/**
@@ -83,5 +90,28 @@ public class WindowsNewProjectController {
 	private void handleCancel() {
 		Stage stage = (Stage) cancel.getScene().getWindow();
 		stage.close(); // ferme la fenêtre
+	}
+
+	public class NewProjectSave implements ICmd {
+
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+
+		@Override
+		public void undo() throws UndoException {
+			// Do nothing
+		}
+
+		@Override
+		public void redo() throws UndoException {
+			// Do nothing
+		}
+
+		@Override
+		public String toString(){
+			return "Nouveau projet";
+		}
 	}
 }

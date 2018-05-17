@@ -90,7 +90,9 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleOpen() {
-		MainViewController.getInstance().openProject();
+	    MainViewController.getInstance().openProject();
+        OpenSave openSave = new OpenSave();
+	    openSave.execute();
 	}
 	
 	/**
@@ -425,5 +427,32 @@ public class MenuBarController {
 		public void redo() throws UndoException {
 			Project.getInstance().addLayer(importImageLayer);
 		}
+
+		public String toString(){
+		    return "Import d'image";
+        }
 	}
+
+	public class OpenSave implements  ICmd {
+
+        @Override
+        public void execute() {
+            RecordCmd.getInstance().saveCmd(this);
+        }
+
+        @Override
+        public void undo() throws UndoException {
+            // Do nothing
+        }
+
+        @Override
+        public void redo() throws UndoException {
+            // Do nothing
+        }
+
+        @Override
+        public String toString(){
+            return "Ouverture du projet";
+        }
+    }
 }
