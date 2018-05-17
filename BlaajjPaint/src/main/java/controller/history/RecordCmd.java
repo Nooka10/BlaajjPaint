@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Classe implémentant le modèle Singleton et gérant l'historique des commandes.
+ * Classe implémentant le modèle Singleton et gère l'historique des commandes.
  */
 public class RecordCmd {
 	

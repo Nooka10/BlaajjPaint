@@ -159,7 +159,7 @@ public class BucketFill extends Tool {
 	/**
 	 * Commande pour remplir une forme - utile pour le undo redo
 	 */
-	private class FillSave extends ICmd {
+	private class FillSave implements ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private Layer currentLayer;

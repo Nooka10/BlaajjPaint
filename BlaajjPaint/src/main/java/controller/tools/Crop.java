@@ -57,7 +57,6 @@ public class Crop extends Tool {
             Project.getInstance().getLayers().remove(selectionCropLayer);
             Project.getInstance().drawWorkspace();
 
-            MainViewController.getInstance().getRightMenuController().updateLayerList();
             cropSave.execute(); // Exécution de la cmd
             cancel(); // Permet d'être prêt à recevoir un nouveau rognage
         }
@@ -76,11 +75,9 @@ public class Crop extends Tool {
      */
     private void reset(){
         if(Project.getInstance().getCurrentLayer().equals(selectionCropLayer)) {
-            // Suppression du calque d'ajout de text (textLayer)
-            Project.getInstance().getLayers().remove(selectionCropLayer);
+            Project.getInstance().getLayers().remove(selectionCropLayer); // Supprime le calque temporaire d'ajout de text (textLayer)
             Project.getInstance().setCurrentLayer(oldCurrentLayer);
-            // redessine les layers et list de layers
-            MainViewController.getInstance().getRightMenuController().updateLayerList();
+            MainViewController.getInstance().getRightMenuController().updateLayerList(); // redessine la liste des calques de la GUI
         }
         cropSave = null;
         selectionCropLayer = null;
@@ -212,7 +209,7 @@ public class Crop extends Tool {
     /**
      * Commande permettant le undo/redo
      */
-    class CropSave extends ICmd{
+    class CropSave implements ICmd{
         // Attributs nécessaire pour l'undo / redo
         private Image undosave;
         private Image redosave = null;

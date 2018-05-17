@@ -26,7 +26,7 @@ public abstract class ToolDrawer extends Tool {
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
 	}
 	
-	class Trait extends ICmd {
+	class Trait implements ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		
@@ -46,7 +46,6 @@ public abstract class ToolDrawer extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-			System.out.println("Trait undo");
 			
 			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getWidth(), Project.getInstance().getHeight());

@@ -5,6 +5,7 @@ import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
+import controller.rightMenu.RightMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +21,7 @@ import java.io.File;
 import java.util.LinkedList;
 
 /**
- * Controller associé au fichier FXML MenuBar.fxml et contrôlant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
+ * contrôleur associé au fichier FXML MenuBar.fxml et gérant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
  */
 public class MenuBarController {
 	
@@ -210,7 +211,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleDeleteLayer() {
-		Project.getInstance().deleteCurrentLayer();
+		MainViewController.getInstance().getRightMenuController().handleDeleteLayer();
 	}
 	
 	/**
@@ -262,7 +263,6 @@ public class MenuBarController {
 		Project.getInstance().addLayer(resultLayer);
 		
 		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
 		mas.execute();
 	}
 	
@@ -357,7 +357,7 @@ public class MenuBarController {
 	/**
 	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b>.
 	 */
-	public class MergeAllSave extends ICmd {
+	public class MergeAllSave implements ICmd {
 		private LinkedList<Layer> allMergedLayers; // liste de tous les layers qui ont été aplatis
 		private Layer oldCurrentLayer; // enregistre l'ancien calque courant (sélectionné)
 		private Layer newLayer; // le nouveau calque sur lequel seront fusionnés tous les calques du projet
@@ -384,7 +384,6 @@ public class MenuBarController {
 				Project.getInstance().getLayers().add(layer);
 			}
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 		
 		@Override
@@ -392,7 +391,6 @@ public class MenuBarController {
 			Project.getInstance().getLayers().clear();
 			Project.getInstance().getLayers().add(newLayer);
 			Project.getInstance().setCurrentLayer(newLayer);
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 		
 		@Override

@@ -36,7 +36,7 @@ public class LayerController {
 	}
 	
 	@FXML
-	void handleMouseClicked(MouseEvent event) {
+	void handleMouseClicked() {
 		Project.getInstance().setCurrentLayer(layerName);
 		MainViewController.getInstance().getRightMenuController().setOpacitySlider(layerName.getLayerOpacity());
 		MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(layerName.getLayerOpacity()));
@@ -44,7 +44,7 @@ public class LayerController {
 	}
 	
 	@FXML
-	void handleVisibilityChange(ActionEvent event) {
+	void handleVisibilityChange() {
 		layerName.setVisible(visibility.isSelected());
 		Project.getInstance().drawWorkspace();
 	}

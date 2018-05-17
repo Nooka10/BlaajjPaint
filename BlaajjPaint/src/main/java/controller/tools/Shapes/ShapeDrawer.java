@@ -39,7 +39,7 @@ public abstract class ShapeDrawer extends Tool {
 	/**
 	 * Classe interne destine à la sauvegarde des formes dans l'historique des actions
 	 */
-	class ShapeSave extends ICmd {
+	class ShapeSave implements ICmd {
 		//image à récupérer en cas de redo
 		private Image undosave;
 		//image à récupérer en cas de undo
@@ -88,7 +88,6 @@ public abstract class ShapeDrawer extends Tool {
 			//MainViewController.getInstance().getRightMenuController().deleteLayer(0);
 			Project.getInstance().setCurrentLayer(Project.getInstance().getLayers().getFirst());
 			Project.getInstance().drawWorkspace();
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			undosave = null;
 		}
 		
@@ -105,7 +104,6 @@ public abstract class ShapeDrawer extends Tool {
 			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
 			Layer redoLayer = new Layer((int) redosave.getWidth(), (int) redosave.getHeight(), "Forme", false);
 			redoLayer.getGraphicsContext2D().drawImage(redosave, 0, 0);
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			Project.getInstance().addLayer(redoLayer);
 			redosave = null;
 		}
@@ -190,7 +188,6 @@ public abstract class ShapeDrawer extends Tool {
 				Project.getInstance().getLayers().remove(shapeLayer);
                 shapeLayer = new Layer(shapeLayer, false);
 				Project.getInstance().addLayer(shapeLayer);
-				MainViewController.getInstance().getRightMenuController().updateLayerList();
 				CallbackNewToolChanged();
 				currentShapeSave.execute();
 			}

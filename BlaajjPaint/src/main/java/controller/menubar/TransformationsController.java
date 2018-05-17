@@ -16,7 +16,7 @@ import javafx.scene.transform.Rotate;
 import utils.Utils;
 
 /**
- * Controller associé au fichier FXML TransformationsController.fxml et contrôlant l'ensemble des actions associées au sous-menu <b>Calque -> Transformations</b>.
+ * contrôleur associé au fichier FXML TransformationsController.fxml et gérant l'ensemble des actions associées au sous-menu <b>Calque -> Transformations</b>.
  */
 public class TransformationsController {
 	
@@ -91,7 +91,7 @@ public class TransformationsController {
 	 * Classe abstraite implémentant une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b>.
 	 * Classe mère des sous-classes RotateSave, VerticalSymmetrySave et HorizontalSymmetrySave.
 	 */
-	private abstract class TransformationSave extends ICmd{
+	private abstract class TransformationSave implements ICmd{
 		protected Layer currentLayer;
 		private Image imageBefore;
 		private Image imageAfter;

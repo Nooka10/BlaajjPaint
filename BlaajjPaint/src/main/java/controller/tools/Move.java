@@ -30,7 +30,7 @@ public class Move extends Tool {
 		toolType = ToolType.MOVE;
 	}
 	
-	public class MoveSave extends ICmd {
+	public class MoveSave implements ICmd {
 		private double oldXSave;
 		private double oldYSave;
 		private double newXSave;

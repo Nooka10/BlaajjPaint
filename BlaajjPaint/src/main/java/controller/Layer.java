@@ -23,25 +23,27 @@ public class Layer extends Canvas implements Serializable {
 	private static int count = 0; // le nombre de calques qui ont été créés
 	private String nomCalque;
 	private String descriptionCalque;
+	private boolean isTempLayer; // vrai si le layer est temporaire, false sinon
 	
 	/**
 	 * Constructeur
 	 *
 	 * @param width la largeur de notre calque
 	 * @param height la hauteur de notre calque
-	 * @param calqueTemporaire booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
+	 * @param isTempLayer booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
 	 */
-	public Layer(int width, int height, boolean calqueTemporaire) {
+	public Layer(int width, int height, boolean isTempLayer) {
 		super(width, height);
-		if (!calqueTemporaire) {
+		if (!isTempLayer) {
 			count++;
 		}
 		id = count;
-		if (calqueTemporaire) {
+		if (isTempLayer) {
 			nomCalque = "Calque temporaire";
 		} else {
 			nomCalque = "Calque " + id;
 		}
+		this.isTempLayer = isTempLayer;
 	}
 	
 	/**
@@ -50,11 +52,11 @@ public class Layer extends Canvas implements Serializable {
 	 * @param width  la largeur de notre calque
 	 * @param height la hauteur de notre calque
 	 * @param descriptionCalque le descriptionCalque à donner au calque (descriptionCalque affiché dans la liste de calque)
-	 * @param calqueTemporaire booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
+	 * @param isTempLayer booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
 	 */
-	public Layer(int width, int height, String descriptionCalque, boolean calqueTemporaire) {
-		this(width, height, calqueTemporaire);
-		if (!calqueTemporaire) {
+	public Layer(int width, int height, String descriptionCalque, boolean isTempLayer) {
+		this(width, height, isTempLayer);
+		if (!isTempLayer) {
 			nomCalque = "Calque " + id + ", " + descriptionCalque;
 		}
 		this.descriptionCalque = descriptionCalque;
@@ -65,8 +67,8 @@ public class Layer extends Canvas implements Serializable {
 	 *
 	 * @param toCopy le calque à copier
 	 */
-	public Layer(Layer toCopy, boolean calqueTemporaire) {
-		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.descriptionCalque, calqueTemporaire);
+	public Layer(Layer toCopy, boolean isTempLayer) {
+		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.descriptionCalque, isTempLayer);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
 		this.getGraphicsContext2D().drawImage(Utils.makeSnapshot(toCopy), 0, 0, getWidth(), getHeight());
@@ -79,10 +81,14 @@ public class Layer extends Canvas implements Serializable {
 		toCopy.setVisible(visibility);
 	}
 	
+	public boolean isTempLayer() {
+		return isTempLayer;
+	}
+	
 	/**
 	 * @param _count
 	 */
-	public static void setCount(int _count) {
+	static void setCount(int _count) {
 		count = ++_count;
 	}
 	
@@ -138,7 +144,7 @@ public class Layer extends Canvas implements Serializable {
 	 * Classe interne qui encapsule la commande de changement d'opacité. Permet de faire un undo/redo sur le changement d'opacité. Attention à TOUJOURS setNewOpacity en
 	 * premier.
 	 */
-	public class OpacitySave extends ICmd {
+	public class OpacitySave implements ICmd {
 		
 		double oldOpacity;
 		double newOpacity;

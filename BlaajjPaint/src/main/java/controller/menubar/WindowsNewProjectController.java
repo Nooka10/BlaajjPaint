@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * Controller associé au fichier FXML WindowsNewProject.fxml et contrôlant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le
+ * contrôleur associé au fichier FXML WindowsNewProject.fxml et gérant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le
  * bouton du menu <b>Fichier -> Nouveau</b>.
  */
 public class WindowsNewProjectController {

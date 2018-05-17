@@ -1,6 +1,7 @@
 package controller.rightMenu;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -8,10 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import utils.UndoException;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -53,6 +56,8 @@ public class RightMenuController {
 	private double oldOpacity;
 	
 	private double newOpacity;
+	
+	private boolean isRedoWaiting;
 	
 	// LayerList config
 	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -129,7 +134,6 @@ public class RightMenuController {
 	public void handleAddNewLayer() {
 		NewLayerSave ls = new NewLayerSave();
 		Project.getInstance().addNewLayer();
-		updateLayerList();
 		ls.execute();
 	}
 	
@@ -137,12 +141,11 @@ public class RightMenuController {
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
 	@FXML
-	void handleDeleteLayer() {
+	public void handleDeleteLayer() {
 		if (Project.getInstance().getLayers().size() != 1) {
 			DeleteLayerSave dls = new DeleteLayerSave();
 			Project.getInstance().deleteCurrentLayer();
 			dls.execute();
-			updateLayerList();
 		}
 	}
 	
@@ -153,13 +156,10 @@ public class RightMenuController {
 	void handleDownLayer() {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
 		if (index < Project.getInstance().getLayers().size() - 1) {
-
 			new LayerPosSave(index).execute();
-
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
-
-			updateLayerList();
 			Project.getInstance().drawWorkspace();
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 	}
 	
@@ -169,20 +169,15 @@ public class RightMenuController {
 	@FXML
 	void handleUpLayer() {
 		int index = Project.getInstance().getLayers().indexOf(Project.getInstance().getCurrentLayer());
-		
 		if (index != 0) {
-
 			new LayerPosSave(index - 1).execute();
-
 			Collections.swap(Project.getInstance().getLayers(), index, index - 1);
-
-			updateLayerList();
 			Project.getInstance().drawWorkspace();
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 	}
 
-	public class LayerPosSave extends ICmd {
-
+	public class LayerPosSave implements ICmd {
 		private int index;
 
 		public LayerPosSave(int index) {
@@ -197,22 +192,18 @@ public class RightMenuController {
 		@Override
 		public void undo() {
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
-
-			updateLayerList();
 			Project.getInstance().drawWorkspace();
 		}
 
 		@Override
 		public void redo() {
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
-
-			updateLayerList();
 			Project.getInstance().drawWorkspace();
 		}
 		
 		@Override
 		public String toString() {
-			return "Ordre des Calque";
+			return "Modification de l'ordre des Calques";
 		}
 	}
 
@@ -221,7 +212,6 @@ public class RightMenuController {
 	 */
 	@FXML
 	public void handleMergeLayer() {
-		
 		Layer currentLayer = Project.getInstance().getCurrentLayer();
 		int index = Project.getInstance().getLayers().indexOf(currentLayer);
 		if (index != Project.getInstance().getLayers().size() - 1) {
@@ -231,7 +221,6 @@ public class RightMenuController {
 			Project.getInstance().getLayers().remove(currentLayer);
 			Project.getInstance().getLayers().remove(backgroundLayer);
 			Project.getInstance().addLayer(mergeLayer);
-			updateLayerList();
 			ms.execute();
 		}
 		
@@ -240,7 +229,9 @@ public class RightMenuController {
 	public void updateLayerList() {
 		layersList.getChildren().clear();
 		for (Layer layer : Project.getInstance().getLayers()) {
-			handleAddNewLayer(layer);
+			if (!layer.isTempLayer()) {
+				handleAddNewLayer(layer);
+			}
 		}
 		opacitySlider.setValue(Project.getInstance().getCurrentLayer().getLayerOpacity());
 		opacityTextField.setText(String.valueOf(Project.getInstance().getCurrentLayer().getLayerOpacity()));
@@ -280,34 +271,45 @@ public class RightMenuController {
 		this.opacityTextField.setText(opacityTextField);
 	}
 	
-	public void addUndoHistory(ICmd iCmd) {
-		addHistory(iCmd, false);
-	}
-	
 	public void updateHistoryList() {
 		historyList.getChildren().clear();
 		
 		Iterator<ICmd> li = RecordCmd.getInstance().getUndoStack().descendingIterator();
+		int id = 1;
 		while (li.hasNext()) {
 			ICmd cmd = li.next();
-			addUndoHistory(cmd);
+			addUndoHistory(cmd, id);
+			id++;
 		}
 		for (ICmd cmd : RecordCmd.getInstance().getRedoStack()) {
-			addRedoHistory(cmd);
+			addRedoHistory(cmd, id);
+			id++;
 		}
 	}
 	
-	public void addRedoHistory(ICmd iCmd) {
-		addHistory(iCmd, true);
+	public void setRedoWaiting(boolean redoWaiting) {
+		isRedoWaiting = redoWaiting;
 	}
 	
-	private void addHistory(ICmd iCmd, boolean isRedo) {
+	public void addUndoHistory(ICmd iCmd, int id) {
+		if (isRedoWaiting) {
+			updateLayerList();
+		} else {
+			addHistory(iCmd, false, id);
+		}
+	}
+	
+	public void addRedoHistory(ICmd iCmd, int id) {
+		addHistory(iCmd, true, id);
+	}
+	
+	private void addHistory(ICmd iCmd, boolean isRedo, int id) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
 			h.setLabel(iCmd.toString());
-			h.setID(iCmd.getID());
+			h.setID(id);
 			if (isRedo) {
 				h.changeLabelOpacity(60);
 			}
@@ -345,8 +347,7 @@ public class RightMenuController {
 		opacitySlider.setDisable(true);
 	}
 	
-	public class NewLayerSave extends ICmd {
-		
+	public class NewLayerSave implements ICmd {
 		Layer oldCurrentLayer;
 		Layer newLayer;
 		
@@ -367,26 +368,24 @@ public class RightMenuController {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Project.getInstance().setCurrentLayer(newLayer);
 			Project.getInstance().deleteCurrentLayer();
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Project.getInstance().addLayer(newLayer);
-			updateLayerList();
 		}
 		
 		@Override
 		public String toString() {
-			return "Nouveau Calque";
+			return "Création du " + newLayer;
 		}
 	}
 	
-	public class DeleteLayerSave extends ICmd {
-		
+	public class DeleteLayerSave implements ICmd {
 		private Layer oldCurrentLayer;
 		private Layer newLayer;
 		private int index;
@@ -403,17 +402,15 @@ public class RightMenuController {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Project.getInstance().getLayers().add(index, oldCurrentLayer);
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
-			updateLayerList();
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Project.getInstance().getLayers().remove(oldCurrentLayer);
 			Project.getInstance().setCurrentLayer(newLayer);
-			updateLayerList();
 		}
 		
 		@Override
@@ -422,8 +419,7 @@ public class RightMenuController {
 		}
 	}
 	
-	
-	public class MergeSave extends ICmd {
+	public class MergeSave implements ICmd {
 		
 		private Layer oldCurrentLayer1;
 		private Layer oldCurrentLayer2;
@@ -453,7 +449,6 @@ public class RightMenuController {
 			Project.getInstance().getLayers().remove(newLayer);
 			
 			Project.getInstance().setCurrentLayer(oldCurrentLayer1);
-			updateLayerList();
 		}
 		
 		@Override
@@ -462,7 +457,6 @@ public class RightMenuController {
 			Project.getInstance().getLayers().remove(oldCurrentLayer2);
 			Project.getInstance().getLayers().add(index, newLayer);
 			Project.getInstance().setCurrentLayer(newLayer);
-			updateLayerList();
 		}
 		
 		@Override

@@ -227,23 +227,20 @@ public class Project implements Serializable {
 		removeEventHandler(Tool.getCurrentTool());
 		this.currentLayer = currentLayer;
 		
-		redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+		redBorder = new Rectangle(currentLayer.getBoundsInParent().getWidth(), currentLayer.getBoundsInParent().getHeight(), Color.TRANSPARENT);
 		redBorder.setStroke(Color.CADETBLUE);
 		redBorder.setStrokeWidth(1);
 		
 		redBorder.setTranslateX(currentLayer.getBoundsInParent().getMinX());
 		redBorder.setTranslateY(currentLayer.getBoundsInParent().getMinY());
-		redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
-		redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
+		//redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
+		//redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
 		
 		redBorder.setMouseTransparent(true);
-		
-		
 		redBorder.setManaged(false);
 		currentLayer.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
-			public void changed(ObservableValue<? extends Bounds> observable,
-			                    Bounds oldValue, Bounds newValue) {
+			public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
 				redBorder.setTranslateX(currentLayer.getBoundsInParent().getMinX());
 				redBorder.setTranslateY(currentLayer.getBoundsInParent().getMinY());
 				redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
@@ -370,7 +367,6 @@ public class Project implements Serializable {
 				index--;
 			}
 			setCurrentLayer(layers.get(index));
-			MainViewController.getInstance().getRightMenuController().updateLayerList();
 			drawWorkspace();
 		}
 	}
@@ -394,15 +390,15 @@ public class Project implements Serializable {
 		
 		int maxCount = 1;
 		for (int i = 0; i < nbCalques; ++i) {
-			
 			Layer l = (Layer) s.readObject();
 			addLayer(l);
-			if (l.id() > maxCount)
+			if (l.id() > maxCount) {
 				maxCount = l.id();
+			}
 			
 		}
 		
-		Layer.setCount(maxCount);
+		Layer.setCount(maxCount); // fixme: est-ce vraiment utile vu que tu ajoute les calques avant, le count est incrémenté tout seul non?
 		
 		setCurrentLayer(layers.getFirst());
 		
