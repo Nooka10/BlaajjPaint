@@ -13,6 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import utils.Utils;
 
+/**
+ * Contrôleur associé au fichier FXML ParamDrawToolController.fxml et gérant l'ensemble des actions associées à la barre de menus des outils pinceau et gomme qui
+ * apparaît dans la GUI en dessous de la barre de menus, lorsqu'on sélectionne l'outil <b>Pinceau</b> ou l'outil <b>Gomme</b>.
+ */
 public class ParamDrawToolController {
 	@FXML
 	private Slider thicknessSlider;
@@ -30,8 +34,9 @@ public class ParamDrawToolController {
 	 */
 	@FXML
 	private void initialize() {
+		// initialise le textField à l'épaisseur de l'outil actuellement sélectionné (gomme ou pinceau)
 		thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));
-		thicknessSlider.setValue(tool.thickness);
+		thicknessSlider.setValue(tool.thickness); // initialise le slider à l'épaisseur de l'outil actuellement sélectionné (gomme ou pinceau)
 		
 		// Ajoute un changeListener à textFieldWidth -> la méthode changed() est appelée à chaque fois que le texte de textFieldWidth est modifié
 		thicknessTextField.textProperty().addListener(new ChangeListener<String>() {
@@ -41,20 +46,19 @@ public class ParamDrawToolController {
 				if (!newValue.matches("\\d*") || !Utils.checkTextFieldValueGTZero(thicknessTextField)) {
 					thicknessTextField.setText(oldValue); // on annule la dernière modification
 				} else { // vrai si l'utilisateur a entré un chiffre et que le contenu de thicknessTextField est valide
-					tool.thickness = Double.parseDouble(thicknessTextField.getText());
+					tool.setThickness(Integer.parseInt(newValue)); // épaisseur comprise entre 1 et 200
+					thicknessSlider.setValue(tool.thickness);
 					if (tool.thickness > 200) {
 						tool.thickness = 200;
 						thicknessTextField.setText("200");
 					}
-					thicknessSlider.setValue(tool.thickness);
-					((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
 				}
 			}
 		});
 	}
 	
 	public void handleSliderValueChanged() {
-		tool.thickness = thicknessSlider.getValue();
+		tool.thickness = (int) Math.round(thicknessSlider.getValue());
 		thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));
 		((ToolDrawer) Tool.getCurrentTool()).setThickness(tool.thickness);
 	}

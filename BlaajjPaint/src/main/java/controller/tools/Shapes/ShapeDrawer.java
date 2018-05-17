@@ -165,6 +165,7 @@ public abstract class ShapeDrawer extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
+			// on supprime le 1er calque s'il ne s'agit pas du calque actuellement sélectionné --> c'est donc un calque temporaire
 			if (Project.getInstance().getCurrentLayer() != Project.getInstance().getLayers().getFirst()) {
 				Project.getInstance().getLayers().removeFirst();
 			}

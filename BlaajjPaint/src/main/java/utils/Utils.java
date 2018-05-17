@@ -5,6 +5,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 /**
@@ -19,15 +20,17 @@ public class Utils {
 	}
 	
 	public static Image makeSnapshot(Layer layer, Color color){
+		return makeSnapshot(layer, color, null);
+	}
+	
+	public static WritableImage makeSnapshot(Layer layer, Color color, WritableImage image){
 		params.setFill(color);
 		double opacity = layer.getOpacity();
 		layer.setOpacity(1);
-		Image snapshot = layer.snapshot(params, null);
+		WritableImage snapshot = layer.snapshot(params, image);
 		layer.setOpacity(opacity);
 		return snapshot;
 	}
-	
-	// TODO: déplacer le snapshot de la gomme et de la pipette ici!
 	
 	public static boolean checkWidthHeightValidity(TextField width, TextField height, Button validate) {
 		if (width.getText().isEmpty() || height.getText().isEmpty() ||

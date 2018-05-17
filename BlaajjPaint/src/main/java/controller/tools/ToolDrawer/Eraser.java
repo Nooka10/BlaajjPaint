@@ -3,40 +3,33 @@ Author: Benoît
  */
 package controller.tools.ToolDrawer;
 
+import controller.Layer;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
+import utils.Utils;
+
+import javax.rmi.CORBA.Util;
 
 /**
- * Classe implémentant l'outil gomme
+ * Classe implémentant l'outil gomme permettant d'effacer des pixels du calque à l'aide de la souris.
  */
 public class Eraser extends ToolDrawer {
 	
 	private static Eraser toolInstance = null; // l'instance unique du singleton Eraser
 	
-	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
+	private Layer eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
 	private GraphicsContext eraserMaskGC;
-	
-	/**
-	 * Retourne l'instance unique de la gomme
-	 *
-	 * @return l'instance unique de la gomme
-	 */
-	public static Eraser getInstance() {
-		if (toolInstance == null) {
-			toolInstance = new Eraser();
-		}
-		return toolInstance;
-	}
 	
 	/**
 	 * Constructeur privé (modèle singleton).
@@ -45,26 +38,41 @@ public class Eraser extends ToolDrawer {
 		toolType = Tool.ToolType.ERASER;
 	}
 	
+	/**
+	 * Retourne l'instance unique de la gomme.
+	 * @return l'instance unique de la gomme.
+	 */
+	public static Eraser getInstance() {
+		if (toolInstance == null) {
+			toolInstance = new Eraser();
+		}
+		return toolInstance;
+	}
+	
 	@Override
 	public EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				currentTrait = new EraserStrike();
-				startErase(event);
+				currentStrike = new EraserStrike(); // crée une sauvegarde du trait de gomme
+				startErase(event); // initialise le trait de gomme
 			}
 		};
 	}
 	
+	/**
+	 * Initialise le trait de gomme. Crée un masque de suppression sur lequel l'utilisateur "dessine" les zones à effacer.
+	 * @param event, l'évènement de la souris.
+	 */
 	private void startErase(MouseEvent event){
-		// crée le masque de suppression
-		eraserMask = new Canvas(Project.getInstance().getCurrentLayer().getWidth(), Project.getInstance().getCurrentLayer().getHeight());
+		// crée un claque temporaire sur lequel on va "colorer" la zone à supprimer puis fusionner avec le calque courant pour effectuer l'effacement
+		eraserMask = new Layer((int)Project.getInstance().getCurrentLayer().getWidth(), (int)Project.getInstance().getCurrentLayer().getHeight(), true);
 		eraserMaskGC = eraserMask.getGraphicsContext2D();
 		eraserMaskGC.setFill(Color.WHITE);
 		eraserMaskGC.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
 		eraserMaskGC.beginPath();
 		eraserMaskGC.moveTo(event.getX(), event.getY());
-		eraserMaskGC.setLineCap(StrokeLineCap.ROUND);
+		eraserMaskGC.setLineCap(StrokeLineCap.ROUND); // définit la forme de la gomme
 		eraserMaskGC.setLineWidth(thickness); // définit l'épaisseur de la gomme
 		eraserMaskGC.setStroke(Color.BLACK); // définit la couleur de la gomme
 		eraserMaskGC.lineTo(event.getX(), event.getY());
@@ -76,11 +84,11 @@ public class Eraser extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				eraserMaskGC.lineTo(event.getX(), event.getY());
-				eraserMaskGC.stroke();
+				eraserMaskGC.lineTo(event.getX(), event.getY()); // déplace le trait de l'ancienne position à la position actuelle
+				eraserMaskGC.stroke(); // tire le trait entre l'ancienne et la nouvelle position
 				
-				closeErase(event);
-				startErase(event);
+				closeErase(event); // fusionne le calque et effectue l'effacement
+				startErase(event); // initialise un nouveau trait de gomme
 			}
 		};
 	}
@@ -90,18 +98,21 @@ public class Eraser extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				closeErase(event);
-				currentTrait.execute();
+				closeErase(event); // fusionne le calque et effectue l'effacement
+				currentStrike.execute();
 			}
 		};
 	}
 	
+	/**
+	 * Clôt le trait de gomme et merge le calque temporaire. Toutes les zones dessinées sur le calque temporaire sont effacées sur le calque courant.
+	 * @param event, l'évènement de la souris.
+	 */
 	private void closeErase(MouseEvent event){
-		eraserMaskGC.closePath();
+		eraserMaskGC.closePath(); // clôt le trait de gomme
 		
-		// On récupère l'image du masque de suppression
-		WritableImage srcMask = new WritableImage((int) eraserMask.getWidth(), (int) eraserMask.getHeight());
-		srcMask = eraserMask.snapshot(null, srcMask);
+		WritableImage srcMask = new WritableImage((int) eraserMask.getWidth(), (int) eraserMask.getHeight()); // On récupère l'image du masque de suppression
+		srcMask = Utils.makeSnapshot(eraserMask, Color.TRANSPARENT, srcMask); // on en fait un snapshot
 		
 		PixelReader maskReader = srcMask.getPixelReader();
 		
@@ -122,7 +133,10 @@ public class Eraser extends ToolDrawer {
 		}
 	}
 	
-	public class EraserStrike extends Trait {
+	/**
+	 * Classe interne implémentant une commande sauvegardant un trait de gomme et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 */
+	public class EraserStrike extends Strike {
 		@Override
 		public String toString() {
 			return "Trait de gomme";
