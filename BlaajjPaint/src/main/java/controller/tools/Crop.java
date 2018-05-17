@@ -224,7 +224,7 @@ public class Crop extends Tool {
          * @param layerToCrop - layer sur lequel on va rogner
          */
         public CropSave(Layer layerToCrop){
-            undosave = Utils.makeSnapshot(layerToCrop);
+            undosave = Utils.makeSnapshot(layerToCrop, Color.TRANSPARENT);
             widthLayer = layerToCrop.getWidth();
             heightLayer = layerToCrop.getHeight();
             //layoutXLayer = layerToCrop.getLayoutX();
@@ -244,7 +244,7 @@ public class Crop extends Tool {
             if (undosave == null) {
                 throw new UndoException();
             }
-            redosave = Utils.makeSnapshot(layerCroped);
+            redosave = Utils.makeSnapshot(layerCroped, Color.TRANSPARENT);
             // Sauvegarde du calque sur lequel on va rogner
             Layer currentLayer = layerCroped;
             // Sauvegarde des dimensions
@@ -281,7 +281,7 @@ public class Crop extends Tool {
                 throw new UndoException();
             }
 
-            undosave = Utils.makeSnapshot(layerCroped);
+            undosave = Utils.makeSnapshot(layerCroped, Color.TRANSPARENT);
             // Sauvegarde du calque sur lequel on va rogner
             Layer currentLayer = layerCroped;
             // Sauvegarde des dimensions

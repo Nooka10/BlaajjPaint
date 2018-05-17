@@ -311,17 +311,14 @@ public class Project implements Serializable {
 			
 			if (chosenExtension.equals("png")) {
 				try {
-					ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(resultLayer), null), chosenExtension, file);
+					ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(resultLayer, Color.TRANSPARENT), null), chosenExtension, file);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
 				
 			} else if (chosenExtension.equals("jpg")) {
-				SnapshotParameters params = new SnapshotParameters();
 				
-				params.setFill(Color.WHITE);
-				//TODO : antoine, ne marche plus à cause de benoit
-				Image canvas = Utils.makeSnapshot(resultLayer);
+				Image canvas = Utils.makeSnapshot(resultLayer, Color.WHITE);
 				
 				BufferedImage image = SwingFXUtils.fromFXImage(canvas, null);
 				

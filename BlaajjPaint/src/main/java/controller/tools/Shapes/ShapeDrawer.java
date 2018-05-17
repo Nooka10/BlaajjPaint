@@ -9,6 +9,7 @@ import controller.tools.Tool;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import utils.Utils;
 import utils.UndoException;
 
@@ -52,7 +53,7 @@ public abstract class ShapeDrawer extends Tool {
 		 * Constructeur de ShapeSave
 		 */
 		public ShapeSave() {
-			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
+			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
 		}
 		
 		/**
@@ -86,7 +87,7 @@ public abstract class ShapeDrawer extends Tool {
 			if (Project.getInstance().getCurrentLayer() != Project.getInstance().getLayers().getFirst()) {
 				Project.getInstance().getLayers().removeFirst();
 			}
-			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
+			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
 			Project.getInstance().getLayers().removeFirst();
 			//MainViewController.getInstance().getRightMenuController().deleteLayer(0);
 			Project.getInstance().setCurrentLayer(Project.getInstance().getLayers().getFirst());
@@ -104,7 +105,7 @@ public abstract class ShapeDrawer extends Tool {
 			if (redosave == null) {
 				throw new UndoException();
 			}
-			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
+			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
 			Layer redoLayer = new Layer((int) redosave.getWidth(), (int) redosave.getHeight(), "Forme", false);
 			redoLayer.getGraphicsContext2D().drawImage(redosave, 0, 0);
 			Project.getInstance().addLayer(redoLayer);

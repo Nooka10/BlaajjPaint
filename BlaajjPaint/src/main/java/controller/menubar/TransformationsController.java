@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import utils.Utils;
 
@@ -105,7 +106,7 @@ public class TransformationsController {
 		 */
 		private TransformationSave(int angleDegree, Point3D axis){
 			currentLayer = Project.getInstance().getCurrentLayer();
-			imageBefore = Utils.makeSnapshot(currentLayer);
+			imageBefore = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 			this.angleDegree = angleDegree;
 			this.axis = axis;
 		}
@@ -118,7 +119,7 @@ public class TransformationsController {
 			currentLayer.getGraphicsContext2D().setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 			currentLayer.getGraphicsContext2D().drawImage(imageBefore, 0, 0);
 			currentLayer.getGraphicsContext2D().restore();
-			imageAfter = Utils.makeSnapshot(currentLayer);
+			imageAfter = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 			
 			RecordCmd.getInstance().saveCmd(this);
 		}

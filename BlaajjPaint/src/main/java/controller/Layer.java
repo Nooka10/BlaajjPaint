@@ -71,7 +71,7 @@ public class Layer extends Canvas implements Serializable {
 		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.descriptionCalque, isTempLayer);
 		boolean visibility = toCopy.isVisible();
 		toCopy.setVisible(true);
-		this.getGraphicsContext2D().drawImage(Utils.makeSnapshot(toCopy), 0, 0, getWidth(), getHeight());
+		this.getGraphicsContext2D().drawImage(Utils.makeSnapshot(toCopy, Color.TRANSPARENT), 0, 0, getWidth(), getHeight());
 		setVisible(visibility);
 		//setLayoutX(toCopy.getLayoutX());
 		//setLayoutY(toCopy.getLayoutY());
@@ -102,8 +102,8 @@ public class Layer extends Canvas implements Serializable {
 	 * @param backgroundLayer le calque à l'arrière-plan (sur lequel on va dessiner)
 	 */
 	public Layer mergeLayers(Layer backgroundLayer, boolean mergeSurCalqueTemporaire) {
-		Image image1 = Utils.makeSnapshot(this);
-		Image image2 = Utils.makeSnapshot(backgroundLayer);
+		Image image1 = Utils.makeSnapshot(this, Color.TRANSPARENT);
+		Image image2 = Utils.makeSnapshot(backgroundLayer, Color.TRANSPARENT);
 		
 		// prend le décalage (layout) minimum des deux calques
 		//double minX = getLayoutX() < backgroundLayer.getLayoutX() ? getLayoutX() : backgroundLayer.getLayoutX();
@@ -263,7 +263,7 @@ public class Layer extends Canvas implements Serializable {
 		
 		this.setVisible(true);
 		this.setOpacity(1);                            // enlève l'opacité pour la sauvegardes
-		ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(this), null), "png", s);
+		ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(this, Color.TRANSPARENT), null), "png", s);
 		this.setOpacity(tmpOpacity);                // Remet l'opacité
 		this.setVisible(tmpVisible);                // Remet la visibilité
 		
