@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.SaveProject;
+import utils.UndoException;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -147,14 +148,16 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleImportImage() {
+		ImportImageSave importImageSave = new ImportImageSave();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Import an image");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("fichiers PNG ou JPG", "*.png", "*.jpg"));
-		
+
 		// Ouvre une fenêtre invitant l'utilisateur à sélectionner un fichier utilisant l'extension autorisée
 		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
-		
+
 		Project.getInstance().importImage(file);
+		importImageSave.execute();
 	}
 	
 	
@@ -396,6 +399,32 @@ public class MenuBarController {
 		@Override
 		public String toString() {
 			return "Aplatissement de tous les calques";
+		}
+	}
+
+	public class ImportImageSave implements ICmd {
+		private Layer oldCurrentLayer;
+		private Layer importImageLayer;
+
+		public ImportImageSave(){
+			oldCurrentLayer = Project.getInstance().getCurrentLayer(); // calque avant import
+		}
+
+		@Override
+		public void execute() {
+			importImageLayer = Project.getInstance().getCurrentLayer(); // calque après import
+			RecordCmd.getInstance().saveCmd(this);
+		}
+
+		@Override
+		public void undo() throws UndoException {
+			Project.getInstance().getLayers().remove(importImageLayer);
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+
+		@Override
+		public void redo() throws UndoException {
+			Project.getInstance().addLayer(importImageLayer);
 		}
 	}
 }

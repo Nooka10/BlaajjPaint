@@ -230,14 +230,11 @@ public class TextTool extends Tool {
 		public void undo() throws UndoException {
 			Project.getInstance().getLayers().remove(textLayerSaved);
 			Project.getInstance().setCurrentLayer(oldLayerSaved);
-			Project.getInstance().drawWorkspace();
 		}
 		
 		@Override
 		public void redo() throws UndoException {
 			Project.getInstance().addLayer(textLayerSaved);
-			Project.getInstance().setCurrentLayer(textLayerSaved);
-			Project.getInstance().drawWorkspace();
 		}
 		
 		@Override
