@@ -186,11 +186,21 @@ public class MainViewController {
 
 		if (file != null) {
 			closeProject();
-			SaveProject.getInstance().openFile(file);
-		}
+
+
+			try{
+				SaveProject.getInstance().openFile(file);
+				enableButtons();
+			} catch (Exception ex) {
+				
+				closeProject();
+				System.err.println("File is corrupted");
+			}
+
+	}
 
 		// réactive les boutons
-		enableButtons();
+
 	}
 
 	/**

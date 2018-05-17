@@ -69,19 +69,20 @@ public class SaveProject {
 	 * Ouverture d'un ficher
 	 * Enregistre le File courrant
 	 * @param f		fichier source
+	 *
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
-	public void openFile(File f) {
-		try {
-			FileInputStream fileInput = new FileInputStream(f);
-			ObjectInputStream objectInputStream = new ObjectInputStream(fileInput);
-			projectInstance = (Project) objectInputStream.readObject();
-			
-			projectInstance.drawWorkspace();
-			System.out.println("openFile done");
-			saveFile = f;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+	public void openFile(File f) throws IOException, ClassNotFoundException {
+
+		FileInputStream fileInput = new FileInputStream(f);
+		ObjectInputStream objectInputStream = new ObjectInputStream(fileInput);
+		projectInstance = (Project) objectInputStream.readObject();
+
+		projectInstance.drawWorkspace();
+		System.out.println("openFile done");
+		saveFile = f;
+
 	}
 
 	/**
