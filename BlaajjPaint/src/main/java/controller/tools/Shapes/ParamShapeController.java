@@ -49,10 +49,10 @@ public class ParamShapeController {
 			    if (!newValue.matches("\\d*") || !Utils.checkTextFieldValueGTZero(thicknessTextField)) {
 				    thicknessTextField.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
 			    } else { // vrai si l'utilisateur a entré un chiffre et que le contenu de thicknessTextField est valide
-				    int thickness = Integer.parseInt(thicknessTextField.getText());
+				    int thickness = Integer.parseInt(newValue);
 				    if (thickness > 200) {
 					    thickness = 200;
-					    thicknessTextField.setText(String.valueOf(thickness));
+					    thicknessTextField.setText("200");
 				    }
 				    EmptyRectangle.getInstance().setThickness(thickness);
 				    EmptyEllipse.getInstance().setThickness(thickness);

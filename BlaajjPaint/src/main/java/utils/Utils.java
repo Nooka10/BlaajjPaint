@@ -1,6 +1,7 @@
 package utils;
 
 import controller.Layer;
+import controller.Project;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -30,6 +31,16 @@ public class Utils {
 		WritableImage snapshot = layer.snapshot(params, image);
 		layer.setOpacity(opacity);
 		return snapshot;
+	}
+	
+	/**
+	 * Efface le calque actuellement sélectionné et y dessine le contenu de l'image passée en paramètre.
+	 * @param img, l'image à redessiner sur le calque actuellement sélectionné.
+	 */
+	public static void redrawSnapshot(Layer layer, Image img){
+		// efface le contenu du calque actuellement sélectionné
+		layer.getGraphicsContext2D().clearRect(0, 0, layer.getWidth(), layer.getHeight());
+		layer.getGraphicsContext2D().drawImage(img, 0, 0); // redessine le calque avec le contenu d'img
 	}
 	
 	public static boolean checkWidthHeightValidity(TextField width, TextField height, Button validate) {

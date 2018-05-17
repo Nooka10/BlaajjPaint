@@ -25,8 +25,8 @@ public class Pencil extends ToolDrawer {
 	}
 	
 	/**
-	 * Retourne l'instance unique du pinceau.
-	 * @return l'instance unique du pinceau.
+	 * Retourne l'instance unique du singleton Pencil.
+	 * @return l'instance unique du singleton Pencil.
 	 */
 	public static Pencil getInstance() {
 		if (toolInstance  == null) {

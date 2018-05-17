@@ -57,6 +57,10 @@ public class ParamDrawToolController {
 		});
 	}
 	
+	/**
+	 * Méthode appelée par le slider de la barre de menu des outils <b>Pinceau</b> et <b>Gomme</b> lorsque l'utilisateur clique avec la souris sur le slider d'opacité
+	 * du calque, lorsqu'il reste appuyé et glisse ou encore lorsqu'il relâche le clic. Modifie l'épaisseur de l'outil de dessin sélectionné (pinceau ou gomme).
+	 */
 	public void handleSliderValueChanged() {
 		tool.thickness = (int) Math.round(thicknessSlider.getValue());
 		thicknessTextField.setText(String.valueOf(Math.round(tool.thickness)));

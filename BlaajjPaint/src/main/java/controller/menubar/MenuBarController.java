@@ -454,12 +454,12 @@ public class MenuBarController {
 
         @Override
         public void undo() {
-            // Do nothing
+            // Ne fait rien
         }
 
         @Override
         public void redo() {
-            // Do nothing
+            // Ne fait rien
         }
 
         @Override

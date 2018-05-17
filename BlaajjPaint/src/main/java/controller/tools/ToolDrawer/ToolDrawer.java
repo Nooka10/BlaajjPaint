@@ -58,18 +58,8 @@ public abstract class ToolDrawer extends Tool {
 				throw new UndoException();
 			}
 			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT); // on fait un snapshot du calque
-			redrawSnapshot(undosave); // efface le calque actuellement sélectionné et y dessine le contenu du snapshot undoSave
+			Utils.redrawSnapshot(Project.getInstance().getCurrentLayer(), undosave); // redessine le snapshot undosave sur le calque actuellement sélectionné
 			undosave = null;
-		}
-		
-		/**
-		 * Efface le calque actuellement sélectionné et y dessine le contenu de l'image passée en paramètre.
-		 * @param img, l'image à redessiner sur le calque actuellement sélectionné.
-		 */
-		private void redrawSnapshot(Image img){
-			// efface le contenu du calque actuellement sélectionné
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().clearRect(0, 0, Project.getInstance().getWidth(), Project.getInstance().getHeight());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(img, 0, 0); // redessine le calque avec le contenu d'img
 		}
 		
 		@Override
@@ -78,7 +68,7 @@ public abstract class ToolDrawer extends Tool {
 				throw new UndoException();
 			}
 			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT); // on fait un snapshot du calque
-			redrawSnapshot(redosave); // efface le calque actuellement sélectionné et y dessine le contenu du snapshot redoSave
+			Utils.redrawSnapshot(Project.getInstance().getCurrentLayer(), redosave); // redessine le snapshot redosave sur le calque actuellement sélectionné
 			redosave = null;
 		}
 		

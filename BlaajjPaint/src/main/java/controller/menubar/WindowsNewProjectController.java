@@ -103,12 +103,12 @@ public class WindowsNewProjectController {
 
 		@Override
 		public void undo() {
-			// do nothing
+			// Ne fait rien
 		}
 
 		@Override
 		public void redo() {
-			// do nothing
+			// Ne fait rien
 		}
 
 		@Override

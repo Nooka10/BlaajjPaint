@@ -39,8 +39,8 @@ public class Eraser extends ToolDrawer {
 	}
 	
 	/**
-	 * Retourne l'instance unique de la gomme.
-	 * @return l'instance unique de la gomme.
+	 * Retourne l'instance unique du singleton Eraser.
+	 * @return l'instance unique du singleton Eraser.
 	 */
 	public static Eraser getInstance() {
 		if (toolInstance == null) {

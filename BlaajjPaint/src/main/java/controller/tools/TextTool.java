@@ -204,7 +204,7 @@ public class TextTool extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// do nothing
+				// Ne fait rien
 			}
 		};
 	}

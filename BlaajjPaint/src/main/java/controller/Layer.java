@@ -308,10 +308,7 @@ public class Layer extends Canvas implements Serializable {
 		this.setTranslateX(x + this.getTranslateX());
 		this.setTranslateY(y + this.getTranslateY());
 		
-		GraphicsContext gc = getGraphicsContext2D();
-		gc.clearRect(0,0,this.getWidth(),this.getHeight());
-		gc.drawImage(newImage,0,0);
-
+		Utils.redrawSnapshot(this, newImage);
 		return this;
 	}
 }

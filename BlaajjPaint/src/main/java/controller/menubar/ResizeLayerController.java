@@ -176,7 +176,7 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void undo() {
+		public void undo() { // FIXME: voir avec Antoine si ya moyen d'utiliser Utils.redrawSnapshot()...?
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
 			currentLayer.setWidth(oldWidth);
 			currentLayer.setHeight(oldHeight);

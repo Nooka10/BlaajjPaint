@@ -127,14 +127,12 @@ public class TransformationsController {
 		
 		@Override
 		public void undo() {
-			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
-			currentLayer.getGraphicsContext2D().drawImage(imageBefore, 0, 0);
+			Utils.redrawSnapshot(currentLayer, imageBefore);
 		}
 		
 		@Override
 		public void redo() {
-			currentLayer.getGraphicsContext2D().clearRect(0, 0, currentLayer.getWidth(), currentLayer.getHeight());
-			currentLayer.getGraphicsContext2D().drawImage(imageAfter, 0, 0);
+			Utils.redrawSnapshot(currentLayer, imageAfter);
 		}
 	}
 	
