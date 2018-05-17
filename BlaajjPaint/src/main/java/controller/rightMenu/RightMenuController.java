@@ -8,6 +8,7 @@ import controller.history.RecordCmd;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -117,12 +118,13 @@ public class RightMenuController {
 	public void setColorPickerColor(Color color) {
 		colorPicker.setValue(color);
 	}
-
+	
 	/**
 	 * Retourne le color picker
+	 *
 	 * @return ColorPicker
 	 */
-	public ColorPicker getColorPicker(){
+	public ColorPicker getColorPicker() {
 		return colorPicker;
 	}
 	
@@ -176,25 +178,25 @@ public class RightMenuController {
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
 		}
 	}
-
+	
 	public class LayerPosSave implements ICmd {
 		private int index;
-
+		
 		public LayerPosSave(int index) {
 			this.index = index;
 		}
-
+		
 		@Override
 		public void execute() {
 			RecordCmd.getInstance().saveCmd(this);
 		}
-
+		
 		@Override
 		public void undo() {
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
 			Project.getInstance().drawWorkspace();
 		}
-
+		
 		@Override
 		public void redo() {
 			Collections.swap(Project.getInstance().getLayers(), index, index + 1);
@@ -206,7 +208,7 @@ public class RightMenuController {
 			return "Modification de l'ordre des Calques";
 		}
 	}
-
+	
 	/**
 	 * CETTE FONCITON FAIT UNE SAVECMD POUR L'HISTORIQUE NE PAS APPELER A L'INTERIEUR D'UNE AUTRE SAUVEGARDE
 	 */
@@ -223,7 +225,6 @@ public class RightMenuController {
 			Project.getInstance().addLayer(mergeLayer);
 			ms.execute();
 		}
-		
 	}
 	
 	public void updateLayerList() {
@@ -274,16 +275,15 @@ public class RightMenuController {
 	public void updateHistoryList() {
 		historyList.getChildren().clear();
 		
-		Iterator<ICmd> li = RecordCmd.getInstance().getUndoStack().descendingIterator();
-		int id = 1;
-		while (li.hasNext()) {
-			ICmd cmd = li.next();
-			addUndoHistory(cmd, id);
-			id++;
+		Iterator<ICmd> undoIter = RecordCmd.getInstance().getUndoStack().descendingIterator();
+		int id = 0;
+		int nbUndo = RecordCmd.getInstance().getUndoStack().size();
+		while (undoIter.hasNext()) {
+			ICmd cmd = undoIter.next();
+			addHistory(cmd, false, id++, nbUndo);
 		}
 		for (ICmd cmd : RecordCmd.getInstance().getRedoStack()) {
-			addRedoHistory(cmd, id);
-			id++;
+			addHistory(cmd, true, ++id, nbUndo);
 		}
 	}
 	
@@ -291,25 +291,14 @@ public class RightMenuController {
 		isRedoWaiting = redoWaiting;
 	}
 	
-	public void addUndoHistory(ICmd iCmd, int id) {
-		if (isRedoWaiting) {
-			updateLayerList();
-		} else {
-			addHistory(iCmd, false, id);
-		}
-	}
-	
-	public void addRedoHistory(ICmd iCmd, int id) {
-		addHistory(iCmd, true, id);
-	}
-	
-	private void addHistory(ICmd iCmd, boolean isRedo, int id) {
+	private void addHistory(ICmd iCmd, boolean isRedo, int id, int nbCmd) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
 			h.setLabel(iCmd.toString());
 			h.setID(id);
+			h.setNbCmd(nbCmd);
 			if (isRedo) {
 				h.changeLabelOpacity(60);
 			}
@@ -318,12 +307,11 @@ public class RightMenuController {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
-	 * Permet d'activer les boutons.
-	 * A appeler dès qu'un project est ouvert, créé
+	 * Permet d'activer les boutons. A appeler dès qu'un project est ouvert, créé
 	 */
-	public void enableButton(){
+	public void enableButton() {
 		addNewLayer.setDisable(false);
 		deleteLayer.setDisable(false);
 		upLayer.setDisable(false);
@@ -332,12 +320,11 @@ public class RightMenuController {
 		opacityTextField.setDisable(false);
 		opacitySlider.setDisable(false);
 	}
-
+	
 	/**
-	 * Permet de désactiver les boutons.
-	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 * Permet de désactiver les boutons. A appeler à la fermeture d'un projet ou à la création de l'application
 	 */
-	public void disableButton(){
+	public void disableButton() {
 		addNewLayer.setDisable(true);
 		deleteLayer.setDisable(true);
 		upLayer.setDisable(true);

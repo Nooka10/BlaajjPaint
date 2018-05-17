@@ -27,20 +27,25 @@ public class HistoryController {
 	@FXML
 	void handleOnMouseReleased() {
 		if (currentUndoID == -1) {
-			currentUndoID = RecordCmd.getInstance().getUndoStack().size() + RecordCmd.getInstance().getRedoStack().size(); // l'id de la dernière commande annulée (undo)
+			currentUndoID = RecordCmd.getInstance().getUndoStack().size(); // l'id de la dernière commande annulée (undo)
 		}
+		
 		if (currentUndoID > id) {
 			while (currentUndoID != id) {
 				RecordCmd.getInstance().undo();
 				currentUndoID--;
 			}
-		} else if (currentUndoID < id) {
-			while (currentUndoID != id) {
+		} else if (currentUndoID <= id) {
+			while (currentUndoID <= id) {
 				RecordCmd.getInstance().redo();
 				currentUndoID++;
 			}
 			MainViewController.getInstance().getRightMenuController().setRedoWaiting(true);
 		}
+	}
+	
+	public void setNbCmd(int nbCmd){
+		currentUndoID = nbCmd;
 	}
 	
 	public void setLabel(String label) {
