@@ -33,7 +33,7 @@ public class TextTool extends Tool {
 	 */
 	private TextTool() {
 		toolType = ToolType.TEXT;
-		MainViewController.getInstance().getRightMenuController().getColorPicker().setOnHiding(event -> {
+		MainViewController.getInstance().getRightMenuController().getColorPicker().setOnHiding(event -> { // FIXME: ça fait quoi ça James??
 			changeTextOnLayer();
 		});
 	}

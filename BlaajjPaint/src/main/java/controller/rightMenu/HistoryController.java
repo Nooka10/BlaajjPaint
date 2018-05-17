@@ -1,6 +1,5 @@
 package controller.rightMenu;
 
-import controller.MainViewController;
 import controller.history.RecordCmd;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -26,38 +25,51 @@ public class HistoryController {
 	 */
 	@FXML
 	void handleOnMouseReleased() {
-		if (currentUndoID == -1) {
-			currentUndoID = RecordCmd.getInstance().getUndoStack().size(); // l'id de la dernière commande annulée (undo)
+		if (currentUndoID == -1) { // currentUndoId encore non initialisé
+			currentUndoID = RecordCmd.getInstance().getUndoStack().size(); // initialisé à la taille de la undoStack
 		}
 		
-		if (currentUndoID > id) {
+		if (currentUndoID > id) { // l'utilisateur souhaite effectuer des undos
 			while (currentUndoID != id) {
 				RecordCmd.getInstance().undo();
 				currentUndoID--;
 			}
-		} else if (currentUndoID <= id) {
+		} else if (currentUndoID <= id) { // l'utilisateur souhaite effectuer des redos
 			while (currentUndoID <= id) {
 				RecordCmd.getInstance().redo();
 				currentUndoID++;
 			}
-			MainViewController.getInstance().getRightMenuController().setRedoWaiting(true);
 		}
 	}
 	
-	public void setNbCmd(int nbCmd){
+	/**
+	 * Permet d'indiquer au contrôleur le nombre de commandes enregistrées dans la undoStack.
+	 * @param nbCmd, le nombre de commandes enregistrées dans la undoStack.
+	 */
+	void setCurrentUndoId(int nbCmd){
 		currentUndoID = nbCmd;
 	}
 	
+	/**
+	 * Permet de définir le texte du label.
+	 * @param label, le texte à afficher dans le label.
+	 */
 	public void setLabel(String label) {
 		this.label.setText(label);
 	}
 	
-	public void setID(int id) {
+	/**
+	 * Permet de définir l'id du label. L'id correspond à son index dans la undoStack.
+	 * @param id, l'index de l'élément dans la undoStack.
+	 */
+	void setID(int id) {
 		this.id = id;
 	}
 	
-	public void changeLabelOpacity(double opacity) {
-		opacity /= 100;
-		label.opacityProperty().setValue(opacity);
+	/**
+	 * Modifie l'opacité du label afin de différencier les label undo-able et les labels redo-able dans la liste de l'historique en haut à droite de la GUI.
+	 */
+	void setRedoOpacity() {
+		label.opacityProperty().setValue(0.6);
 	}
 }
