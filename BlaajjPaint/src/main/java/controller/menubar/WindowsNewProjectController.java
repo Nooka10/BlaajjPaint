@@ -61,7 +61,7 @@ public class WindowsNewProjectController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><créer</b>.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Créer</b>.
 	 * Crée un nouveau projet aux dimensions qui ont été indiquées par l'utilisateur puis ferme la fenêtre.
 	 */
 	@FXML
@@ -90,9 +90,10 @@ public class WindowsNewProjectController {
 		Stage stage = (Stage) cancel.getScene().getWindow();
 		stage.close(); // ferme la fenêtre
 	}
-
+	
 	/**
-	 * Classe interne implémentant une commande sauvegardant la création du nouveau projet
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>Créer</b> et définissant l'action à effectuer en cas d'appel à undo() ou redo()
+	 * sur cette commande.
 	 */
 	public class NewProjectSave implements ICmd {
 		@Override
@@ -102,7 +103,7 @@ public class WindowsNewProjectController {
 
 		@Override
 		public void undo() {
-			MainViewController.getInstance().closeProject();
+			// do nothing
 		}
 
 		@Override

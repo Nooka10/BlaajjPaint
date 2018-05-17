@@ -207,6 +207,11 @@ public class Project implements Serializable {
 		drawWorkspace();
 	}
 	
+	public void removeLayer(Layer layer){
+		layers.remove(layer);
+		drawWorkspace();
+	}
+	
 	/**
 	 * Retournes la linked list de layers
 	 */

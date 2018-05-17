@@ -58,9 +58,9 @@ public class RightMenuController {
 	@FXML
 	private AnchorPane rightMenu;
 	
-	private double oldOpacity;
+	private int oldOpacity = 100;
 	
-	private double newOpacity;
+	private int newOpacity;
 	
 	// définit la couleur du background d'un élément sélectionné dans la liste des calques en bas à droite de la GUI
 	private final static Background focusBackground = new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -80,16 +80,16 @@ public class RightMenuController {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
-						newOpacity = Integer.parseInt(newValue); // parse en int ou lance une NumberFormatException si le parsing n'est pas possible
-						if (newOpacity < 0) { // 0 est la valeur minimale de l'opacité
-							opacityTextField.setText("0");
-							newOpacity = 0;
-						} else if (newOpacity > 100) { // 100 est la valeur maximale de l'opacité
-							opacityTextField.setText("100");
-							newOpacity = 100;
-						}
-						opacitySlider.setValue(newOpacity);
-					} catch (NumberFormatException e) { // une erreur s'est produite pendant le parsing en int -> l'entrée est invalide
+					newOpacity = Integer.parseInt(newValue); // parse en int ou lance une NumberFormatException si le parsing n'est pas possible
+					if (newOpacity < 0) { // 0 est la valeur minimale de l'opacité
+						opacityTextField.setText("0");
+						newOpacity = 0;
+					} else if (newOpacity > 100) { // 100 est la valeur maximale de l'opacité
+						opacityTextField.setText("100");
+						newOpacity = 100;
+					}
+					opacitySlider.setValue(newOpacity);
+				} catch (NumberFormatException e) { // une erreur s'est produite pendant le parsing en int -> l'entrée est invalide
 					if (!oldValue.isEmpty()) {
 						opacityTextField.setText(oldValue); // on annule la dernière modification
 					}
@@ -109,41 +109,42 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique avec la souris sur le slider d'opacité du calque, au centre à droite de la GUI.
-	 * Modifie l'opacité du calque en fonction de la valeur du slider et met à jour le textField de l'opacité.
+	 * Méthode appelée lorsque l'utilisateur clique avec la souris sur le slider d'opacité du calque, au centre à droite de la GUI. Modifie l'opacité du calque en
+	 * fonction de la valeur du slider et met à jour le textField de l'opacité.
 	 */
 	@FXML
 	void handleOnMousePressed() {
-		oldOpacity = Math.round(opacitySlider.getValue());
-		opacityTextField.setText(String.valueOf(oldOpacity));
-		Project.getInstance().getCurrentLayer().updateLayerOpacity(oldOpacity);
-	}
-	
-	/**
-	 * Méthode appelée lorsque l'utilisateur clique, reste appuyé et glisse avec la souris sur le slider d'opacité du calque, au centre à droite de la GUI.
-	 * Modifie l'opacité du calque en fonction de la valeur du slider et met à jour le textField de l'opacité.
-	 */
-	@FXML
-	void handleOnMouseDragged() {
-		newOpacity = opacitySlider.getValue();
+		newOpacity = (int) Math.round(opacitySlider.getValue());
 		opacityTextField.setText(String.valueOf(newOpacity));
 		Project.getInstance().getCurrentLayer().updateLayerOpacity(newOpacity);
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur relâche le clic de la souris sur le slider d'opacité du calque, au centre à droite de la GUI.
-	 * Modifie l'opacité du calque en fonction de la valeur du slider et met à jour le textField de l'opacité.
+	 * Méthode appelée lorsque l'utilisateur clique, reste appuyé et glisse avec la souris sur le slider d'opacité du calque, au centre à droite de la GUI. Modifie
+	 * l'opacité du calque en fonction de la valeur du slider et met à jour le textField de l'opacité.
 	 */
 	@FXML
-	void handleOnMouseReleased() {
-		newOpacity = Math.round(opacitySlider.getValue());
+	void handleOnMouseDragged() {
+		newOpacity = (int) Math.round(opacitySlider.getValue());
 		opacityTextField.setText(String.valueOf(newOpacity));
-		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
+		Project.getInstance().getCurrentLayer().updateLayerOpacity(newOpacity);
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le sélecteur de couleur (ColorPicker), tout en haut à droite de la GUI.
-	 * Modifie la couleur actuellement sélectionnée.
+	 * Méthode appelée lorsque l'utilisateur relâche le clic de la souris sur le slider d'opacité du calque, au centre à droite de la GUI. Modifie l'opacité du calque en
+	 * fonction de la valeur du slider et met à jour le textField de l'opacité.
+	 */
+	@FXML
+	void handleOnMouseReleased() {
+		newOpacity = (int) Math.round(opacitySlider.getValue());
+		opacityTextField.setText(String.valueOf(newOpacity));
+		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
+		oldOpacity = newOpacity;
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur le sélecteur de couleur (ColorPicker), tout en haut à droite de la GUI. Modifie la couleur actuellement
+	 * sélectionnée.
 	 */
 	@FXML
 	void handleSelectColor() {
@@ -151,8 +152,9 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton '+', en bas à droite de la GUI.
-	 * Ajoute un nouveau calque vide au projet et le définit comme calque actif.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton '+', en bas à droite de la GUI. Ajoute un nouveau calque vide au projet et le définit comme calque
+	 * actif.
+	 *
 	 * @apiNote : ATTENTION, cette méthode est sauvegardée dans l'historique. Il ne faut pas l'appeler à l'intérieur d'une autre sauvegarde.
 	 */
 	@FXML
@@ -163,8 +165,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton '-', en bas à droite de la GUI.
-	 * Supprime le calque sélectionné.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton '-', en bas à droite de la GUI. Supprime le calque sélectionné.
+	 *
 	 * @apiNote : ATTENTION, cette méthode est sauvegardée dans l'historique. Il ne faut pas l'appeler à l'intérieur d'une autre sauvegarde.
 	 */
 	@FXML
@@ -177,8 +179,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton 'v', en bas à droite de la GUI.
-	 * Descend le calque sélectionné d'un cran dans la liste des calques.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton 'v', en bas à droite de la GUI. Descend le calque sélectionné d'un cran dans la liste des calques.
+	 *
 	 * @apiNote : ATTENTION, cette méthode est sauvegardée dans l'historique. Il ne faut pas l'appeler à l'intérieur d'une autre sauvegarde.
 	 */
 	@FXML
@@ -193,8 +195,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton '^', en bas à droite de la GUI.
-	 * Monte le calque sélectionné d'un cran dans la liste des calques.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton '^', en bas à droite de la GUI. Monte le calque sélectionné d'un cran dans la liste des calques.
+	 *
 	 * @apiNote : ATTENTION, cette méthode est sauvegardée dans l'historique. Il ne faut pas l'appeler à l'intérieur d'une autre sauvegarde.
 	 */
 	@FXML
@@ -209,8 +211,9 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton 'fusion', en bas à droite de la GUI.
-	 * Fusionne le calque sélectionné avec le calque situé juste au dessous dans la liste des calques. Ne fait rien si le calque sélectionné est le dernier de la liste.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton 'fusion', en bas à droite de la GUI. Fusionne le calque sélectionné avec le calque situé juste au
+	 * dessous dans la liste des calques. Ne fait rien si le calque sélectionné est le dernier de la liste.
+	 *
 	 * @apiNote : ATTENTION, cette méthode est sauvegardée dans l'historique. Il ne faut pas l'appeler à l'intérieur d'une autre sauvegarde.
 	 */
 	@FXML
@@ -244,7 +247,9 @@ public class RightMenuController {
 	
 	/**
 	 * Définit la valeur du slider d'opacité.
-	 * @param opacitySlider, la valeur à attribuer au slider.
+	 *
+	 * @param opacitySlider,
+	 * 		la valeur à attribuer au slider.
 	 */
 	public void setOpacitySlider(double opacitySlider) {
 		this.opacitySlider.setValue(opacitySlider);
@@ -252,7 +257,9 @@ public class RightMenuController {
 	
 	/**
 	 * Définit la valeur du textField d'opacité.
-	 * @param opacityTextField, la valeur à attribuer au textField.
+	 *
+	 * @param opacityTextField,
+	 * 		la valeur à attribuer au textField.
 	 */
 	public void setOpacityTextField(String opacityTextField) {
 		this.opacityTextField.setText(opacityTextField);
@@ -261,7 +268,9 @@ public class RightMenuController {
 	
 	/**
 	 * Définit la couleur actuellement sélectionnée dans le sélecteur de couleur (ColorPicker).
-	 * @param color, la couleur à attribuer au sélecteur de couleur.
+	 *
+	 * @param color,
+	 * 		la couleur à attribuer au sélecteur de couleur.
 	 */
 	public void setColorPickerColor(Color color) {
 		colorPicker.setValue(color);
@@ -269,6 +278,7 @@ public class RightMenuController {
 	
 	/**
 	 * Retourne le sélecteur de couleur (ColorPicker).
+	 *
 	 * @return ColorPicker, le sélecteur de couleur.
 	 */
 	public ColorPicker getColorPicker() {
@@ -291,7 +301,9 @@ public class RightMenuController {
 	
 	/**
 	 * Ajoute un nouveau calque à la liste des calques située en bas à droite de la GUI.
-	 * @param layer, le nouveau calque à ajouter.
+	 *
+	 * @param layer,
+	 * 		le nouveau calque à ajouter.
 	 */
 	private void handleAddNewLayer(Layer layer) {
 		try {
@@ -325,7 +337,7 @@ public class RightMenuController {
 		historyList.getChildren().clear();
 		
 		Iterator<ICmd> undoIter = RecordCmd.getInstance().getUndoStack().descendingIterator();
-		int id = 0;
+		int id = 1;
 		int nbUndo = RecordCmd.getInstance().getUndoStack().size();
 		while (undoIter.hasNext()) {
 			ICmd cmd = undoIter.next();
@@ -338,10 +350,15 @@ public class RightMenuController {
 	
 	/**
 	 * Ajoute une nouvelle commande à la liste de l'historique située en haut à droite de la GUI.
-	 * @param iCmd, la commande à ajouter à la liste de l'historique.
-	 * @param isRedo, un booléen valant vrai si la commande à ajouter est une commande redo, false si c'est une commande undo.
-	 * @param id, l'id de la commande (sa position dans la liste de l'historique).
-	 * @param nbCmd, le nombre total de commande undo-able (le nombre d'éléments dans la undoStack).
+	 *
+	 * @param iCmd,
+	 * 		la commande à ajouter à la liste de l'historique.
+	 * @param isRedo,
+	 * 		un booléen valant vrai si la commande à ajouter est une commande redo, false si c'est une commande undo.
+	 * @param id,
+	 * 		l'id de la commande (sa position dans la liste de l'historique).
+	 * @param nbCmd,
+	 * 		le nombre total de commande undo-able (le nombre d'éléments dans la undoStack).
 	 */
 	private void addHistory(ICmd iCmd, boolean isRedo, int id, int nbCmd) {
 		try {
@@ -394,8 +411,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du bouton <b>+</b> en bas à droite de la GUI.
-	 * Enregistre la création du nouveau calque et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>+</b> en bas à droite de la GUI. Enregistre la création du nouveau calque et
+	 * définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class NewLayerSave implements ICmd {
 		private Layer oldCurrentLayer;
@@ -433,8 +450,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du bouton <b>-</b> en bas à droite de la GUI.
-	 * Enregistre la suppression du calque sélectionné et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>-</b> en bas à droite de la GUI. Enregistre la suppression du calque sélectionné
+	 * et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class DeleteLayerSave implements ICmd {
 		private Layer oldCurrentLayer;
@@ -474,8 +491,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action des boutons <b>v</b> et <b></b> en bas à droite de la GUI.
-	 * Enregistre le déplacement du calque sélectionné et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action des boutons <b>v</b> et <b></b> en bas à droite de la GUI. Enregistre le déplacement du calque
+	 * sélectionné et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class LayerPosSave implements ICmd {
 		private int index;
@@ -511,9 +528,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du bouton <b>fusion</b> en bas à droite de la GUI.
-	 * Enregistre la fusion du calque sélectionné avec le calque situé juste en dessous, et définit l'action à effectuer en cas
-	 * d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>fusion</b> en bas à droite de la GUI. Enregistre la fusion du calque sélectionné
+	 * avec le calque situé juste en dessous, et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class MergeSave implements ICmd {
 		

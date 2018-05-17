@@ -145,7 +145,8 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement.
+	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement et définissant l'action à effectuer en cas d'appel à undo() ou redo()
+	 * sur cette commande.
 	 */
 	private class ResizeSave implements ICmd{
 		private Layer currentLayer;

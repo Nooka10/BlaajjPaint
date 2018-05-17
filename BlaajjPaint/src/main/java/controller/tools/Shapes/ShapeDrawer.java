@@ -13,10 +13,9 @@ import utils.UndoException;
 import utils.Utils;
 
 /**
- * Classe abstraite destinée au dessin de formes prédéfinies
+ * Classe abstraite implémentant les propriétés partagées entre toutes les formes.
  */
 public abstract class ShapeDrawer extends Tool {
-	
 	protected Layer shapeLayer; //  calque temporaire utilisé pour le dessin des formes durant leur création
 	protected ShapeSave currentShapeSave; // La forme actuellement dessinée, à sauver
 	
@@ -36,182 +35,84 @@ public abstract class ShapeDrawer extends Tool {
 	protected String tooltipHistory = "Dessin de forme";
 	protected String nomForme;
 
-	private boolean hasDragged;
+	private boolean wasDragged;
 	
 	/**
-	 * Classe interne destine à la sauvegarde des formes dans l'historique des actions
-	 */
-	class ShapeSave implements ICmd {
-		//image à récupérer en cas de redo
-		private Image undosave;
-		//image à récupérer en cas de undo
-		private Image redosave = null;
-		
-		/**
-		 * Constructeur de ShapeSave
-		 */
-		public ShapeSave() {
-			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
-		}
-		
-		/**
-		 * Affichage de ShapeSave
-		 *
-		 * @return la chaîne de caractère associée à la forme
-		 */
-		@Override
-		public String toString() {
-			return tooltipHistory;
-		}
-		
-		/**
-		 * Sauvegarde une instance de ShapeSave dans le RecordCmd
-		 */
-		@Override
-		public void execute() {
-			RecordCmd.getInstance().saveCmd(this);
-		}
-		
-		/**
-		 * Lors de l'appel à undo, le calque contenant la forme dessinée est supprimé de la liste des calques du projets.
-		 *
-		 * @throws UndoException, si il n'y a aucune instance sur laquelle on peut faire un undo
-		 */
-		@Override
-		public void undo() throws UndoException {
-			if (undosave == null) {
-				throw new UndoException();
-			}
-			if (Project.getInstance().getCurrentLayer() != Project.getInstance().getLayers().getFirst()) {
-				Project.getInstance().getLayers().removeFirst();
-			}
-			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
-			Project.getInstance().getLayers().removeFirst();
-			//MainViewController.getInstance().getRightMenuController().deleteLayer(0);
-			Project.getInstance().setCurrentLayer(Project.getInstance().getLayers().getFirst());
-			Project.getInstance().drawWorkspace();
-			undosave = null;
-		}
-		
-		/**
-		 * Lors de l'appel à redo, le calque contenant la forme dessinée est recréé et replacé dans la liste des calques
-		 *
-		 * @throws UndoException, si il n'y a aucune instance sur laquelle on peut faire un redo
-		 */
-		@Override
-		public void redo() throws UndoException {
-			if (redosave == null) {
-				throw new UndoException();
-			}
-			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
-			Layer redoLayer = new Layer((int) redosave.getWidth(), (int) redosave.getHeight(), "Forme", false);
-			redoLayer.getGraphicsContext2D().drawImage(redosave, 0, 0);
-			Project.getInstance().addLayer(redoLayer);
-			redosave = null;
-		}
-	}
-	
-	
-	/**
-	 * Crée le calque temporaire sur lequel la forme est dessinée, et y ajoute l'écoute des événements liés à la souris
+	 * Crée le calque temporaire sur lequel la forme est dessinée, et y ajoute l'écoute des événements liés à la souris.
 	 */
 	@Override
 	public void CallbackNewToolChanged() {
-		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, true);
-		Project.getInstance().removeEventHandler(Tool.getCurrentTool());
+		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, true); // crée un calque temporaire
+		// ajoute les eventHandler sur ce nouveau calque
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, currentOnMouseRelesedEventHandler);
-		
-		Project.getInstance().getLayers().addFirst(shapeLayer);
-		Project.getInstance().drawWorkspace();
+		Project.getInstance().addLayer(shapeLayer); // on ajoute le calque au projet
 	}
 	
 	/**
-	 * Supprime le calque temporaire, ainsi que le lien entre celui-ci est les événements de la souris
+	 * Supprime le calque temporaire, ainsi que le lien entre celui-ci est les événements de la souris.
 	 */
 	@Override
 	public void CallbackOldToolChanged() {
-		Project.getInstance().getLayers().remove(shapeLayer);
+		// supprime les eventHandler du calque shapeLayer
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, currentOnMouseRelesedEventHandler);
-		//Project.getInstance().drawWorkspace();
+		Project.getInstance().removeLayer(shapeLayer); // supprime le calque du projet
 	}
 	
-	
-	/**
-	 * Lors d'un clic de la souris, une instance de la forme à sauver est créée. Le point de départ de la forme à dessiner est fixé.
-	 *
-	 * @return l'événement à réaliser lorsque le clique de la souris est pressé
-	 */
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				currentShapeSave = new ShapeSave();
-				beginPointX = event.getX();
-				beginPointY = event.getY();
-				hasDragged = false;
+				currentShapeSave = new ShapeSave(); // crée une sauvegarde de la création de la forme
+				beginPointX = event.getX(); // enregistre la position x de départ
+				beginPointY = event.getY(); // enregistre la position y de départ
+				wasDragged = false;
 			}
 		};
 	}
 	
-	/**
-	 * Les paramètres de dessin (point de départ, hauteur et largeur) de la forme sont mis à jour en fonction de la position de la souris. Le calque temporaire est mis à
-	 * jour
-	 *
-	 * @return l'événement à réaliser lorsque le clic de la souris est maintenue enfoncée
-	 */
 	@Override
 	protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				shapeLayer.getGraphicsContext2D().clearRect(0, 0, shapeLayer.getWidth(), shapeLayer.getHeight());
-				updateShape(event.getX(), event.getY());
-				
-				drawShape();
-				hasDragged = true;
-				
+				shapeLayer.getGraphicsContext2D().clearRect(0, 0, shapeLayer.getWidth(), shapeLayer.getHeight()); // Efface le calque temporaire
+				updateShape(event.getX(), event.getY()); // met à jour les paramètres de dessin de la forme
+				drawShape(); // dessine la forme sur le calque temporaire
+				wasDragged = true;
 			}
 		};
 	}
 	
-	/**
-	 * Transforme le calque temporaire en un vrai calque ajouté à l'historique et recrée un nouveau calque temporaire pour le dessin de la prochaine forme
-	 *
-	 * @return l'événement à réaliser lorsque le clic de la souris est relâché
-	 */
 	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
-				Project.getInstance().getLayers().remove(shapeLayer);
-				if(hasDragged) {
-					shapeLayer = new Layer(shapeLayer, false);
-					Project.getInstance().addLayer(shapeLayer);
-					CallbackNewToolChanged(); // A verifier avec Loyse
+				Project.getInstance().getLayers().remove(shapeLayer); // supprime le calque temporaire du projet
+				if(wasDragged) { // vrai si l'évènement drag s'est produit -> la forme possède une hauter/largeur.
+					shapeLayer = new Layer(shapeLayer, false); // crée un claque (celui-ci n'est pas temporaire)
+					Project.getInstance().addLayer(shapeLayer); // ajoute ce calque au projet
 					currentShapeSave.execute();
-
+					CallbackNewToolChanged(); // TODO: À vérifier avec Loyse
 				}
 			}
 		};
 	}
 	
 	/**
-	 * Fonction abstraite de dessin de la forme sur le calque
+	 * Méthode abstraite dessinant la forme sur le calque temporaire.
 	 */
 	abstract protected void drawShape();
 	
 	/**
-	 * Met à jour les paramètres de dessinb de la forme abstraite (position de départ, hauteur et largeur, en fonction de la position de la souris)
-	 *
-	 * @param endPosX, position courante de la souris
-	 * @param endPosY, position courrant de la souris
+	 * Met à jour les paramètres de dessin de la forme (position X et Y de départ, hauteur et largeur) en fonction de la position de la souris.
+	 * @param endPosX, position courante de la souris sur l'axe des X.
+	 * @param endPosY, position courrant de la souris sur l'axe des Y.
 	 */
 	private void updateShape(double endPosX, double endPosY) {
 		if (endPosX < beginPointX) {
@@ -230,5 +131,59 @@ public abstract class ShapeDrawer extends Tool {
 			height = endPosY - beginPointY;
 		}
 		
+	}
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant la création d'une forme et définissant l'action à effectuer en cas d'appel à undo() ou redo()
+	 * sur cette commande.
+	 */
+	class ShapeSave implements ICmd {
+		//image à récupérer en cas de redo
+		private Image undosave;
+		//image à récupérer en cas de undo
+		private Image redosave = null;
+		
+		/**
+		 * Construit une commande sauvegardant la création d'une forme.
+		 */
+		private ShapeSave() {
+			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
+		}
+		
+		@Override
+		public String toString() {
+			return tooltipHistory;
+		}
+		
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() throws UndoException {
+			if (undosave == null) {
+				throw new UndoException();
+			}
+			if (Project.getInstance().getCurrentLayer() != Project.getInstance().getLayers().getFirst()) {
+				Project.getInstance().getLayers().removeFirst();
+			}
+			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT); // snapshot le calque actuellement sélectionné
+			Project.getInstance().getLayers().removeFirst();
+			Project.getInstance().setCurrentLayer(Project.getInstance().getLayers().getFirst());
+			undosave = null;
+		}
+		
+		@Override
+		public void redo() throws UndoException {
+			if (redosave == null) {
+				throw new UndoException();
+			}
+			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT); // snapshot le calque actuellement sélectionné
+			Layer redoLayer = new Layer((int) redosave.getWidth(), (int) redosave.getHeight(), "Forme", false); // crée un nouveau calque
+			redoLayer.getGraphicsContext2D().drawImage(redosave, 0, 0); // redessine la forme sur le calque
+			Project.getInstance().addLayer(redoLayer); // ajoute le calque au projet
+			redosave = null;
+		}
 	}
 }

@@ -359,7 +359,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b>.
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b> et définissant l'action à effectuer en cas d'appel
+	 * à undo() ou redo() sur cette commande.
 	 */
 	public class MergeAllSave implements ICmd {
 		private LinkedList<Layer> allMergedLayers; // liste de tous les layers qui ont été aplatis
@@ -404,7 +405,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b>.
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b> et définissant l'action à effectuer en cas d'appel
+	 * à undo() ou redo() sur cette commande.
 	 */
 	public class ImportImageSave implements ICmd {
 		private Layer oldCurrentLayer;
@@ -438,7 +440,11 @@ public class MenuBarController {
 		    return "Import d'image";
         }
 	}
-
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Ouvrir</b> et définissant l'action à effectuer en cas d'appel à undo()
+	 * ou redo() sur cette commande.
+	 */
 	public class OpenSave implements  ICmd {
 
         @Override

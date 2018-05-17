@@ -198,8 +198,8 @@ public class Layer extends Canvas implements Serializable {
 		Project.getInstance().getCurrentLayer().setOpacity(opacity / 100);
 	}
 	
-	public double getLayerOpacity() {
-		return Project.getInstance().getCurrentLayer().getOpacity() * 100;
+	public int getLayerOpacity() {
+		return (int) Math.round(Project.getInstance().getCurrentLayer().getOpacity() * 100);
 	}
 	
 	@Override

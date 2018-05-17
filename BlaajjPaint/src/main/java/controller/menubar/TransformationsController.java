@@ -89,7 +89,8 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe abstraite implémentant une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b>.
+	 * Classe abstraite implémentant une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b> et définissant l'action à
+	 * effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 * Classe mère des sous-classes RotateSave, VerticalSymmetrySave et HorizontalSymmetrySave.
 	 */
 	private abstract class TransformationSave implements ICmd{
@@ -138,8 +139,8 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b>.
-	 * Effectue la rotation du calque actuellement sélectionné selon l'angle et l'axe fournis.
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b> et définissant l'action à effectuer
+	 * en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	private class RotateSave extends TransformationSave {
 		/**
@@ -158,8 +159,8 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie verticale</b>.
-	 * Effectue la symétrie du calque actuellement sélectionné selon l'axe horizontal (axe des X).
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie verticale</b> et définissant l'action à effectuer en
+	 * cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	private class VerticalSymmetrySave extends TransformationSave {
 		/**
@@ -178,8 +179,8 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b>.
-	 * Effectue la symétrie du calque actuellement sélectionné selon l'axe horizontal (axe des X).
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b> et définissant l'action à effectuer
+	 * en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	private class HorizontalSymmetrySave extends TransformationSave {
 		/**

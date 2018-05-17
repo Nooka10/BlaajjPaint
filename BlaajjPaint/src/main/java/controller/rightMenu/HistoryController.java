@@ -25,17 +25,12 @@ public class HistoryController {
 	 */
 	@FXML
 	void handleOnMouseReleased() {
-		if (currentUndoID == -1) { // currentUndoId encore non initialisé
-			currentUndoID = RecordCmd.getInstance().getUndoStack().size(); // initialisé à la taille de la undoStack
-		}
-		
 		if (currentUndoID > id) { // l'utilisateur souhaite effectuer des undos
 			while (currentUndoID > id) {
 				RecordCmd.getInstance().undo();
-				currentUndoID--;
 			}
-		} else if (currentUndoID <= id) { // l'utilisateur souhaite effectuer des redos
-			while (currentUndoID <= id) {
+		} else if (currentUndoID < id) { // l'utilisateur souhaite effectuer des redos
+			while (currentUndoID < id) {
 				RecordCmd.getInstance().redo();
 				currentUndoID++;
 			}
