@@ -69,7 +69,6 @@ public class WindowsNewProjectController {
 		//FIXME: vérifier qu'un projet est déjà ouvert! Sinon on ferme pour rien!
 		MainViewController.getInstance().closeProject(); // ferme le projet actuellement ouvert s'il y en a un.
 		
-		
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
 		
@@ -93,25 +92,24 @@ public class WindowsNewProjectController {
 	}
 
 	public class NewProjectSave implements ICmd {
-
 		@Override
 		public void execute() {
 			RecordCmd.getInstance().saveCmd(this);
 		}
 
 		@Override
-		public void undo() throws UndoException {
-			// Do nothing
+		public void undo() {
+			MainViewController.getInstance().closeProject();
 		}
 
 		@Override
-		public void redo() throws UndoException {
-			// Do nothing
+		public void redo() {
+			// do nothing
 		}
 
 		@Override
 		public String toString(){
-			return "Nouveau projet";
+			return "Création d'un nouveau projet";
 		}
 	}
 }

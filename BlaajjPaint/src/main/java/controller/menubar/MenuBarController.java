@@ -402,29 +402,35 @@ public class MenuBarController {
 			return "Aplatissement de tous les calques";
 		}
 	}
-
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b>.
+	 */
 	public class ImportImageSave implements ICmd {
 		private Layer oldCurrentLayer;
 		private Layer importImageLayer;
-
-		public ImportImageSave(){
-			oldCurrentLayer = Project.getInstance().getCurrentLayer(); // calque avant import
+		
+		/**
+		 * Construit une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b>.
+		 */
+		private ImportImageSave(){
+			oldCurrentLayer = Project.getInstance().getCurrentLayer(); // calque sélectionné avant l'importation de l'image
 		}
 
 		@Override
 		public void execute() {
-			importImageLayer = Project.getInstance().getCurrentLayer(); // calque après import
+			importImageLayer = Project.getInstance().getCurrentLayer(); // calque sélectionné après importation de l'image
 			RecordCmd.getInstance().saveCmd(this);
 		}
 
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Project.getInstance().getLayers().remove(importImageLayer);
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 		}
 
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Project.getInstance().addLayer(importImageLayer);
 		}
 
@@ -432,7 +438,10 @@ public class MenuBarController {
 		    return "Import d'image";
         }
 	}
-
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Ouvrir</b>.
+	 */
 	public class OpenSave implements  ICmd {
 
         @Override
@@ -441,12 +450,12 @@ public class MenuBarController {
         }
 
         @Override
-        public void undo() throws UndoException {
+        public void undo() {
             // Do nothing
         }
 
         @Override
-        public void redo() throws UndoException {
+        public void redo() {
             // Do nothing
         }
 

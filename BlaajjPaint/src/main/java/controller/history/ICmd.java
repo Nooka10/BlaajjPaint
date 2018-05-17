@@ -22,7 +22,11 @@ public interface ICmd {
 	 * Fait revenir l'objet à l'état dans lequel il était après l'exécution de la commande.
 	 */
 	void redo() throws UndoException;
-
+	
+	/**
+	 * Retourne le nom de la commande sous forme de String.
+	 * @return le nom de la commande sous forme de String.
+	 */
 	String toString();
 }
 

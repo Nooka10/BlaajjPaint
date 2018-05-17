@@ -15,7 +15,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 public class Pencil extends ToolDrawer {
 	
-	private static Pencil toolInstance = null; // l'instance unique du pinceau
+	private static Pencil toolInstance = null; // l'instance unique du singleton Pencil
 	
 	/**
 	 * Retourne l'instance unique du pinceau
@@ -36,7 +36,7 @@ public class Pencil extends ToolDrawer {
 	}
 	
 	/**
-	 * Constructeur privé (modèle singleton)
+	 * Constructeur privé (modèle singleton).
 	 */
 	private Pencil() {
 		toolType = Tool.ToolType.PENCIL;

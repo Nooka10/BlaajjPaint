@@ -1,7 +1,6 @@
 package controller.tools.Shapes;
 
 import controller.Layer;
-import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -10,8 +9,8 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import utils.Utils;
 import utils.UndoException;
+import utils.Utils;
 
 /**
  * Classe abstraite destinée au dessin de formes prédéfinies
@@ -38,7 +37,6 @@ public abstract class ShapeDrawer extends Tool {
 	protected String nomForme;
 
 	private boolean hasDragged;
-
 	
 	/**
 	 * Classe interne destine à la sauvegarde des formes dans l'historique des actions
@@ -138,7 +136,7 @@ public abstract class ShapeDrawer extends Tool {
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, currentOnMouseRelesedEventHandler);
-		Project.getInstance().drawWorkspace();
+		//Project.getInstance().drawWorkspace();
 	}
 	
 	
