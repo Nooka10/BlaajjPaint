@@ -60,7 +60,9 @@ public class WindowsNewProjectController {
 	 */
 	@FXML
 	private void handleCreateNewProject() {
+		//FIXME: vérifier qu'un projet est déjà ouvert! Sinon on ferme pour rien!
 		MainViewController.getInstance().closeProject(); // ferme le projet actuellement ouvert s'il y en a un.
+		
 		
 		int width = Integer.parseInt(this.width.getText());
 		int height = Integer.parseInt(this.height.getText());
