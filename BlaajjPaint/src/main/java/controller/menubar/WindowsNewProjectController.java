@@ -92,6 +92,9 @@ public class WindowsNewProjectController {
 		stage.close(); // ferme la fenêtre
 	}
 
+	/**
+	 * Classe interne implémentant une commande sauvegardant la création du nouveau projet
+	 */
 	public class NewProjectSave implements ICmd {
 
 		@Override

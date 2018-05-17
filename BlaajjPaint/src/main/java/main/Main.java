@@ -11,10 +11,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Classe principale du programme.
+ */
 public class Main extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	
+
+	/**
+	 * Lancement de l'interface graphique
+	 * @param primaryStage - Stage principale
+	 * @throws Exception
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
@@ -49,11 +57,19 @@ public class Main extends Application {
 		
 		primaryStage.show();
 	}
-	
+
+	/**
+	 * Permet de récupéré la Stage principale
+	 * @return
+	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
-	
+
+	/**
+	 * Fonction principale
+	 * @param args - Arguments passés au programme
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

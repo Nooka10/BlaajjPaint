@@ -403,6 +403,9 @@ public class MenuBarController {
 		}
 	}
 
+    /**
+     * Classe interne implémentant une commande sauvegardant l'action d'imporatation de l'image.
+     */
 	public class ImportImageSave implements ICmd {
 		private Layer oldCurrentLayer;
 		private Layer importImageLayer;
@@ -433,6 +436,9 @@ public class MenuBarController {
         }
 	}
 
+    /**
+     * Classe interne implémentant une commande sauvegardant l'ouverture d'un projet
+     */
 	public class OpenSave implements  ICmd {
 
         @Override

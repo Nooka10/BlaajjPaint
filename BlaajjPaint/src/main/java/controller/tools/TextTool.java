@@ -208,7 +208,10 @@ public class TextTool extends Tool {
 			}
 		};
 	}
-	
+
+	/**
+	 * Classe interne implémentant une commande sauvegardant l'ajout d'un texte
+	 */
 	class AddText implements ICmd {
 		private SnapshotParameters params;
 		private Layer oldLayerSaved;
@@ -241,6 +244,10 @@ public class TextTool extends Tool {
 			return "Ajout de texte";
 		}
 
+		/**
+		 * Après la création du layer non temporaire, utiliser ce setter pour que la sauvegarde fonctionne
+		 * @param layer - layer à sauvegarder
+		 */
 		public void setLayerToSaved(Layer layer){
 			textLayerSaved = layer;
 		}

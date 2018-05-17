@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+/**
+ * Classe réunissant des outils pour les snapshot et des validations etc.
+ */
 public class Utils {
 	private static SnapshotParameters params;
 	

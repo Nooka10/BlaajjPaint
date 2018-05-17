@@ -2,6 +2,9 @@ package utils;
 
 import java.lang.Exception;
 
+/**
+ * Classe représentant les exceptions levé par les  undos et redos
+ */
 public class UndoException extends Exception {
     public UndoException() { super(); }
     public UndoException(String message) { super(message); }
