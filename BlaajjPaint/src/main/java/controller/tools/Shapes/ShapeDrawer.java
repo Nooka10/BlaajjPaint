@@ -35,6 +35,9 @@ public abstract class ShapeDrawer extends Tool {
 	//nom de la forme destiné à l'affichage de l'historique
 	protected String tooltipHistory = "Dessin de forme";
 	protected String nomForme;
+
+	private boolean hasDragged;
+
 	
 	/**
 	 * Classe interne destine à la sauvegarde des formes dans l'historique des actions
@@ -151,6 +154,7 @@ public abstract class ShapeDrawer extends Tool {
 				currentShapeSave = new ShapeSave();
 				beginPointX = event.getX();
 				beginPointY = event.getY();
+				hasDragged = false;
 			}
 		};
 	}
@@ -170,6 +174,7 @@ public abstract class ShapeDrawer extends Tool {
 				updateShape(event.getX(), event.getY());
 				
 				drawShape();
+				hasDragged = true;
 				
 			}
 		};
@@ -185,11 +190,15 @@ public abstract class ShapeDrawer extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+
 				Project.getInstance().getLayers().remove(shapeLayer);
-                shapeLayer = new Layer(shapeLayer, false);
-				Project.getInstance().addLayer(shapeLayer);
-				CallbackNewToolChanged();
-				currentShapeSave.execute();
+				if(hasDragged) {
+					shapeLayer = new Layer(shapeLayer, false);
+					Project.getInstance().addLayer(shapeLayer);
+					CallbackNewToolChanged(); // A verifier avec Loyse
+					currentShapeSave.execute();
+
+				}
 			}
 		};
 	}
