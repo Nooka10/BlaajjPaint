@@ -19,6 +19,9 @@ public class Pipette extends Tool {
 	
 	private static Pipette toolInstance = null;
 	
+	private static Layer tmpLayer;
+	private Layer oldCurrentLayer;
+	
 	public static Pipette getInstance() {
 		if (toolInstance == null) {
 			toolInstance = new Pipette();
@@ -28,6 +31,7 @@ public class Pipette extends Tool {
 	
 	private Pipette() {
 		toolType = ToolType.PIPETTE;
+		tmpLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), true);
 	}
 	
 	// si le calque actif est masqué, l'outil pipette ne prend pas la couleur cliquée
@@ -38,18 +42,21 @@ public class Pipette extends Tool {
 			public void handle(MouseEvent event) {
 				
 				for (Layer item : Project.getInstance().getLayers()) {
+					
 					if (item.isVisible()) {
-						WritableImage srcMask = new WritableImage(Project.getInstance().getWidth(), Project.getInstance().getHeight());
+						WritableImage srcMask = new WritableImage((int)item.getWidth(), (int)item.getHeight());
 						final SnapshotParameters spa = new SnapshotParameters();
 						spa.setFill(Color.TRANSPARENT);
-						srcMask = item.snapshot(spa, srcMask); // FIXME: changer le snapshot pour utiliser Utils!!
+						srcMask = item.snapshot(spa, srcMask);
 						
 						PixelReader maskReader = srcMask.getPixelReader();
 						
-						int x = (int)(event.getX() + Project.getInstance().getCurrentLayer().getLayoutX());
-						int y = (int) (event.getY() - Project.getInstance().getCurrentLayer().getLayoutY());
-						if(x >= 0 && x < item.getWidth() && y >= 0 && y < item.getHeight()) {
-							Color color = maskReader.getColor(x,y);
+						int x = (int) (event.getX() - item.getTranslateX());
+						int y = (int) (event.getY() - item.getTranslateY());
+						
+						if (x >= 0 && x < item.getWidth() && y  >= 0 && y < item.getHeight()) {
+							Color color = maskReader.getColor(x, y);
+							System.out.println(color);
 							if (!color.equals(Color.TRANSPARENT)) {
 								Project.getInstance().setCurrentColor(color);
 								break;
@@ -79,5 +86,19 @@ public class Pipette extends Tool {
 				// Ne fait rien
 			}
 		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		Project.getInstance().getLayers().remove(tmpLayer);
+		if(Project.getInstance().getCurrentLayer() == tmpLayer) {
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		Project.getInstance().addLayer(tmpLayer);
 	}
 }

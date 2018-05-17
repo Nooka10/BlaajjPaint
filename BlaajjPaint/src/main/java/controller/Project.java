@@ -349,7 +349,7 @@ public class Project implements Serializable {
 		}
 		
 		if (chosenExtension.equals("png") || chosenExtension.equals("jpg")) {
-			javafx.scene.image.Image image;
+			Image image;
 			image = new Image(file.toURI().toString());
 			
 			Layer newLayer = new Layer((int) image.getWidth(), (int) image.getHeight(), false);
