@@ -20,7 +20,7 @@ import javafx.scene.shape.StrokeLineCap;
  */
 public class Eraser extends ToolDrawer {
 	
-	private static Eraser toolInstance = null; // l'instance unique de la gomme
+	private static Eraser toolInstance = null; // l'instance unique du singleton Eraser
 	
 	private Canvas eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	
@@ -39,7 +39,7 @@ public class Eraser extends ToolDrawer {
 	}
 	
 	/**
-	 * Constructeur privé (modèle singleton)
+	 * Constructeur privé (modèle singleton).
 	 */
 	private Eraser() {
 		toolType = Tool.ToolType.ERASER;

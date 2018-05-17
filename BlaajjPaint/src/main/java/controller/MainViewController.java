@@ -37,7 +37,7 @@ public class MainViewController {
 	private AnchorPane workspace;
 	
 	/**
-	 * Constructeur privé (modèle Singleton)
+	 * Constructeur privé (modèle Singleton).
 	 */
 	private MainViewController() {
 	}
@@ -170,6 +170,7 @@ public class MainViewController {
 		SaveProject.getInstance().clear(); // réinitialise la sauvegarde
 		scrollPane.setContent(null);
 		rightMenuController.clearLayerList(); // vide l'historique sans le redessiner
+		rightMenuController.clearHistoryList();
 		
 		disableButtons(); // désactive les boutons de la GUI qui ne peuvent pas être utilisés sans avoir un projet ouvert
 	}
@@ -186,8 +187,6 @@ public class MainViewController {
 
 		if (file != null) {
 			closeProject();
-
-
 			try{
 				SaveProject.getInstance().openFile(file);
 				enableButtons();
@@ -196,7 +195,6 @@ public class MainViewController {
 				closeProject();
 				System.err.println("File is corrupted");
 			}
-
 	}
 
 		// réactive les boutons

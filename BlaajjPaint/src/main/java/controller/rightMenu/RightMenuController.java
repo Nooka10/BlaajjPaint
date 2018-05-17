@@ -75,15 +75,16 @@ public class RightMenuController {
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
 		
+		// Ajoute un changeListener à opacityTextField -> la méthode changed() est appelée à chaque fois que le texte de opacityTextField est modifié
 		opacityTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
 						newOpacity = Integer.parseInt(newValue); // parse en int ou lance une NumberFormatException si le parsing n'est pas possible
-						if (newOpacity < 0) {
+						if (newOpacity < 0) { // 0 est la valeur minimale de l'opacité
 							opacityTextField.setText("0");
 							newOpacity = 0;
-						} else if (newOpacity > 100) {
+						} else if (newOpacity > 100) { // 100 est la valeur maximale de l'opacité
 							opacityTextField.setText("100");
 							newOpacity = 100;
 						}
@@ -96,11 +97,12 @@ public class RightMenuController {
 			}
 		});
 		
+		// Ajoute un changeListener à opacityTextField -> la méthode changed() est appelée à chaque fois que le texte est désélectionné
 		opacityTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (oldPropertyValue) {
-					Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
+					Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity); // enregistre la modification de l'opacité dans l'historique
 				}
 			}
 		});
@@ -346,8 +348,8 @@ public class RightMenuController {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/rightMenu/History.fxml"));
 			Parent newHistory = fxmlLoader.load();
 			HistoryController h = fxmlLoader.getController();
-			h.setLabel(iCmd.toString());
 			h.setID(id);
+			h.setLabel(iCmd.toString());
 			h.setCurrentUndoId(nbCmd);
 			if (isRedo) {
 				h.setRedoOpacity();
