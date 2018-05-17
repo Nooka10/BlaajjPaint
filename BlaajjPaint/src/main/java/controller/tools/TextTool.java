@@ -67,7 +67,9 @@ public class TextTool extends Tool {
 	public void validate() {
 		// Test si l'outil est en cours d'édition
 		if (addText != null) {
+			addText.execute();
 			Layer newLayer = new Layer(textLayer, false); // Devient un calque non-temporaire
+			addText.setLayerToSaved(newLayer); // définit le calque sur le lequel revenir en cas de undo
 			reset();
 			Project.getInstance().addLayer(newLayer);
 			Project.getInstance().setCurrentLayer(newLayer);
@@ -209,15 +211,14 @@ public class TextTool extends Tool {
 	}
 	
 	class AddText implements ICmd {
-		private Image undosave;
-		private Image redosave = null;
 		private SnapshotParameters params;
+		private Layer oldLayerSaved;
+		private Layer textLayerSaved;
 		
 		public AddText() {
 			params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
-			
-			this.undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
+			oldLayerSaved = oldCurrentLayer;
 		}
 		
 		@Override
@@ -227,27 +228,25 @@ public class TextTool extends Tool {
 		
 		@Override
 		public void undo() throws UndoException {
-			if (undosave == null) {
-				throw new UndoException();
-			}
-			redosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(undosave, 0, 0);
-			undosave = null;
+			Project.getInstance().getLayers().remove(textLayerSaved);
+			Project.getInstance().setCurrentLayer(oldLayerSaved);
+			Project.getInstance().drawWorkspace();
 		}
 		
 		@Override
 		public void redo() throws UndoException {
-			if (redosave == null) {
-				throw new UndoException();
-			}
-			undosave = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
-			redosave = null;
+			Project.getInstance().addLayer(textLayerSaved);
+			Project.getInstance().setCurrentLayer(textLayerSaved);
+			Project.getInstance().drawWorkspace();
 		}
 		
 		@Override
 		public String toString() {
 			return "Ajout de texte";
+		}
+
+		public void setLayerToSaved(Layer layer){
+			textLayerSaved = layer;
 		}
 	}
 }
