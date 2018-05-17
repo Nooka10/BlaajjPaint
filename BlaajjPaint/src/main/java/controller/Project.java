@@ -136,7 +136,6 @@ public class Project implements Serializable {
 		BackgroundImage bgImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, bgSize);
 		backgroundImage = new Background(bgImage);
 		
-		//MainViewController.getInstance().getScrollPane().setBackground(backgroundImage);
 		workspace.setBackground(backgroundImage);
 		
 		if (isNew) {
@@ -144,9 +143,7 @@ public class Project implements Serializable {
 			layers.add(currentLayer);
 			workspace.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
-			drawWorkspace();
 		}
-		
 	}
 	
 	/**
@@ -250,6 +247,8 @@ public class Project implements Serializable {
 		
 		workspace.getChildren().add(redBorder);
 		addEventHandlers(Tool.getCurrentTool());
+		MainViewController.getInstance().getRightMenuController().setOpacitySlider(currentLayer.getLayerOpacity());
+		MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(currentLayer.getLayerOpacity()));
 		MainViewController.getInstance().getMenuBarController().changeHideButtonText();
 		drawWorkspace();
 	}

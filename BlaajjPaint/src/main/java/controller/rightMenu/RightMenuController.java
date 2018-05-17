@@ -78,8 +78,7 @@ public class RightMenuController {
 		opacityTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (!newValue.isEmpty()) {
-					try {
+				try {
 						newOpacity = Integer.parseInt(newValue); // parse en int ou lance une NumberFormatException si le parsing n'est pas possible
 						if (newOpacity < 0) {
 							opacityTextField.setText("0");
@@ -89,8 +88,8 @@ public class RightMenuController {
 							newOpacity = 100;
 						}
 						opacitySlider.setValue(newOpacity);
-						opacityTextField.setText(String.valueOf(newOpacity));
 					} catch (NumberFormatException e) { // une erreur s'est produite pendant le parsing en int -> l'entrée est invalide
+					if (!oldValue.isEmpty()) {
 						opacityTextField.setText(oldValue); // on annule la dernière modification
 					}
 				}
@@ -106,16 +105,6 @@ public class RightMenuController {
 			}
 		});
 	}
-	
-	/*
-	@FXML
-	void handleOnInputTextChanged() {
-		newOpacity = Math.round(Double.parseDouble(opacityTextField.getText()));
-		Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity);
-		opacitySlider.setValue(newOpacity);
-	}
-	*/
-	
 	
 	/**
 	 * Méthode appelée lorsque l'utilisateur clique avec la souris sur le slider d'opacité du calque, au centre à droite de la GUI.
