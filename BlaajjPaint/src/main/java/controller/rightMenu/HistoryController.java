@@ -41,7 +41,7 @@ public class HistoryController {
 			}
 			MainViewController.getInstance().getRightMenuController().setRedoWaiting(true);
 		}
-8	}
+	}
 	
 	public void setLabel(String label) {
 		this.label.setText(label);

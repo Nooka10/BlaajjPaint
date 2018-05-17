@@ -126,14 +126,10 @@ public class BucketFill extends Tool {
 					marked.add(point); // Marquer le point comme traité
 
 					// Ajout des points adjacent le point courant dans la liste de traitement
-					addPointToStack(x - 1, y - 1);
 					addPointToStack(x - 1, y);
-					addPointToStack(x - 1, y + 1);
 					addPointToStack(x, y - 1);
 					addPointToStack(x, y + 1);
-					addPointToStack(x + 1, y - 1);
 					addPointToStack(x + 1, y);
-					addPointToStack(x + 1, y + 1);
 				}
 				// Fin de la coloration - remise en place du curseur et execution de la commande
 				resetOldCursor();
