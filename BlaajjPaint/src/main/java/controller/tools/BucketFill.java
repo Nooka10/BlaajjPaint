@@ -162,12 +162,12 @@ public class BucketFill extends Tool {
 		
 		private FillSave() {
 			currentLayer = Project.getInstance().getCurrentLayer();
-			undosave = Utils.makeSnapshot(currentLayer);
+			undosave = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 		}
 		
 		@Override
 		public void execute() {
-			redosave = Utils.makeSnapshot(currentLayer);
+			redosave = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		

@@ -12,6 +12,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import utils.Utils;
 
@@ -113,7 +114,7 @@ public class ResizeLayerController {
 			Layer currentLayer = Project.getInstance().getCurrentLayer();
 			
 			if (checkBoxResizeImage.isSelected()) {
-				Image image = Utils.makeSnapshot(Project.getInstance().getCurrentLayer());
+				Image image = Utils.makeSnapshot(Project.getInstance().getCurrentLayer(), Color.TRANSPARENT);
 				ImageView image2 = new ImageView(image);
 				
 				image2.setFitWidth(Double.valueOf(textFieldWidth.getText()));
@@ -162,14 +163,14 @@ public class ResizeLayerController {
 			currentLayer = Project.getInstance().getCurrentLayer();
 			oldWidth = currentLayer.getWidth();
 			oldHeight = currentLayer.getHeight();
-			oldImage = Utils.makeSnapshot(currentLayer);
+			oldImage = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 		}
 		
 		@Override
 		public void execute() {
 			newWidth = currentLayer.getWidth();
 			newHeight = currentLayer.getHeight();
-			newImage = Utils.makeSnapshot(currentLayer);
+			newImage = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		

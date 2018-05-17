@@ -13,10 +13,10 @@ public class Utils {
 	static {
 		// configuration des paramètres utilisés pour la sauvegarde du canevas
 		params = new SnapshotParameters();
-		params.setFill(Color.TRANSPARENT);
 	}
 	
-	public static Image makeSnapshot(Layer layer){
+	public static Image makeSnapshot(Layer layer, Color color){
+		params.setFill(color);
 		double opacity = layer.getOpacity();
 		layer.setOpacity(1);
 		Image snapshot = layer.snapshot(params, null);

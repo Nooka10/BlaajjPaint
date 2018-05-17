@@ -136,7 +136,6 @@ public class Project implements Serializable {
 		BackgroundImage bgImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, bgSize);
 		backgroundImage = new Background(bgImage);
 		
-		//MainViewController.getInstance().getScrollPane().setBackground(backgroundImage);
 		workspace.setBackground(backgroundImage);
 		
 		if (isNew) {
@@ -144,9 +143,7 @@ public class Project implements Serializable {
 			layers.add(currentLayer);
 			workspace.getChildren().add(currentLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
-			drawWorkspace();
 		}
-		
 	}
 	
 	/**
@@ -250,6 +247,8 @@ public class Project implements Serializable {
 		
 		workspace.getChildren().add(redBorder);
 		addEventHandlers(Tool.getCurrentTool());
+		MainViewController.getInstance().getRightMenuController().setOpacitySlider(currentLayer.getLayerOpacity());
+		MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(currentLayer.getLayerOpacity()));
 		MainViewController.getInstance().getMenuBarController().changeHideButtonText();
 		drawWorkspace();
 	}
@@ -311,17 +310,14 @@ public class Project implements Serializable {
 			
 			if (chosenExtension.equals("png")) {
 				try {
-					ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(resultLayer), null), chosenExtension, file);
+					ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(resultLayer, Color.TRANSPARENT), null), chosenExtension, file);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
 				
 			} else if (chosenExtension.equals("jpg")) {
-				SnapshotParameters params = new SnapshotParameters();
 				
-				params.setFill(Color.WHITE);
-				//TODO : antoine, ne marche plus à cause de benoit
-				Image canvas = Utils.makeSnapshot(resultLayer);
+				Image canvas = Utils.makeSnapshot(resultLayer, Color.WHITE);
 				
 				BufferedImage image = SwingFXUtils.fromFXImage(canvas, null);
 				

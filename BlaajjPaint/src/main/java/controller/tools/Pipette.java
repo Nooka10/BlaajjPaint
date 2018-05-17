@@ -46,10 +46,14 @@ public class Pipette extends Tool {
 						
 						PixelReader maskReader = srcMask.getPixelReader();
 						
-						Color color = maskReader.getColor((int) event.getX(), (int) event.getY());
-						if (!color.equals(Color.TRANSPARENT)) {
-							Project.getInstance().setCurrentColor(maskReader.getColor((int) event.getX(), (int) event.getY()));
-							break;
+						int x = (int)(event.getX() + Project.getInstance().getCurrentLayer().getLayoutX());
+						int y = (int) (event.getY() - Project.getInstance().getCurrentLayer().getLayoutY());
+						if(x >= 0 && x < item.getWidth() && y >= 0 && y < item.getHeight()) {
+							Color color = maskReader.getColor(x,y);
+							if (!color.equals(Color.TRANSPARENT)) {
+								Project.getInstance().setCurrentColor(color);
+								break;
+							}
 						}
 					}
 				}
