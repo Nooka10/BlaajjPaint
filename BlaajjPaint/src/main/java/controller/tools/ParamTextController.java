@@ -27,7 +27,7 @@ public class ParamTextController {
 	private ChoiceBox<String> fontList;
 	
 	@FXML
-	private TextField textValue;
+	private TextField textValueTextField;
 	
 	@FXML
 	public Button validateButton;
@@ -73,11 +73,12 @@ public class ParamTextController {
 				}
 			}
 		});
-
-		textValue.textProperty().addListener(new ChangeListener<String>() {
+		
+		// ajoute un changeListener à textValueTextField -> la méthode changed() est appelée à chaque fois que le texte de textValueTextField est modifié
+		textValueTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				textTool.changeTextValue(textValue.getText());
+				textTool.changeTextValue(textValueTextField.getText()); // on modifie le texte affiché sur le calque temporaire
 			}
 		});
 	}

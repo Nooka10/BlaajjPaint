@@ -28,6 +28,7 @@ public class HistoryController {
 		if (currentUndoID > id) { // l'utilisateur souhaite effectuer des undos
 			while (currentUndoID > id) {
 				RecordCmd.getInstance().undo();
+				//currentUndoID--;
 			}
 		} else if (currentUndoID < id) { // l'utilisateur souhaite effectuer des redos
 			while (currentUndoID < id) {

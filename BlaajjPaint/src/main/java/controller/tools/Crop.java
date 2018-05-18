@@ -54,13 +54,12 @@ public class Crop extends Tool {
 		posY = 0;
 		
 		oldCurrentLayer = Project.getInstance().getCurrentLayer(); // sauvegarde le calque actuellement sélectionné. C'est lui qui sera rogné
-		System.out.println(oldCurrentLayer + " " + oldCurrentLayer.getWidth() + " " + oldCurrentLayer.getHeight() );
+		
 		// Crée un calque temporaire utilisé pour afficher la sélection
 		selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int) oldCurrentLayer.getHeight(), true);
 		selectionCropLayer.setTranslateX(oldCurrentLayer.getTranslateX());
 		selectionCropLayer.setTranslateY(oldCurrentLayer.getTranslateY());
 		
-		Project.getInstance().setCurrentLayer(selectionCropLayer); // définit le calque temporaire comme calque courant
 		Project.getInstance().addLayer(selectionCropLayer); // ajoute le calque temporaire au projet
 	}
 	

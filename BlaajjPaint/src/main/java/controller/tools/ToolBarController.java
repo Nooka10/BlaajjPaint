@@ -4,7 +4,6 @@ import controller.MainViewController;
 import controller.tools.Shapes.EmptyRectangle;
 import controller.tools.ToolDrawer.Eraser;
 import controller.tools.ToolDrawer.Pencil;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,11 +14,9 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 /**
- * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
- * resizing, deleting and so on.
+ * Contrôleur associé au fichier FXML Toolbar.fxml et gérant l'ensemble des actions associées à la barre d'outils qui apparaît à gauche dans la GUI.
  */
 public class ToolBarController {
-	
 	@FXML
 	public AnchorPane toolBar;
 	@FXML
@@ -45,80 +42,11 @@ public class ToolBarController {
 	@FXML
 	private Parent paramBar;
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Main</b>.
+	 */
 	@FXML
-	public void handleMoveView(ActionEvent event) {
-		Tool.setCurrentTool(Move.getInstance());
-		if (Tool.getToolHasChanged()) {
-			closeCurrentParamBar();
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleCrop(ActionEvent event) {
-		Tool.setCurrentTool(Crop.getInstance());
-		if(Tool.getToolHasChanged()){
-			addParamBar("/view/tools/ParamCrop.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handlePipette(ActionEvent event) {
-		Tool.setCurrentTool(Pipette.getInstance());
-		if (Tool.getToolHasChanged()) {
-			closeCurrentParamBar();
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handlePencil(ActionEvent event) {
-		Tool.setCurrentTool(Pencil.getInstance());
-		if (Tool.getToolHasChanged()) {
-			addParamBar("/view/tools/ParamDrawTool.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleEraser(ActionEvent event) {
-		Tool.setCurrentTool(Eraser.getInstance());
-		if (Tool.getToolHasChanged()) {
-			addParamBar("/view/tools/ParamDrawTool.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleBucketFill(ActionEvent event) {
-		Tool.setCurrentTool(BucketFill.getInstance());
-		if(Tool.getToolHasChanged()){
-			closeCurrentParamBar();
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleAddText(ActionEvent event) {
-		Tool.setCurrentTool(TextTool.getInstance());
-		if(Tool.getToolHasChanged()){
-			addParamBar("/view/tools/ParamText.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleAddShape(ActionEvent event) {
-		Tool.setCurrentTool(EmptyRectangle.getInstance());
-		if (Tool.getToolHasChanged()) {
-			addParamBar("/view/tools/ParamShapeTool.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleHand(ActionEvent event) {
+	public void handleHand() {
 		Tool.setCurrentTool(Hand.getInstance());
 		if (Tool.getToolHasChanged()) {
 			closeCurrentParamBar();
@@ -126,6 +54,106 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Déplacer</b>.
+	 */
+	@FXML
+	public void handleMoveView() {
+		Tool.setCurrentTool(Move.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Rogner</b>.
+	 */
+	@FXML
+	public void handleCrop() {
+		Tool.setCurrentTool(Crop.getInstance());
+		if(Tool.getToolHasChanged()){
+			addParamBar("/view/tools/ParamCrop.fxml");
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Pipette</b>.
+	 */
+	@FXML
+	public void handlePipette() {
+		Tool.setCurrentTool(Pipette.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Pinceau</b>.
+	 */
+	@FXML
+	public void handlePencil() {
+		Tool.setCurrentTool(Pencil.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/tools/ParamDrawTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Gomme</b>.
+	 */
+	@FXML
+	public void handleEraser() {
+		Tool.setCurrentTool(Eraser.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/tools/ParamDrawTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Pot de peinture</b>.
+	 */
+	@FXML
+	public void handleBucketFill() {
+		Tool.setCurrentTool(BucketFill.getInstance());
+		if(Tool.getToolHasChanged()){
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Texte</b>.
+	 */
+	@FXML
+	public void handleAddText() {
+		Tool.setCurrentTool(TextTool.getInstance());
+		if(Tool.getToolHasChanged()){
+			addParamBar("/view/tools/ParamText.fxml");
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Formes</b>.
+	 */
+	@FXML
+	public void handleAddShape() {
+		Tool.setCurrentTool(EmptyRectangle.getInstance());
+		if (Tool.getToolHasChanged()) {
+			addParamBar("/view/tools/ParamShapeTool.fxml");
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Ouvre le fichier FXML situé au chemin fourni en paramètre.
+	 * @param FXMLpath, le chemin menant au fichier FXML à ouvrir.
+	 */
 	@FXML
 	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
@@ -140,15 +168,17 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Ferme le fichier FXML actuellement ouvert.
+	 */
 	@FXML
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}
-
+	
 	/**
-	 * Permet d'activer les boutons.
-	 * A appeler dès qu'un project est ouvert ou créé
+	 * Permet d'activer les boutons de la barre d'outils.
 	 */
 	public void enableButton(){
 		handTool.setDisable(false);
@@ -161,10 +191,9 @@ public class ToolBarController {
 		textTool.setDisable(false);
 		shapeTool.setDisable(false);
 	}
-
+	
 	/**
-	 * Permet de déscativer les boutons.
-	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 * Permet de désactiver les boutons de la barre d'outils.
 	 */
 	public void disableButton(){
 		handTool.setDisable(true);
@@ -177,6 +206,4 @@ public class ToolBarController {
 		textTool.setDisable(true);
 		shapeTool.setDisable(true);
 	}
-	
-	
 }

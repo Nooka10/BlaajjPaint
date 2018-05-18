@@ -8,7 +8,7 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamTextController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ParamTextController">
    <children>
       <Slider fx:id="sliderSizeFont" max="500.0" min="10.0" onMouseDragged="#handleChangeFontSlider" onMousePressed="#handleChangeFontSlider" onMouseReleased="#handleChangeFontSlider" showTickMarks="true" value="40.0">
          <HBox.margin>
@@ -26,7 +26,7 @@
          <tooltip>
             <Tooltip text="Changer la police d'écriture" />
          </tooltip></ChoiceBox>
-      <TextField fx:id="textValue" promptText="Text">
+      <TextField fx:id="textValueTextField" promptText="Text">
          <tooltip>
             <Tooltip text="Changer le contenu du texte" />
          </tooltip></TextField>
