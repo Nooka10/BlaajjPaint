@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class Hand extends Tool {
 	
-	private static Hand toolInstance = null; // l'instance unique du singleton Hand
+	private static Hand toolInstance; // l'instance unique du singleton Hand
 	
 	/**
 	 * Constructeur privé (modèle singleton).

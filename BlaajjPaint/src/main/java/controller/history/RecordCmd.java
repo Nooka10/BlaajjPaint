@@ -20,7 +20,7 @@ public class RecordCmd {
 	
 	private static final Logger LOG = Logger.getLogger(RecordCmd.class.getName()); // Le logger de cette classe
 	
-	private static RecordCmd recordCdmInstance = null; // L'instance unique du singleton RecordCmd
+	private static RecordCmd recordCdmInstance; // L'instance unique du singleton RecordCmd
 	
 	/**
 	 * Constructeur privé (modèle Singleton).

@@ -19,7 +19,7 @@ import javafx.scene.text.Font;
  * le modèle Singleton.
  */
 public class TextTool extends Tool {
-	private static TextTool toolInstance = null;
+	private static TextTool toolInstance;
 	private textSave textSave;
 	private Font font;
 	private Layer textLayer;

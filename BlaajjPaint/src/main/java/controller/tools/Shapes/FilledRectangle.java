@@ -7,7 +7,7 @@ import controller.Project;
  */
 public class FilledRectangle extends ShapeDrawer {
     
-    private static FilledRectangle toolInstance = null; // l'instance unique du singleton FilledRectangle
+    private static FilledRectangle toolInstance; // l'instance unique du singleton FilledRectangle
     
     /**
      * Constructeur privé (modèle singleton).

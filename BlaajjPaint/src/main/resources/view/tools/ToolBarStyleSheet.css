@@ -1,12 +1,12 @@
 #moveTool {
-	-fx-background-image    :url('../../outils/deplacement.png');
+	-fx-background-image    :url('../../outils/move.png');
 	-fx-background-size     : 30px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
 
 #cropTool {
-	-fx-background-image    :url('../../outils/recadrer.png');
+	-fx-background-image    :url('../../outils/crop.png');
 	-fx-background-size     : 25px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
@@ -21,7 +21,7 @@
 }
 
 #pencilTool {
-	-fx-background-image    :url('../../outils/pinceau.png');
+	-fx-background-image    :url('../../outils/pencil.png');
 	-fx-background-size     : 25px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
@@ -35,28 +35,28 @@
 }
 
 #bucketFillTool {
-	-fx-background-image    :url('../../outils/potDePeinture.png');
+	-fx-background-image    :url('../../outils/bucketFill.png');
 	-fx-background-size     : 25px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
 
 #textTool {
-	-fx-background-image    :url('../../outils/texte.png');
+	-fx-background-image    :url('../../outils/text.png');
 	-fx-background-size     : 25px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
 
 #shapesTool {
-	-fx-background-image    :url('../../outils/formesPredefinies.png');
+	-fx-background-image    :url('../../outils/shape.png');
 	-fx-background-size     : 25px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;
 }
 
 #handTool {
-	-fx-background-image    :url('../../outils/curseur.png');
+	-fx-background-image    :url('../../outils/cursor.png');
 	-fx-background-size     : 25px;
 	-fx-background-position :center;
 	-fx-background-repeat   :stretch;

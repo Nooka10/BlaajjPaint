@@ -7,7 +7,7 @@ import controller.Project;
  */
 public class EmptyRectangle extends ShapeDrawer {
 	
-	private static EmptyRectangle toolInstance = null; // l'instance unique du singleton EmptyRectangle
+	private static EmptyRectangle toolInstance; // l'instance unique du singleton EmptyRectangle
 	
 	private double thickness = 1; // l'épaisseur de l'outil
 	

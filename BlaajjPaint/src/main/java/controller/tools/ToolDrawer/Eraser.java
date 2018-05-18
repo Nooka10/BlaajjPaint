@@ -26,7 +26,7 @@ import javax.rmi.CORBA.Util;
  */
 public class Eraser extends ToolDrawer {
 	
-	private static Eraser toolInstance = null; // l'instance unique du singleton Eraser
+	private static Eraser toolInstance; // l'instance unique du singleton Eraser
 	
 	private Layer eraserMask; // le masque sur lequel on "peint" la zone à effacer
 	

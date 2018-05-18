@@ -13,7 +13,7 @@ import java.io.*;
 public class SaveProject {
 	private File saveFile; // fichier dans lequel enregistrer la sauvegarde
 	
-	private static SaveProject saveProjectInstance = null; // l'instance unique du singleton SaveProject
+	private static SaveProject saveProjectInstance; // l'instance unique du singleton SaveProject
 	
 	/**
 	 * Constructeur privé (modèle singleton).

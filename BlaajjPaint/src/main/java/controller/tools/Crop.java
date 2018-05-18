@@ -17,7 +17,7 @@ import utils.Utils;
  * Classe implémentant l'outil <b>rogner</b> permettant de rogner un calque. Implémente le modèle Singleton.
  */
 public class Crop extends Tool {
-	private static Crop toolInstance = null; // l'instance unique du singleton Crop
+	private static Crop toolInstance; // l'instance unique du singleton Crop
 	private CropSave cropSave; // la commande de sauvegarde du recadrage
 	private Layer oldCurrentLayer;
 	private Layer selectionCropLayer;

@@ -19,7 +19,7 @@ import utils.Utils;
  * l'aide de la souris. Implémente le modèle Singleton.
  */
 public class Pipette extends Tool {
-	private static Pipette toolInstance = null; // l'instance unique du singleton Hand
+	private static Pipette toolInstance; // l'instance unique du singleton Hand
 	private static Layer tmpLayer;
 	private Layer oldCurrentLayer;
 	

@@ -7,7 +7,7 @@ import controller.Project;
  */
 public class EmptyEllipse extends ShapeDrawer {
     
-    private static EmptyEllipse toolInstance = null; // l'instance unique du singleton EmptyEllipse
+    private static EmptyEllipse toolInstance; // l'instance unique du singleton EmptyEllipse
     
     private double thickness = 1; // l'épaisseur de l'outil
     

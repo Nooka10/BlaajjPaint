@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  * Classe implémentant l'outil <b>Déplacer un calque</b> permettant de déplacer un calque dans l'espace de travail. Implémente le modèle Singleton.
  */
 public class Move extends Tool {
-	private static Move toolInstance = null; // l'instance unique du singleton Hand
+	private static Move toolInstance; // l'instance unique du singleton Hand
 	private double oldX;
 	private double oldY;
 	private MoveSave currentSave;

@@ -7,7 +7,7 @@ import controller.Project;
  */
 public class FilledEllipse extends ShapeDrawer {
 	
-	private static FilledEllipse toolInstance = null; // l'instance unique du singleton FilledEllipse
+	private static FilledEllipse toolInstance; // l'instance unique du singleton FilledEllipse
 	
 	/**
 	 * Constructeur privé (modèle singleton).

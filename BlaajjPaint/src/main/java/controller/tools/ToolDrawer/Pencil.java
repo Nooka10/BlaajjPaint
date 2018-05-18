@@ -19,7 +19,7 @@ import javafx.scene.shape.StrokeLineJoin;
  */
 public class Pencil extends ToolDrawer {
 	
-	private static Pencil toolInstance = null; // l'instance unique du singleton Pencil
+	private static Pencil toolInstance; // l'instance unique du singleton Pencil
 	
 	private GraphicsContext pencilMaskGC;
 	
@@ -94,7 +94,7 @@ public class Pencil extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Image img = new Image("/cursors/pinceauCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
+				Image img = new Image("/cursors/pencilCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
 				changeCursor(new ImageCursor(img,3,30)); // change le curseur de la souris en mode "pinceau"
 			}
 		};

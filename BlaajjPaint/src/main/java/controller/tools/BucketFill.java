@@ -68,31 +68,6 @@ public class BucketFill extends Tool {
 	}
 
 	@Override
-	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
-		return new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Image img = new Image("/cursors/bucketFillCursor.png");
-				changeCursor(new ImageCursor(img,0,0));
-			}
-		};
-	}
-
-	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
-		return new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				changeCursor(Cursor.DEFAULT); // remet le curseur par défaut
-			}
-		};
-	}
-
-	/**
-	 * Gestion de l'événement du relachement du clique de la souris
-	 * @return l'événement qui lorsque l'on relache le clique de la souris peint dans la zone du calque
-	 */
-	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			Stack<Point2D> stack; // stack des points qui devront être traités
@@ -160,6 +135,27 @@ public class BucketFill extends Tool {
 					return;
 				}
 				stack.push(point);
+			}
+		};
+	}
+	
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/bucketFillCursor.png");
+				changeCursor(new ImageCursor(img,0,0));
+			}
+		};
+	}
+	
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				//changeCursor(Cursor.DEFAULT); // remet le curseur par défaut
 			}
 		};
 	}

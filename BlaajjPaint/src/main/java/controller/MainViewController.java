@@ -20,7 +20,7 @@ import java.io.File;
  */
 public class MainViewController {
 	
-	private static MainViewController mainViewControllerInstance = null; // L'instance unique du singleton MainViewController
+	private static MainViewController mainViewControllerInstance; // L'instance unique du singleton MainViewController
 	private Main main; // référence vers l'instance du main
 	@FXML
 	private MenuBarController menuBarController; // référence vers l'instance du menuBarController
@@ -34,13 +34,22 @@ public class MainViewController {
 	private AnchorPane paramBar; // référence vers l'instance de la barre de paramètre d'outils actuellement ouverte (peut être null)
 	@FXML
 	private ScrollPane scrollPane; // référence vers le scrollPane contenant le l'espace de travail (workspace)
-	@FXML
-	private AnchorPane workspace; // référence vers l'espace de travail
 	
 	/**
 	 * Constructeur privé (modèle Singleton).
 	 */
 	private MainViewController() {
+	}
+	
+	/**
+	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 */
+	@FXML
+	private void initialize() {
+		mainViewControllerInstance = this;
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
+		disableButtons();
 	}
 	
 	/**
@@ -53,17 +62,6 @@ public class MainViewController {
 			mainViewControllerInstance = new MainViewController();
 		}
 		return mainViewControllerInstance;
-	}
-	
-	/**
-	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
-	 */
-	@FXML
-	private void initialize() {
-		mainViewControllerInstance = this;
-		scrollPane.setFitToHeight(true);
-		scrollPane.setFitToWidth(true);
-		disableButtons();
 	}
 	
 	/**
@@ -128,6 +126,62 @@ public class MainViewController {
 	 */
 	public AnchorPane getParamBar() {
 		return paramBar;
+	}
+	
+	/**
+	 * Désactive les boutons de la menuBar, du rightMenu ainsi que de la toolBar.
+	 */
+	private void disableButtons() {
+		menuBarController.disableButton();
+		rightMenuController.disableButton();
+		toolBarController.disableButton();
+	}
+	
+	/**
+	 * Active les boutons de la menuBar, du rightMenu ainsi que de la toolBar.
+	 */
+	public void enableButtons() {
+		menuBarController.enableButton();
+		rightMenuController.enableButton();
+		toolBarController.enableButton();
+	}
+	
+	/**
+	 * Affiche une fenêtre permettant à l'utilisateur de choisir un projet avec l'extension .blaajj et de l'ouvrir.
+	 */
+	public void openProject() {
+		FileChooser fileChooser = new FileChooser();
+		
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
+		fileChooser.getExtensionFilters().add(extFilter);
+		
+		// Ouvre une fenêtre invitant l'utilisateur à sélectionner le fichier .blaajj à ouvrir
+		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
+		
+		if (file != null) {
+			closeProject(); // ferme le projet précédemment ouvert
+			try {
+				SaveProject.getInstance().openFile(file); // déserialise le fichier .blaajj et l'ouvre dans le programme.
+				enableButtons(); // active les boutons des différents menus
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				System.err.println("File is corrupted");
+			}
+		}
+	}
+	
+	/**
+	 * Ferme le projet en cours d'édition.
+	 */
+	public void closeProject() {
+		Project.getInstance().close(); // ferme le projet actuellement ouvert
+		RecordCmd.getInstance().clear(); // supprimer l'historique des commandes (la liste des undo/redo)
+		SaveProject.getInstance().clear(); // réinitialise la sauvegarde
+		scrollPane.setContent(null);
+		rightMenuController.clearLayerList(); // vide l'historique sans le redessiner
+		rightMenuController.clearHistoryList();
+		
+		disableButtons(); // désactive les boutons de la GUI qui ne peuvent pas être utilisés sans avoir un projet ouvert
 	}
 	
 	/**
@@ -202,60 +256,5 @@ public class MainViewController {
 		} catch (Exception e){
 			System.out.println("Aucun projet n'est ouvert!");
 		}
-	}
-	
-	/**
-	 * Permet de fermer le projet en cours d'execution Permet aussi le nettoyage du projet (mise à 0)
-	 */
-	public void closeProject() {
-		Project.getInstance().close(); // ferme le projet actuellement ouvert
-		RecordCmd.getInstance().clear(); // supprimer l'historique des commandes (la liste des undo/redo)
-		SaveProject.getInstance().clear(); // réinitialise la sauvegarde
-		scrollPane.setContent(null);
-		rightMenuController.clearLayerList(); // vide l'historique sans le redessiner
-		rightMenuController.clearHistoryList();
-		
-		disableButtons(); // désactive les boutons de la GUI qui ne peuvent pas être utilisés sans avoir un projet ouvert
-	}
-	
-	public void openProject() {
-		FileChooser fileChooser = new FileChooser();
-		
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(".blaaj files(*.blaajj)", "*.blaajj");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		// Show save file dialog
-		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
-		
-		if (file != null) {
-			closeProject();
-			try {
-				SaveProject.getInstance().openFile(file);
-				enableButtons();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				//closeProject();
-				System.err.println("File is corrupted");
-			}
-		}
-	}
-	
-	/**
-	 * Permet de déscativer les boutons. A appeler à la fermeture d'un projet ou à la création de l'application
-	 */
-	public void disableButtons() {
-		menuBarController.disableButton();
-		rightMenuController.disableButton();
-		toolBarController.disableButton();
-	}
-	
-	/**
-	 * Permet d'activer les boutons. A appeler dès qu'un project est ouvert ou créé
-	 */
-	public void enableButtons() {
-		menuBarController.enableButton();
-		rightMenuController.enableButton();
-		toolBarController.enableButton();
 	}
 }
