@@ -403,18 +403,13 @@ public class Project implements Serializable {
 			}
 			
 		}
-
-
 		Layer.setCount(maxCount);
-		
 		setCurrentLayer(layers.getFirst());
-		
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
 
 		if(currentColor == null) {
 			currentColor = MainViewController.getInstance().getRightMenuController().getColorPicker().getValue();
 		}
-
 		drawWorkspace();
 	}
 

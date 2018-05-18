@@ -6,7 +6,6 @@ package controller.tools.ToolDrawer;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -95,8 +94,8 @@ public class Pencil extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Image img = new Image("/cursors/pinceauCursor.png"); // A CHANGER (PAS BEAU)
-				changeCursor(new ImageCursor(img,3,30));
+				Image img = new Image("/cursors/pinceauCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
+				changeCursor(new ImageCursor(img,3,30)); // change le curseur de la souris en mode "pinceau"
 			}
 		};
 	}
@@ -106,7 +105,7 @@ public class Pencil extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				resetOldCursor();
+				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
 	}

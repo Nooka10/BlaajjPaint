@@ -83,7 +83,7 @@ public class BucketFill extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.DEFAULT);
+				changeCursor(Cursor.DEFAULT); // remet le curseur par défaut
 			}
 		};
 	}

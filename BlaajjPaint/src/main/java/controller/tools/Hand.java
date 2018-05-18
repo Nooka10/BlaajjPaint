@@ -6,8 +6,6 @@ package controller.tools;
 import controller.MainViewController;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.ImageCursor;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -66,14 +64,13 @@ public class Hand extends Tool {
 			}
 		};
 	}
-
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.HAND);
+				changeCursor(Cursor.HAND); // change le curseur de la souris en mode "main"
 			}
 		};
 	}
@@ -83,9 +80,8 @@ public class Hand extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				resetOldCursor();
+				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
 	}
-
 }

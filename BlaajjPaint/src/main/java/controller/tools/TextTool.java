@@ -202,7 +202,7 @@ public class TextTool extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.TEXT);
+				changeCursor(Cursor.TEXT); // change le curseur de la souris en mode "texte"
 			}
 		};
 	}
@@ -212,7 +212,7 @@ public class TextTool extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				resetOldCursor();
+				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
 	}

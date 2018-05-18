@@ -268,7 +268,7 @@ public class Layer extends Canvas implements Serializable {
 		boolean tmpVisible = super.isVisible();
 		
 		s.writeDouble(tmpOpacity);                    // opacité de Canevas [0;1]
-		s.writeBoolean(super.isVisible());
+		s.writeBoolean(tmpVisible);
 		
 		this.setVisible(true);
 		this.setOpacity(1);                            // enlève l'opacité pour la sauvegardes

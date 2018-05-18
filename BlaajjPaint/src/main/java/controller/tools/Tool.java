@@ -207,7 +207,7 @@ public abstract class Tool {
 	/**
 	 * Permet de redonner l'apparence d'origine au curseur de la souris.
 	 */
-	protected void resetOldCursor() {
+	protected void resetPreviousCursor() {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
 		scene.setCursor(oldCursor);
 	}

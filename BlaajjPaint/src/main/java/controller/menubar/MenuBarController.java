@@ -101,7 +101,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleSave() {
-		SaveProject.getInstance().save();
+		handleSaveAs();
 	}
 	
 	/**
@@ -110,17 +110,19 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleSaveAs() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj"));
-		
-		// Ouvre une fenêtre invitant l'utilisateur à sélectionner l'endroit où enregistrer le projet
-		File file = fileChooser.showSaveDialog(MainViewController.getInstance().getMain().getPrimaryStage());
-		
-		if (file != null) {
-			if (!file.getPath().endsWith(".blaajj")) { // vrai si le fichier sélectionné possède la bonne extension
-				file = new File(file.getPath() + ".blaajj");
+		if (!SaveProject.getInstance().fileIsSetted()) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj"));
+			
+			// Ouvre une fenêtre invitant l'utilisateur à sélectionner l'endroit où enregistrer le projet
+			File file = fileChooser.showSaveDialog(MainViewController.getInstance().getMain().getPrimaryStage());
+			
+			if (file != null) {
+				if (!file.getPath().endsWith(".blaajj")) { // vrai si le fichier sélectionné possède la bonne extension
+					file = new File(file.getPath() + ".blaajj");
+				}
+				SaveProject.getInstance().saveAs(file);
 			}
-			SaveProject.getInstance().saveAs(file);
 		}
 	}
 	

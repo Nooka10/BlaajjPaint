@@ -73,7 +73,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.MOVE);
+				changeCursor(Cursor.MOVE); // change le curseur de la souris en mode "déplacement"
 			}
 		};
 	}
@@ -83,7 +83,7 @@ public class Move extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				resetOldCursor();
+				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
 	}

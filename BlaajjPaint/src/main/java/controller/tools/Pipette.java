@@ -96,8 +96,8 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Image img = new Image("/cursors/pipetteCursor.png"); // A CHANGER (PAS BEAU)
-				changeCursor(new ImageCursor(img,2,30));
+				Image img = new Image("/cursors/pipetteCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
+				changeCursor(new ImageCursor(img,2,30)); // change le curseur de la souris en mode "pipette"
 			}
 		};
 	}
@@ -107,7 +107,7 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				resetOldCursor();
+				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
 	}
