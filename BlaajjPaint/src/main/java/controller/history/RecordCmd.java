@@ -68,7 +68,6 @@ public class RecordCmd {
 	 * handleRedo lèves une exception celle-ci est capturée et consignée dans les logs et l'<b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void redo() {
-		System.out.println("redo");
 		// si la pile de handleRedo n'est pas vide
 		if (!redoStack.isEmpty()) {
 			// on essaie de handleUndo
