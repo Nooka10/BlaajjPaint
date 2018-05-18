@@ -60,9 +60,7 @@ public class SaveProject {
 			FileOutputStream fos = new FileOutputStream(saveFile);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(Project.getInstance());
-			
 			out.close();
-			System.out.println("Save done");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -94,5 +92,6 @@ public class SaveProject {
 	 */
 	public void clear() {
 		saveFile = null;
+		saveProjectInstance = null;
 	}
 }

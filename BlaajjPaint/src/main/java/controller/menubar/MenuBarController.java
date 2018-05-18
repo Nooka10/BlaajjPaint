@@ -66,9 +66,8 @@ public class MenuBarController {
 	private MenuItem menuBar_manuel;
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Nouveau</b>.
-	 * Ouvre une nouvelle fenêtre demandant à l'utilisateur d'entrer une largeur et une hauteur,
-	 * puis crée un projet à ces dimensions lorsque l'utilisateur clique sur le bouton créer.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Nouveau</b>. Ouvre une nouvelle fenêtre demandant à l'utilisateur d'entrer une largeur et
+	 * une hauteur, puis crée un projet à ces dimensions lorsque l'utilisateur clique sur le bouton créer.
 	 */
 	@FXML
 	public void handleNew() {
@@ -84,52 +83,52 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Ouvrir</b>.
-	 * Invite l'utilisateur à sélectionner un fichier .blaajj stoqué sur son disque dur puis ouvre le projet sélectionné.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Ouvrir</b>. Invite l'utilisateur à sélectionner un fichier .blaajj stoqué sur son disque dur
+	 * puis ouvre le projet sélectionné.
 	 */
 	@FXML
 	public void handleOpen() {
-	    MainViewController.getInstance().openProject();
-        OpenSave openSave = new OpenSave();
-	    openSave.execute();
+		MainViewController.getInstance().openProject();
+		OpenSave openSave = new OpenSave();
+		openSave.execute();
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Enregistrer</b>.
-	 * Invite l'utilisateur à sélectionner l'emplacement où enregistrer le projet lors de sa première sauvegarde,
-	 * puis enregistre le projet dans le fichier .blaajj actuel.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Enregistrer</b>. Invite l'utilisateur à sélectionner l'emplacement où enregistrer le projet
+	 * lors de sa première sauvegarde, puis enregistre le projet dans le fichier .blaajj actuel.
 	 */
 	@FXML
 	public void handleSave() {
-		handleSaveAs();
-	}
-	
-	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Enregistrer sous</b>.
-	 * Invite l'utilisateur à sélectionner l'emplacement où enregistrer le projet puis crée un fichier .blaajj à cet emplacement.
-	 */
-	@FXML
-	public void handleSaveAs() {
 		if (!SaveProject.getInstance().fileIsSetted()) {
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj"));
-			
-			// Ouvre une fenêtre invitant l'utilisateur à sélectionner l'endroit où enregistrer le projet
-			File file = fileChooser.showSaveDialog(MainViewController.getInstance().getMain().getPrimaryStage());
-			
-			if (file != null) {
-				if (!file.getPath().endsWith(".blaajj")) { // vrai si le fichier sélectionné possède la bonne extension
-					file = new File(file.getPath() + ".blaajj");
-				}
-				SaveProject.getInstance().saveAs(file);
-			}
+			handleSaveAs();
+		} else {
+			SaveProject.getInstance().saveAs(null);
 		}
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Exporter</b>.
-	 * Invite l'utilisateur à sélectionner l'emplacement où enregistrer l'image exportée ainsi que son extension (.png ou .jpg) puis
-	 * crée une image dans le format choisi et à l'emplacement sélectionné.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Enregistrer sous</b>. Invite l'utilisateur à sélectionner l'emplacement où enregistrer le
+	 * projet puis crée un fichier .blaajj à cet emplacement.
+	 */
+	@FXML
+	public void handleSaveAs() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".blaajj files(*.blaajj)", "*.blaajj"));
+		
+		// Ouvre une fenêtre invitant l'utilisateur à sélectionner l'endroit où enregistrer le projet
+		File file = fileChooser.showSaveDialog(MainViewController.getInstance().getMain().getPrimaryStage());
+		
+		if (file != null) {
+			if (!file.getPath().endsWith(".blaajj")) { // vrai si le fichier sélectionné possède la bonne extension
+				file = new File(file.getPath() + ".blaajj");
+			}
+			SaveProject.getInstance().saveAs(file);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Exporter</b>. Invite l'utilisateur à sélectionner l'emplacement où enregistrer l'image
+	 * exportée ainsi que son extension (.png ou .jpg) puis crée une image dans le format choisi et à l'emplacement sélectionné.
 	 */
 	@FXML
 	public void handleExport() {
@@ -145,8 +144,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Importer une image</b>.
-	 * Invite l'utilisateur à sélectionner une une image (.jpg ou .png) et l'importe dans le projet en ajoute un nouveau calque la contenant.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Importer une image</b>. Invite l'utilisateur à sélectionner une une image (.jpg ou .png) et
+	 * l'importe dans le projet en ajoute un nouveau calque la contenant.
 	 */
 	@FXML
 	public void handleImportImage() {
@@ -154,18 +153,17 @@ public class MenuBarController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Import an image");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("fichiers PNG ou JPG", "*.png", "*.jpg"));
-
+		
 		// Ouvre une fenêtre invitant l'utilisateur à sélectionner un fichier utilisant l'extension autorisée
 		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
-
+		
 		Project.getInstance().importImage(file);
 		importImageSave.execute();
 	}
 	
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Fermer</b>.
-	 * Ferme le projet actuellement ouvert.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Fermer</b>. Ferme le projet actuellement ouvert.
 	 */
 	@FXML
 	public void handleClose() {
@@ -174,8 +172,7 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Edition -> Undo</b>.
-	 * Annule la dernière action effectuée (undo la dernière commande enregistrée).
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Edition -> Undo</b>. Annule la dernière action effectuée (undo la dernière commande enregistrée).
 	 */
 	@FXML
 	public void handleUndo() {
@@ -183,8 +180,7 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Edition -> Redo</b>.
-	 * Rétablit la dernière action annulée (redo la dernière commande qui a été undo).
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Edition -> Redo</b>. Rétablit la dernière action annulée (redo la dernière commande qui a été undo).
 	 */
 	@FXML
 	public void handleRedo() {
@@ -192,8 +188,7 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Nouveau</b>.
-	 * Ajoute un nouveau calque vide.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Nouveau</b>. Ajoute un nouveau calque vide.
 	 */
 	@FXML
 	public void handleNewLayer() {
@@ -202,8 +197,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Dupliquer</b>.
-	 * Duplique le calque sélectionné. Ajoute donc un nouveau calque contenant exactement la même chose que le calque dupliqué.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Dupliquer</b>. Duplique le calque sélectionné. Ajoute donc un nouveau calque contenant
+	 * exactement la même chose que le calque dupliqué.
 	 */
 	@FXML
 	public void handleDuplicateLayer() {
@@ -211,8 +206,7 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Supprimer</b>.
-	 * Supprime le calque actuellement sélectionné.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Supprimer</b>. Supprime le calque actuellement sélectionné.
 	 */
 	@FXML
 	public void handleDeleteLayer() {
@@ -237,9 +231,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Fusionner avec le calque inférieur</b>.
-	 * Fusionne le calque sélectionné avec le calque situé juste au dessous dans la liste de calques en un nouveau calque.
-	 * Supprime les 2 calques fusionnés.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Fusionner avec le calque inférieur</b>. Fusionne le calque sélectionné avec le calque situé
+	 * juste au dessous dans la liste de calques en un nouveau calque. Supprime les 2 calques fusionnés.
 	 */
 	@FXML
 	public void handleFusionLayer() {
@@ -247,8 +240,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Aplatir les calques</b>.
-	 * Fusionne tous les calques du projet en un nouveau calque. Tous les calques existants sont supprimés.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Aplatir les calques</b>. Fusionne tous les calques du projet en un nouveau calque. Tous les
+	 * calques existants sont supprimés.
 	 */
 	@FXML
 	public void handleMergeAllLayer() {
@@ -270,8 +263,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Masquer/afficher le calque sélectionné</b>.
-	 * Masque le calque sélectionné. Il n'est pas possible d'utiliser un outil sur un calque masqué.
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Calque -> Masquer/afficher le calque sélectionné</b>. Masque le calque sélectionné. Il n'est pas
+	 * possible d'utiliser un outil sur un calque masqué.
 	 */
 	@FXML
 	public void handleHideCurrentLayer() {
@@ -281,21 +274,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Modifie le texte du bouton <b>Calque -> Masquer/Afficher le calque sélectionné</b> en fonction de la visibilité du calque sélectionné.
-	 * Affiche "Masquer le calque sélectionné" si le calque sélectionner est visible et "Afficher le calque sélectionné" sinon.
-	 */
-	public void changeHideButtonText() {
-		if (Project.getInstance().getCurrentLayer().isVisible()) {
-			menuBar_masquerCalques.setText("Masquer le calque sélectionné");
-		} else {
-			menuBar_masquerCalques.setText("Afficher le calque sélectionné");
-		}
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
-	}
-	
-	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Aide -> À propose</b>.
-	 * Ouvre une fenêtre affichant quelques informations sur l'application (nom, version et auteurs).
+	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Aide -> À propose</b>. Ouvre une fenêtre affichant quelques informations sur l'application (nom,
+	 * version et auteurs).
 	 */
 	@FXML
 	public void handleAboutUs() {
@@ -313,6 +293,19 @@ public class MenuBarController {
 	@FXML
 	public void handleHelp() {
 	
+	}
+	
+	/**
+	 * Modifie le texte du bouton <b>Calque -> Masquer/Afficher le calque sélectionné</b> en fonction de la visibilité du calque sélectionné. Affiche "Masquer le calque
+	 * sélectionné" si le calque sélectionner est visible et "Afficher le calque sélectionné" sinon.
+	 */
+	public void changeHideButtonText() {
+		if (Project.getInstance().getCurrentLayer().isVisible()) {
+			menuBar_masquerCalques.setText("Masquer le calque sélectionné");
+		} else {
+			menuBar_masquerCalques.setText("Afficher le calque sélectionné");
+		}
+		MainViewController.getInstance().getRightMenuController().updateLayerList();
 	}
 	
 	/**
@@ -358,8 +351,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b> et définissant l'action à effectuer en cas d'appel
-	 * à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b> et définissant l'action à effectuer en cas d'appel à
+	 * undo() ou redo() sur cette commande.
 	 */
 	public class MergeAllSave implements ICmd {
 		private LinkedList<Layer> allMergedLayers; // liste de tous les layers qui ont été aplatis
@@ -404,8 +397,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b> et définissant l'action à effectuer en cas d'appel
-	 * à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b> et définissant l'action à effectuer en cas d'appel à
+	 * undo() ou redo() sur cette commande.
 	 */
 	public class ImportImageSave implements ICmd {
 		private Layer oldCurrentLayer;
@@ -414,56 +407,56 @@ public class MenuBarController {
 		/**
 		 * Construit une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b>.
 		 */
-		private ImportImageSave(){
+		private ImportImageSave() {
 			oldCurrentLayer = Project.getInstance().getCurrentLayer(); // calque sélectionné avant l'importation de l'image
 		}
-
+		
 		@Override
 		public void execute() {
 			importImageLayer = Project.getInstance().getCurrentLayer(); // calque sélectionné après importation de l'image
 			RecordCmd.getInstance().saveCmd(this);
 		}
-
+		
 		@Override
 		public void undo() {
 			Project.getInstance().getLayers().remove(importImageLayer);
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
 		}
-
+		
 		@Override
 		public void redo() {
 			Project.getInstance().addLayer(importImageLayer);
 		}
-
-		public String toString(){
-		    return "Import d'image";
-        }
+		
+		public String toString() {
+			return "Import d'image";
+		}
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Ouvrir</b> et définissant l'action à effectuer en cas d'appel à undo()
-	 * ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Ouvrir</b> et définissant l'action à effectuer en cas d'appel à undo() ou
+	 * redo() sur cette commande.
 	 */
-	public class OpenSave implements  ICmd {
-
-        @Override
-        public void execute() {
-            RecordCmd.getInstance().saveCmd(this);
-        }
-
-        @Override
-        public void undo() {
-	        // ne fait rien
-        }
-
-        @Override
-        public void redo() {
-	        // ne fait rien
-        }
-
-        @Override
-        public String toString(){
-            return "Ouverture du projet";
-        }
-    }
+	public class OpenSave implements ICmd {
+		
+		@Override
+		public void execute() {
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() {
+			// ne fait rien
+		}
+		
+		@Override
+		public void redo() {
+			// ne fait rien
+		}
+		
+		@Override
+		public String toString() {
+			return "Ouverture du projet";
+		}
+	}
 }

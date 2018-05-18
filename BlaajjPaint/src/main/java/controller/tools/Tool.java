@@ -26,11 +26,10 @@ public abstract class Tool {
 	private final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers();
 	// l'évènement déclanché lorsqu'on relâche le bouton de la souris
 	private final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers();
-
-	private final EventHandler<MouseEvent> currentOnMouseEnteredEventHandler = createMouseEnteredEventHandlers(); // l'évènement déclanché lorsque la souris entre dans le calque
-
-	private final EventHandler<MouseEvent> currentOnMouseExitedEventHandler = createMouseExitedEventHandlers(); // l'évènement déclanché  lorsque la souris sort du calque
-
+	// l'évènement déclanché lorsque la souris entre dans le calque
+	private final EventHandler<MouseEvent> currentOnMouseEnteredEventHandler = createMouseEnteredEventHandlers();
+	// l'évènement déclanché  lorsque la souris sort du calque
+	private final EventHandler<MouseEvent> currentOnMouseExitedEventHandler = createMouseExitedEventHandlers();
 
 	// énumération contenant tous les outils gérés par le programme
 	protected enum ToolType {
@@ -165,8 +164,7 @@ public abstract class Tool {
 	 * @return l'évènement déclanché par cet outil lorsqu'on relâche le bouton de la la souris.
 	 */
 	protected abstract EventHandler<MouseEvent> createMouseReleasedEventHandlers();
-
-
+	
 	/**
 	 * Crée l'évènement déclanché par cet outil lorsque la souris entre dans le calque.
 	 *
