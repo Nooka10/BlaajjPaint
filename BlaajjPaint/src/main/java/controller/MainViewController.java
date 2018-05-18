@@ -151,12 +151,12 @@ public class MainViewController {
 		
 		// select pencil tool
 		if (event.getCode() == KeyCode.B) {
-			toolBarController.handlePencil(null);
+			toolBarController.handlePencil();
 		}
 		
 		// select eraser tool
 		if (event.getCode() == KeyCode.E) {
-			toolBarController.handleEraser(null);
+			toolBarController.handleEraser();
 		}
 	}
 
