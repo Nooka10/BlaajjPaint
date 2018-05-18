@@ -16,6 +16,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import utils.Utils;
 
 import javax.rmi.CORBA.Util;
@@ -71,8 +72,9 @@ public class Eraser extends ToolDrawer {
 		eraserMaskGC.setFill(Color.WHITE);
 		eraserMaskGC.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
 		eraserMaskGC.beginPath();
-		eraserMaskGC.moveTo(event.getX(), event.getY());
 		eraserMaskGC.setLineCap(StrokeLineCap.ROUND); // définit la forme de la gomme
+		eraserMaskGC.setLineJoin(StrokeLineJoin.ROUND);
+		
 		eraserMaskGC.setLineWidth(thickness); // définit l'épaisseur de la gomme
 		eraserMaskGC.setStroke(Color.BLACK); // définit la couleur de la gomme
 		eraserMaskGC.lineTo(event.getX(), event.getY());

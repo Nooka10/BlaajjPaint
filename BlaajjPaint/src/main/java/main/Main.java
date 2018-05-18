@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -28,7 +29,7 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("BlaajjPaint");
 		
-		// this.primaryStage.getIcons().add(new Image("file:resources/images/address_book_32.png")); // FIXME: permet d'ajouter une icone à l'application! :D
+		this.primaryStage.getIcons().add(new Image("/images/BlaajjPaint.jpg")); // FIXME: permet d'ajouter une icone à l'application! :D
 		
 		initRootLayout();
 	}

@@ -56,7 +56,6 @@ public class Pipette extends Tool {
 						
 						if (x >= 0 && x < item.getWidth() && y  >= 0 && y < item.getHeight()) {
 							Color color = maskReader.getColor(x, y);
-							System.out.println(color);
 							if (!color.equals(Color.TRANSPARENT)) {
 								Project.getInstance().setCurrentColor(color);
 								break;
