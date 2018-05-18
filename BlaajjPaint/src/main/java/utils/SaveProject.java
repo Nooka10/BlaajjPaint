@@ -17,7 +17,6 @@ import java.io.*;
  * Singleton pour être accessible depuis n'importe quelle classe du projet ou et avoir qu'une seule instance.
  */
 public class SaveProject {
-	private Project projectInstance = null; // instance du projet à sauvegarder
 	private File saveFile; // Fichier de sauvegarde
 
 	private static SaveProject saveProjectInstance = null;
@@ -40,7 +39,7 @@ public class SaveProject {
 	 */
 	public void saveAs(File f) {
 		saveFile = f;
-		save();
+		doSave();
 	}
 
 	/**
@@ -50,18 +49,24 @@ public class SaveProject {
 	public void save() {
 		if (saveFile == null) {		// Si le fichier n'a jamais été sauvegardé
 			MainViewController.getInstance().saveAs();
-
 		} else {
-			try {
-				FileOutputStream fos = new FileOutputStream(saveFile);
-				ObjectOutputStream out = new ObjectOutputStream(fos);
-				out.writeObject(projectInstance);
+			doSave();
+		}
+	}
 
-				out.close();
-				System.out.println("Save done");
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+	/**
+	 * Execute la sauvegarde
+	 */
+	private void doSave(){
+		try {
+			FileOutputStream fos = new FileOutputStream(saveFile);
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(Project.getInstance());
+
+			out.close();
+			System.out.println("Save done");
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -69,20 +74,21 @@ public class SaveProject {
 	 * Ouverture d'un ficher
 	 * Enregistre le File courrant
 	 * @param f		fichier source
-	 *
-	 * @throws IOException
-	 * @throws ClassNotFoundException
 	 */
-	public void openFile(File f) throws IOException, ClassNotFoundException {
+	public void openFile(File f) {
+		try {
+			FileInputStream fileInput = new FileInputStream(f);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInput);
 
-		FileInputStream fileInput = new FileInputStream(f);
-		ObjectInputStream objectInputStream = new ObjectInputStream(fileInput);
-		projectInstance = (Project) objectInputStream.readObject();
+			objectInputStream.readObject();
 
-		projectInstance.drawWorkspace();
-		System.out.println("openFile done");
-		saveFile = f;
+			Project.getInstance().drawWorkspace();
+			System.out.println("openFile done");
+			saveFile = f;
+		} catch (Exception ex) {
+			ex.printStackTrace();
 
+		}
 	}
 
 	/**
@@ -90,6 +96,5 @@ public class SaveProject {
 	 */
 	public void clear() {
 		saveFile = null;
-		// FIXME: pourquoi tu garde l'instance actuelle du projet?
 	}
 }

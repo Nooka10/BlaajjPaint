@@ -211,6 +211,15 @@ public class Layer extends Canvas implements Serializable {
 	/** 
 	 * SERIALISATION
 	 **/
+
+	/**
+	 * Permet de dé-serialiser en lisant un flux, la projet à l'aide de l'interface Serializable
+	 *
+	 * @param s flux de lecture
+	 *
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 
 		id = s.readInt();

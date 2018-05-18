@@ -191,8 +191,8 @@ public class MainViewController {
 				SaveProject.getInstance().openFile(file);
 				enableButtons();
 			} catch (Exception ex) {
-				
-				closeProject();
+				ex.printStackTrace();
+				//closeProject();
 				System.err.println("File is corrupted");
 			}
 	}
