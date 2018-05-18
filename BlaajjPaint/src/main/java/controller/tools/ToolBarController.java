@@ -150,6 +150,10 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Ouvre le fichier FXML situé au chemin fourni en paramètre.
+	 * @param FXMLpath, le chemin menant au fichier FXML à ouvrir.
+	 */
 	@FXML
 	private void addParamBar(String FXMLpath) {
 		if (paramBar != null) { // une barre de paramètre est déjà affichée --> on la supprime
@@ -164,15 +168,17 @@ public class ToolBarController {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Ferme le fichier FXML actuellement ouvert.
+	 */
 	@FXML
 	private void closeCurrentParamBar(){
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}
-
+	
 	/**
-	 * Permet d'activer les boutons.
-	 * A appeler dès qu'un project est ouvert ou créé
+	 * Permet d'activer les boutons de la barre d'outils.
 	 */
 	public void enableButton(){
 		handTool.setDisable(false);
@@ -185,10 +191,9 @@ public class ToolBarController {
 		textTool.setDisable(false);
 		shapeTool.setDisable(false);
 	}
-
+	
 	/**
-	 * Permet de déscativer les boutons.
-	 * A appeler à la fermeture d'un projet ou à la création de l'application
+	 * Permet de désactiver les boutons de la barre d'outils.
 	 */
 	public void disableButton(){
 		handTool.setDisable(true);
@@ -201,6 +206,4 @@ public class ToolBarController {
 		textTool.setDisable(true);
 		shapeTool.setDisable(true);
 	}
-	
-	
 }

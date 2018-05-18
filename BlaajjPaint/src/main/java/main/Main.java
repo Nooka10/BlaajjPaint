@@ -20,8 +20,8 @@ public class Main extends Application {
 	private BorderPane rootLayout;
 
 	/**
-	 * Lancement de l'interface graphique
-	 * @param primaryStage - Stage principale
+	 * Initialise et affiche l'interface graphique.
+	 * @param primaryStage, la scène principale
 	 */
 	@Override
 	public void start(Stage primaryStage) {
@@ -34,7 +34,7 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Initialise la fenêtre de base avec tous ses fxml ainsi que tous les controllers associés.
+	 * Initialise la fenêtre de base avec tous ses fxmls ainsi que tous les controllers associés.
 	 */
 	public void initRootLayout() {
 		try{
@@ -48,27 +48,25 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 		
-		MainViewController.getInstance().setMain(this);
+		MainViewController.getInstance().setMain(this); // établit un lien entre le main et le mainViewController
 		
-		// Show the scene containing the root layout.
 		Scene scene = new Scene(rootLayout);
 		primaryStage.setMaximized(true);
 		primaryStage.setScene(scene);
-		
 		primaryStage.show();
 	}
 
 	/**
-	 * Permet de récupéré la Stage principale
-	 * @return
+	 * Permet de récupérer la scène principale.
+	 * @return la scène principale.
 	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
 	/**
-	 * Fonction principale
-	 * @param args - Arguments passés au programme
+	 * Fonction main. Lance l'exécution du programme.
+	 * @param args - Arguments passés au programme.
 	 */
 	public static void main(String[] args) {
 		launch(args);
