@@ -101,7 +101,7 @@ public class RightMenuController {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (oldPropertyValue) {
-					Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity); // enregistre la modification de l'opacité dans l'historique
+					Project.getInstance().getCurrentLayer().createOpacitySave(newOpacity); // enregistre la modification de l'opacité dans l'historique
 				}
 			}
 		});
@@ -145,7 +145,7 @@ public class RightMenuController {
 	void handleOnMouseReleased() {
 		newOpacity = (int) Math.round(opacitySlider.getValue());
 		opacityTextField.setText(String.valueOf(newOpacity));
-		Project.getInstance().getCurrentLayer().setLayerOpacity(oldOpacity, newOpacity);
+		Project.getInstance().getCurrentLayer().createOpacitySave(oldOpacity, newOpacity);
 		oldOpacity = newOpacity;
 	}
 	

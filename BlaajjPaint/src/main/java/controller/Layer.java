@@ -3,7 +3,6 @@ package controller;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -108,10 +107,61 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	/**
+	 * Crée une commande sauvegardant le changement d'opacité d'un calque à la nouvelle valeur passée en paramètre.
+	 * @param newOpacity, la nouvelle opacité à affecter au calque.
+	 */
+	public void createOpacitySave(double newOpacity) {
+		new OpacitySave(newOpacity).execute();
+	}
+	
+	/**
+	 * Crée une commande sauvegardant le changement d'opacité d'un calque à la nouvelle valeur passée en paramètre.
+	 *
+	 * @param oldOpacity,
+	 * 		l'ancienne opacité du calque.
+	 * @param newOpacity,
+	 * 		la nouvelle opacité du calque.
+	 */
+	public void createOpacitySave(double oldOpacity, double newOpacity) {
+		new OpacitySave(oldOpacity, newOpacity).execute();
+	}
+	
+	/**
+	 * Applique au calque la nouvelle opacité reçue en paramètre.
+	 * @param opacity, un entier compris entre 0 et 100.
+	 */
+	public void updateLayerOpacity(double opacity) {
+		Project.getInstance().getCurrentLayer().setOpacity(opacity / 100);
+	}
+	
+	/**
+	 * Retourne l'opacité du calque.
+	 * @return l'opacité du calque, un entier entre 0 et 100.
+	 */
+	public int getLayerOpacity() {
+		return (int) Math.round(Project.getInstance().getCurrentLayer().getOpacity() * 100);
+	}
+	
+	@Override
+	public String toString() {
+		return nomCalque;
+	}
+	
+	/**
+	 * Réinitialise le compteur de calque. Appelé lorsqu'on ferme le projet.
+	 */
+	public static void reset() {
+		count = 0;
+	}
+	
+	/**
 	 * Fusionne le calque (this) avec le calque passé en paramètre et retourne un nouveau calque contenant la fusion des deux calques.
 	 *
-	 * @param backgroundLayer, le calque à l'arrière-plan (sur lequel on va dessiner)
-	 * @param mergeSurCalqueTemporaire, true si on fait un merge sur des calques temporaires (le count du calque retourné n'est pas incrémenté)
+	 * @param backgroundLayer,
+	 * 		le calque à l'arrière-plan (sur lequel on va dessiner)
+	 * @param mergeSurCalqueTemporaire,
+	 * 		true si on fait un merge sur des calques temporaires (le count du calque retourné n'est pas incrémenté)
+	 *
 	 * @return un nouveau calque contenant la fusion du calque courant et de celui reçu en paramètre.
 	 */
 	public Layer mergeLayers(Layer backgroundLayer, boolean mergeSurCalqueTemporaire) {
@@ -141,87 +191,67 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	/**
-	 * Classe interne qui encapsule la commande de changement d'opacité. Permet de faire un undo/redo sur le changement d'opacité. Attention à TOUJOURS setNewOpacity en
-	 * premier.
+	 * Effectue le rognage du calque aux dimensions passées en paramètre.
+	 * @param x1, la position X d'un des deux bords verticaux du calque (après rognage)
+	 * @param y1, la position Y d'un des deux bords horizontaux du calque (après rognage)
+	 * @param x2, la position X de l'autre des deux bords verticaux du calque (après rognage)
+	 * @param y2, la position Y de l'autre des deux bords horizontaux du calque (après rognage)
+	 * @return le calque rogné.
 	 */
-	public class OpacitySave implements ICmd {
+	public Layer crop(double x1, double y1, double x2, double y2){
+		WritableImage srcMask = new WritableImage((int) getWidth(), (int) getHeight());
+		srcMask = Utils.makeSnapshot(this, Color.TRANSPARENT, srcMask); // fait un snapshot du calque (this)
+		PixelReader pixelReader = srcMask.getPixelReader(); // récupère le PixelReader -> permet de lire les pixels sur le graphicsContext
 		
-		double oldOpacity;
-		double newOpacity;
-		
-		public OpacitySave(double newOpacity) {
-			// par défaut on set à l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que ça passe à 0
-			oldOpacity = getLayerOpacity();
-			this.newOpacity = newOpacity;
+		// calcule la nouvelle hauteur et la nouvelle largeur
+		double x = x1 < x2 ? x1 : x2;
+		double y = y1 < y2 ? y1 : y2;
+		double width = Math.abs(x1 - x2);
+		double height = Math.abs(y1 - y2);
+		// vérifie que les paramètres reçus sont dans le calque (this) et les adaptes si ce n'est pas le cas
+		if(x < 0){
+			x = 0;
 		}
-		
-		public OpacitySave(double oldOpacity, double newOpacity) {
-			this.oldOpacity = oldOpacity;
-			this.newOpacity = newOpacity;
+		if(y < 0) {
+			y = 0;
 		}
-		
-		@Override
-		public void execute() {
-			updateLayerOpacity(newOpacity);
-			RecordCmd.getInstance().saveCmd(this);
+		if (x + width > getWidth()){
+			width = getWidth() - x;
 		}
-		
-		@Override
-		public void undo() {
-			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(oldOpacity));
-			MainViewController.getInstance().getRightMenuController().setOpacitySlider(oldOpacity);
-			updateLayerOpacity(oldOpacity);
+		if (y + height > getHeight()){
+			height = getHeight() - y;
 		}
+
+		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
+		this.setWidth(width);
+		this.setHeight(height);
+		this.setTranslateX(x + this.getTranslateX());
+		this.setTranslateY(y + this.getTranslateY());
 		
-		@Override
-		public void redo() {
-			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(newOpacity));
-			MainViewController.getInstance().getRightMenuController().setOpacitySlider(newOpacity);
-			updateLayerOpacity(newOpacity);
-		}
-		
-		@Override
-		public String toString() {
-			return "Opacité changée de " + Math.round(oldOpacity) + " à " + Math.round(newOpacity);
-		}
+		Utils.redrawSnapshot(this, newImage);
+		return this;
 	}
 	
-	public void setLayerOpacity(double opacity) {
-		new OpacitySave(opacity).execute();
-	}
-	
-	public void setLayerOpacity(double oldOpacity, double newOpacity) {
-		new OpacitySave(oldOpacity, newOpacity).execute();
-	}
-	
-	public void updateLayerOpacity(double opacity) {
-		Project.getInstance().getCurrentLayer().setOpacity(opacity / 100);
-	}
-	
-	public int getLayerOpacity() {
-		return (int) Math.round(Project.getInstance().getCurrentLayer().getOpacity() * 100);
-	}
-	
-	@Override
-	public String toString() {
-		return nomCalque;
-	}
-	
-	
-	/** 
+	/**
 	 * SERIALISATION
 	 **/
-
 	/**
 	 * Permet de dé-serialiser en lisant un flux, la projet à l'aide de l'interface Serializable
 	 *
-	 * @param s flux de lecture
+	 * @param s
+	 * 		flux de lecture
 	 *
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
+	/**
+	 * Permet de déserialiser une sauvegarde du projet en lisant le flux reçu en paramètre.
+	 * @param s
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-
+		
 		id = s.readInt();
 		nomCalque = (String) s.readObject();
 		super.setWidth(s.readDouble());
@@ -231,8 +261,8 @@ public class Layer extends Canvas implements Serializable {
 		//super.setLayoutY(s.readDouble());
 		super.setTranslateX(s.readDouble());
 		super.setTranslateY(s.readDouble());
-
-
+		
+		
 		double tmpOpacity = s.readDouble();
 		// opacité de Canevas [0;1]
 		super.setOpacity(tmpOpacity);
@@ -241,13 +271,14 @@ public class Layer extends Canvas implements Serializable {
 		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
 		
 		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
-
+		
 	}
-
+	
 	/**
 	 * Permet de serialiser le projet en écrivant dans un flux, à l'aide de l'interface Serializable
 	 *
-	 * @param s flux d'écriture
+	 * @param s
+	 * 		flux d'écriture
 	 *
 	 * @throws IOException
 	 */
@@ -278,44 +309,66 @@ public class Layer extends Canvas implements Serializable {
 		
 	}
 	
-	public static void reset() {
-		count = 0;
-	}
-
-	public Layer crop(double x1, double y1, double x2, double y2){
-		// Récupération du PixelReader - permet de lire les pixels sur le graphics context
-		WritableImage srcMask = new WritableImage((int) getWidth(), (int) getHeight());
-		SnapshotParameters params = new SnapshotParameters();
-		params.setFill(Color.TRANSPARENT);
-		srcMask = snapshot(params, srcMask);
-		PixelReader pixelReader = srcMask.getPixelReader();
-		double x = x1 < x2 ? x1 : x2;
-		double y = y1 < y2 ? y1 : y2;
-		double width = Math.abs(x1 - x2);
-		double height = Math.abs(y1 - y2);
-		// Test si les positions sont dans le calque
-		if(x < 0){
-			x = 0;
-		}
-		if(y < 0){
-			y = 0;
-		}
-		if(x + width > getWidth()){
-			width = width - (x + width - getWidth());
-		}
-		if(y + height > getHeight()){
-			height = height - (y + height - getHeight());
-		}
-
-		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
+	/**
+	 * Classe interne implémentant une commande sauvegardant le changement d'opacité d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
+	 * cette commande.
+	 */
+	public class OpacitySave implements ICmd {
+		double oldOpacity;
+		double newOpacity;
 		
-		this.setWidth(width);
-		this.setHeight(height);
-
-		this.setTranslateX(x + this.getTranslateX());
-		this.setTranslateY(y + this.getTranslateY());
+		/**
+		 * Construit une commande sauvegardant le changement d'opacité d'un calque. L'ancienne opacité est enregistrée tout seul.
+		 *
+		 * @param newOpacity,
+		 * 		la nouvelle opacité du calque.
+		 *
+		 * @apiNote ATTENTION, ne peut fonctionner que si l'ancienne opacité est encore appliquée au calque (n'a pas encore été modifiée) au moment de la création de
+		 * cette commande.
+		 */
+		private OpacitySave(double newOpacity) {
+			// par défaut on set à l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que ça passe à 0
+			oldOpacity = getLayerOpacity();
+			this.newOpacity = newOpacity;
+		}
 		
-		Utils.redrawSnapshot(this, newImage);
-		return this;
+		/**
+		 * Construit une commande sauvegardant le changement d'opacité d'un calque.
+		 *
+		 * @param oldOpacity,
+		 * 		l'ancienne opacité du calque.
+		 * @param newOpacity,
+		 * 		la nouvelle opacité du calque.
+		 */
+		private OpacitySave(double oldOpacity, double newOpacity) {
+			this.oldOpacity = oldOpacity;
+			this.newOpacity = newOpacity;
+		}
+		
+		@Override
+		public void execute() {
+			updateLayerOpacity(newOpacity);
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() {
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(oldOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(oldOpacity);
+			updateLayerOpacity(oldOpacity);
+		}
+		
+		@Override
+		public void redo() {
+			MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(newOpacity));
+			MainViewController.getInstance().getRightMenuController().setOpacitySlider(newOpacity);
+			updateLayerOpacity(newOpacity);
+		}
+		
+		@Override
+		public String toString() {
+			return "Opacité changée de " + Math.round(oldOpacity) + " à " + Math.round(newOpacity);
+		}
 	}
+	
 }
