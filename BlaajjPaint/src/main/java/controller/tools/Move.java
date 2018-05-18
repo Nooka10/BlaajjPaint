@@ -4,6 +4,7 @@ import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -63,6 +64,26 @@ public class Move extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				currentSave.execute();
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				changeCursor(Cursor.MOVE);
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resetOldCursor();
 			}
 		};
 	}

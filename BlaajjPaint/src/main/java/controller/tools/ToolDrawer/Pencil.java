@@ -6,7 +6,10 @@ package controller.tools.ToolDrawer;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
@@ -83,6 +86,27 @@ public class Pencil extends ToolDrawer {
 				pencilMaskGC.stroke(); // tire le trait entre l'ancienne et la nouvelle position
 				pencilMaskGC.closePath(); // clôt le trait de pinceau
 				currentStrike.execute();
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/pinceauCursor.png"); // A CHANGER (PAS BEAU)
+				changeCursor(new ImageCursor(img,3,30));
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resetOldCursor();
 			}
 		};
 	}

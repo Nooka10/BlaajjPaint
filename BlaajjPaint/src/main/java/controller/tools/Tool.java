@@ -201,7 +201,6 @@ public abstract class Tool {
 	protected void changeCursor(Cursor cursor) {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
 		oldCursor = scene.getCursor();
-		System.out.println("new Cursor " + cursor);
 		scene.setCursor(cursor);
 	}
 	
@@ -210,7 +209,6 @@ public abstract class Tool {
 	 */
 	protected void resetOldCursor() {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
-		System.out.println("old cursor " + oldCursor);
 		scene.setCursor(oldCursor);
 	}
 }

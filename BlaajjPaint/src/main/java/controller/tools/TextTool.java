@@ -7,6 +7,7 @@ import controller.history.ICmd;
 import controller.history.RecordCmd;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -192,6 +193,26 @@ public class TextTool extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				// ne fait rien
+			}
+		};
+	}
+
+	@Override
+	protected  EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				changeCursor(Cursor.TEXT);
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resetOldCursor();
 			}
 		};
 	}

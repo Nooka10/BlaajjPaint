@@ -6,6 +6,8 @@ package controller.tools;
 import controller.Layer;
 import controller.Project;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -85,6 +87,27 @@ public class Pipette extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				// ne fait rien
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/pipetteCursor.png"); // A CHANGER (PAS BEAU)
+				changeCursor(new ImageCursor(img,2,30));
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resetOldCursor();
 			}
 		};
 	}
