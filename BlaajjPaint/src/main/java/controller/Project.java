@@ -40,7 +40,7 @@ public class Project implements Serializable {
 	
 	private Rectangle redBorder;
 	
-	private Rectangle clip;
+		private Rectangle clip;
 	/**
 	 * Projet étant un singleton on peut récupérer son instance unique avec getInstance
 	 *

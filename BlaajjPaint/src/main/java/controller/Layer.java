@@ -23,7 +23,8 @@ public class Layer extends Canvas implements Serializable {
 	private String nomCalque;
 	private String descriptionCalque;
 	private boolean isTempLayer; // vrai si le layer est temporaire, false sinon
-	
+
+
 	/**
 	 * Constructeur
 	 *
@@ -310,9 +311,7 @@ public class Layer extends Canvas implements Serializable {
 		
 		this.setWidth(width);
 		this.setHeight(height);
-		
-		//this.setLayoutX(x + this.getLayoutX());
-		//this.setLayoutY(y + this.getLayoutY());
+
 		this.setTranslateX(x + this.getTranslateX());
 		this.setTranslateY(y + this.getTranslateY());
 		
