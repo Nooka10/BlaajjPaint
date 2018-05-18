@@ -41,10 +41,10 @@ public class Utils {
 		layer.setOpacity(1);
 		boolean isVisible = layer.isVisible();
 		layer.setVisible(true);
-		layer.snapshot(params, image);
+		WritableImage snapshot = layer.snapshot(params, image);
 		layer.setVisible(isVisible);
 		layer.setOpacity(opacity);
-		return image;
+		return snapshot;
 	}
 	
 	/**
