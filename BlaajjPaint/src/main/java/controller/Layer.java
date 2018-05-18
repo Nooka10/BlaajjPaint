@@ -29,9 +29,12 @@ public class Layer extends Canvas implements Serializable {
 	/**
 	 * Construit un calque de la largeur et la hauteur fournis en paramètres.
 	 *
-	 * @param width, la largeur du calque.
-	 * @param height, la hauteur du calque.
-	 * @param isTempLayer, un booléen valant true s'il s'agit d'un calque temporaire (n'incrémente pas le count), false sinon.
+	 * @param width,
+	 * 		la largeur du calque.
+	 * @param height,
+	 * 		la hauteur du calque.
+	 * @param isTempLayer,
+	 * 		un booléen valant true s'il s'agit d'un calque temporaire (n'incrémente pas le count), false sinon.
 	 */
 	public Layer(int width, int height, boolean isTempLayer) {
 		super(width, height);
@@ -50,10 +53,14 @@ public class Layer extends Canvas implements Serializable {
 	/**
 	 * Construit un calque de la largeur et la hauteur fournis en paramètres et lui ajoute la description également reçue en paramètre.
 	 *
-	 * @param width  la largeur de notre calque
-	 * @param height la hauteur de notre calque
-	 * @param layerDescription le layerDescription à donner au calque (layerDescription affiché dans la liste de calque)
-	 * @param isTempLayer booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
+	 * @param width
+	 * 		la largeur de notre calque
+	 * @param height
+	 * 		la hauteur de notre calque
+	 * @param layerDescription
+	 * 		le layerDescription à donner au calque (layerDescription affiché dans la liste de calque)
+	 * @param isTempLayer
+	 * 		booléen valant True s'il s'agit d'un calque temporaire (n'incrémente pas l'id), false sinon
 	 */
 	public Layer(int width, int height, String layerDescription, boolean isTempLayer) {
 		this(width, height, isTempLayer);
@@ -66,7 +73,8 @@ public class Layer extends Canvas implements Serializable {
 	/**
 	 * Construit un nouveau calque en copiant les propriétés du calque reçu en paramètre.
 	 *
-	 * @param toCopy, le calque à copier.
+	 * @param toCopy,
+	 * 		le calque à copier.
 	 */
 	public Layer(Layer toCopy, boolean isTempLayer) {
 		this((int) toCopy.getWidth(), (int) toCopy.getHeight(), toCopy.layerDescription, isTempLayer);
@@ -84,6 +92,7 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Retourne vrai si le calque est un calque temporaire, false sinon.
+	 *
 	 * @return vrai si le calque est un calque temporaire, false sinon.
 	 */
 	public boolean isTempLayer() {
@@ -92,7 +101,9 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Permet de définir la valeur du compteur de calques. Utile pour l'ouverture d'un projet enregistré.
-	 * @param _count, la valeur à donner au compteur de calques.
+	 *
+	 * @param _count,
+	 * 		la valeur à donner au compteur de calques.
 	 */
 	static void setCount(int _count) {
 		count = ++_count;
@@ -100,6 +111,7 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Retourne l'id du calque.
+	 *
 	 * @return l'id du calque.
 	 */
 	public int id() {
@@ -108,7 +120,9 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Crée une commande sauvegardant le changement d'opacité d'un calque à la nouvelle valeur passée en paramètre.
-	 * @param newOpacity, la nouvelle opacité à affecter au calque.
+	 *
+	 * @param newOpacity,
+	 * 		la nouvelle opacité à affecter au calque.
 	 */
 	public void createOpacitySave(double newOpacity) {
 		new OpacitySave(newOpacity).execute();
@@ -128,7 +142,9 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Applique au calque la nouvelle opacité reçue en paramètre.
-	 * @param opacity, un entier compris entre 0 et 100.
+	 *
+	 * @param opacity,
+	 * 		un entier compris entre 0 et 100.
 	 */
 	public void updateLayerOpacity(double opacity) {
 		Project.getInstance().getCurrentLayer().setOpacity(opacity / 100);
@@ -136,6 +152,7 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Retourne l'opacité du calque.
+	 *
 	 * @return l'opacité du calque, un entier entre 0 et 100.
 	 */
 	public int getLayerOpacity() {
@@ -192,13 +209,19 @@ public class Layer extends Canvas implements Serializable {
 	
 	/**
 	 * Effectue le rognage du calque aux dimensions passées en paramètre.
-	 * @param x1, la position X d'un des deux bords verticaux du calque (après rognage)
-	 * @param y1, la position Y d'un des deux bords horizontaux du calque (après rognage)
-	 * @param x2, la position X de l'autre des deux bords verticaux du calque (après rognage)
-	 * @param y2, la position Y de l'autre des deux bords horizontaux du calque (après rognage)
+	 *
+	 * @param x1,
+	 * 		la position X d'un des deux bords verticaux du calque (après rognage)
+	 * @param y1,
+	 * 		la position Y d'un des deux bords horizontaux du calque (après rognage)
+	 * @param x2,
+	 * 		la position X de l'autre des deux bords verticaux du calque (après rognage)
+	 * @param y2,
+	 * 		la position Y de l'autre des deux bords horizontaux du calque (après rognage)
+	 *
 	 * @return le calque rogné.
 	 */
-	public Layer crop(double x1, double y1, double x2, double y2){
+	public Layer crop(double x1, double y1, double x2, double y2) {
 		WritableImage srcMask = new WritableImage((int) getWidth(), (int) getHeight());
 		srcMask = Utils.makeSnapshot(this, Color.TRANSPARENT, srcMask); // fait un snapshot du calque (this)
 		PixelReader pixelReader = srcMask.getPixelReader(); // récupère le PixelReader -> permet de lire les pixels sur le graphicsContext
@@ -209,20 +232,20 @@ public class Layer extends Canvas implements Serializable {
 		double width = Math.abs(x1 - x2);
 		double height = Math.abs(y1 - y2);
 		// vérifie que les paramètres reçus sont dans le calque (this) et les adaptes si ce n'est pas le cas
-		if(x < 0){
+		if (x < 0) {
 			x = 0;
 		}
-		if(y < 0) {
+		if (y < 0) {
 			y = 0;
 		}
-		if (x + width > getWidth()){
+		if (x + width > getWidth()) {
 			width = getWidth() - x;
 		}
-		if (y + height > getHeight()){
+		if (y + height > getHeight()) {
 			height = getHeight() - y;
 		}
-
-		WritableImage newImage = new WritableImage(pixelReader, (int)x, (int)y, (int)width, (int)height);
+		
+		WritableImage newImage = new WritableImage(pixelReader, (int) x, (int) y, (int) width, (int) height);
 		this.setWidth(width);
 		this.setHeight(height);
 		this.setTranslateX(x + this.getTranslateX());
@@ -233,79 +256,63 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	/**
-	 * SERIALISATION
-	 **/
-	/**
-	 * Permet de dé-serialiser en lisant un flux, la projet à l'aide de l'interface Serializable
-	 *
-	 * @param s
-	 * 		flux de lecture
-	 *
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	/**
 	 * Permet de déserialiser une sauvegarde du projet en lisant le flux reçu en paramètre.
-	 * @param s
+	 *
+	 * @param s,
+	 * 		le flux à lire et déserialiser.
+	 *
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 		
-		id = s.readInt();
-		nomCalque = (String) s.readObject();
-		super.setWidth(s.readDouble());
-		super.setHeight(s.readDouble());
+		id = s.readInt(); // lit et définit l'id du calque
+		nomCalque = (String) s.readObject(); // lit et définit le nom du calque
 		
-		//super.setLayoutX(s.readDouble());
-		//super.setLayoutY(s.readDouble());
-		super.setTranslateX(s.readDouble());
-		super.setTranslateY(s.readDouble());
+		setWidth(s.readDouble()); // lit et définit la largeur du calque
+		setHeight(s.readDouble()); // lit et définit la hauteur du calque
 		
+		setTranslateX(s.readDouble()); // lit et définit le décalage du calque sur l'axe des X
+		setTranslateY(s.readDouble()); // lit et définit le décalage du calque sur l'axe des Y
 		
-		double tmpOpacity = s.readDouble();
-		// opacité de Canevas [0;1]
-		super.setOpacity(tmpOpacity);
-		super.setVisible(s.readBoolean());
+		setOpacity(s.readDouble()); // lit et définit l'opacité du calque
+		setVisible(s.readBoolean()); // lit et définit la visibilité du calque
 		
-		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null);
-		
-		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight());
-		
+		Image image = SwingFXUtils.toFXImage(ImageIO.read(s), null); // récupère l'image du calque
+		getGraphicsContext2D().drawImage(image, 0, 0, getWidth(), getHeight()); // redessine l'image sur le nouveau calque
 	}
 	
 	/**
-	 * Permet de serialiser le projet en écrivant dans un flux, à l'aide de l'interface Serializable
+	 * Permet de sérialiser le projet pour en faire un sauvegarde en écrivant dans un flux.
 	 *
-	 * @param s
-	 * 		flux d'écriture
+	 * @param s,
+	 * 		le flux dans lequel on veux écrire.
 	 *
 	 * @throws IOException
 	 */
 	private void writeObject(ObjectOutputStream s) throws IOException {
-		//s.defaultWriteObject();
-		s.writeInt(id);
-		s.writeObject(nomCalque);
-		s.writeDouble(super.getWidth());
-		s.writeDouble(super.getHeight());
+		s.writeInt(id); // sauve l'id du calque
+		s.writeObject(nomCalque); // sauve le nom du calque
+		s.writeDouble(getWidth()); // sauve la largeur du calque
+		s.writeDouble(getHeight()); // sauve la hauteur du calque
 		
-		//s.writeDouble(getLayoutX());
-		//s.writeDouble(getLayoutY());
+		s.writeDouble(getTranslateX()); // sauve le décalage du calque sur l'axe de X
+		s.writeDouble(getTranslateY()); // sauve le décalage du calque sur l'axe de Y
 		
-		s.writeDouble(getTranslateX());
-		s.writeDouble(getTranslateY());
+		double tmpOpacity = getOpacity();
+		boolean tmpVisible = isVisible();
 		
-		double tmpOpacity = super.getOpacity();
-		boolean tmpVisible = super.isVisible();
+		s.writeDouble(tmpOpacity); // sauve l'opacité du calque
+		s.writeBoolean(tmpVisible); // sauve la visibilité du calque
 		
-		s.writeDouble(tmpOpacity);                    // opacité de Canevas [0;1]
-		s.writeBoolean(tmpVisible);
+		this.setVisible(true); // rend le calque visible afin de pouvoir en faire un snapshot
+		this.setOpacity(1); // enlève l'opacité du calque pour pouvoir en faire un snapshot
 		
-		this.setVisible(true);
-		this.setOpacity(1);                            // enlève l'opacité pour la sauvegardes
+		// fait un snapshot du calque puis le sauvegarde en tant qu'image au format png
 		ImageIO.write(SwingFXUtils.fromFXImage(Utils.makeSnapshot(this, Color.TRANSPARENT), null), "png", s);
-		this.setOpacity(tmpOpacity);                // Remet l'opacité
-		this.setVisible(tmpVisible);                // Remet la visibilité
+		
+		this.setOpacity(tmpOpacity); // remet l'opacité d'origine du calque
+		this.setVisible(tmpVisible); // remet la visibilité d'origine du calque
 		
 	}
 	
@@ -318,7 +325,7 @@ public class Layer extends Canvas implements Serializable {
 		double newOpacity;
 		
 		/**
-		 * Construit une commande sauvegardant le changement d'opacité d'un calque. L'ancienne opacité est enregistrée tout seul.
+		 * Construit une commande sauvegardant le changement d'opacité d'un calque. L'ancienne opacité est calculée et enregistrée automatiquement.
 		 *
 		 * @param newOpacity,
 		 * 		la nouvelle opacité du calque.
