@@ -17,7 +17,7 @@ import javafx.scene.transform.Rotate;
 import utils.Utils;
 
 /**
- * contrôleur associé au fichier FXML TransformationsController.fxml et gérant l'ensemble des actions associées au sous-menu <b>Calque -> Transformations</b>.
+ * Contrôleur associé au fichier FXML TransformationsController.fxml et gérant l'ensemble des actions associées au sous-menu <b>Calque -> Transformations</b>.
  */
 public class TransformationsController {
 	

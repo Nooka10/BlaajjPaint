@@ -411,8 +411,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>+</b> en bas à droite de la GUI. Enregistre la création du nouveau calque et
-	 * définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>+</b> en bas à droite de la GUI. Enregistre la création du nouveau calque et définit
+	 * l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class NewLayerSave implements ICmd {
 		private Layer oldCurrentLayer;
@@ -450,8 +450,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>-</b> en bas à droite de la GUI. Enregistre la suppression du calque sélectionné
-	 * et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>-</b> en bas à droite de la GUI. Enregistre la suppression du calque sélectionné et
+	 * définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class DeleteLayerSave implements ICmd {
 		private Layer oldCurrentLayer;
@@ -528,8 +528,8 @@ public class RightMenuController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>fusion</b> en bas à droite de la GUI. Enregistre la fusion du calque sélectionné
-	 * avec le calque situé juste en dessous, et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>fusion</b> en bas à droite de la GUI. Enregistre la fusion du calque sélectionné avec
+	 * le calque situé juste en dessous, et définit l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
 	public class MergeSave implements ICmd {
 		

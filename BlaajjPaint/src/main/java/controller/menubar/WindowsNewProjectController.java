@@ -10,11 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import utils.UndoException;
 import utils.Utils;
 
 /**
- * contrôleur associé au fichier FXML WindowsNewProject.fxml et gérant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le
+ * Contrôleur associé au fichier FXML WindowsNewProject.fxml et gérant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le
  * bouton du menu <b>Fichier -> Nouveau</b>.
  */
 public class WindowsNewProjectController {
@@ -25,10 +24,10 @@ public class WindowsNewProjectController {
 	private Button createButton;
 	
 	@FXML
-	private TextField width;
+	private TextField widthTextField;
 	
 	@FXML
-	private TextField height;
+	private TextField heightTextField;
 
 	private NewProjectSave newProjectSave;
 	
@@ -37,24 +36,28 @@ public class WindowsNewProjectController {
 	 */
 	@FXML
 	private void initialize() {
-		newProjectSave = new NewProjectSave();
-		width.textProperty().addListener(new ChangeListener<String>() {
+		newProjectSave = new NewProjectSave(); // crée une sauvegarde de l'état origniel du projet que l'on vient d'ouvrir
+		
+		// ajoute un changeListener à widthTextField -> la méthode changed() est appelée à chaque fois que le texte de widthTextField est modifié
+		widthTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
-					width.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
+					widthTextField.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
 				} else {
-					Utils.checkWidthHeightValidity(width, height, createButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
+					Utils.checkWidthHeightValidity(widthTextField, heightTextField, createButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 				}
 			}
 		});
-		height.textProperty().addListener(new ChangeListener<String>() {
+		
+		// ajoute un changeListener à heightTextField -> la méthode changed() est appelée à chaque fois que le texte de heightTextField est modifié
+		heightTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (!newValue.matches("\\d*")) { // vrai si l'utilisateur n'a pas entré un chiffre
-					height.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
+					heightTextField.setText(oldValue); // on annule la dernière frappe -> seul les chiffres sont autorisés
 				} else {
-					Utils.checkWidthHeightValidity(width, height, createButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
+					Utils.checkWidthHeightValidity(widthTextField, heightTextField, createButton); // vrai si l'utilisateur a entré un chiffre et que la largeur et la hauteur sont des entrées valides
 				}
 			}
 		});
@@ -69,8 +72,8 @@ public class WindowsNewProjectController {
 		//FIXME: vérifier qu'un projet est déjà ouvert! Sinon on ferme pour rien!
 		MainViewController.getInstance().closeProject(); // ferme le projet actuellement ouvert s'il y en a un.
 		
-		int width = Integer.parseInt(this.width.getText());
-		int height = Integer.parseInt(this.height.getText());
+		int width = Integer.parseInt(this.widthTextField.getText());
+		int height = Integer.parseInt(this.heightTextField.getText());
 		
 		Project.getInstance().initData(width, height, true); // initialise le nouveau projet
 		
@@ -103,12 +106,12 @@ public class WindowsNewProjectController {
 
 		@Override
 		public void undo() {
-			// Ne fait rien
+			// ne fait rien
 		}
 
 		@Override
 		public void redo() {
-			// Ne fait rien
+			// ne fait rien
 		}
 
 		@Override

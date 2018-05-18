@@ -12,8 +12,8 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 
 /**
- * Classe implémentant l'outil pinceau permettant de dessiner des pixels du calque à l'aide de la souris et de leur attribuer la couleur actuellement sélectionnée
- * dans le sélecteur de couleur.
+ * Classe implémentant l'outil <b>pinceau</b> permettant de dessiner des pixels du calque à l'aide de la souris et de leur attribuer la couleur actuellement sélectionnée
+ * dans le sélecteur de couleur. Implémente le modèle Singleton.
  */
 public class Pencil extends ToolDrawer {
 	

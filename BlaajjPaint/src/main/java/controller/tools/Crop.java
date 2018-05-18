@@ -14,12 +14,11 @@ import utils.UndoException;
 import utils.Utils;
 
 /**
- * Outil pour rogner un calque grâce à une séléction réctangulaire implémentant le modèle Singleton)
+ * Classe implémentant l'outil <b>rogner</b> permettant de rogner un calque. Implémente le modèle Singleton.
  */
 public class Crop extends Tool {
-	// Attributs de l'outil Crop
-	private static Crop toolInstance = null;
-	private CropSave cropSave;
+	private static Crop toolInstance = null; // l'instance unique du singleton Crop
+	private CropSave cropSave; // la commande de sauvegarde du recadrage
 	private Layer oldCurrentLayer;
 	private Layer selectionCropLayer;
 	private double startX;
@@ -28,15 +27,14 @@ public class Crop extends Tool {
 	private double posY;
 	
 	/**
-	 * Contructeur privé (modèle Singleton)
+	 * Contructeur privé (modèle Singleton).
 	 */
 	private Crop() {
 		toolType = ToolType.CROP;
 	}
 	
 	/**
-	 * Retourne l'instance unique du singleton Crop. La crée si elle n'existe pas déjà.
-	 *
+	 * Retourne l'instance unique du singleton Crop.
 	 * @return l'instance unique du singleton Crop.
 	 */
 	public static Crop getInstance() {
@@ -47,97 +45,84 @@ public class Crop extends Tool {
 	}
 	
 	/**
-	 * Fonction appelé pour validé le rognage de l'image par rapport à la séléction
+	 * Initialise un rognage en créant un calque temporaire affichant la zone actuellement sélectionnée par l'utilisateur.
 	 */
-	public void validate() {
-		if (cropSave != null) {
-			// Rognage du calque
-			oldCurrentLayer.crop(startX, startY, posX, posY);
-			// Remise en place des calques
-			Project.getInstance().setCurrentLayer(oldCurrentLayer);
-			Project.getInstance().getLayers().remove(selectionCropLayer);
-			Project.getInstance().drawWorkspace();
-			
-			cropSave.execute(); // Exécution de la cmd
-			cancel(); // Permet d'être prêt à recevoir un nouveau rognage
-		}
+	private void initCrop() {
+		startX = 0;
+		startY = 0;
+		posX = 0;
+		posY = 0;
+		
+		oldCurrentLayer = Project.getInstance().getCurrentLayer(); // sauvegarde le calque actuellement sélectionné. C'est lui qui sera rogné
+		
+		// Crée un calque temporaire utilisé pour afficher la sélection
+		selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int) oldCurrentLayer.getHeight(), true);
+		selectionCropLayer.setTranslateX(oldCurrentLayer.getTranslateX());
+		selectionCropLayer.setTranslateY(oldCurrentLayer.getTranslateY());
+		
+		Project.getInstance().setCurrentLayer(selectionCropLayer); // définit le calque temporaire comme calque courant
+		Project.getInstance().addLayer(selectionCropLayer); // ajoute le calque temporaire au projet
 	}
 	
 	/**
-	 * Annulation de la séléction actuel et préparation à une nouvelle séléction/rognage
-	 */
-	public void cancel() {
-		reset(); // reset des attributs
-		initCrop(); // Préparation à un nouvelle séléction pour le rognage
-	}
-	
-	/**
-	 * Remet en place les calque et les attributs. Permet de quitter l'outil proprement ou reset avant un nouvelle séléction
+	 * Permet de quitter l'outil proprement et de réinitialiser l'outil Crop avant une nouvelle utilisation.
 	 */
 	private void reset() {
-		if (Project.getInstance().getCurrentLayer().equals(selectionCropLayer)) {
-			Project.getInstance().getLayers().remove(selectionCropLayer); // Supprime le calque temporaire d'ajout de text (textLayer)
-			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		if (selectionCropLayer != null) {
+			Project.getInstance().getLayers().remove(selectionCropLayer); // Supprime le calque temporaire
+			Project.getInstance().setCurrentLayer(oldCurrentLayer); // redéfinit le calque actuellement sélectionné de départ
+			selectionCropLayer = null;
 			MainViewController.getInstance().getRightMenuController().updateLayerList(); // redessine la liste des calques de la GUI
 		}
 		cropSave = null;
-		selectionCropLayer = null;
 	}
 	
+	/**
+	 * Annule le rognage en cours, supprime la sélection actuelle et prépare l'outil Crop pour une nouvelle utilisation.
+	 */
+	public void cancel() {
+		reset(); // réinitialisation de l'outil Crop
+		initCrop(); // Préparation à une nouvelle utilisation de l'outil Crop
+	}
 	
 	/**
-	 * Permet de dessiner le réctangle de séléction pour le rognage
+	 * Méthode appelée pour effectuer le rognage du calque selon la sélection effectuée par l'utilisateur à l'aide de la souris.
+	 */
+	public void validate() {
+		if (cropSave != null) {
+			oldCurrentLayer.crop(startX, startY, posX, posY); // rogne le calque
+			
+			cropSave.execute();
+			cancel(); // réinitialise l'outil de rognage afin de pouvoir réutiliser l'outil Crop directement.
+		}
+	}
+	
+	/**
+	 * Dessine le rectangle de sélection représentant les bordure du calque tel qu'elles seront après le rognage.
 	 */
 	private void drawRectOnLayer() {
-		// Test si la séléction est initialisé
-		if (cropSave != null) {
+		if (cropSave != null) { // vrai si la sélection est initialisée
 			double width = Math.abs(startX - posX);
 			double height = Math.abs(startY - posY);
 			double x = startX <= posX ? startX : posX;
 			double y = startY <= posY ? startY : posY;
 			GraphicsContext gc = selectionCropLayer.getGraphicsContext2D();
-			gc.clearRect(0, 0, selectionCropLayer.getWidth(), selectionCropLayer.getHeight());
+			gc.clearRect(0, 0, selectionCropLayer.getWidth(), selectionCropLayer.getHeight()); // on efface le calque temporaire
 			gc.setStroke(Color.BLUE);
-			gc.strokeRect(x, y, width, height);
+			gc.strokeRect(x, y, width, height); // on redessine le rectangle
 		}
 	}
 	
 	@Override
 	public void CallbackOldToolChanged() {
 		super.CallbackOldToolChanged();
-		reset();
+		reset(); // on change d'outil -> reset le Crop
 	}
 	
 	@Override
 	public void CallbackNewToolChanged() {
 		super.CallbackNewToolChanged();
-		initCrop(); // besoin d'être initialisé pour que le premier clique fonctionne correctement
-	}
-	
-	/**
-	 * Initialisation de la zone de séléction et les outils utile pour le rognage
-	 */
-	private void initCrop() {
-		// Sauvegarde du calque sur lequel on va rogner
-		oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		// Création du calque temporaire utilisé pour la séléction
-		selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int) oldCurrentLayer.getHeight(), true);
-		//selectionCropLayer.setLayoutX(oldCurrentLayer.getLayoutX());
-		//selectionCropLayer.setLayoutY(oldCurrentLayer.getLayoutY());
-		selectionCropLayer.setTranslateX(oldCurrentLayer.getTranslateX());
-		selectionCropLayer.setTranslateY(oldCurrentLayer.getTranslateY());
-		
-		selectionCropLayer.setVisible(true);
-		
-		oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		Project.getInstance().setCurrentLayer(selectionCropLayer);
-		Project.getInstance().getLayers().addFirst(selectionCropLayer);
-		Project.getInstance().drawWorkspace();
-		// initialisation des attributs
-		startX = 0;
-		startY = 0;
-		posX = 0;
-		posY = 0;
+		initCrop(); // initialise l'outil Crop pour qu'il soit opérationnel pour le premier clic de souris
 	}
 	
 	@Override
@@ -145,19 +130,17 @@ public class Crop extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// premier clique - set des valeurs et création du calque
-				if (cropSave == null) {
-					// A initialisé si l'outil a été utilisé
-					if (selectionCropLayer == null) {
-						initCrop();
+				if (cropSave == null) {    // premier clic -> on set les valeurs de départ et on crée un calque temporaire qui affichera le rectangle de sélection
+					if (selectionCropLayer == null) { // à initialisé si l'outil a été utilisé
+						initCrop(); // FIXME: Est-ce vraiment utile??!
 					}
-					cropSave = new CropSave(oldCurrentLayer);
+					cropSave = new CropSave(oldCurrentLayer); // crée une sauvegarde du rognage
 					startX = event.getX();
 					startY = event.getY();
 					posX = event.getX();
 					posY = event.getY();
 				} else {
-					// récupération de la position du clique
+					// détermine la position du clic
 					if (Math.abs(posX - event.getX()) <= Math.abs(startX - event.getX())) {
 						posX = event.getX();
 					} else {
@@ -170,7 +153,7 @@ public class Crop extends Tool {
 					}
 				}
 				
-				drawRectOnLayer(); // affichage du text sur le layer
+				drawRectOnLayer(); // dessine le rectangle de sélection
 			}
 		};
 	}
@@ -180,7 +163,7 @@ public class Crop extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// récupération de la position du clique
+				// détermine la position du clic
 				if (Math.abs(posX - event.getX()) <= Math.abs(startX - event.getX())) {
 					posX = event.getX();
 				} else {
@@ -192,7 +175,7 @@ public class Crop extends Tool {
 					startY = event.getY();
 				}
 				
-				drawRectOnLayer();
+				drawRectOnLayer(); // dessine le rectangle de sélection
 			}
 		};
 	}
@@ -202,39 +185,35 @@ public class Crop extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-			
+				// ne fait rien
 			}
 		};
 	}
 	
 	/**
-	 * Commande permettant le undo/redo
+	 * Classe interne implémentant une commande sauvegardant le rognage d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
+	 * cette commande.
 	 */
 	class CropSave implements ICmd {
-		// Attributs nécessaire pour l'undo / redo
 		private Image undosave;
 		private Image redosave = null;
 		private double widthLayer;
 		private double heightLayer;
-		private double layoutXLayer;
-		private double layoutYLayer;
-		private Layer layerCroped;
+		private double translateXLayer;
+		private double translateYLayer;
+		private Layer layerCropped;
 		
 		/**
-		 * Constructeu
-		 *
-		 * @param layerToCrop
-		 * 		- layer sur lequel on va rogner
+		 * Construit une commande sauvegardant le rognage d'un calque.
+		 * @param layerToCrop, le calque que l'on souhaite rogner.
 		 */
 		public CropSave(Layer layerToCrop) {
 			undosave = Utils.makeSnapshot(layerToCrop, Color.TRANSPARENT);
 			widthLayer = layerToCrop.getWidth();
 			heightLayer = layerToCrop.getHeight();
-			//layoutXLayer = layerToCrop.getLayoutX();
-			//layoutYLayer = layerToCrop.getLayoutY();
-			layoutXLayer = layerToCrop.getTranslateX();
-			layoutYLayer = layerToCrop.getTranslateY();
-			layerCroped = layerToCrop;
+			translateXLayer = layerToCrop.getTranslateX();
+			translateYLayer = layerToCrop.getTranslateY();
+			layerCropped = layerToCrop;
 		}
 		
 		@Override
@@ -247,31 +226,29 @@ public class Crop extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-			redosave = Utils.makeSnapshot(layerCroped, Color.TRANSPARENT);
-			// Sauvegarde du calque sur lequel on va rogner
-			Layer currentLayer = layerCroped;
-			// Sauvegarde des dimensions
+			redosave = Utils.makeSnapshot(layerCropped, Color.TRANSPARENT); // on fait un snapshot du calque après sa modification
+			Layer currentLayer = layerCropped; // sauvegarde le calque sur lequel on souhaite annuler le rognage
+			
+			// sauvegarde les dimensions de ce calque
 			double widthTemp = currentLayer.getWidth();
 			double heightTemp = currentLayer.getHeight();
-			//double layoutXTemp = currentLayer.getLayoutX();
-			//double layoutYTemp = currentLayer.getLayoutY();
+			double translateXTemp = currentLayer.getTranslateX();
+			double translateYTemp = currentLayer.getTranslateY();
 			
-			double layoutXTemp = currentLayer.getTranslateX();
-			double layoutYTemp = currentLayer.getTranslateY();
-			// Remise à jour des anciennes dimensions et décallage
-			layerCroped.setWidth(widthLayer);
-			layerCroped.setHeight(heightLayer);
-			// layerCroped.setLayoutX(layoutXLayer);
-			// layerCroped.setLayoutY(layoutYLayer);
-			layerCroped.setTranslateX(layoutXLayer);
-			layerCroped.setTranslateY(layoutYLayer);
+			// redéfinit les dimensions et le décalage tel qu'ils étaient définit avant le Crop
+			layerCropped.setWidth(widthLayer);
+			layerCropped.setHeight(heightLayer);
+			layerCropped.setTranslateX(translateXLayer);
+			layerCropped.setTranslateY(translateYLayer);
 			
-			Utils.redrawSnapshot(layerCroped, undosave);
+			Utils.redrawSnapshot(layerCropped, undosave); // redessine le snapshot undosave sur le calque layerCropped
 			
+			// FIXME: tu fais quoi là?
+			// définit les dimensions et le décalage tel qu'ils étaient définit après le Crop
 			widthLayer = widthTemp;
 			heightLayer = heightTemp;
-			layoutXLayer = layoutXTemp;
-			layoutYLayer = layoutYTemp;
+			translateXLayer = translateXTemp;
+			translateYLayer = translateYTemp;
 			
 			undosave = null;
 		}
@@ -282,43 +259,41 @@ public class Crop extends Tool {
 				throw new UndoException();
 			}
 			
-			undosave = Utils.makeSnapshot(layerCroped, Color.TRANSPARENT);
-			// Sauvegarde du calque sur lequel on va rogner
-			Layer currentLayer = layerCroped;
-			// Sauvegarde des dimensions
+			undosave = Utils.makeSnapshot(layerCropped, Color.TRANSPARENT); // on fait un snapshot du calque avant sa modification
+			Layer currentLayer = layerCropped; // sauvegarde le calque que l'on va rogner
+			
+			// sauvegarde des dimensions de ce calque
 			double widthTemp = currentLayer.getWidth();
 			double heightTemp = currentLayer.getHeight();
-			//double layoutXTemp = currentLayer.getLayoutX();
-			//double layoutYTemp = currentLayer.getLayoutY();
-			double layoutXTemp = currentLayer.getTranslateX();
-			double layoutYTemp = currentLayer.getTranslateY();
-			// Nettoyage du calque - ne pas change de place (ou changer les attribut width et height) peut être amélioré
-			layerCroped.getGraphicsContext2D().clearRect(0, 0, layerCroped.getWidth(), layerCroped.getHeight());
-			// Remise à jour des anciennes dimensions et décallage (calque undo)
-			layerCroped.setWidth(widthLayer);
-			layerCroped.setHeight(heightLayer);
-			//layerCroped.setLayoutX(layoutXLayer);
-			//layerCroped.setLayoutY(layoutYLayer);
-			layerCroped.setTranslateX(layoutXLayer);
-			layerCroped.setTranslateY(layoutYLayer);
+			double translateXTemp = currentLayer.getTranslateX();
+			double translateYTemp = currentLayer.getTranslateY();
+			
+			layerCropped.getGraphicsContext2D().clearRect(0, 0, layerCropped.getWidth(), layerCropped.getHeight()); // efface le calque
+			
+			// redéfinit les dimensions et le décalage tel qu'ils étaient définit avant le Crop
+			layerCropped.setWidth(widthLayer);
+			layerCropped.setHeight(heightLayer);
+			//layerCropped.setLayoutX(translateXLayer);
+			//layerCropped.setLayoutY(translateYLayer);
+			layerCropped.setTranslateX(translateXLayer);
+			layerCropped.setTranslateY(translateYLayer);
 			
 			//FIXME: Voir avec James si ya moyen d'utiliser Utils.redrawSnapshot()
-			// Remise de l'image du calque durant l'opération précédente
-			layerCroped.getGraphicsContext2D().drawImage(redosave, 0, 0);
+			
+			layerCropped.getGraphicsContext2D().drawImage(redosave, 0, 0); // redessine le snapshot redosave sur le calque layerCropped
+			
+			// FIXME: tu fais quoi là?
+			// définit les dimensions et le décalage tel qu'ils étaient définit avant le Crop
 			widthLayer = widthTemp;
 			heightLayer = heightTemp;
-			layoutXLayer = layoutXTemp;
-			layoutYLayer = layoutYTemp;
+			translateXLayer = translateXTemp;
+			translateYLayer = translateYTemp;
 			redosave = null;
 		}
 		
-		/**
-		 * Définit le nom de la commande. Utilisé pour l'historique
-		 *
-		 * @return le nom de la commmande
-		 */
+		@Override
 		public String toString() {
-			return "Image rognée";
+			return "Rognage du " + oldCurrentLayer;
 		}
 	}
 }

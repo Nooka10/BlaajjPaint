@@ -22,7 +22,7 @@ import utils.Utils;
 import javax.rmi.CORBA.Util;
 
 /**
- * Classe implémentant l'outil gomme permettant d'effacer des pixels du calque à l'aide de la souris.
+ * Classe implémentant l'outil <b>gomme</b> permettant d'effacer des pixels du calque à l'aide de la souris. Implémente le modèle Singleton.
  */
 public class Eraser extends ToolDrawer {
 	

@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 /**
- * Controleur de la fenêtre d'informations qui apparait lorsque l'utilisateur clique sur le menu <br>Aide -> À propos</br>.
+ * Contrôleur associé au fichier FXML AboutUs.fxml et gérant la fenêtre d'informations qui apparaît lorsque l'utilisateur clique sur le menu <br>Aide -> À propos</br>.
  */
 public class AboutUsController {
 	@FXML

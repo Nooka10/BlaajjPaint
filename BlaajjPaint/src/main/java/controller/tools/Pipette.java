@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 /**
- * Classe implémentant l'outil pipette
+ * Classe implémentant l'outil <b>pipette</b>
  */
 public class Pipette extends Tool {
 	
@@ -72,7 +72,7 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// Ne fait rien
+				// ne fait rien
 			}
 		};
 	}
@@ -82,7 +82,7 @@ public class Pipette extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// Ne fait rien
+				// ne fait rien
 			}
 		};
 	}
