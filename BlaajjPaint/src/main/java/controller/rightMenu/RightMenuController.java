@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -57,6 +54,9 @@ public class RightMenuController {
 	
 	@FXML
 	private AnchorPane rightMenu;
+
+	@FXML
+	private ScrollPane scrollPaneHistory;
 	
 	private int oldOpacity = 100;
 	
@@ -74,7 +74,6 @@ public class RightMenuController {
 	@FXML
 	private void initialize() {
 		colorPicker.setValue(Color.BLACK);
-		
 		// Ajoute un changeListener à opacityTextField -> la méthode changed() est appelée à chaque fois que le texte de opacityTextField est modifié
 		opacityTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -104,6 +103,15 @@ public class RightMenuController {
 				if (oldPropertyValue) {
 					Project.getInstance().getCurrentLayer().setLayerOpacity(newOpacity); // enregistre la modification de l'opacité dans l'historique
 				}
+			}
+		});
+
+		// Ajoute un changeListener à historyList -> la méthode changed() est appelé à chaque fois que le la liste
+		// s'aggrandit et que le scroll doit resté en bas de la vbox
+		historyList.heightProperty().addListener(new ChangeListener() {
+			@Override
+			public void changed(ObservableValue observable, Object oldvalue, Object newValue) {
+				scrollPaneHistory.setVvalue((Double)newValue );
 			}
 		});
 	}
