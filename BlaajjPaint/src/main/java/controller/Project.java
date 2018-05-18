@@ -388,7 +388,8 @@ public class Project implements Serializable {
 		initData(s.readInt(), s.readInt(), false);
 		
 		int nbCalques = s.readInt();
-		
+
+		// récupère l'id le plus grand pour pas qu'il y ait 2 calques avec le même id
 		int maxCount = 1;
 		for (int i = 0; i < nbCalques; ++i) {
 			Layer l = (Layer) s.readObject();
@@ -398,12 +399,18 @@ public class Project implements Serializable {
 			}
 			
 		}
-		
-		Layer.setCount(maxCount); // fixme: est-ce vraiment utile vu que tu ajoute les calques avant, le count est incrémenté tout seul non?
+
+
+		Layer.setCount(maxCount);
 		
 		setCurrentLayer(layers.getFirst());
 		
 		MainViewController.getInstance().getRightMenuController().updateLayerList();
+
+		if(currentColor == null) {
+			currentColor = MainViewController.getInstance().getRightMenuController().getColorPicker().getValue();
+		}
+
 		drawWorkspace();
 	}
 
