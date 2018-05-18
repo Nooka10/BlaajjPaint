@@ -52,7 +52,6 @@ public class ParamTextController {
 				new ChangeListener<Number>() {
 					@Override
 					public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-						System.out.println(fontList.getItems().get((int) newValue));
 						textTool.setFont(new Font(fontList.getItems().get((int) newValue), sliderSizeFont.getValue()));
 					}
 				}
@@ -72,6 +71,13 @@ public class ParamTextController {
 					textTool.setFont(new Font(fontList.getValue(), Integer.parseInt(newValue)));
 					sliderSizeFont.setValue(Integer.parseInt(textFieldSizeFont.getText()));
 				}
+			}
+		});
+
+		textValue.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				textTool.changeTextValue(textValue.getText());
 			}
 		});
 	}

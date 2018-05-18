@@ -54,7 +54,7 @@ public class Crop extends Tool {
 		posY = 0;
 		
 		oldCurrentLayer = Project.getInstance().getCurrentLayer(); // sauvegarde le calque actuellement sélectionné. C'est lui qui sera rogné
-		
+		System.out.println(oldCurrentLayer + " " + oldCurrentLayer.getWidth() + " " + oldCurrentLayer.getHeight() );
 		// Crée un calque temporaire utilisé pour afficher la sélection
 		selectionCropLayer = new Layer((int) oldCurrentLayer.getWidth(), (int) oldCurrentLayer.getHeight(), true);
 		selectionCropLayer.setTranslateX(oldCurrentLayer.getTranslateX());
@@ -72,6 +72,7 @@ public class Crop extends Tool {
 			Project.getInstance().getLayers().remove(selectionCropLayer); // Supprime le calque temporaire
 			Project.getInstance().setCurrentLayer(oldCurrentLayer); // redéfinit le calque actuellement sélectionné de départ
 			selectionCropLayer = null;
+			oldCurrentLayer = null;
 			MainViewController.getInstance().getRightMenuController().updateLayerList(); // redessine la liste des calques de la GUI
 		}
 		cropSave = null;
