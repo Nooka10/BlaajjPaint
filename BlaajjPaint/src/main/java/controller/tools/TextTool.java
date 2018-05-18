@@ -5,22 +5,21 @@ import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import utils.UndoException;
-import utils.Utils;
 
 /**
- * Outil permettant de mettre du text dans l'image
+ * Classe implémentant l'outil <b>Texte</b> permettant d'ajouter un calque contenant du texte de la taille, la police et la couleur choisi par l'utilisateur. Implémente
+ * le modèle Singleton.
  */
 public class TextTool extends Tool {
 	private static TextTool toolInstance = null;
-	private AddText addText;
+	private textSave textSave;
 	private Font font;
 	private Layer textLayer;
 	private Layer oldCurrentLayer;
@@ -29,19 +28,23 @@ public class TextTool extends Tool {
 	private int y;
 	
 	/**
-	 * Constructeur privé de l'objet pour rajouter du text à l'image
+	 * Constructeur privé (modèle singleton).
 	 */
 	private TextTool() {
 		toolType = ToolType.TEXT;
-		MainViewController.getInstance().getRightMenuController().getColorPicker().setOnHiding(event -> { // FIXME: ça fait quoi ça James??
-			changeTextOnLayer();
+		// ajoute un listener modifiant la couleur du texte lorsqu'on change la couleur sélectionnée dans le sélecteur de couleur
+		MainViewController.getInstance().getRightMenuController().getColorPicker().setOnHiding(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				changeTextOnLayer();
+			}
 		});
 	}
 	
 	/**
-	 * Retourne l'instance de l'objet - Singleton
+	 * Retourne l'instance unique du singleton TexteTool.
 	 *
-	 * @return l'instance de l'objet
+	 * @return l'instance unique du singleton TextTool.
 	 */
 	public static TextTool getInstance() {
 		if (toolInstance == null) {
@@ -51,10 +54,9 @@ public class TextTool extends Tool {
 	}
 	
 	/**
-	 * Setter permettant de changer la police du text à ajouter
+	 * Définit la police utilisée pour dessiner le texte.
 	 *
-	 * @param font
-	 * 		- Police d'écriture de Javafx
+	 * @param font, la nouvelle police à utiliser pour dessiner le texte.
 	 */
 	public void setFont(Font font) {
 		this.font = font;
@@ -62,25 +64,62 @@ public class TextTool extends Tool {
 	}
 	
 	/**
-	 * Fonction appeler lorsque la personne valide la création du calque ou change d'outil
+	 * Initialise l'outil texte en créant un calque temporaire affichant le texte à l'endroit définit par l'utilisateur.
+	 */
+	public void initTextTool() {
+		oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		
+		// crée un calque temporaire utilisé pour afficher le texte à la position choisie par l'utilisateur
+		textLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), "Texte", true);
+		
+		Project.getInstance().addLayer(textLayer);
+		MainViewController.getInstance().getRightMenuController().disableLayerListClick(); // désactive les clics de la souris dans la liste de calque
+	}
+	
+	/**
+	 * Valide la création du calque de texte.
 	 */
 	public void validate() {
-		// Test si l'outil est en cours d'édition
-		if (addText != null) {
-			addText.execute();
-			Layer newLayer = new Layer(textLayer, false); // Devient un calque non-temporaire
-			addText.setLayerToSaved(newLayer); // définit le calque sur le lequel revenir en cas de undo
+		if (textSave != null) { // vrai si l'outil est en cours d'utilisation
+			textSave.execute();
+			Layer newLayer = new Layer(textLayer, false); // crée un calque non-temporaire
+			textSave.setLayerToSaved(newLayer); // définit le calque sur le lequel revenir en cas de undo
 			reset();
 			Project.getInstance().addLayer(newLayer);
-			Project.getInstance().setCurrentLayer(newLayer);
 			MainViewController.getInstance().getRightMenuController().updateLayerList();
-			Project.getInstance().drawWorkspace();
 			initTextTool();
 		}
 	}
 	
 	/**
-	 * Change la valeur du text
+	 * Annule la création du calque de texte.
+	 */
+	public void cancel() {
+		if (textLayer != null) {
+			reset();
+			initTextTool();
+		}
+	}
+	
+	/**
+	 * Réinitialise l'outil texte.
+	 */
+	public void reset() {
+		Project.getInstance().getLayers().remove(textLayer); // supprime le calque temporaire d'ajout de text (textLayer)
+		Project.getInstance().setCurrentLayer(oldCurrentLayer); // redéfinit l'ancien calque comme calque courant
+		
+		MainViewController.getInstance().getRightMenuController().updateLayerList(); // redessine la liste de calques
+		MainViewController.getInstance().getRightMenuController().activateLayerListClick(); // réactive les clics de la souris dans la liste de calque
+		
+		// reset des attributs
+		textLayer = null;
+		oldCurrentLayer = null;
+		textSave = null;
+		text = "";
+	}
+	
+	/**
+	 * Modifie le texte écrit sur le calque temporaire.
 	 *
 	 * @param text
 	 * 		- text à afficher
@@ -91,73 +130,27 @@ public class TextTool extends Tool {
 	}
 	
 	/**
-	 * refresh ou affiche le text avec la font, text et position donné précédement
+	 * Affiche (ou met à jour) le texte avec la police, la couleur et la position définies par l'utilisateur.
 	 */
 	private void changeTextOnLayer() {
-		// Test si la personne commencé l'ajout du text (nécessite le clique sur le calque)
-		if (addText != null) {
-			GraphicsContext graphics = textLayer.getGraphicsContext2D(); // récupération du graphics context
-			// Nettoyage du calque (permet de déplacer le text)
-			graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth());
-			graphics.setFont(font); // changement de la police d'écriture
-			graphics.setFill(Project.getInstance().getCurrentColor());
-			graphics.fillText(text, x, y); // positionnement et ajout du text
+		if (textSave != null) { // vrai si l'utilisateur a commencé à utiliser l'outil TextTool
+			GraphicsContext graphics = textLayer.getGraphicsContext2D(); // récupère le graphicsContext
+			
+			graphics.clearRect(0, 0, textLayer.getWidth(), textLayer.getWidth()); // efface le calque
+			graphics.setFont(font); // modifie la police d'écriture
+			graphics.setFill(Project.getInstance().getCurrentColor()); // définit la couleur du texte à écrire
+			graphics.fillText(text, x, y); // écrit le texte à la position x et y donnée
 		}
 	}
 	
-	/**
-	 * Annulation de l'ajout du text
-	 */
-	public void cancel() {
-		if(textLayer != null){
-			reset();
-			initTextTool();
-		}
-	}
-
-	public void reset(){
-		// Si le calque temporaire est initialisé, remettre dans l'état inital
-		//if(textLayer != null){
-		// Suppression du calque d'ajout de text (textLayer)
-		Project.getInstance().getLayers().remove(textLayer);
-		// Le calque courant redevient l'ancien calque courant
-		Project.getInstance().setCurrentLayer(oldCurrentLayer);
-		// redessine les layers et list de layers
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
-		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().activateLayerListClick();
-		
-		// reset des attributs
-			textLayer = null;
-		oldCurrentLayer = null;
-			addText = null;
-			text = "";
-		//}
-	}
-
-	
-	/**
-	 * Si outil quitté, valide l'ajout du text si l'utilisateur à au moins cliquer sur l'interface pour rajouter le text,
-	 * autrement annule l'ajout du text (suppression du calque)
-	 */
 	@Override
 	public void CallbackOldToolChanged() {
-		reset();
+		reset(); // l'outil a été changé -> on supprime le calque temporaire
 	}
-
+	
 	@Override
-	public void CallbackNewToolChanged(){
-		initTextTool();
-	}
-
-	public void initTextTool(){
-		oldCurrentLayer = Project.getInstance().getCurrentLayer();
-		textLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), "Texte", true);
-		textLayer.setVisible(true);
-		Project.getInstance().setCurrentLayer(textLayer);
-		Project.getInstance().getLayers().addFirst(textLayer);
-		Project.getInstance().drawWorkspace();
-		MainViewController.getInstance().getRightMenuController().disableLayerListClick();
+	public void CallbackNewToolChanged() {
+		initTextTool(); // initialise l'outil d'ajout de texte
 	}
 	
 	@Override
@@ -165,23 +158,17 @@ public class TextTool extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// premier clique - set des valeurs et création du calque
-				if (addText == null) {
-					if(textLayer == null){
-						initTextTool();
+				if (textSave == null) { // vrai si premier clic -> crée un calque temporaire
+					if (text == null || text.equals("")) { // vrai si le texte est vide -> affiche un texte par défaut pour pouvoir voir où va être écrit le texte
+						text = "Texte";
 					}
-					// Si le text est vide, mettre un text pour voir ou va être situé le text
-					if (text == null || text.equals("")) {
-						text = "Text";
-					}
-					addText = new AddText();
-
+					textSave = new textSave(); // crée une sauvegarde du texte
 				}
-				// récupération de la position du clique
+				// récupère la position du clic
 				x = (int) event.getX();
 				y = (int) event.getY();
 				
-				changeTextOnLayer(); // affichage du text sur le layer
+				changeTextOnLayer(); // affiche le texte sur le layer
 			}
 		};
 	}
@@ -191,10 +178,10 @@ public class TextTool extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				/** Déplace le text sur le layer **/
+				// récupère la position du clic
 				x = (int) event.getX();
 				y = (int) event.getY();
-				changeTextOnLayer();
+				changeTextOnLayer(); // affiche le texte sur le layer
 			}
 		};
 	}
@@ -208,19 +195,31 @@ public class TextTool extends Tool {
 			}
 		};
 	}
-
+	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'ajout d'un texte
+	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
+	 * cette commande.
 	 */
-	class AddText implements ICmd {
+	class textSave implements ICmd {
 		private SnapshotParameters params;
 		private Layer oldLayerSaved;
 		private Layer textLayerSaved;
 		
-		public AddText() {
+		/**
+		 * Construit une commande sauvegardant l'ajout d'un calque de texte.
+		 */
+		private textSave() {
 			params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
 			oldLayerSaved = oldCurrentLayer;
+		}
+		
+		/**
+		 * Définit le calque à enregistrer dans la commande.
+		 * @param layer, le calque à sauvegarder dans la commande.
+		 */
+		private void setLayerToSaved(Layer layer) {
+			textLayerSaved = layer;
 		}
 		
 		@Override
@@ -229,27 +228,19 @@ public class TextTool extends Tool {
 		}
 		
 		@Override
-		public void undo() throws UndoException {
+		public void undo() {
 			Project.getInstance().getLayers().remove(textLayerSaved);
 			Project.getInstance().setCurrentLayer(oldLayerSaved);
 		}
 		
 		@Override
-		public void redo() throws UndoException {
+		public void redo() {
 			Project.getInstance().addLayer(textLayerSaved);
 		}
 		
 		@Override
 		public String toString() {
 			return "Ajout de texte";
-		}
-
-		/**
-		 * Après la création du layer non temporaire, utiliser ce setter pour que la sauvegarde fonctionne
-		 * @param layer - layer à sauvegarder
-		 */
-		public void setLayerToSaved(Layer layer){
-			textLayerSaved = layer;
 		}
 	}
 }

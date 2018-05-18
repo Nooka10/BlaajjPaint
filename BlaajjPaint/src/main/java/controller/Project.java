@@ -58,7 +58,7 @@ public class Project implements Serializable {
 	 * Crée un nouveau projet
 	 */
 	private Project() {
-		currentColor = Color.BLACK;
+		currentColor = MainViewController.getInstance().getRightMenuController().getColorPicker().getValue();
 	}
 	
 	//*** GETTER  ***//

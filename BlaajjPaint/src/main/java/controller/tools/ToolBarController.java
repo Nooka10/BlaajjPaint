@@ -4,7 +4,6 @@ import controller.MainViewController;
 import controller.tools.Shapes.EmptyRectangle;
 import controller.tools.ToolDrawer.Eraser;
 import controller.tools.ToolDrawer.Pencil;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,11 +14,9 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 /**
- * This class represents the tool bar controller which is responsible for handling the operations that can be done from the tool bar as geometric shapes drawing, moving,
- * resizing, deleting and so on.
+ * Contrôleur associé au fichier FXML Toolbar.fxml et gérant l'ensemble des actions associées à la barre d'outils qui apparaît à gauche dans la GUI.
  */
 public class ToolBarController {
-	
 	@FXML
 	public AnchorPane toolBar;
 	@FXML
@@ -45,8 +42,23 @@ public class ToolBarController {
 	@FXML
 	private Parent paramBar;
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Main</b>.
+	 */
 	@FXML
-	public void handleMoveView(ActionEvent event) {
+	public void handleHand() {
+		Tool.setCurrentTool(Hand.getInstance());
+		if (Tool.getToolHasChanged()) {
+			closeCurrentParamBar();
+			Tool.setToolHasChanged(false);
+		}
+	}
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Déplacer</b>.
+	 */
+	@FXML
+	public void handleMoveView() {
 		Tool.setCurrentTool(Move.getInstance());
 		if (Tool.getToolHasChanged()) {
 			closeCurrentParamBar();
@@ -54,8 +66,11 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Rogner</b>.
+	 */
 	@FXML
-	public void handleCrop(ActionEvent event) {
+	public void handleCrop() {
 		Tool.setCurrentTool(Crop.getInstance());
 		if(Tool.getToolHasChanged()){
 			addParamBar("/view/tools/ParamCrop.fxml");
@@ -63,8 +78,11 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Pipette</b>.
+	 */
 	@FXML
-	public void handlePipette(ActionEvent event) {
+	public void handlePipette() {
 		Tool.setCurrentTool(Pipette.getInstance());
 		if (Tool.getToolHasChanged()) {
 			closeCurrentParamBar();
@@ -72,8 +90,11 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Pinceau</b>.
+	 */
 	@FXML
-	public void handlePencil(ActionEvent event) {
+	public void handlePencil() {
 		Tool.setCurrentTool(Pencil.getInstance());
 		if (Tool.getToolHasChanged()) {
 			addParamBar("/view/tools/ParamDrawTool.fxml");
@@ -81,8 +102,11 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Gomme</b>.
+	 */
 	@FXML
-	public void handleEraser(ActionEvent event) {
+	public void handleEraser() {
 		Tool.setCurrentTool(Eraser.getInstance());
 		if (Tool.getToolHasChanged()) {
 			addParamBar("/view/tools/ParamDrawTool.fxml");
@@ -90,8 +114,11 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Pot de peinture</b>.
+	 */
 	@FXML
-	public void handleBucketFill(ActionEvent event) {
+	public void handleBucketFill() {
 		Tool.setCurrentTool(BucketFill.getInstance());
 		if(Tool.getToolHasChanged()){
 			closeCurrentParamBar();
@@ -99,8 +126,11 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Texte</b>.
+	 */
 	@FXML
-	public void handleAddText(ActionEvent event) {
+	public void handleAddText() {
 		Tool.setCurrentTool(TextTool.getInstance());
 		if(Tool.getToolHasChanged()){
 			addParamBar("/view/tools/ParamText.fxml");
@@ -108,20 +138,14 @@ public class ToolBarController {
 		}
 	}
 	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur l'outil <b>Formes</b>.
+	 */
 	@FXML
-	public void handleAddShape(ActionEvent event) {
+	public void handleAddShape() {
 		Tool.setCurrentTool(EmptyRectangle.getInstance());
 		if (Tool.getToolHasChanged()) {
 			addParamBar("/view/tools/ParamShapeTool.fxml");
-			Tool.setToolHasChanged(false);
-		}
-	}
-	
-	@FXML
-	public void handleHand(ActionEvent event) {
-		Tool.setCurrentTool(Hand.getInstance());
-		if (Tool.getToolHasChanged()) {
-			closeCurrentParamBar();
 			Tool.setToolHasChanged(false);
 		}
 	}

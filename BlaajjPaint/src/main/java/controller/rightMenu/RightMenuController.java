@@ -105,13 +105,12 @@ public class RightMenuController {
 				}
 			}
 		});
-
-		// Ajoute un changeListener à historyList -> la méthode changed() est appelé à chaque fois que le la liste
-		// s'aggrandit et que le scroll doit resté en bas de la vbox
-		historyList.heightProperty().addListener(new ChangeListener() {
+		
+		// Ajoute un changeListener à historyList -> la méthode changed() est appelé à chaque fois que la liste s'agrandit
+		historyList.heightProperty().addListener(new ChangeListener<Number>() {
 			@Override
-			public void changed(ObservableValue observable, Object oldvalue, Object newValue) {
-				scrollPaneHistory.setVvalue((Double)newValue );
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				scrollPaneHistory.setVvalue((Double) newValue); // place le curseur du scrollPane tout en bas afin d'afficher le dernier élément ajouté à l'historique
 			}
 		});
 	}

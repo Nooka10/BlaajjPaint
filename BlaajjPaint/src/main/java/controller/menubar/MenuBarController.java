@@ -264,8 +264,6 @@ public class MenuBarController {
 		}
 		Project.getInstance().getLayers().clear();
 		Project.getInstance().addLayer(resultLayer);
-		
-		Project.getInstance().drawWorkspace();
 		mas.execute();
 	}
 	

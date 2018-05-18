@@ -22,14 +22,13 @@ public class Main extends Application {
 	/**
 	 * Lancement de l'interface graphique
 	 * @param primaryStage - Stage principale
-	 * @throws Exception
 	 */
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("BlaajjPaint");
 		
-		this.primaryStage.getIcons().add(new Image("/images/BlaajjPaint.jpg")); // FIXME: permet d'ajouter une icone à l'application! :D
+		this.primaryStage.getIcons().add(new Image("/images/BlaajjPaint.jpg"));
 		
 		initRootLayout();
 	}
