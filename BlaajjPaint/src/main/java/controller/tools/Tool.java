@@ -19,13 +19,19 @@ public abstract class Tool {
 	private static boolean toolHasChanged = false; // vrai lorsqu'on vient de changer d'outil
 	
 	private Cursor oldCursor;
+
 	// l'évènement déclanché lorsqu'on appuie sur le bouton de la souris
-	protected final EventHandler<MouseEvent> currentOnMousePressedEventHandler = createMousePressedEventHandlers();
+	private final EventHandler<MouseEvent> currentOnMousePressedEventHandler = createMousePressedEventHandlers();
 	// l'évènement déclanché lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
-	protected final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers();
+	private final EventHandler<MouseEvent> currentOnMouseDraggedEventHandler = createMouseDraggedEventHandlers();
 	// l'évènement déclanché lorsqu'on relâche le bouton de la souris
-	protected final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers();
-	
+	private final EventHandler<MouseEvent> currentOnMouseRelesedEventHandler = createMouseReleasedEventHandlers();
+
+	private final EventHandler<MouseEvent> currentOnMouseEnteredEventHandler = createMouseEnteredEventHandlers(); // l'évènement déclanché lorsque la souris entre dans le calque
+
+	private final EventHandler<MouseEvent> currentOnMouseExitedEventHandler = createMouseExitedEventHandlers(); // l'évènement déclanché  lorsque la souris sort du calque
+
+
 	// énumération contenant tous les outils gérés par le programme
 	protected enum ToolType {
 		PENCIL, ERASER, PIPETTE, MOVE, BUCKETFILL, TEXT, FILLEDRECTANGLE,
@@ -120,6 +126,24 @@ public abstract class Tool {
 	public EventHandler<MouseEvent> getCurrentOnMouseRelesedEventHandler() {
 		return currentOnMouseRelesedEventHandler;
 	}
+
+	/**
+	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris entre dans le calque.
+	 *
+	 * @return l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris entre dans le calque.
+	 */
+	public EventHandler<MouseEvent> getCurrentOnMouseEnteredEventHandler() {
+		return currentOnMouseEnteredEventHandler;
+	}
+
+	/**
+	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris sort du calque.
+	 *
+	 * @return l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris sort du calque.
+	 */
+	public EventHandler<MouseEvent> getCurrentOnMouseExitedEventHandler(){
+		return currentOnMouseExitedEventHandler;
+	}
 	
 	/**
 	 * Crée l'évènement déclanché par cet outil lorsqu'on appuie sur le bouton de la la souris.
@@ -141,7 +165,35 @@ public abstract class Tool {
 	 * @return l'évènement déclanché par cet outil lorsqu'on relâche le bouton de la la souris.
 	 */
 	protected abstract EventHandler<MouseEvent> createMouseReleasedEventHandlers();
-	
+
+
+	/**
+	 * Crée l'évènement déclanché par cet outil lorsque la souris entre dans le calque.
+	 *
+	 * @return l'évènement déclanché par cet outil lorsque la souris entre dans le calque.
+	 */
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// ne fait rien
+			}
+		};
+	}
+
+	/**
+	 *  Crée l'évènement déclanché par cet outil lorsque la souris sort du calque.
+	 *
+	 * @return l'évènement déclanché par cet outil lorsque la souris sort du calque.
+	 */
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// ne fait rien
+			}
+		};
+	}
 	/**
 	 * Remplace le curseur de la souris par celui passé en paramètre.
 	 * @param cursor, le nouveau curseur à attribuer à la souris.
@@ -149,6 +201,7 @@ public abstract class Tool {
 	protected void changeCursor(Cursor cursor) {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
 		oldCursor = scene.getCursor();
+		System.out.println("new Cursor " + cursor);
 		scene.setCursor(cursor);
 	}
 	
@@ -157,6 +210,7 @@ public abstract class Tool {
 	 */
 	protected void resetOldCursor() {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();
+		System.out.println("old cursor " + oldCursor);
 		scene.setCursor(oldCursor);
 	}
 }

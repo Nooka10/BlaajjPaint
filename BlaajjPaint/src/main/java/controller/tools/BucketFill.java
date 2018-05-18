@@ -4,9 +4,11 @@ import controller.Layer;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -50,7 +52,7 @@ public class BucketFill extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// ne fait rien
+				changeCursor(Cursor.WAIT); // change le curseur de la souris en mode "attente"
 			}
 		};
 	}
@@ -61,6 +63,27 @@ public class BucketFill extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				// ne fait rien
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/bucketFillCursor.png");
+				changeCursor(new ImageCursor(img,0,0));
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				changeCursor(Cursor.DEFAULT);
 			}
 		};
 	}
@@ -78,14 +101,11 @@ public class BucketFill extends Tool {
 			
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.WAIT); // change le curseur de la souris en mode "attente"
-				
 				// set des attributs
 				layer = Project.getInstance().getCurrentLayer();
 				currentFill = new FillSave(); // crée une sauvegarde du remplissage
 				stack = new Stack<>();
 				marked = new HashSet<>();
-
 				// récupération du PixelWriter -> permet d'écrire sur des pixel du graphicsContext
 				PixelWriter pixelWriter = layer.getGraphicsContext2D().getPixelWriter();
 
@@ -124,7 +144,8 @@ public class BucketFill extends Tool {
 					addPointToStack(x + 1, y);
 				}
 				// la coloration est terminée
-				resetOldCursor(); // on remet l'ancien curseur
+				Image img = new Image("/cursors/bucketFillCursor.png");
+				changeCursor(new ImageCursor(img,0,0));
 				currentFill.execute();
 			}
 

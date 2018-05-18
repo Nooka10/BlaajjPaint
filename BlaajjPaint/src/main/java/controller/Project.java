@@ -265,6 +265,8 @@ public class Project implements Serializable {
 				this.currentLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
 				this.currentLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
 				this.currentLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+				this.currentLayer.addEventHandler(MouseEvent.MOUSE_ENTERED, tool.getCurrentOnMouseEnteredEventHandler());
+				this.currentLayer.addEventHandler(MouseEvent.MOUSE_EXITED, tool.getCurrentOnMouseExitedEventHandler());
 			}
 		}
 	}
@@ -276,6 +278,8 @@ public class Project implements Serializable {
 				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, tool.getCurrentOnMousePressedEventHandler());
 				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, tool.getCurrentOnMouseDraggedEventHandler());
 				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, tool.getCurrentOnMouseRelesedEventHandler());
+				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_ENTERED, tool.getCurrentOnMouseEnteredEventHandler());
+				this.currentLayer.removeEventHandler(MouseEvent.MOUSE_EXITED, tool.getCurrentOnMouseExitedEventHandler());
 			}
 		}
 	}

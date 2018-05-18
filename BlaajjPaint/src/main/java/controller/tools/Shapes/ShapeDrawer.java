@@ -44,9 +44,9 @@ public abstract class ShapeDrawer extends Tool {
 	public void CallbackNewToolChanged() {
 		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, true); // crée un calque temporaire
 		// ajoute les eventHandler sur ce nouveau calque
-		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
-		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
-		shapeLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, currentOnMouseRelesedEventHandler);
+		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
+		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, getCurrentOnMouseDraggedEventHandler());
+		shapeLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());
 		Project.getInstance().addLayer(shapeLayer); // on ajoute le calque au projet
 	}
 	
@@ -56,9 +56,9 @@ public abstract class ShapeDrawer extends Tool {
 	@Override
 	public void CallbackOldToolChanged() {
 		// supprime les eventHandler du calque shapeLayer
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, currentOnMousePressedEventHandler);
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, currentOnMouseDraggedEventHandler);
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, currentOnMouseRelesedEventHandler);
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, getCurrentOnMouseDraggedEventHandler());
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());
 		Project.getInstance().removeLayer(shapeLayer); // supprime le calque du projet
 	}
 	
