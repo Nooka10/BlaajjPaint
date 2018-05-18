@@ -18,7 +18,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="width" promptText="Entrez la largeur de l'image" text="1200">
+            <TextField fx:id="widthTextField" promptText="Entrez la largeur de l'image" text="1200">
                <tooltip>
                   <Tooltip text="Largeur du nouveau projet" />
                </tooltip></TextField>
@@ -30,7 +30,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <TextField fx:id="height" promptText="Entrez la hauteur de l'image" text="800">
+            <TextField fx:id="heightTextField" promptText="Entrez la hauteur de l'image" text="800">
                <tooltip>
                   <Tooltip text="Hauteur du nouveau projet" />
                </tooltip></TextField>

@@ -90,7 +90,6 @@ public class Project implements Serializable {
 	 * @return
 	 */
 	public Layer getCurrentLayer() {
-		
 		return currentLayer;
 	}
 	
@@ -203,7 +202,9 @@ public class Project implements Serializable {
 		setCurrentLayer(newLayer);
 		layers.addFirst(newLayer);
 		workspace.getChildren().add(currentLayer);
-		MainViewController.getInstance().getRightMenuController().updateLayerList();
+		if(!newLayer.isTempLayer()) {
+			MainViewController.getInstance().getRightMenuController().updateLayerList();
+		}
 		drawWorkspace();
 	}
 	
@@ -235,8 +236,6 @@ public class Project implements Serializable {
 		
 		redBorder.setTranslateX(currentLayer.getBoundsInParent().getMinX());
 		redBorder.setTranslateY(currentLayer.getBoundsInParent().getMinY());
-		//redBorder.setWidth(currentLayer.getBoundsInParent().getWidth());
-		//redBorder.setHeight(currentLayer.getBoundsInParent().getHeight());
 		
 		redBorder.setMouseTransparent(true);
 		redBorder.setManaged(false);
@@ -252,6 +251,7 @@ public class Project implements Serializable {
 		
 		workspace.getChildren().add(redBorder);
 		addEventHandlers(Tool.getCurrentTool());
+		
 		MainViewController.getInstance().getRightMenuController().setOpacitySlider(currentLayer.getLayerOpacity());
 		MainViewController.getInstance().getRightMenuController().setOpacityTextField(String.valueOf(currentLayer.getLayerOpacity()));
 		MainViewController.getInstance().getMenuBarController().changeHideButtonText();

@@ -4,8 +4,8 @@ import utils.UndoException;
 
 /**
  * Interface définissant les méthodes d'une commande.
- * Dans notre projet, de nombreuses actions sont enregistrées et stoquées dans l'historique. Ces "sauvegardes" implémentent l'interface ICmd et surchargent
- * les méthodes execute(), undo() et redo() afin qu'on puisse respectivement appliquer, défaire ou réappliquer une modification.
+ * Dans notre projet, de nombreuses actions sont enregistrées et stoquées dans l'historique. Ces "sauvegardes" implémentent l'interface <b>ICmd</b> et surchargent
+ * les méthodes <b>execute()</b>, <b>undo()</b> et <b>redo()</b> afin qu'on puisse respectivement appliquer, défaire ou réappliquer une modification.
  */
 public interface ICmd {
 	/**

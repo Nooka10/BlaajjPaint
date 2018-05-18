@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -26,17 +30,17 @@
          <tooltip>
             <Tooltip text="Changer la police d'écriture" />
          </tooltip></ChoiceBox>
-      <TextField fx:id="textValue" onAction="#handleValidateText" onKeyReleased="#handleOnChangeValue" promptText="Text">
+      <TextField fx:id="textValue" onAction="#handleValidateText" promptText="Text">
          <tooltip>
             <Tooltip text="Changer le contenu du texte" />
          </tooltip></TextField>
-      <Button fx:id="validateButton" mnemonicParsing="false" onAction="#handleValidateText" text="Validate">
-         <tooltip>
-            <Tooltip text="Valider l'ajout du texte" />
-         </tooltip></Button>
-      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelTextCreation" text="Annuler">
+      <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancelTextCreation" text="Annuler">
          <tooltip>
             <Tooltip text="Annuler l'ajout du texte" />
+         </tooltip></Button>
+      <Button fx:id="validateButton" defaultButton="true" mnemonicParsing="false" onAction="#handleValidateText" text="Valider">
+         <tooltip>
+            <Tooltip text="Valider l'ajout du texte" />
          </tooltip></Button>
    </children>
    <padding>

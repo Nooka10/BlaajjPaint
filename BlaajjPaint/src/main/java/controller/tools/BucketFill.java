@@ -16,13 +16,12 @@ import javafx.scene.paint.Color;
 import utils.UndoException;
 import utils.Utils;
 
-import javax.rmi.CORBA.Util;
 import java.util.HashSet;
 import java.util.Stack;
 
-
 /**
- * Classe implémentant l'outil pot de peinture permettant remplir une zone de la couleur actuellement sélectionnée dans le sélecteur de couleur.
+ * Classe implémentant l'outil <b>pot de peinture</b> permettant remplir une zone de la couleur actuellement sélectionnée dans le sélecteur de couleur.
+ * Implémente le modèle Singleton.
  */
 public class BucketFill extends Tool {
 	private static BucketFill toolInstance  = null; // l'instance unique du singleton BucketFill
@@ -51,7 +50,7 @@ public class BucketFill extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// Ne fait rien
+				// ne fait rien
 			}
 		};
 	}
@@ -61,7 +60,7 @@ public class BucketFill extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// Ne fait rien
+				// ne fait rien
 			}
 		};
 	}
@@ -182,6 +181,10 @@ public class BucketFill extends Tool {
 			}
 			Utils.redrawSnapshot(currentLayer, redosave); // redessine le snapshot redosave sur le calque currentLayer
 		}
-
+		
+		@Override
+		public String toString() {
+			return "Remplissage de l'image";
+		}
 	}
 }

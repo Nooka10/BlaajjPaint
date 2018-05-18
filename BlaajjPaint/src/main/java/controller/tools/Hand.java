@@ -8,12 +8,24 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 /**
- * Classe implémentant l'outil pipette
+ * Classe implémentant l'outil main permettant de se déplacer dans l'espace de travail (lorsque l'image est suffisemment grande pour activer le scrollPane).
+ * Implémente le modèle Singleton.
  */
 public class Hand extends Tool {
 	
-	private static Hand toolInstance = null;
+	private static Hand toolInstance = null; // l'instance unique du singleton Hand
 	
+	/**
+	 * Constructeur privé (modèle singleton).
+	 */
+	private Hand() {
+		toolType = ToolType.MOVE;
+	}
+	
+	/**
+	 * Retourne l'instance unique du singleton Hand.
+	 * @return l'instance unique du singleton Hand.
+	 */
 	public static Hand getInstance() {
 		if (toolInstance == null) {
 			toolInstance = new Hand();
@@ -21,16 +33,13 @@ public class Hand extends Tool {
 		return toolInstance;
 	}
 	
-	private Hand() {
-		toolType = ToolType.MOVE;
-	}
 	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainViewController.getInstance().getScrollPane().setPannable(true);
+				MainViewController.getInstance().getScrollPane().setPannable(true); // active le déplacement dans le scrollPane à l'aide de la souris
 			}
 		};
 	}
@@ -40,7 +49,7 @@ public class Hand extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// Ne fait rien
+				// ne fait rien
 			}
 		};
 	}
@@ -49,7 +58,7 @@ public class Hand extends Tool {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainViewController.getInstance().getScrollPane().setPannable(false);
+				MainViewController.getInstance().getScrollPane().setPannable(false); // désactive le déplacement dans le scrollPane à l'aide de la souris
 			}
 		};
 	}

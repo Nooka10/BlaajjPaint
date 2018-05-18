@@ -15,13 +15,12 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.SaveProject;
-import utils.UndoException;
 
 import java.io.File;
 import java.util.LinkedList;
 
 /**
- * contrôleur associé au fichier FXML MenuBar.fxml et gérant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
+ * Contrôleur associé au fichier FXML MenuBar.fxml et gérant l'ensemble des actions associées aux menus de la barre de menu située en haut de la GUI.
  */
 public class MenuBarController {
 	
@@ -454,12 +453,12 @@ public class MenuBarController {
 
         @Override
         public void undo() {
-            // Ne fait rien
+	        // ne fait rien
         }
 
         @Override
         public void redo() {
-            // Ne fait rien
+	        // ne fait rien
         }
 
         @Override
