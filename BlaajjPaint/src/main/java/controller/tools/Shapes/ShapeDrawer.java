@@ -1,6 +1,7 @@
 package controller.tools.Shapes;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -38,28 +39,30 @@ public abstract class ShapeDrawer extends Tool {
 	private boolean wasDragged;
 	
 	/**
+	 * Supprime le calque temporaire, ainsi que le lien entre celui-ci est les événements de la souris.
+	 */
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().shapeTool.setSelected(false);
+		// supprime les eventHandler du calque shapeLayer
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, getCurrentOnMouseDraggedEventHandler());
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());
+		Project.getInstance().removeLayer(shapeLayer); // supprime le calque du projet
+	}
+	
+	/**
 	 * Crée le calque temporaire sur lequel la forme est dessinée, et y ajoute l'écoute des événements liés à la souris.
 	 */
 	@Override
 	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().shapeTool.setSelected(true);
 		shapeLayer = new Layer(Project.getInstance().getWidth(), Project.getInstance().getHeight(), nomForme, true); // crée un calque temporaire
 		// ajoute les eventHandler sur ce nouveau calque
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_DRAGGED, getCurrentOnMouseDraggedEventHandler());
 		shapeLayer.addEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());
 		Project.getInstance().addLayer(shapeLayer); // on ajoute le calque au projet
-	}
-	
-	/**
-	 * Supprime le calque temporaire, ainsi que le lien entre celui-ci est les événements de la souris.
-	 */
-	@Override
-	public void CallbackOldToolChanged() {
-		// supprime les eventHandler du calque shapeLayer
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, getCurrentOnMouseDraggedEventHandler());
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());
-		Project.getInstance().removeLayer(shapeLayer); // supprime le calque du projet
 	}
 	
 	@Override

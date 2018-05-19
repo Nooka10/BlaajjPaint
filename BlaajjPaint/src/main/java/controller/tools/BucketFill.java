@@ -1,6 +1,7 @@
 package controller.tools;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -158,6 +159,16 @@ public class BucketFill extends Tool {
 				//changeCursor(Cursor.DEFAULT); // remet le curseur par défaut
 			}
 		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().bucketFillTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().bucketFillTool.setSelected(true);
 	}
 
 	/**

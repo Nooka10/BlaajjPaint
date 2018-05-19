@@ -93,6 +93,15 @@ public class MainViewController {
 	}
 	
 	/**
+	 * Retourne l'instance du toolBarController
+	 *
+	 * @return l'instance du toolBarController
+	 */
+	public ToolBarController getToolBarController() {
+		return toolBarController;
+	}
+	
+	/**
 	 * Retourne l'instance du rightMenuController.
 	 *
 	 * @return l'instance du rightMenuController.

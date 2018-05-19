@@ -119,13 +119,18 @@ public class Layer extends Canvas implements Serializable {
 	}
 	
 	/**
-	 * Crée une commande sauvegardant le changement d'opacité d'un calque à la nouvelle valeur passée en paramètre.
+	 * Crée une commande sauvegardant le changement d'opacité d'un calque à la nouvelle valeur passée en paramètre. L'ancienne opacité est calculée et enregistrée
+	 * automatiquement.
 	 *
 	 * @param newOpacity,
-	 * 		la nouvelle opacité à affecter au calque.
+	 * 		la nouvelle opacité du calque.
+	 *
+	 * @apiNote ATTENTION, ne peut fonctionner que si l'ancienne opacité est encore appliquée au calque (n'a pas encore été modifiée) au moment de la création de cette
+	 * commande.
 	 */
 	public void createOpacitySave(double newOpacity) {
-		new OpacitySave(newOpacity).execute();
+		double oldOpacity = getLayerOpacity();
+		createOpacitySave(oldOpacity, newOpacity);
 	}
 	
 	/**
@@ -137,7 +142,9 @@ public class Layer extends Canvas implements Serializable {
 	 * 		la nouvelle opacité du calque.
 	 */
 	public void createOpacitySave(double oldOpacity, double newOpacity) {
-		new OpacitySave(oldOpacity, newOpacity).execute();
+		if (oldOpacity != newOpacity) {
+			new OpacitySave(oldOpacity, newOpacity).execute();
+		}
 	}
 	
 	/**
@@ -323,21 +330,6 @@ public class Layer extends Canvas implements Serializable {
 	public class OpacitySave implements ICmd {
 		double oldOpacity;
 		double newOpacity;
-		
-		/**
-		 * Construit une commande sauvegardant le changement d'opacité d'un calque. L'ancienne opacité est calculée et enregistrée automatiquement.
-		 *
-		 * @param newOpacity,
-		 * 		la nouvelle opacité du calque.
-		 *
-		 * @apiNote ATTENTION, ne peut fonctionner que si l'ancienne opacité est encore appliquée au calque (n'a pas encore été modifiée) au moment de la création de
-		 * cette commande.
-		 */
-		private OpacitySave(double newOpacity) {
-			// par défaut on set à l'opacité courante au cas ou un débile oublie de faire le setNewOpacity pas que ça passe à 0
-			oldOpacity = getLayerOpacity();
-			this.newOpacity = newOpacity;
-		}
 		
 		/**
 		 * Construit une commande sauvegardant le changement d'opacité d'un calque.

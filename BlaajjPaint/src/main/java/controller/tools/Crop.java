@@ -115,13 +115,13 @@ public class Crop extends Tool {
 	
 	@Override
 	public void CallbackOldToolChanged() {
-		super.CallbackOldToolChanged();
+		MainViewController.getInstance().getToolBarController().cropTool.setSelected(false);
 		reset(); // on change d'outil -> reset le Crop
 	}
 	
 	@Override
 	public void CallbackNewToolChanged() {
-		super.CallbackNewToolChanged();
+		MainViewController.getInstance().getToolBarController().cropTool.setSelected(true);
 		initCrop(); // initialise l'outil Crop pour qu'il soit opérationnel pour le premier clic de souris
 	}
 	

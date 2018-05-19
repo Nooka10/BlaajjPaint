@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
  * Classe abstraite implémentant un outil et définissant toutes les propriétés communes à tous les outils. Classe mère de tous les outils gérés par le programme.
  */
 public abstract class Tool {
-	protected ToolType toolType = ToolType.OTHER; // le type de l'outil
+	protected ToolType toolType = ToolType.MOVE; // le type de l'outil
 	
 	private static Tool currentTool; // l'outil actuellement sélectionné
 	
@@ -33,8 +33,8 @@ public abstract class Tool {
 
 	// énumération contenant tous les outils gérés par le programme
 	protected enum ToolType {
-		PENCIL, ERASER, PIPETTE, MOVE, BUCKETFILL, TEXT, FILLEDRECTANGLE,
-		EMPTYRECTANGLE, FILLEDELLIPSE, EMPTYELLIPSE, CROP, OTHER
+		HAND, MOVE, CROP, PIPETTE, PENCIL, ERASER, BUCKETFILL, TEXT, FILLEDRECTANGLE,
+		EMPTYRECTANGLE, FILLEDELLIPSE, EMPTYELLIPSE
 	}
 	
 	/**
@@ -49,14 +49,12 @@ public abstract class Tool {
 	/**
 	 * Appelé sur l'outil qui est sur le point d'être désélectionné.
 	 */
-	public void CallbackOldToolChanged() {
-	}
+	public abstract void CallbackOldToolChanged();
 	
 	/**
 	 * Appelé sur l'outil qui vient d'être sélectionné.
 	 */
-	public void CallbackNewToolChanged() {
-	}
+	public abstract void CallbackNewToolChanged();
 	
 	/**
 	 * Remplace l'outil actuellement sélectionné par celui passé en paramètre.

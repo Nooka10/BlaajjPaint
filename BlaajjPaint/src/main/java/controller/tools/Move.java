@@ -1,5 +1,6 @@
 package controller.tools;
 
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
@@ -86,6 +87,16 @@ public class Move extends Tool {
 				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().moveTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().moveTool.setSelected(true);
 	}
 	
 	/**

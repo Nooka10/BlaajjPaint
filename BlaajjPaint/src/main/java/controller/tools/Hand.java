@@ -20,7 +20,7 @@ public class Hand extends Tool {
 	 * Constructeur privé (modèle singleton).
 	 */
 	private Hand() {
-		toolType = ToolType.MOVE;
+		toolType = ToolType.HAND;
 	}
 	
 	/**
@@ -83,5 +83,15 @@ public class Hand extends Tool {
 				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().handTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().handTool.setSelected(true);
 	}
 }

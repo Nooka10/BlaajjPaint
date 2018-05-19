@@ -3,6 +3,7 @@ Author: Benoît
  */
 package controller.tools.ToolDrawer;
 
+import controller.MainViewController;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
@@ -108,6 +109,16 @@ public class Pencil extends ToolDrawer {
 				resetPreviousCursor(); // remet le curseur précédent
 			}
 		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().pencilTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().pencilTool.setSelected(true);
 	}
 	
 	/**

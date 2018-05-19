@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ToggleButton?>
@@ -12,7 +17,7 @@
 	<children>
 		<ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" style="-fx-background-color: #707070;" stylesheets="@ToolBarStyleSheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
-				<ToggleButton id="handTool" fx:id="handTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleHand" styleClass="menuButton">
+				<ToggleButton id="handTool" fx:id="handTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleHand" selected="true" styleClass="menuButton">
                <toggleGroup>
                   <ToggleGroup fx:id="ToolBarButtons" />
                </toggleGroup>

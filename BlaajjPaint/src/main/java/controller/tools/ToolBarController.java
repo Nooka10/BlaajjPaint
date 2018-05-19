@@ -1,6 +1,7 @@
 package controller.tools;
 
 import controller.MainViewController;
+import controller.menubar.MenuBarController;
 import controller.tools.Shapes.EmptyRectangle;
 import controller.tools.ToolDrawer.Eraser;
 import controller.tools.ToolDrawer.Pencil;

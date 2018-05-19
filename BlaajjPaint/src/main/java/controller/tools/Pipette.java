@@ -4,6 +4,7 @@ Author: Benoît
 package controller.tools;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
@@ -114,6 +115,7 @@ public class Pipette extends Tool {
 	
 	@Override
 	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().textTool.setSelected(false);
 		Project.getInstance().getLayers().remove(tmpLayer); // on supprime le calque temporaire
 		if (Project.getInstance().getCurrentLayer() == tmpLayer) {
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
@@ -122,6 +124,7 @@ public class Pipette extends Tool {
 	
 	@Override
 	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().textTool.setSelected(true);
 		oldCurrentLayer = Project.getInstance().getCurrentLayer();
 		Project.getInstance().addLayer(tmpLayer);
 	}

@@ -4,6 +4,7 @@ Author: Benoît
 package controller.tools.ToolDrawer;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
@@ -133,6 +134,16 @@ public class Eraser extends ToolDrawer {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().eraseTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().eraseTool.setSelected(true);
 	}
 	
 	/**

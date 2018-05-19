@@ -146,11 +146,13 @@ public class TextTool extends Tool {
 	
 	@Override
 	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().textTool.setSelected(false);
 		reset(); // l'outil a été changé -> on supprime le calque temporaire
 	}
 	
 	@Override
 	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().textTool.setSelected(true);
 		initTextTool(); // initialise l'outil d'ajout de texte
 	}
 	
