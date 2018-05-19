@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+
 <HBox fx:id="paramDrawTools" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolDrawer.ParamDrawToolController">
 	<children>
 		<Label text="Épaisseur">
@@ -19,12 +24,12 @@
 				<Insets top="7.0" />
 			</HBox.margin>
          <tooltip>
-            <Tooltip text="Gérer l'épaisseur de l'outil" />
+            <Tooltip text="Sélectionnez l'épaisseur de l'outil actuellement sélectionné." wrapText="true" />
          </tooltip>
 		</Slider>
 		<TextField fx:id="thicknessTextField" prefWidth="60.0">
          <tooltip>
-            <Tooltip text="Gérer l'épaisseur de l'outil" />
+            <Tooltip text="Entrez l'épaisseur de l'outil actuellement sélectionné." wrapText="true" />
          </tooltip></TextField>
 	</children>
 	<padding>

@@ -17,7 +17,7 @@
 					<graphic>
 						<TextField fx:id="degreesTextField">
                      <tooltip>
-                        <Tooltip text="Angle de rotation du calque" />
+                        <Tooltip text="Entrez l'angle de rotation à appliquer au calque." wrapText="true" />
                      </tooltip></TextField>
 					</graphic>
 				</MenuItem>
@@ -25,7 +25,7 @@
 					<graphic>
 						<Button fx:id="ValidateButton" defaultButton="true" disable="true" onAction="#handleValidateRotate" text="Valider">
                      <tooltip>
-                        <Tooltip text="Valider la transformation" />
+                        <Tooltip text="Cliquez pour valider la rotation." wrapText="true" />
                      </tooltip></Button>
 					</graphic>
 				</MenuItem>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
@@ -12,11 +15,11 @@
 			<children>
 				<CheckBox fx:id="visibility" mnemonicParsing="false" onAction="#handleVisibilityChange">
                <tooltip>
-                  <Tooltip text="Changer la visibilité du calque" />
+                  <Tooltip text="Cliquer pour masquer / démasquer ce calque." wrapText="true"  />
                </tooltip></CheckBox>
 				<Label fx:id="label">
                <tooltip>
-                  <Tooltip text="Cliquez pour définir ce calque comme le calque courant" />
+                  <Tooltip text="Cliquez pour sélectionner ce calque." wrapText="true" />
                </tooltip></Label>
 			</children>
 		</HBox>

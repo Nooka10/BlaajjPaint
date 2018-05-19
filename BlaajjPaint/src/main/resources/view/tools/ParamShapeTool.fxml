@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
@@ -15,10 +20,22 @@
       <ToggleButton fx:id="emptyRect" mnemonicParsing="false" onAction="#handleEmptyRect" selected="true" text="Rectangle vide">
          <toggleGroup>
             <ToggleGroup fx:id="Forme" />
-         </toggleGroup></ToggleButton>
-      <ToggleButton fx:id="filledRect" mnemonicParsing="false" onAction="#handleFilledRect" text="Rectangle plein" toggleGroup="$Forme" />
-      <ToggleButton fx:id="emptyEllipse" mnemonicParsing="false" onAction="#handleEmptyEllipse" text="Ellipse vide" toggleGroup="$Forme" />
-      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="Ellipse" toggleGroup="$Forme" />
+         </toggleGroup>
+         <tooltip>
+            <Tooltip text="Cliquez pour dessiner un rectangle vide." wrapText="true" />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="filledRect" mnemonicParsing="false" onAction="#handleFilledRect" text="Rectangle plein" toggleGroup="$Forme">
+         <tooltip>
+            <Tooltip text="Cliquez pour dessiner un rectangle plein." wrapText="true" />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="emptyEllipse" mnemonicParsing="false" onAction="#handleEmptyEllipse" text="Ellipse vide" toggleGroup="$Forme">
+         <tooltip>
+            <Tooltip text="Cliquez pour dessiner une ellipse vide." wrapText="true" />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="Ellipse" toggleGroup="$Forme">
+         <tooltip>
+            <Tooltip text="Cliquez pour dessiner une ellipse pleine." wrapText="true" />
+         </tooltip></ToggleButton>
       <Label text="Épaisseur">
          <font>
             <Font size="18.0" />
@@ -32,11 +49,11 @@
             <Insets top="5.0" />
          </HBox.margin>
          <tooltip>
-            <Tooltip text="Gérer l'épaisseur des bordures des formes vides" />
+            <Tooltip text="Sélectionnez l'épaisseur de la bordure de la forme. Ne s'applique que pour les formes vides." wrapText="true" />
          </tooltip></Slider>
       <TextField fx:id="thicknessTextField" prefWidth="60.0">
          <tooltip>
-            <Tooltip text="Gérer l'épaisseur des bordures des formes vides" />
+            <Tooltip text="Entrez l'épaisseur de la bordure de la forme. Ne s'applique que pour les formes vides." wrapText="true" />
          </tooltip></TextField>
    </children>
    <padding>

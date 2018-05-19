@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -23,7 +27,7 @@
                   </Label>
                   <TextField fx:id="textFieldWidth" maxWidth="80.0">
                      <tooltip>
-                        <Tooltip text="Largeur du calque" />
+                        <Tooltip text="Entrez la largeur que doit prendre le calque." wrapText="true" />
                      </tooltip></TextField>
                </children>
                <VBox.margin>
@@ -45,7 +49,7 @@
                   </Label>
                   <TextField fx:id="textFieldHeight" disable="true" maxWidth="80.0">
                      <tooltip>
-                        <Tooltip text="Hauteur du calque" />
+                        <Tooltip text="Entrez la hauteur que doit prendre le calque." wrapText="true" />
                      </tooltip></TextField>
                </children>
                <padding>
@@ -54,20 +58,20 @@
             </HBox>
             <VBox alignment="CENTER" spacing="5.0">
                <children>
-               <CheckBox fx:id="checkBoxResizeImage" mnemonicParsing="false" selected="true" text="Ajuster l'image">
-                     <padding>
-                        <Insets bottom="10.0" />
-                     </padding>
-                     <tooltip>
-                        <Tooltip text="Ajuster l'image à la nouvelle taille" />
-                     </tooltip>
-                  </CheckBox>
                   <CheckBox fx:id="checkBoxRatio" mnemonicParsing="false" onAction="#handleCheckBoxRatioChange" selected="true" text="Garder le ratio">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                      <tooltip>
-                        <Tooltip text="Garder le ratio par rapport à l'ancienne taille" />
+                        <Tooltip text="Si cochée, le ratio largeur / hauteur est maintenu et la hauteur est calculée automatiquement." wrapText="true" />
+                     </tooltip>
+                  </CheckBox>
+               <CheckBox fx:id="checkBoxResizeImage" mnemonicParsing="false" selected="true" text="Ajuster l'image">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                     <tooltip>
+                        <Tooltip text="Si cochée, l'image entière du calque est redimensionnée. Si décochée, le calque est rogné." wrapText="true" />
                      </tooltip>
                   </CheckBox>
                </children>
@@ -79,11 +83,11 @@
                <children>
                   <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Annuler">
                      <tooltip>
-                        <Tooltip text="Annuler le changement de taille" />
+                        <Tooltip text="Cliquez pour annuler le redimensionnement." wrapText="true" />
                      </tooltip></Button>
                   <Button fx:id="validateResizeButton" defaultButton="true" mnemonicParsing="false" onAction="#handleValidateResize" text="Valider">
                      <tooltip>
-                        <Tooltip text="Valider le changement de taille" />
+                        <Tooltip text="Cliquez pour appliquer le redimensionnement." wrapText="true" />
                      </tooltip></Button>
                </children>
                <VBox.margin>

@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * Contrôleur associé au fichier FXML ResizeLayer.fxml et gérant l'ensemble des actions associées à la fenêtre de redimensionnement ouvert
+ * Contrôleur associé au fichier FXML ResizeLayer.fxml et gérant l'ensemble des actions associées à la fenêtre de redimensionnement ouverte
  * lorsque l'utilisateur clique sur le menu <b>Calque -> Redimensionner</b>.
  */
 public class ResizeLayerController {

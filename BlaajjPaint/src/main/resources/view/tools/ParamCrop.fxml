@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tooltip?>
@@ -9,11 +13,11 @@
    <children>
       <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefWidth="100.0" text="Annuler">
          <tooltip>
-            <Tooltip text="Annulé le rognage de l'image" />
+            <Tooltip text="Cliquez pour annuler le rognage du calque sélectionné." wrapText="true" />
          </tooltip></Button>
       <Button fx:id="validateButton" defaultButton="true" mnemonicParsing="false" onAction="#handleValidate" prefWidth="100.0" text="Valider">
          <tooltip>
-            <Tooltip text="Valider le rognage de l'image" />
+            <Tooltip text="Cliquez pour valider le rognage du calque sélectionné" wrapText="true" />
          </tooltip></Button>
    </children>
    <padding>

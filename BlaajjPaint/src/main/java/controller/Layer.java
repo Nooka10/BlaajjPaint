@@ -64,7 +64,7 @@ public class Layer extends Canvas implements Serializable {
 	 */
 	public Layer(int width, int height, String layerDescription, boolean isTempLayer) {
 		this(width, height, isTempLayer);
-		if (!isTempLayer) {
+		if (!isTempLayer && layerDescription != null) {
 			nomCalque = "Calque " + id + ", " + layerDescription;
 		}
 		this.layerDescription = layerDescription;

@@ -11,7 +11,7 @@
 	<children>
 		<Label fx:id="label" minWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tooltip>
-            <Tooltip text="Cliquez pour revenir à cette événement" />
+            <Tooltip text="Cliquez pour remettre le projet dans l'état qu'il avait lors de cet évènement." wrapText="true" />
          </tooltip></Label>
 	</children>
 </AnchorPane>
