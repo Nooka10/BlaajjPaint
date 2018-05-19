@@ -48,7 +48,10 @@ public class ParamDrawToolController {
 				} else { // vrai si l'utilisateur a entré un chiffre et que le contenu de thicknessTextField est valide
 					tool.setThickness(Integer.parseInt(newValue)); // épaisseur comprise entre 1 et 200
 					thicknessSlider.setValue(tool.thickness);
-					if (tool.thickness > 200) {
+					if (tool.thickness < 2) {
+						tool.thickness = 2;
+						thicknessTextField.setText("2");
+					} else if (tool.thickness > 200) {
 						tool.thickness = 200;
 						thicknessTextField.setText("200");
 					}

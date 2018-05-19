@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
-
 <HBox fx:id="paramDrawTools" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.ToolDrawer.ParamDrawToolController">
 	<children>
 		<Label text="Épaisseur">
@@ -19,7 +14,7 @@
 				<Insets right="10.0" />
 			</HBox.margin>
 		</Label>
-		<Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="1.0" minorTickCount="1" onMouseDragged="#handleSliderValueChanged" onMousePressed="#handleSliderValueChanged" onMouseReleased="#handleSliderValueChanged" snapToTicks="true" value="1.0">
+		<Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="2.0" minorTickCount="1" onMouseDragged="#handleSliderValueChanged" onMousePressed="#handleSliderValueChanged" onMouseReleased="#handleSliderValueChanged" snapToTicks="true" value="2.0">
 			<HBox.margin>
 				<Insets top="7.0" />
 			</HBox.margin>

@@ -13,7 +13,7 @@ import utils.Utils;
  * Classe abstraite implémentant un outil permettant de dessiner ou effacer. Classe mère du pinceau et de la gomme.
  */
 public abstract class ToolDrawer extends Tool {
-	protected int thickness = 1; // l'épaisseur de l'outil
+	protected int thickness = 2; // l'épaisseur de l'outil
 	protected Strike currentStrike; // Le trait actuellement tiré
 	
 	/**
@@ -21,15 +21,16 @@ public abstract class ToolDrawer extends Tool {
 	 * donnée à l'épaisseur. Si la valeur passée est plus grande que 200, la valeur 200 sera donnée à l'épaisseur.
 	 * @param thickness, l'épaisseur à donner à l'outil.
 	 */
-	public void setThickness(int thickness) {
+	public int setThickness(int thickness) {
 		if (this.thickness > 200) {
 			this.thickness = 200;
-		} else if (this.thickness < 1) {
-			this.thickness = 1;
+		} else if (this.thickness < 2) {
+			this.thickness = 2;
 		} else {
 			this.thickness = thickness;
 		}
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
+		return thickness;
 	}
 	
 	/**
