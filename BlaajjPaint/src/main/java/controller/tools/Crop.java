@@ -194,7 +194,7 @@ public class Crop extends Tool {
 	 * Classe interne implémentant une commande sauvegardant le rognage d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
 	 * cette commande.
 	 */
-	class CropSave implements ICmd {
+	private class CropSave implements ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private double widthLayer;

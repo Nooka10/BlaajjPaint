@@ -223,7 +223,7 @@ public class TextTool extends Tool {
 	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
 	 * cette commande.
 	 */
-	class textSave implements ICmd {
+	private class textSave implements ICmd {
 		private SnapshotParameters params;
 		private Layer oldLayerSaved;
 		private Layer textLayerSaved;

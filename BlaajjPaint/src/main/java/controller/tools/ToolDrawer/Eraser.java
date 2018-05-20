@@ -149,7 +149,7 @@ public class Eraser extends ToolDrawer {
 	/**
 	 * Classe interne implémentant une commande sauvegardant un trait de gomme et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
 	 */
-	public class EraserStrike extends Strike {
+	private class EraserStrike extends Strike {
 		@Override
 		public String toString() {
 			return "Trait de gomme";
