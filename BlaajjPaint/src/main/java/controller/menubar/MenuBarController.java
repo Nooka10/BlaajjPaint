@@ -27,10 +27,6 @@ public class MenuBarController {
 	@FXML
 	public MenuBar menuBar;
 	@FXML
-	private MenuItem menuBar_nouveau;
-	@FXML
-	private MenuItem menuBar_ouvrir;
-	@FXML
 	private MenuItem menuBar_enregistrer;
 	@FXML
 	private MenuItem menuBar_enregistrerSous;
@@ -60,10 +56,6 @@ public class MenuBarController {
 	private MenuItem menuBar_masquerCalques;
 	@FXML
 	private Menu menuBar_transformations;
-	@FXML
-	private MenuItem menuBar_aPropos;
-	@FXML
-	private MenuItem menuBar_manuel;
 	
 	/**
 	 * Méthode appelée lorsque l'utilisateur clique sur le menu <b>Fichier -> Nouveau</b>. Ouvre une nouvelle fenêtre demandant à l'utilisateur d'entrer une largeur et
@@ -152,7 +144,7 @@ public class MenuBarController {
 		ImportImageSave importImageSave = new ImportImageSave();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Import an image");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("fichiers PNG ou JPG", "*.png", "*.jpg","*.PNG", "*.JPG","*.JPEG", "*.jpeg"))
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("fichiers PNG ou JPG", "*.png", "*.jpg","*.PNG", "*.JPG","*.JPEG", "*.jpeg"));
 		
 		// Ouvre une fenêtre invitant l'utilisateur à sélectionner un fichier utilisant l'extension autorisée
 		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
@@ -354,7 +346,7 @@ public class MenuBarController {
 	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Calque -> Aplatir les calques</b> et définissant l'action à effectuer en cas d'appel à
 	 * undo() ou redo() sur cette commande.
 	 */
-	public class MergeAllSave implements ICmd {
+	private class MergeAllSave implements ICmd {
 		private LinkedList<Layer> allMergedLayers; // liste de tous les layers qui ont été aplatis
 		private Layer oldCurrentLayer; // enregistre l'ancien calque courant (sélectionné)
 		private Layer newLayer; // le nouveau calque sur lequel seront fusionnés tous les calques du projet
@@ -400,7 +392,7 @@ public class MenuBarController {
 	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Importer une image</b> et définissant l'action à effectuer en cas d'appel à
 	 * undo() ou redo() sur cette commande.
 	 */
-	public class ImportImageSave implements ICmd {
+	private class ImportImageSave implements ICmd {
 		private Layer oldCurrentLayer;
 		private Layer importImageLayer;
 		
@@ -437,7 +429,7 @@ public class MenuBarController {
 	 * Classe interne implémentant une commande sauvegardant l'action du menu <b>Fichier -> Ouvrir</b> et définissant l'action à effectuer en cas d'appel à undo() ou
 	 * redo() sur cette commande.
 	 */
-	public class OpenSave implements ICmd {
+	private class OpenSave implements ICmd {
 		
 		@Override
 		public void execute() {
