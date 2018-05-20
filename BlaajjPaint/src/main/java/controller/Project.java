@@ -332,7 +332,8 @@ public class Project implements Serializable {
 		}
 		
 		// importe l'image si le fichier a une extension valide (jpg ou png)
-		if (chosenExtension.equals("png") || chosenExtension.equals("jpg")) {
+		chosenExtension = chosenExtension.toLowerCase();
+		if (chosenExtension.equals("png") || chosenExtension.equals("jpg") | chosenExtension.equals("jpeg")) {
 			Image image = new Image(file.toURI().toString());
 			
 			Layer newLayer = new Layer((int) image.getWidth(), (int) image.getHeight(), false); // crée un nouveau calque de la taille de l'image
