@@ -140,7 +140,7 @@ public abstract class ShapeDrawer extends Tool {
 	 * Classe interne implémentant une commande sauvegardant la création d'une forme et définissant l'action à effectuer en cas d'appel à undo() ou redo()
 	 * sur cette commande.
 	 */
-	class ShapeSave implements ICmd {
+	private class ShapeSave implements ICmd {
 		//image à récupérer en cas de redo
 		private Image undosave;
 		//image à récupérer en cas de undo

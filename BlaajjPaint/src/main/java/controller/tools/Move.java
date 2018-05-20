@@ -103,7 +103,7 @@ public class Move extends Tool {
 	 * Classe interne implémentant une commande sauvegardant le déplacement d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo()
 	 * sur cette commande.
 	 */
-	public class MoveSave implements ICmd {
+	private class MoveSave implements ICmd {
 		private double oldXSave;
 		private double oldYSave;
 		private double newXSave;
