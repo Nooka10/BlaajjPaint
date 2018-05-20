@@ -2,32 +2,33 @@ package controller.tools.Shapes;
 
 import controller.Project;
 
+/**
+ * Classe implémentant un rectangle plein. Implémente le modèle Singleton.
+ */
 public class FilledRectangle extends ShapeDrawer {
     
-    private static FilledRectangle toolInstance = null; // l'instance unique du pinceau
-
+    private static FilledRectangle toolInstance; // l'instance unique du singleton FilledRectangle
+    
     /**
-     * Retourne l'instance unique du rectangle
-     *
-     * @return l'instance unique du rectangle
-     */
-    public static FilledRectangle getInstance() {
-        if (toolInstance == null) {
-            toolInstance = new FilledRectangle();
-        }
-        return toolInstance;
-    }
-
-    /**
-     * Constructeur privé (modèle singleton)
+     * Constructeur privé (modèle singleton).
      */
     private FilledRectangle() {
         toolType = ToolType.FILLEDRECTANGLE;
         tooltipHistory = "Rectangle plein";
         nomForme = "Rectangle plein";
     }
-
-
+	
+	/**
+	 * Retourne l'instance unique du singleton FilledRectangle.
+	 * @return l'instance unique du singleton FilledRectangle.
+	 */
+    public static FilledRectangle getInstance() {
+        if (toolInstance == null) {
+            toolInstance = new FilledRectangle();
+        }
+        return toolInstance;
+    }
+    
     @Override
     protected void drawShape() {
         shapeLayer.getGraphicsContext2D().setFill(Project.getInstance().getCurrentColor());

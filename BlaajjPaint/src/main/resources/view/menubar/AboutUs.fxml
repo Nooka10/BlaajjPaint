@@ -76,6 +76,9 @@
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
+               <tooltip>
+                  <Tooltip text="Cliquez pour fermer la fenêtre." wrapText="true" />
+               </tooltip>
             </Button>
          </children>
       </VBox>

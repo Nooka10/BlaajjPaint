@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Classe implémentant le modèle Singleton et gère l'historique des commandes.
+ * Classe implémentant le modèle Singleton et gèrant l'historique des commandes.
  */
 public class RecordCmd {
 	
@@ -20,7 +20,7 @@ public class RecordCmd {
 	
 	private static final Logger LOG = Logger.getLogger(RecordCmd.class.getName()); // Le logger de cette classe
 	
-	private static RecordCmd recordCdmInstance = null; // L'instance unique de RecordCmd (modèle Singleton)
+	private static RecordCmd recordCdmInstance; // L'instance unique du singleton RecordCmd
 	
 	/**
 	 * Constructeur privé (modèle Singleton).
@@ -68,7 +68,6 @@ public class RecordCmd {
 	 * handleRedo lèves une exception celle-ci est capturée et consignée dans les logs et l'<b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void redo() {
-		System.out.println("redo");
 		// si la pile de handleRedo n'est pas vide
 		if (!redoStack.isEmpty()) {
 			// on essaie de handleUndo

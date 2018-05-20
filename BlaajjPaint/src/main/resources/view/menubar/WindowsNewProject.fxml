@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -18,9 +23,9 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="width" promptText="Entrez la largeur de l'image" text="1200">
+            <TextField fx:id="widthTextField" promptText="Entrez la largeur de l'image" text="1200">
                <tooltip>
-                  <Tooltip text="Largeur du nouveau projet" />
+                  <Tooltip text="Entrez la largeur à donner au nouveau projet." wrapText="true" />
                </tooltip></TextField>
             <Label text="Hauteur de l'image">
                <font>
@@ -30,19 +35,19 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <TextField fx:id="height" promptText="Entrez la hauteur de l'image" text="800">
+            <TextField fx:id="heightTextField" promptText="Entrez la hauteur à donner au nouveau projet." text="800">
                <tooltip>
-                  <Tooltip text="Hauteur du nouveau projet" />
+                  <Tooltip text="Entrez la hauteur à donner au nouveau projet." wrapText="true" />
                </tooltip></TextField>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Button fx:id="createButton" defaultButton="true" mnemonicParsing="false" onAction="#handleCreateNewProject" prefWidth="70.0" text="Créer" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="80.0">
                      <tooltip>
-                        <Tooltip text="Créer le nouveau projet" />
+                        <Tooltip text="Cliquez pour créer le nouveau projet." wrapText="true" />
                      </tooltip></Button>
                   <Button fx:id="cancel" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefWidth="70.0" text="Annuler" AnchorPane.rightAnchor="0.0">
                      <tooltip>
-                        <Tooltip text="Annuler la création du projet" />
+                        <Tooltip text="Cliquez pour annuler la création du nouveau projet." wrapText="true" />
                      </tooltip></Button>
                </children>
                <VBox.margin>

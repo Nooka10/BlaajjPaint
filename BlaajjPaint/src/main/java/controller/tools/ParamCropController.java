@@ -1,40 +1,31 @@
 package controller.tools;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 /**
- * Contolleur des paramètres concerant l'outil Crop (Rogner) dans la paramBar
+ * Contrôleur associé au fichier FXML ParamCropController.fxml et gérant l'ensemble des actions associées à la barre de menus de l'outil de rognage qui apparaît dans la
+ * GUI en dessous de la barre de menus, lorsqu'on sélectionne l'outil <b>Rogner</b>.
  */
 public class ParamCropController {
-    @FXML
-    public Button cancelButton;
-    @FXML
-    public Button validateButton;
+	@FXML
+	public Button cancelButton;
+	@FXML
+	public Button validateButton;
 	
 	/**
-	 * Initialise le contrôleur. Appelé automatiquement par javaFX lors de la création du FXML.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Annuler</b>. Annule le rognage du calque et réinitialise l'état de l'outil Crop.
 	 */
-	
 	@FXML
-	private void initialize() {
-	
+	void handleCancel() {
+		Crop.getInstance().cancel();
 	}
-
-    /**
-     * Evenement appellé par le boutton Annuler qui annule le rognage actuel
-     */
-    @FXML
-    void handleCancel() {
-        Crop.getInstance().cancel();
-    }
-
-    /**
-     * Evenement appellé par le boutton Valider qui valide le rognage du calque
-     */
-    @FXML
-    void handleValidate() {
-        Crop.getInstance().validate();
-    }
+	
+	/**
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Valider</b>. Effectue le rognage du calque selon la sélection de l'utilisateur.
+	 */
+	@FXML
+	void handleValidate() {
+		Crop.getInstance().validate();
+	}
 }

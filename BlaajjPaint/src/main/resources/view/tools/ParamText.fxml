@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -15,28 +19,28 @@
             <Insets />
          </HBox.margin>
          <tooltip>
-            <Tooltip text="Changer la taille de police d'écriture" />
+            <Tooltip text="Sélectionnez la taille de la police d'écriture." wrapText="true" />
          </tooltip>
       </Slider>
       <TextField fx:id="textFieldSizeFont" maxWidth="80.0" text="40">
          <tooltip>
-            <Tooltip text="Changer la taille de police d'écriture" />
+            <Tooltip text="Entrez la taille de la police d'écriture." wrapText="true" />
          </tooltip></TextField>
       <ChoiceBox id="Font" fx:id="fontList" prefWidth="150.0">
          <tooltip>
-            <Tooltip text="Changer la police d'écriture" />
+            <Tooltip text="Choisissez la police d'écriture à utiliser." wrapText="true" />
          </tooltip></ChoiceBox>
-      <TextField fx:id="textValue" onAction="#handleValidateText" onKeyReleased="#handleOnChangeValue" promptText="Text">
+      <TextField fx:id="textValueTextField" promptText="Text">
          <tooltip>
-            <Tooltip text="Changer le contenu du texte" />
+            <Tooltip text="Entrez le texte à écrire." wrapText="true" />
          </tooltip></TextField>
-      <Button fx:id="validateButton" mnemonicParsing="false" onAction="#handleValidateText" text="Validate">
+      <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancelTextCreation" text="Annuler">
          <tooltip>
-            <Tooltip text="Valider l'ajout du texte" />
+            <Tooltip text="Cliquez pour annuler l'ajout de texte." wrapText="true" />
          </tooltip></Button>
-      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelTextCreation" text="Annuler">
+      <Button fx:id="validateButton" defaultButton="true" mnemonicParsing="false" onAction="#handleValidateText" text="Valider">
          <tooltip>
-            <Tooltip text="Annuler l'ajout du texte" />
+            <Tooltip text="Cliquez pour valider l'ajout de texte. Attention! Une fois validé, le texte ainsi que sa couleur ne pourront plus être modifiés." wrapText="true" />
          </tooltip></Button>
    </children>
    <padding>

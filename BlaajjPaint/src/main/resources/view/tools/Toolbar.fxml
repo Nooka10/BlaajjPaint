@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ToggleButton?>
@@ -12,44 +17,44 @@
 	<children>
 		<ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" style="-fx-background-color: #707070;" stylesheets="@ToolBarStyleSheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
-				<ToggleButton id="handTool" fx:id="handTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleHand" styleClass="menuButton">
+				<ToggleButton id="handTool" fx:id="handTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleHand" selected="true" styleClass="menuButton">
                <toggleGroup>
                   <ToggleGroup fx:id="ToolBarButtons" />
                </toggleGroup>
                <tooltip>
-                  <Tooltip text="Souris" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Souris&quot; permettant de se déplacer dans l'espace de travail." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="moveTool" fx:id="moveTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleMoveView" styleClass="menuButton" textAlignment="CENTER" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Déplacer" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Déplacer&quot; permettant de déplacer le calque actuellement sélectionné dans l'espace de travail." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="cropTool" fx:id="cropTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleCrop" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Rogner" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Rogner&quot; permettant de rogner le calque actuellement sélectionné." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="pipetteTool" fx:id="pipetteTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handlePipette" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Pipette" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Pipette&quot; permettant de sélectionner la couleur d'un pixel et de l'attribuer au sélecteur de couleur." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="pencilTool" fx:id="pencilTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handlePencil" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Pinceau" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Pinceau&quot; permettant de dessiner sur le calque actuellement sélectionné à l'aide de la souris, avec la couleur actuellement sélectionnée dans le sélecteur de couleur." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="eraseTool" fx:id="eraseTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleEraser" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Gomme" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Gomme&quot; permettant d'effacer des pixels sur le calque actuellement sélectionné à l'aide de la souris." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="bucketFillTool" fx:id="bucketFillTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleBucketFill" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Pot de peinture" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Pot de peinture&quot; permettant de remplir une zone délimitée avec la couleur actuellement sélectionnée dans le sélecteur de couleur." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="textTool" fx:id="textTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleAddText" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Ajouter un Texte" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Texte&quot; permettant d'ajouter un calque contenant du texte." wrapText="true" />
                </tooltip></ToggleButton>
 				<ToggleButton id="shapesTool" fx:id="shapeTool" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleAddShape" styleClass="menuButton" toggleGroup="$ToolBarButtons">
                <tooltip>
-                  <Tooltip text="Ajouter une forme" />
+                  <Tooltip text="Cliquez pour sélectionner l'outil &quot;Formes&quot; permettant d'ajouter un calque contenant une forme prédéfinie." wrapText="true" />
                </tooltip></ToggleButton>
 			</items>
          <padding>

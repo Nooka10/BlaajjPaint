@@ -14,17 +14,17 @@
 				<Insets right="10.0" />
 			</HBox.margin>
 		</Label>
-		<Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="1.0" minorTickCount="1" onMouseDragged="#handleSliderValueChanged" onMousePressed="#handleSliderValueChanged" onMouseReleased="#handleSliderValueChanged" snapToTicks="true" value="1.0">
+		<Slider fx:id="thicknessSlider" blockIncrement="1.0" max="200.0" min="2.0" minorTickCount="1" onMouseDragged="#handleSliderValueChanged" onMousePressed="#handleSliderValueChanged" onMouseReleased="#handleSliderValueChanged" snapToTicks="true" value="2.0">
 			<HBox.margin>
 				<Insets top="7.0" />
 			</HBox.margin>
          <tooltip>
-            <Tooltip text="Gérer l'épaisseur de l'outil" />
+            <Tooltip text="Sélectionnez l'épaisseur de l'outil actuellement sélectionné." wrapText="true" />
          </tooltip>
 		</Slider>
 		<TextField fx:id="thicknessTextField" prefWidth="60.0">
          <tooltip>
-            <Tooltip text="Gérer l'épaisseur de l'outil" />
+            <Tooltip text="Entrez l'épaisseur de l'outil actuellement sélectionné." wrapText="true" />
          </tooltip></TextField>
 	</children>
 	<padding>

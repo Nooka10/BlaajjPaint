@@ -3,24 +3,37 @@ Author: Benoît
  */
 package controller.tools.ToolDrawer;
 
+import controller.MainViewController;
 import controller.Project;
-import controller.tools.BucketFill;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 /**
- * Classe implémentant l'outil pinceau
+ * Classe implémentant l'outil <b>pinceau</b> permettant de dessiner des pixels du calque à l'aide de la souris et de leur attribuer la couleur actuellement sélectionnée
+ * dans le sélecteur de couleur. Implémente le modèle Singleton.
  */
 public class Pencil extends ToolDrawer {
 	
-	private static Pencil toolInstance = null; // l'instance unique du pinceau
+	private static Pencil toolInstance; // l'instance unique du singleton Pencil
+	
+	private GraphicsContext pencilMaskGC;
 	
 	/**
-	 * Retourne l'instance unique du pinceau
-	 *
-	 * @return l'instance unique du pinceau
+	 * Constructeur privé (modèle singleton).
+	 */
+	private Pencil() {
+		toolType = Tool.ToolType.PENCIL;
+	}
+	
+	/**
+	 * Retourne l'instance unique du singleton Pencil.
+	 * @return l'instance unique du singleton Pencil.
 	 */
 	public static Pencil getInstance() {
 		if (toolInstance  == null) {
@@ -28,33 +41,24 @@ public class Pencil extends ToolDrawer {
 		}
 		return toolInstance;
 	}
-
-	public class PencilStrike extends Trait {
-		public String toString(){
-			return "Trait de pinceau";
-		}
-	}
-	
-	/**
-	 * Constructeur privé (modèle singleton)
-	 */
-	private Pencil() {
-		toolType = Tool.ToolType.PENCIL;
-	}
 	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				currentTrait = new PencilStrike();
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().beginPath();
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().moveTo(event.getX(), event.getY());
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineCap(StrokeLineCap.ROUND);
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness); // définit l'épaisseur du pencil
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pencil
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
+				currentStrike = new PencilStrike(); // crée une sauvegarde du trait de pinceau
+				pencilMaskGC = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
+				
+				pencilMaskGC.beginPath();
+
+				pencilMaskGC.setLineCap(StrokeLineCap.ROUND); // définit la forme du pinceau
+				pencilMaskGC.setLineJoin(StrokeLineJoin.ROUND);
+				
+				pencilMaskGC.setLineWidth(thickness); // définit l'épaisseur du pinceau
+				pencilMaskGC.setStroke(Project.getInstance().getCurrentColor()); // définit la couleur du pinceau
+				pencilMaskGC.lineTo(event.getX(), event.getY());
+				pencilMaskGC.stroke();
 			}
 		};
 	}
@@ -64,8 +68,10 @@ public class Pencil extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().lineTo(event.getX(), event.getY());
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().stroke();
+				// déplace le trait de l'ancienne position à la position actuelle
+				
+				pencilMaskGC.lineTo(event.getX(), event.getY());
+				pencilMaskGC.stroke(); // tire le trait entre l'ancienne et la nouvelle position
 			}
 		};
 	}
@@ -75,9 +81,52 @@ public class Pencil extends ToolDrawer {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Project.getInstance().getCurrentLayer().getGraphicsContext2D().closePath();
-				currentTrait.execute();
+				// déplace le trait de l'ancienne position à la position actuelle
+				pencilMaskGC.lineTo(event.getX(), event.getY());
+				pencilMaskGC.stroke(); // tire le trait entre l'ancienne et la nouvelle position
+				pencilMaskGC.closePath(); // clôt le trait de pinceau
+				currentStrike.execute();
 			}
 		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/pencilCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
+				changeCursor(new ImageCursor(img,3,30)); // change le curseur de la souris en mode "pinceau"
+			}
+		};
+	}
+
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resetPreviousCursor(); // remet le curseur précédent
+			}
+		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().pencilTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().pencilTool.setSelected(true);
+	}
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant un trait de pinceau et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 */
+	public class PencilStrike extends Strike {
+		public String toString(){
+			return "Trait de pinceau";
+		}
 	}
 }

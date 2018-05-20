@@ -1,42 +1,45 @@
 package controller.tools;
 
 import controller.Layer;
+import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import utils.Utils;
 import utils.UndoException;
+import utils.Utils;
 
 import java.util.HashSet;
 import java.util.Stack;
 
 /**
- * Outil permettant de remplir une zone coloré de meme couleur dans une autre couleur
+ * Classe implémentant l'outil <b>pot de peinture</b> permettant remplir une zone de la couleur actuellement sélectionnée dans le sélecteur de couleur.
+ * Implémente le modèle Singleton.
  */
 public class BucketFill extends Tool {
-	/** ATTRIBUTS **/
-	private static BucketFill toolInstance  = null;
-	private FillSave currentFill;
-
+	private static BucketFill toolInstance  = null; // l'instance unique du singleton BucketFill
+	private FillSave currentFill; // la sauvegarde du remplissage actuel
+	
 	/**
-	 * Constructeur privé car Singleton
+	 * Constructeur privé (modèle singleton).
 	 */
 	private BucketFill() {
 		toolType = ToolType.BUCKETFILL;
 	}
-
+	
 	/**
-	 * Retourne l'instance du Singleton
-	 * @return l'instance du Singleton
+	 * Retourne l'instance unique du singleton BucketFill.
+	 * @return l'instance unique du singleton BucketFill.
 	 */
 	public static BucketFill getInstance() {
 		if (toolInstance  == null) {
@@ -45,102 +48,87 @@ public class BucketFill extends Tool {
 		return toolInstance ;
 	}
 
-	/**
-	 * Gestion de l'événement du "l'appuie" de la souris
-	 * @return l'événement qui dois être réalisé lorsque l'on clique lorsque le BucketFill est séléctionné
-	 */
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				changeCursor(Cursor.WAIT); // Change le curseur en mode "attente"
+				changeCursor(Cursor.WAIT); // change le curseur de la souris en mode "attente"
 			}
 		};
 	}
 
-	/**
-	 * Gestion de l'événement du "dragg" de la souris
-	 * @return ne fait rien dans le cas du "BucketFill"
-	 */
 	@Override
 	protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// Ne fait rien
+				// ne fait rien
 			}
 		};
 	}
 
-	/**
-	 * Gestion de l'événement du relachement du clique de la souris
-	 * @return l'événement qui lorsque l'on relache le clique de la souris peint dans la zone du calque
-	 */
 	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
-			
-			/** ATTRIBUTS DE L'EVENEMENT **/
-			Stack<Point2D> stack; // Stack des points qui devront être traiter
-			HashSet<Point2D> marked; // Map des points traité
-			Layer layer; // Layer sur lequel on doit dessiner (Evite l'appelle constant à Project
+			Stack<Point2D> stack; // stack des points qui devront être traités
+			HashSet<Point2D> marked; // map des points déjà traités
+			Layer layer; // calque sur lequel on doit dessiner (évite d'appeler constemment Project)
 			
 			@Override
 			public void handle(MouseEvent event) {
-				// Set des attributs
+				// set des attributs
 				layer = Project.getInstance().getCurrentLayer();
-				currentFill = new FillSave();
+				currentFill = new FillSave(); // crée une sauvegarde du remplissage
 				stack = new Stack<>();
 				marked = new HashSet<>();
-
-				// Récupération du PixelWriter - permet d'écrire sur des pixel du graphics context
+				// récupération du PixelWriter -> permet d'écrire sur des pixel du graphicsContext
 				PixelWriter pixelWriter = layer.getGraphicsContext2D().getPixelWriter();
 
-				// Récupération du PixelReader - permet de lire les pixels sur le graphics context
+				// récupération du PixelReader - permet de lire les pixels sur le graphicsContext
 				WritableImage srcMask = new WritableImage((int) layer.getWidth(), (int) layer.getHeight());
-				srcMask = layer.snapshot(null, srcMask);
+				srcMask = Utils.makeSnapshot(layer, Color.TRANSPARENT, srcMask);
 				PixelReader pixelReader = srcMask.getPixelReader();
 
-				// Couleur de l'élément/zone à colorer
+				// couleur actuelle du pixel à colorer
 				Color colorSelected = pixelReader.getColor((int) Math.round(event.getX()), (int) Math.round(event.getY()));
-				// Couleur qu'on doit coloré l'élément/zone
+				// couleur dans laquelle on doit colorer le pixel
 				Color currentColor = Project.getInstance().getCurrentColor();
 				
-				stack.push(new Point2D(event.getX(), event.getY())); // Set de l'élément de base de notre parcours
+				stack.push(new Point2D(event.getX(), event.getY())); // ajoute à la pile le point de départ de la zone à colorer
 
-				// Parcours des pixel environnant le point de départ
+				// on parcours les pixels environnant le point de départ
 				while (!stack.isEmpty()) {
 					Point2D point = stack.pop();
-					// Récupération de la position du point (moins d'accès au fonction)
+					// on récupère de la position X et Y du point
 					int x = (int) Math.round(point.getX());
 					int y = (int) Math.round(point.getY());
 
-					// Test si le pixel courant à la meme couleur que le point de départ (fait partie de la forme
-					if ((!pixelReader.getColor(x, y).equals(colorSelected))) {
-						continue;
+					// teste si le pixel actuellement visité a la même couleur que le point de départ (et donc fait partie de la zone à colorer)
+					if (!pixelReader.getColor(x, y).equals(colorSelected)) {
+						continue; // si le pixel ne doit pas être coloré, on passe à l'itération suivante
 					}
 					
-					pixelWriter.setColor(x, y, currentColor); // mise en couleur du pixel en cours de traitement
+					pixelWriter.setColor(x, y, currentColor); // on colorie le pixel actuellement visité dans la couleur souhaitée
 					
-					marked.add(point); // Marquer le point comme traité
+					marked.add(point); // on ajoute le point à la liste des points déjà traités
 
-					// Ajout des points adjacent le point courant dans la liste de traitement
+					// ajoute les points adjacents au point courant dans la pile des points à traiter
 					addPointToStack(x - 1, y);
 					addPointToStack(x, y - 1);
 					addPointToStack(x, y + 1);
 					addPointToStack(x + 1, y);
 				}
-				// Fin de la coloration - remise en place du curseur et execution de la commande
-				resetOldCursor();
+				// la coloration est terminée
+				Image img = new Image("/cursors/bucketFillCursor.png");
+				changeCursor(new ImageCursor(img,0,0));
 				currentFill.execute();
 			}
 
 			/**
-			 * Ajout d'un point dans la stack de traitement
-			 * @param x - position horizontal du point
-			 * @param y - position vertical du point
-			 * @brief Permet de faire des verification si le point et toujours dans l'image et si il a pas déjà été traité
+			 * Ajoute un point dans la pile des points à traiter s'il n'a pas déjà été traité et qu'il n'est pas en dehors du calque.
+			 * @param x, la position du point sur l'axe X.
+			 * @param y, la position du point sur l'axe Y.
 			 */
 			private void addPointToStack(int x, int y) {
 				Point2D point = new Point2D(x, y);
@@ -151,23 +139,58 @@ public class BucketFill extends Tool {
 			}
 		};
 	}
+	
+	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/bucketFillCursor.png");
+				changeCursor(new ImageCursor(img,0,0));
+			}
+		};
+	}
+	
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				changeCursor(Cursor.DEFAULT); // remet le curseur par défaut
+			}
+		};
+	}
+	
+	@Override
+	public void CallbackOldToolChanged() {
+		MainViewController.getInstance().getToolBarController().bucketFillTool.setSelected(false);
+	}
+	
+	@Override
+	public void CallbackNewToolChanged() {
+		MainViewController.getInstance().getToolBarController().bucketFillTool.setSelected(true);
+	}
 
 	/**
-	 * Commande pour remplir une forme - utile pour le undo redo
+	 * Classe interne implémentant une commande sauvegardant une utilisation du pot de peinture et définissant l'action à effectuer en cas d'appel à undo() ou redo()
+	 * sur cette commande.
 	 */
 	private class FillSave implements ICmd {
 		private Image undosave;
 		private Image redosave = null;
 		private Layer currentLayer;
 		
+		/**
+		 * Construit une commande sauvegardant une utilisation du pot de peinture.
+		 */
 		private FillSave() {
 			currentLayer = Project.getInstance().getCurrentLayer();
-			undosave = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
+			undosave = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT); // on fait un snapshot du calque actuellement sélectionné avant sa modification
 		}
 		
 		@Override
 		public void execute() {
-			redosave = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
+			redosave = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT); // on fait un snapshot du calque actuellement sélectionné après sa modification
 			RecordCmd.getInstance().saveCmd(this);
 		}
 		
@@ -176,8 +199,7 @@ public class BucketFill extends Tool {
 			if (undosave == null) {
 				throw new UndoException();
 			}
-			currentLayer.getGraphicsContext2D().clearRect(0,0, currentLayer.getWidth(), currentLayer.getHeight());
-			currentLayer.getGraphicsContext2D().drawImage(undosave, 0, 0);
+			Utils.redrawSnapshot(currentLayer, undosave); // redessine le snapshot undosave sur le calque currentLayer
 		}
 		
 		@Override
@@ -185,11 +207,11 @@ public class BucketFill extends Tool {
 			if (redosave == null) {
 				throw new UndoException();
 			}
-			currentLayer.getGraphicsContext2D().clearRect(0,0, currentLayer.getWidth(), currentLayer.getHeight());
-			Project.getInstance().getCurrentLayer().getGraphicsContext2D().drawImage(redosave, 0, 0);
+			Utils.redrawSnapshot(currentLayer, redosave); // redessine le snapshot redosave sur le calque currentLayer
 		}
-
-		public String toString(){
+		
+		@Override
+		public String toString() {
 			return "Remplissage de l'image";
 		}
 	}

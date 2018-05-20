@@ -1,10 +1,11 @@
 package utils;
 
-import java.lang.Exception;
-
+/**
+ * Classe implémentant l'exceptions levée en cas de problème dans les undos/redos.
+ */
 public class UndoException extends Exception {
-    public UndoException() { super(); }
-    public UndoException(String message) { super(message); }
-    public UndoException(String message, Throwable cause) { super(message, cause); }
-    public UndoException(Throwable cause) { super(cause); }
+	/**
+	 * Constructeur de l'exception levée en cas d'erreur lors des undo/redo.
+	 */
+	public UndoException() { super(); }
 }

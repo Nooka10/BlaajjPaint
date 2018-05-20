@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * contrôleur associé au fichier FXML ResizeLayer.fxml et gérant l'ensemble des actions associées à la fenêtre de redimensionnement ouvert
+ * Contrôleur associé au fichier FXML ResizeLayer.fxml et gérant l'ensemble des actions associées à la fenêtre de redimensionnement ouverte
  * lorsque l'utilisateur clique sur le menu <b>Calque -> Redimensionner</b>.
  */
 public class ResizeLayerController {
@@ -145,7 +145,8 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement.
+	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement et définissant l'action à effectuer en cas d'appel à undo() ou redo()
+	 * sur cette commande.
 	 */
 	private class ResizeSave implements ICmd{
 		private Layer currentLayer;
@@ -175,7 +176,7 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void undo() {
+		public void undo() { // FIXME: voir avec Antoine si ya moyen d'utiliser Utils.redrawSnapshot()...?
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
 			currentLayer.setWidth(oldWidth);
 			currentLayer.setHeight(oldHeight);

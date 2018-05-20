@@ -20,22 +20,18 @@ public class HistoryController {
 	private Label label;
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur un élément de la liste de l'historique de commandes en haut à droite de la GUI.
-	 * Undo (ou redo) jusqu'à ce que le résultat de l'action correspondante à l'élément sur lequel a cliqué l'utilisateur soit visible.
+	 * Méthode appelée lorsque l'utilisateur clique sur un élément de la liste de l'historique de commandes en haut à droite de la GUI. Undo (ou redo) jusqu'à ce que le
+	 * résultat de l'action correspondante à l'élément sur lequel a cliqué l'utilisateur soit visible.
 	 */
 	@FXML
 	void handleOnMouseReleased() {
-		if (currentUndoID == -1) { // currentUndoId encore non initialisé
-			currentUndoID = RecordCmd.getInstance().getUndoStack().size(); // initialisé à la taille de la undoStack
-		}
-		
 		if (currentUndoID > id) { // l'utilisateur souhaite effectuer des undos
-			while (currentUndoID != id) {
+			while (currentUndoID > id) {
 				RecordCmd.getInstance().undo();
-				currentUndoID--;
+				//currentUndoID--;
 			}
-		} else if (currentUndoID <= id) { // l'utilisateur souhaite effectuer des redos
-			while (currentUndoID <= id) {
+		} else if (currentUndoID < id) { // l'utilisateur souhaite effectuer des redos
+			while (currentUndoID < id) {
 				RecordCmd.getInstance().redo();
 				currentUndoID++;
 			}
@@ -44,15 +40,19 @@ public class HistoryController {
 	
 	/**
 	 * Permet d'indiquer au contrôleur le nombre de commandes enregistrées dans la undoStack.
-	 * @param nbCmd, le nombre de commandes enregistrées dans la undoStack.
+	 *
+	 * @param nbCmd,
+	 * 		le nombre de commandes enregistrées dans la undoStack.
 	 */
-	void setCurrentUndoId(int nbCmd){
+	void setCurrentUndoId(int nbCmd) {
 		currentUndoID = nbCmd;
 	}
 	
 	/**
 	 * Permet de définir le texte du label.
-	 * @param label, le texte à afficher dans le label.
+	 *
+	 * @param label,
+	 * 		le texte à afficher dans le label.
 	 */
 	public void setLabel(String label) {
 		this.label.setText(label);
@@ -60,7 +60,9 @@ public class HistoryController {
 	
 	/**
 	 * Permet de définir l'id du label. L'id correspond à son index dans la undoStack.
-	 * @param id, l'index de l'élément dans la undoStack.
+	 *
+	 * @param id,
+	 * 		l'index de l'élément dans la undoStack.
 	 */
 	void setID(int id) {
 		this.id = id;
