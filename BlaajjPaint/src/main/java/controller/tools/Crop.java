@@ -207,7 +207,7 @@ public class Crop extends Tool {
 		 * Construit une commande sauvegardant le rognage d'un calque.
 		 * @param layerToCrop, le calque que l'on souhaite rogner.
 		 */
-		public CropSave(Layer layerToCrop) {
+		private CropSave(Layer layerToCrop) {
 			undosave = Utils.makeSnapshot(layerToCrop, Color.TRANSPARENT);
 			widthLayer = layerToCrop.getWidth();
 			heightLayer = layerToCrop.getHeight();

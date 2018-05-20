@@ -8,16 +8,12 @@ import javafx.scene.control.Button;
  * GUI en dessous de la barre de menus, lorsqu'on sélectionne l'outil <b>Rogner</b>.
  */
 public class ParamCropController {
-	@FXML
-	public Button cancelButton;
-	@FXML
-	public Button validateButton;
 	
 	/**
 	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Annuler</b>. Annule le rognage du calque et réinitialise l'état de l'outil Crop.
 	 */
 	@FXML
-	void handleCancel() {
+	private void handleCancel() {
 		Crop.getInstance().cancel();
 	}
 	
@@ -25,7 +21,7 @@ public class ParamCropController {
 	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Valider</b>. Effectue le rognage du calque selon la sélection de l'utilisateur.
 	 */
 	@FXML
-	void handleValidate() {
+	private void handleValidate() {
 		Crop.getInstance().validate();
 	}
 }
