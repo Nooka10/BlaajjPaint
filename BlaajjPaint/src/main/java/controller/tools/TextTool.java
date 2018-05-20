@@ -224,7 +224,6 @@ public class TextTool extends Tool {
 	 * cette commande.
 	 */
 	private class textSave implements ICmd {
-		private SnapshotParameters params;
 		private Layer oldLayerSaved;
 		private Layer textLayerSaved;
 		
@@ -250,7 +249,7 @@ public class TextTool extends Tool {
 		
 		@Override
 		public void undo() {
-			Project.getInstance().getLayers().remove(textLayerSaved);
+			Project.getInstance().removeLayer(textLayerSaved);
 			Project.getInstance().setCurrentLayer(oldLayerSaved);
 		}
 		
