@@ -51,9 +51,6 @@ public class RightMenuController {
 	
 	@FXML
 	public TextField opacityTextField;
-	
-	@FXML
-	private AnchorPane rightMenu;
 
 	@FXML
 	private ScrollPane scrollPaneHistory;

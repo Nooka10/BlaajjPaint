@@ -14,9 +14,6 @@ public class HistoryController {
 	private static int currentUndoID = -1;
 	
 	@FXML
-	private HBox historyElem;
-	
-	@FXML
 	private Label label;
 	
 	/**
