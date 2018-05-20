@@ -144,7 +144,7 @@ public class MenuBarController {
 		ImportImageSave importImageSave = new ImportImageSave();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Import an image");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("fichiers PNG ou JPG", "*.png", "*.jpg", "*.jpeg", "*.PNG", "*.JPG", "*.JPEG"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("fichiers PNG ou JPG", "*.png", "*.jpg", "*.jpeg"));
 		
 		// Ouvre une fenêtre invitant l'utilisateur à sélectionner un fichier utilisant l'extension autorisée
 		File file = fileChooser.showOpenDialog(MainViewController.getInstance().getMain().getPrimaryStage());
