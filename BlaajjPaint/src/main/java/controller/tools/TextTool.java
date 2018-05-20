@@ -67,7 +67,7 @@ public class TextTool extends Tool {
 	/**
 	 * Initialise l'outil texte en créant un calque temporaire affichant le texte à l'endroit définit par l'utilisateur.
 	 */
-	public void initTextTool() {
+	private void initTextTool() {
 		oldCurrentLayer = Project.getInstance().getCurrentLayer();
 		
 		// crée un calque temporaire utilisé pour afficher le texte à la position choisie par l'utilisateur
@@ -105,7 +105,7 @@ public class TextTool extends Tool {
 	/**
 	 * Réinitialise l'outil texte.
 	 */
-	public void reset() {
+	private void reset() {
 		Project.getInstance().getLayers().remove(textLayer); // supprime le calque temporaire d'ajout de text (textLayer)
 		Project.getInstance().setCurrentLayer(oldCurrentLayer); // redéfinit l'ancien calque comme calque courant
 		

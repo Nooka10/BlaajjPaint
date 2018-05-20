@@ -30,10 +30,7 @@ public class ParamTextController {
 	private TextField textValueTextField;
 	
 	@FXML
-	public Button validateButton;
-	
-	@FXML
-	public Button cancelButton;
+	private Button validateButton;
 	
 	private TextTool textTool = TextTool.getInstance();
 	

@@ -21,7 +21,7 @@ import utils.Utils;
  */
 public class Pipette extends Tool {
 	private static Pipette toolInstance; // l'instance unique du singleton Hand
-	private static Layer tmpLayer;
+	private Layer tmpLayer;
 	private Layer oldCurrentLayer;
 	
 	/**
