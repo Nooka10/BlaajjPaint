@@ -224,7 +224,6 @@ public class TextTool extends Tool {
 	 * cette commande.
 	 */
 	class textSave implements ICmd {
-		private SnapshotParameters params;
 		private Layer oldLayerSaved;
 		private Layer textLayerSaved;
 		
@@ -232,8 +231,6 @@ public class TextTool extends Tool {
 		 * Construit une commande sauvegardant l'ajout d'un calque de texte.
 		 */
 		private textSave() {
-			params = new SnapshotParameters();
-			params.setFill(Color.TRANSPARENT);
 			oldLayerSaved = oldCurrentLayer;
 		}
 		
