@@ -223,8 +223,7 @@ public class TextTool extends Tool {
 	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
 	 * cette commande.
 	 */
-	class textSave implements ICmd {
-		private SnapshotParameters params;
+	private class textSave implements ICmd {
 		private Layer oldLayerSaved;
 		private Layer textLayerSaved;
 		
@@ -232,8 +231,6 @@ public class TextTool extends Tool {
 		 * Construit une commande sauvegardant l'ajout d'un calque de texte.
 		 */
 		private textSave() {
-			params = new SnapshotParameters();
-			params.setFill(Color.TRANSPARENT);
 			oldLayerSaved = oldCurrentLayer;
 		}
 		
@@ -252,7 +249,7 @@ public class TextTool extends Tool {
 		
 		@Override
 		public void undo() {
-			Project.getInstance().getLayers().remove(textLayerSaved);
+			Project.getInstance().removeLayer(textLayerSaved);
 			Project.getInstance().setCurrentLayer(oldLayerSaved);
 		}
 		

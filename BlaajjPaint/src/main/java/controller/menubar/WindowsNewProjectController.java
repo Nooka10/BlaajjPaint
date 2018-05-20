@@ -98,7 +98,7 @@ public class WindowsNewProjectController {
 	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>Créer</b> et définissant l'action à effectuer en cas d'appel à undo() ou redo()
 	 * sur cette commande.
 	 */
-	public class NewProjectSave implements ICmd {
+	private class NewProjectSave implements ICmd {
 		@Override
 		public void execute() {
 			RecordCmd.getInstance().saveCmd(this);
