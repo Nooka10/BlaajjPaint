@@ -46,9 +46,9 @@ public abstract class ShapeDrawer extends Tool {
 	public void CallbackOldToolChanged() {
 		MainViewController.getInstance().getToolBarController().shapeTool.setSelected(false);
 		// supprime les eventHandler du calque shapeLayer
-		/*shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_PRESSED, getCurrentOnMousePressedEventHandler());
 		shapeLayer.removeEventHandler(MouseEvent.MOUSE_DRAGGED, getCurrentOnMouseDraggedEventHandler());
-		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());*/
+		shapeLayer.removeEventHandler(MouseEvent.MOUSE_RELEASED, getCurrentOnMouseRelesedEventHandler());
 		Project.getInstance().removeLayer(shapeLayer); // supprime le calque du projet
         Project.getInstance().setCurrentLayer(oldCurrentLayer); // si nouvelle forme précédement crée, sera oldCurrentLayer à se moment la
 	}
