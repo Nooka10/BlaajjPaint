@@ -18,9 +18,7 @@ import utils.SaveProject;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 
 /**
@@ -293,26 +291,9 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleHelp() {
-		/*
 		if (Desktop.isDesktopSupported()) {
 			try {
-				File myFile = new File(getClass().getResource("/manuel/BlaajjPaintManuelUtilisateur.pdf").toString());
-				Desktop.getDesktop().open(myFile);
-			} catch (IOException ex) {
-				System.out.println("La lecture du fichier pdf n'est pas supportée sur cette machine.");
-			}
-		}
-		*/
-		if (Desktop.isDesktopSupported()) {
-			try {
-				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/BlaajjPaintManuelUtilisateur.pdf");
-				File pdfTemp = new File("manuelUtilisateurTemp.pdf"); // crée un fichier temporaire
-				FileOutputStream fos = new FileOutputStream(pdfTemp); // lit le fichier temporaire via un flux
-				while (jarPdf.available() > 0) {
-					fos.write(jarPdf.read()); // lit le fichier
-				}
-				fos.close(); // ferme le flux du fichier temporaire
-				
+				File pdfTemp = new File(getClass().getResource("/manuel/BlaajjPaintManuelUtilisateur.pdf").getFile().replaceAll("%20", " ")); // récupère le manuel utilisateur
 				Desktop.getDesktop().open(pdfTemp);  // ouvre le fichier pdf dans le lecteur pdf par défaut de l'utilisateur
 			} catch (IOException e) {
 				System.out.println("erreur : " + e);
