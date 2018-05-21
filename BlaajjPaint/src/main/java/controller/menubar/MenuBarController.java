@@ -293,9 +293,19 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleHelp() {
+		/*
 		if (Desktop.isDesktopSupported()) {
 			try {
-				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
+				File myFile = new File(getClass().getResource("/manuel/BlaajjPaintManuelUtilisateur.pdf").toString());
+				Desktop.getDesktop().open(myFile);
+			} catch (IOException ex) {
+				System.out.println("La lecture du fichier pdf n'est pas supportée sur cette machine.");
+			}
+		}
+		*/
+		if (Desktop.isDesktopSupported()) {
+			try {
+				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/BlaajjPaintManuelUtilisateur.pdf");
 				File pdfTemp = new File("manuelUtilisateurTemp.pdf"); // crée un fichier temporaire
 				FileOutputStream fos = new FileOutputStream(pdfTemp); // lit le fichier temporaire via un flux
 				while (jarPdf.available() > 0) {
