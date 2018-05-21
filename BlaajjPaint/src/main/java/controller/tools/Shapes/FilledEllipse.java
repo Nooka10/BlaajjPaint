@@ -20,6 +20,7 @@ public class FilledEllipse extends ShapeDrawer {
 	
 	/**
 	 * Retourne l'instance unique du singleton FilledEllipse.
+	 *
 	 * @return l'instance unique du singleton FilledEllipse.
 	 */
 	public static FilledEllipse getInstance() {

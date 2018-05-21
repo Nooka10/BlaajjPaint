@@ -46,7 +46,7 @@ public class SaveProject {
 	 * 		le fichier dans lequel enregistrer le projet.
 	 */
 	public void saveAs(File f) {
-		if (f != null){
+		if (f != null) {
 			saveFile = f;
 		}
 		doSave();

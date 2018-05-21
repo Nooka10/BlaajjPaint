@@ -8,10 +8,8 @@ import controller.history.RecordCmd;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
@@ -57,7 +55,8 @@ public class TextTool extends Tool {
 	/**
 	 * Définit la police utilisée pour dessiner le texte.
 	 *
-	 * @param font, la nouvelle police à utiliser pour dessiner le texte.
+	 * @param font,
+	 * 		la nouvelle police à utiliser pour dessiner le texte.
 	 */
 	public void setFont(Font font) {
 		this.font = font;
@@ -67,7 +66,7 @@ public class TextTool extends Tool {
 	/**
 	 * Initialise l'outil texte en créant un calque temporaire affichant le texte à l'endroit définit par l'utilisateur.
 	 */
-	public void initTextTool() {
+	private void initTextTool() {
 		oldCurrentLayer = Project.getInstance().getCurrentLayer();
 		
 		// crée un calque temporaire utilisé pour afficher le texte à la position choisie par l'utilisateur
@@ -105,7 +104,7 @@ public class TextTool extends Tool {
 	/**
 	 * Réinitialise l'outil texte.
 	 */
-	public void reset() {
+	private void reset() {
 		Project.getInstance().getLayers().remove(textLayer); // supprime le calque temporaire d'ajout de text (textLayer)
 		Project.getInstance().setCurrentLayer(oldCurrentLayer); // redéfinit l'ancien calque comme calque courant
 		
@@ -198,9 +197,9 @@ public class TextTool extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
-	protected  EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -208,9 +207,9 @@ public class TextTool extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -220,8 +219,8 @@ public class TextTool extends Tool {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
-	 * cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
 	private class textSave implements ICmd {
 		private Layer oldLayerSaved;
@@ -236,7 +235,9 @@ public class TextTool extends Tool {
 		
 		/**
 		 * Définit le calque à enregistrer dans la commande.
-		 * @param layer, le calque à sauvegarder dans la commande.
+		 *
+		 * @param layer,
+		 * 		le calque à sauvegarder dans la commande.
 		 */
 		private void setLayerToSaved(Layer layer) {
 			textLayerSaved = layer;

@@ -35,6 +35,7 @@ public class Crop extends Tool {
 	
 	/**
 	 * Retourne l'instance unique du singleton Crop.
+	 *
 	 * @return l'instance unique du singleton Crop.
 	 */
 	public static Crop getInstance() {
@@ -131,9 +132,6 @@ public class Crop extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				if (cropSave == null) {    // premier clic -> on set les valeurs de départ et on crée un calque temporaire qui affichera le rectangle de sélection
-					if (selectionCropLayer == null) { // à initialisé si l'outil a été utilisé
-						initCrop(); // FIXME: Est-ce vraiment utile??!
-					}
 					cropSave = new CropSave(oldCurrentLayer); // crée une sauvegarde du rognage
 					startX = event.getX();
 					startY = event.getY();
@@ -191,8 +189,8 @@ public class Crop extends Tool {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant le rognage d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
-	 * cette commande.
+	 * Classe interne implémentant une commande sauvegardant le rognage d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
 	private class CropSave implements ICmd {
 		private Image undosave;
@@ -205,9 +203,11 @@ public class Crop extends Tool {
 		
 		/**
 		 * Construit une commande sauvegardant le rognage d'un calque.
-		 * @param layerToCrop, le calque que l'on souhaite rogner.
+		 *
+		 * @param layerToCrop,
+		 * 		le calque que l'on souhaite rogner.
 		 */
-		public CropSave(Layer layerToCrop) {
+		private CropSave(Layer layerToCrop) {
 			undosave = Utils.makeSnapshot(layerToCrop, Color.TRANSPARENT);
 			widthLayer = layerToCrop.getWidth();
 			heightLayer = layerToCrop.getHeight();
@@ -242,8 +242,7 @@ public class Crop extends Tool {
 			layerCropped.setTranslateY(translateYLayer);
 			
 			Utils.redrawSnapshot(layerCropped, undosave); // redessine le snapshot undosave sur le calque layerCropped
-			
-			// FIXME: tu fais quoi là?
+
 			// définit les dimensions et le décalage tel qu'ils étaient définit après le Crop
 			widthLayer = widthTemp;
 			heightLayer = heightTemp;
@@ -278,11 +277,8 @@ public class Crop extends Tool {
 			layerCropped.setTranslateX(translateXLayer);
 			layerCropped.setTranslateY(translateYLayer);
 			
-			//FIXME: Voir avec James si ya moyen d'utiliser Utils.redrawSnapshot()
-			
 			layerCropped.getGraphicsContext2D().drawImage(redosave, 0, 0); // redessine le snapshot redosave sur le calque layerCropped
 			
-			// FIXME: tu fais quoi là?
 			// définit les dimensions et le décalage tel qu'ils étaient définit avant le Crop
 			widthLayer = widthTemp;
 			heightLayer = heightTemp;

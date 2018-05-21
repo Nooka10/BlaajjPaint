@@ -1,6 +1,3 @@
-/*
-Author: Benoît
- */
 package controller.tools;
 
 import controller.MainViewController;
@@ -9,8 +6,8 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 
 /**
- * Classe implémentant l'outil main permettant de se déplacer dans l'espace de travail (lorsque l'image est suffisemment grande pour activer le scrollPane).
- * Implémente le modèle Singleton.
+ * Classe implémentant l'outil main permettant de se déplacer dans l'espace de travail (lorsque l'image est suffisemment grande pour activer le scrollPane). Implémente le
+ * modèle Singleton.
  */
 public class Hand extends Tool {
 	
@@ -25,6 +22,7 @@ public class Hand extends Tool {
 	
 	/**
 	 * Retourne l'instance unique du singleton Hand.
+	 *
 	 * @return l'instance unique du singleton Hand.
 	 */
 	public static Hand getInstance() {
@@ -54,7 +52,7 @@ public class Hand extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
@@ -74,7 +72,7 @@ public class Hand extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {

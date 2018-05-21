@@ -16,7 +16,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.SaveProject;
 
+import java.awt.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 
 /**
@@ -238,7 +242,7 @@ public class MenuBarController {
 	@FXML
 	public void handleMergeAllLayer() {
 		MergeAllSave mas = new MergeAllSave();
-		Layer resultLayer = new Layer(1, 1, true); // FIXME: 1,1 la taille??
+		Layer resultLayer = new Layer(1, 1, true);
 		
 		int i = 0;
 		for (Layer layer : Project.getInstance().getLayers()) {
@@ -282,9 +286,28 @@ public class MenuBarController {
 		}
 	}
 	
+	/**
+	 * Si l'opération est supportée, ouvre le manuel d'utilisateur dans le lecteur de fichier pdf par défaut de l'utilisateur.
+	 */
 	@FXML
 	public void handleHelp() {
-	
+		if (Desktop.isDesktopSupported()) {
+			try {
+				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
+				File pdfTemp = new File("manuelUtilisateurTemp.pdf"); // crée un fichier temporaire
+				FileOutputStream fos = new FileOutputStream(pdfTemp); // lit le fichier temporaire via un flux
+				while (jarPdf.available() > 0) {
+					fos.write(jarPdf.read()); // lit le fichier
+				}
+				fos.close(); // ferme le flux du fichier temporaire
+				
+				Desktop.getDesktop().open(pdfTemp);  // ouvre le fichier pdf dans le lecteur pdf par défaut de l'utilisateur
+			} catch (IOException e) {
+				System.out.println("erreur : " + e);
+			}
+		} else {
+			System.out.println("La lecture du fichier pdf n'est pas supportée sur cette machine.");
+		}
 	}
 	
 	/**
@@ -421,7 +444,7 @@ public class MenuBarController {
 		}
 		
 		public String toString() {
-			return "Import d'image";
+			return "Importation d'une image";
 		}
 	}
 	

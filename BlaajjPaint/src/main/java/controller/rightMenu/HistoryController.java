@@ -3,7 +3,6 @@ package controller.rightMenu;
 import controller.history.RecordCmd;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 
 /**
  * Contrôleur associé au fichier FXML History.fxml et gérant l'ensemble des actions associées à une ligne de l'historique des commandes visible en haut à droite de la
@@ -12,9 +11,6 @@ import javafx.scene.layout.HBox;
 public class HistoryController {
 	private int id;
 	private static int currentUndoID = -1;
-	
-	@FXML
-	private HBox historyElem;
 	
 	@FXML
 	private Label label;

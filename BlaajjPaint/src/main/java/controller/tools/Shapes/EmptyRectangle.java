@@ -22,6 +22,7 @@ public class EmptyRectangle extends ShapeDrawer {
 	
 	/**
 	 * Retourne l'instance unique du singleton EmptyRectangle.
+	 *
 	 * @return l'instance unique du singleton EmptyRectangle.
 	 */
 	public static EmptyRectangle getInstance() {
@@ -33,15 +34,18 @@ public class EmptyRectangle extends ShapeDrawer {
 	
 	/**
 	 * Retourne l'épaisseur de la bordure de la forme.
+	 *
 	 * @return l'épaisseur de la bordure de la forme.
 	 */
-	public double getThickness(){
+	public double getThickness() {
 		return thickness;
 	}
 	
 	/**
 	 * Permet de définir l'épaisseur de la bordure de la forme.
-	 * @param thickness, l'épaisseur de la bordure de la forme.
+	 *
+	 * @param thickness,
+	 * 		l'épaisseur de la bordure de la forme.
 	 */
 	public void setThickness(double thickness) {
 		this.thickness = thickness;

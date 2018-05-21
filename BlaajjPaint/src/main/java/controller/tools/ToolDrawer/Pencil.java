@@ -1,6 +1,3 @@
-/*
-Author: Benoît
- */
 package controller.tools.ToolDrawer;
 
 import controller.MainViewController;
@@ -33,11 +30,12 @@ public class Pencil extends ToolDrawer {
 	
 	/**
 	 * Retourne l'instance unique du singleton Pencil.
+	 *
 	 * @return l'instance unique du singleton Pencil.
 	 */
 	public static Pencil getInstance() {
-		if (toolInstance  == null) {
-			toolInstance  = new Pencil();
+		if (toolInstance == null) {
+			toolInstance = new Pencil();
 		}
 		return toolInstance;
 	}
@@ -51,7 +49,7 @@ public class Pencil extends ToolDrawer {
 				pencilMaskGC = Project.getInstance().getCurrentLayer().getGraphicsContext2D();
 				
 				pencilMaskGC.beginPath();
-
+				
 				pencilMaskGC.setLineCap(StrokeLineCap.ROUND); // définit la forme du pinceau
 				pencilMaskGC.setLineJoin(StrokeLineJoin.ROUND);
 				
@@ -89,20 +87,20 @@ public class Pencil extends ToolDrawer {
 			}
 		};
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Image img = new Image("/cursors/pencilCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
-				changeCursor(new ImageCursor(img,3,30)); // change le curseur de la souris en mode "pinceau"
+				Image img = new Image("/cursors/pencilCursor.png");
+				changeCursor(new ImageCursor(img, 3, 30)); // change le curseur de la souris en mode "pinceau"
 			}
 		};
 	}
-
+	
 	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -122,10 +120,11 @@ public class Pencil extends ToolDrawer {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant un trait de pinceau et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant un trait de pinceau et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
 	public class PencilStrike extends Strike {
-		public String toString(){
+		public String toString() {
 			return "Trait de pinceau";
 		}
 	}

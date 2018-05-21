@@ -1,7 +1,3 @@
-/*
-Author : Benoit
-Modified by : Adrien
- */
 package controller.tools.ToolDrawer;
 
 import controller.tools.Tool;
@@ -14,8 +10,8 @@ import javafx.scene.layout.HBox;
 import utils.Utils;
 
 /**
- * Contrôleur associé au fichier FXML ParamDrawToolController.fxml et gérant l'ensemble des actions associées à la barre de menus des outils pinceau et gomme qui
- * apparaît dans la GUI en dessous de la barre de menus, lorsqu'on sélectionne l'outil <b>Pinceau</b> ou l'outil <b>Gomme</b>.
+ * Contrôleur associé au fichier FXML ParamDrawToolController.fxml et gérant l'ensemble des actions associées à la barre de menus des outils pinceau et gomme qui apparaît
+ * dans la GUI en dessous de la barre de menus, lorsqu'on sélectionne l'outil <b>Pinceau</b> ou l'outil <b>Gomme</b>.
  */
 public class ParamDrawToolController {
 	@FXML
@@ -61,8 +57,9 @@ public class ParamDrawToolController {
 	}
 	
 	/**
-	 * Méthode appelée par le slider de la barre de menu des outils <b>Pinceau</b> et <b>Gomme</b> lorsque l'utilisateur clique avec la souris sur le slider d'opacité
-	 * du calque, lorsqu'il reste appuyé et glisse ou encore lorsqu'il relâche le clic. Modifie l'épaisseur de l'outil de dessin sélectionné (<b>pinceau</b> ou <b>gomme</b>).
+	 * Méthode appelée par le slider de la barre de menu des outils <b>Pinceau</b> et <b>Gomme</b> lorsque l'utilisateur clique avec la souris sur le slider d'opacité du
+	 * calque, lorsqu'il reste appuyé et glisse ou encore lorsqu'il relâche le clic. Modifie l'épaisseur de l'outil de dessin sélectionné (<b>pinceau</b> ou
+	 * <b>gomme</b>).
 	 */
 	public void handleSliderValueChanged() {
 		tool.thickness = (int) Math.round(thicknessSlider.getValue());

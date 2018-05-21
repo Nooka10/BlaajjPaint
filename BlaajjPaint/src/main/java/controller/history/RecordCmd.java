@@ -30,6 +30,7 @@ public class RecordCmd {
 	
 	/**
 	 * Retourne l'instance unique du singleton RecordCmd. La crée si elle n'existe pas déjà.
+	 *
 	 * @return l'instance unique du singleton RecordCmd.
 	 */
 	public static RecordCmd getInstance() {
@@ -40,8 +41,8 @@ public class RecordCmd {
 	}
 	
 	/**
-	 * Appelle la fonction <b>undo()</b> sur la dernière <b>Cmd</b> sauvée. Si aucune <b>Cmd</b> ne se trouve dans la pile, il ne fait rien. Si le handleUndo lèves
-	 * une exception celle-ci est capturée et consignée dans les logs et la <b>Cmd</b> concernée retourne sur la pile.
+	 * Appelle la fonction <b>undo()</b> sur la dernière <b>Cmd</b> sauvée. Si aucune <b>Cmd</b> ne se trouve dans la pile, il ne fait rien. Si le handleUndo lèves une
+	 * exception celle-ci est capturée et consignée dans les logs et la <b>Cmd</b> concernée retourne sur la pile.
 	 */
 	public void undo() {
 		if (!undoStack.isEmpty()) { // si la pile des handleUndo n'est pas vide
@@ -90,7 +91,8 @@ public class RecordCmd {
 	/**
 	 * Ajoutes la <b>Cmd</b> sur la pile des commandes
 	 *
-	 * @param cmd la <b>ICmd</b> qui doit être ajoutée à la pile
+	 * @param cmd
+	 * 		la <b>ICmd</b> qui doit être ajoutée à la pile
 	 */
 	public void saveCmd(ICmd cmd) {
 		if (undoStack.size() > MAX_CMD_HISTORY) {
@@ -104,6 +106,7 @@ public class RecordCmd {
 	
 	/**
 	 * Retourne la pile contenant, au plus, les MAX_CMD_HISTORY dernières commandes enregistrées pouvant être annulées.
+	 *
 	 * @return la pile des dernières commandes enregistrées pouvant être annulées.
 	 */
 	public LinkedList<ICmd> getUndoStack() {
@@ -112,6 +115,7 @@ public class RecordCmd {
 	
 	/**
 	 * Retourne la pile contenant, au plus, les MAX_CMD_HISTORY dernières commandes ayant été annulées (undo).
+	 *
 	 * @return la pile des dernières commandes ayant été annulées (undo).
 	 */
 	public LinkedList<ICmd> getRedoStack() {

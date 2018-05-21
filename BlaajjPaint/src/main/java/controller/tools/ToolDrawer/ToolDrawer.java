@@ -17,11 +17,13 @@ public abstract class ToolDrawer extends Tool {
 	protected Strike currentStrike; // Le trait actuellement tiré
 	
 	/**
-	 * Permet de régler l'épaisseur de l'outil. Doit être un nombre réel compris entre 1 et 200. Si la valeur passée est plus petite que 1, la valeur 1 sera
-	 * donnée à l'épaisseur. Si la valeur passée est plus grande que 200, la valeur 200 sera donnée à l'épaisseur.
-	 * @param thickness, l'épaisseur à donner à l'outil.
+	 * Permet de régler l'épaisseur de l'outil. Doit être un nombre réel compris entre 1 et 200. Si la valeur passée est plus petite que 1, la valeur 1 sera donnée à
+	 * l'épaisseur. Si la valeur passée est plus grande que 200, la valeur 200 sera donnée à l'épaisseur.
+	 *
+	 * @param thickness,
+	 * 		l'épaisseur à donner à l'outil.
 	 */
-	public int setThickness(int thickness) {
+	public void setThickness(int thickness) {
 		if (this.thickness > 200) {
 			this.thickness = 200;
 		} else if (this.thickness < 2) {
@@ -30,7 +32,6 @@ public abstract class ToolDrawer extends Tool {
 			this.thickness = thickness;
 		}
 		Project.getInstance().getCurrentLayer().getGraphicsContext2D().setLineWidth(thickness);
-		return thickness;
 	}
 	
 	/**

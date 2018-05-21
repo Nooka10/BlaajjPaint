@@ -211,7 +211,6 @@ public class MainViewController {
 			menuBarController.handleOpen();
 		}
 		
-		// FIXME: vérifier qu'un projet est ouvert pour activer les raccourci ci-dessous...!
 		try {
 			// raccourci clavier permettant de fermer un projet
 			if (event.isControlDown() && event.getCode() == KeyCode.Q) {
@@ -262,7 +261,7 @@ public class MainViewController {
 			if (event.getCode() == KeyCode.DELETE) {
 				menuBarController.handleDeleteLayer();
 			}
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("Aucun projet n'est ouvert!");
 		}
 	}

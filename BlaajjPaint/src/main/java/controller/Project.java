@@ -93,11 +93,11 @@ public class Project implements Serializable {
 	/**
 	 * Change la couleur actuellement sélectionnée pour les outils.
 	 *
-	 * @param color, la nouvelle couleur à sélectionner.
+	 * @param color,
+	 * 		la nouvelle couleur à sélectionner.
 	 */
 	public void setCurrentColor(Color color) {
 		currentColor = color;
-		MainViewController.getInstance().getRightMenuController().setColorPickerColor(color); // FIXME: à checker si utile...
 	}
 	
 	/**
@@ -110,7 +110,8 @@ public class Project implements Serializable {
 	/**
 	 * remplace le calque actuellement sélectionné par le calque courant. Retire les eventHandlers appliqués à l'ancien calque et les remet sur le nouveau.
 	 *
-	 * @param currentLayer, le calque que l'on souhaite définir comme calque actuellement sélectionné.
+	 * @param currentLayer,
+	 * 		le calque que l'on souhaite définir comme calque actuellement sélectionné.
 	 */
 	public void setCurrentLayer(Layer currentLayer) {
 		workspace.getChildren().remove(layerBorders);
@@ -148,9 +149,12 @@ public class Project implements Serializable {
 	/**
 	 * Initialise le projet selon la largeur et la hauteur données en paramètre.
 	 *
-	 * @param width, la largeur du projet.
-	 * @param height, la hauteur du projet.
-	 * @param isNew, si vrai, crée un premier calque vide, si false, n'en crée pas.
+	 * @param width,
+	 * 		la largeur du projet.
+	 * @param height,
+	 * 		la hauteur du projet.
+	 * @param isNew,
+	 * 		si vrai, crée un premier calque vide, si false, n'en crée pas.
 	 */
 	public void initData(int width, int height, boolean isNew) {
 		layers = new LinkedList<>();
@@ -211,7 +215,8 @@ public class Project implements Serializable {
 	/**
 	 * Ajoute le calque passé en paramètre au projet.
 	 *
-	 * @param newLayer, le calque à ajouter au projet.
+	 * @param newLayer,
+	 * 		le calque à ajouter au projet.
 	 */
 	public void addLayer(Layer newLayer) {
 		setCurrentLayer(newLayer);
@@ -225,7 +230,9 @@ public class Project implements Serializable {
 	
 	/**
 	 * Supprime le calque passé en paramètre.
-	 * @param layer, le calque à supprimer du projet.
+	 *
+	 * @param layer,
+	 * 		le calque à supprimer du projet.
 	 */
 	public void removeLayer(Layer layer) {
 		layers.remove(layer);
@@ -234,7 +241,9 @@ public class Project implements Serializable {
 	
 	/**
 	 * Ajoute les eventHandler de l'outil passé en paramètre au calque actuellement sélectionné.
-	 * @param tool, l'outil dont on souhaite ajouter les EventHandler au calque actuellement sélectionné.
+	 *
+	 * @param tool,
+	 * 		l'outil dont on souhaite ajouter les EventHandler au calque actuellement sélectionné.
 	 */
 	public void addEventHandlers(Tool tool) {
 		if (this.currentLayer != null) {
@@ -251,7 +260,9 @@ public class Project implements Serializable {
 	
 	/**
 	 * Supprime les eventHandler de l'outil passé en paramètre du calque actuellement sélectionné.
-	 * @param tool, l'outil dont on souhaite supprimer les EventHandler du calque actuellement sélectionné.
+	 *
+	 * @param tool,
+	 * 		l'outil dont on souhaite supprimer les EventHandler du calque actuellement sélectionné.
 	 */
 	public void removeEventHandler(Tool tool) {
 		if (this.currentLayer != null) {
@@ -268,7 +279,9 @@ public class Project implements Serializable {
 	
 	/**
 	 * Exporte le projet dans le fichier passé en paramètre.
-	 * @param file, le fichier dans lequel on souhaite exporter le projet.
+	 *
+	 * @param file,
+	 * 		le fichier dans lequel on souhaite exporter le projet.
 	 */
 	public void export(File file) {
 		if (file != null) {
@@ -321,7 +334,9 @@ public class Project implements Serializable {
 	
 	/**
 	 * Importe l'image du fichier passé en paramètre en tant que nouveau calque et l'ajoute au projet.
-	 * @param file, l'image à importer.
+	 *
+	 * @param file,
+	 * 		l'image à importer.
 	 */
 	public void importImage(File file) {
 		String chosenExtension = "";

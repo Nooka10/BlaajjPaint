@@ -12,7 +12,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.Collections;
@@ -52,9 +55,6 @@ public class RightMenuController {
 	@FXML
 	public TextField opacityTextField;
 	
-	@FXML
-	private AnchorPane rightMenu;
-
 	@FXML
 	private ScrollPane scrollPaneHistory;
 	

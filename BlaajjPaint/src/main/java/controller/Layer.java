@@ -105,7 +105,7 @@ public class Layer extends Canvas implements Serializable {
 	 * @param _count,
 	 * 		la valeur à donner au compteur de calques.
 	 */
-	static void setCount(int _count) {
+	public static void setCount(int _count) {
 		count = ++_count;
 	}
 	
@@ -183,12 +183,12 @@ public class Layer extends Canvas implements Serializable {
 	 *
 	 * @param backgroundLayer,
 	 * 		le calque à l'arrière-plan (sur lequel on va dessiner)
-	 * @param mergeSurCalqueTemporaire,
+	 * @param mergeOnTmpLayer,
 	 * 		true si on fait un merge sur des calques temporaires (le count du calque retourné n'est pas incrémenté)
 	 *
 	 * @return un nouveau calque contenant la fusion du calque courant et de celui reçu en paramètre.
 	 */
-	public Layer mergeLayers(Layer backgroundLayer, boolean mergeSurCalqueTemporaire) {
+	public Layer mergeLayers(Layer backgroundLayer, boolean mergeOnTmpLayer) {
 		Image image1 = Utils.makeSnapshot(this, Color.TRANSPARENT);
 		Image image2 = Utils.makeSnapshot(backgroundLayer, Color.TRANSPARENT);
 		
@@ -201,7 +201,7 @@ public class Layer extends Canvas implements Serializable {
 		double maxY = getTranslateY() + getHeight() > backgroundLayer.getTranslateY() + backgroundLayer.getHeight() ? getTranslateY() + getHeight() : backgroundLayer.getTranslateY() + backgroundLayer.getHeight();
 		
 		// crée un nouveau calque qui contiendra la fusion des deux autres
-		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeSurCalqueTemporaire);
+		Layer mergeLayer = new Layer((int) (maxX - minX), (int) (maxY - minY), mergeOnTmpLayer);
 		
 		// dessine les deux calques sur notre nouveau calque fusion
 		mergeLayer.getGraphicsContext2D().drawImage(image2, backgroundLayer.getTranslateX() - minX, backgroundLayer.getTranslateY() - minY, backgroundLayer.getWidth(), backgroundLayer.getHeight());
@@ -369,5 +369,4 @@ public class Layer extends Canvas implements Serializable {
 			return "Opacité changée de " + Math.round(oldOpacity) + " à " + Math.round(newOpacity);
 		}
 	}
-	
 }

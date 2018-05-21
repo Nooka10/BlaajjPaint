@@ -1,7 +1,6 @@
 package controller.tools;
 
 import controller.MainViewController;
-import controller.menubar.MenuBarController;
 import controller.tools.Shapes.EmptyRectangle;
 import controller.tools.ToolDrawer.Eraser;
 import controller.tools.ToolDrawer.Pencil;
@@ -9,8 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
@@ -18,12 +15,9 @@ import java.io.IOException;
  * Contrôleur associé au fichier FXML Toolbar.fxml et gérant l'ensemble des actions associées à la barre d'outils qui apparaît à gauche dans la GUI.
  */
 public class ToolBarController {
-	@FXML
-	public AnchorPane toolBar;
+	
 	@FXML
 	public ToggleButton handTool;
-	@FXML
-	public ToggleGroup ToolBarButtons;
 	@FXML
 	public ToggleButton moveTool;
 	@FXML
@@ -73,7 +67,7 @@ public class ToolBarController {
 	@FXML
 	public void handleCrop() {
 		Tool.setCurrentTool(Crop.getInstance());
-		if(Tool.getToolHasChanged()){
+		if (Tool.getToolHasChanged()) {
 			addParamBar("/view/tools/ParamCrop.fxml");
 			Tool.setToolHasChanged(false);
 		}
@@ -121,7 +115,7 @@ public class ToolBarController {
 	@FXML
 	public void handleBucketFill() {
 		Tool.setCurrentTool(BucketFill.getInstance());
-		if(Tool.getToolHasChanged()){
+		if (Tool.getToolHasChanged()) {
 			closeCurrentParamBar();
 			Tool.setToolHasChanged(false);
 		}
@@ -133,7 +127,7 @@ public class ToolBarController {
 	@FXML
 	public void handleAddText() {
 		Tool.setCurrentTool(TextTool.getInstance());
-		if(Tool.getToolHasChanged()){
+		if (Tool.getToolHasChanged()) {
 			addParamBar("/view/tools/ParamText.fxml");
 			Tool.setToolHasChanged(false);
 		}
@@ -153,7 +147,9 @@ public class ToolBarController {
 	
 	/**
 	 * Ouvre le fichier FXML situé au chemin fourni en paramètre.
-	 * @param FXMLpath, le chemin menant au fichier FXML à ouvrir.
+	 *
+	 * @param FXMLpath,
+	 * 		le chemin menant au fichier FXML à ouvrir.
 	 */
 	@FXML
 	private void addParamBar(String FXMLpath) {
@@ -174,14 +170,14 @@ public class ToolBarController {
 	 * Ferme le fichier FXML actuellement ouvert.
 	 */
 	@FXML
-	private void closeCurrentParamBar(){
+	private void closeCurrentParamBar() {
 		MainViewController.getInstance().getParamBar().getChildren().remove(paramBar);
 	}
 	
 	/**
 	 * Permet d'activer les boutons de la barre d'outils.
 	 */
-	public void enableButton(){
+	public void enableButton() {
 		handTool.setDisable(false);
 		moveTool.setDisable(false);
 		cropTool.setDisable(false);
@@ -196,7 +192,7 @@ public class ToolBarController {
 	/**
 	 * Permet de désactiver les boutons de la barre d'outils.
 	 */
-	public void disableButton(){
+	public void disableButton() {
 		handTool.setDisable(true);
 		moveTool.setDisable(true);
 		cropTool.setDisable(true);

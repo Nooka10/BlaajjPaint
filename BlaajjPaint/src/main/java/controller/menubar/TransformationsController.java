@@ -89,11 +89,10 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe abstraite implémentant une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b> et définissant l'action à
-	 * effectuer en cas d'appel à undo() ou redo() sur cette commande.
-	 * Classe mère des sous-classes RotateSave, VerticalSymmetrySave et HorizontalSymmetrySave.
+	 * Classe abstraite implémentant une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b> et définissant l'action à effectuer en
+	 * cas d'appel à undo() ou redo() sur cette commande. Classe mère des sous-classes RotateSave, VerticalSymmetrySave et HorizontalSymmetrySave.
 	 */
-	private abstract class TransformationSave implements ICmd{
+	private abstract class TransformationSave implements ICmd {
 		protected Layer currentLayer;
 		private Image imageBefore;
 		private Image imageAfter;
@@ -102,10 +101,13 @@ public class TransformationsController {
 		
 		/**
 		 * Construit une commande sauvegardant l'action d'un des sous-menu du menu <b>Calque -> Transformations</b>.
-		 * @param angleDegree, l'angle appliqué à la transformation.
-		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 *
+		 * @param angleDegree,
+		 * 		l'angle appliqué à la transformation.
+		 * @param axis,
+		 * 		l'axe selon lequel est appliqué la transformation.
 		 */
-		private TransformationSave(int angleDegree, Point3D axis){
+		private TransformationSave(int angleDegree, Point3D axis) {
 			currentLayer = Project.getInstance().getCurrentLayer();
 			imageBefore = Utils.makeSnapshot(currentLayer, Color.TRANSPARENT);
 			this.angleDegree = angleDegree;
@@ -137,17 +139,20 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b> et définissant l'action à effectuer
-	 * en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b> et définissant l'action à effectuer en cas
+	 * d'appel à undo() ou redo() sur cette commande.
 	 */
 	private class RotateSave extends TransformationSave {
 		/**
 		 * Construit une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Rotation -> Valider</b>.
-		 * @param angleDegree, l'angle appliqué à la rotation.
-		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 *
+		 * @param angleDegree,
+		 * 		l'angle appliqué à la rotation.
+		 * @param axis,
+		 * 		l'axe selon lequel est appliqué la transformation.
 		 */
-		private RotateSave(int angleDegree, Point3D axis){
-			super(angleDegree,axis);
+		private RotateSave(int angleDegree, Point3D axis) {
+			super(angleDegree, axis);
 		}
 		
 		@Override
@@ -157,17 +162,20 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie verticale</b> et définissant l'action à effectuer en
-	 * cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie verticale</b> et définissant l'action à effectuer en cas
+	 * d'appel à undo() ou redo() sur cette commande.
 	 */
 	private class VerticalSymmetrySave extends TransformationSave {
 		/**
 		 * Construit une commande sauvegardant 'action du menu <b>Calque -> Transformations -> Symétrie verticale</b>.
-		 * @param angleDegree, l'angle appliqué à la rotation.
-		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 *
+		 * @param angleDegree,
+		 * 		l'angle appliqué à la rotation.
+		 * @param axis,
+		 * 		l'axe selon lequel est appliqué la transformation.
 		 */
-		private VerticalSymmetrySave(int angleDegree, Point3D axis){
-			super(angleDegree,axis);
+		private VerticalSymmetrySave(int angleDegree, Point3D axis) {
+			super(angleDegree, axis);
 		}
 		
 		@Override
@@ -177,17 +185,20 @@ public class TransformationsController {
 	}
 	
 	/**
-	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b> et définissant l'action à effectuer
-	 * en cas d'appel à undo() ou redo() sur cette commande.
+	 * Classe implémentant une commande sauvegardant l'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b> et définissant l'action à effectuer en cas
+	 * d'appel à undo() ou redo() sur cette commande.
 	 */
 	private class HorizontalSymmetrySave extends TransformationSave {
 		/**
 		 * Construit une commande sauvegardant 'action du menu <b>Calque -> Transformations -> Symétrie horizontale</b>.
-		 * @param angleDegree, l'angle appliqué à la rotation.
-		 * @param axis, l'axe selon lequel est appliqué la transformation.
+		 *
+		 * @param angleDegree,
+		 * 		l'angle appliqué à la rotation.
+		 * @param axis,
+		 * 		l'axe selon lequel est appliqué la transformation.
 		 */
-		private HorizontalSymmetrySave(int angleDegree, Point3D axis){
-			super(angleDegree,axis);
+		private HorizontalSymmetrySave(int angleDegree, Point3D axis) {
+			super(angleDegree, axis);
 		}
 		
 		@Override

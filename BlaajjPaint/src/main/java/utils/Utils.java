@@ -20,22 +20,31 @@ public class Utils {
 	
 	/**
 	 * Permet de faire un snapshot du calque passée en paramètre.
-	 * @param layer, le calque dont on souhaite faire un snapshot.
-	 * @param color, la couleur de l'arrière-plan du calque.
+	 *
+	 * @param layer,
+	 * 		le calque dont on souhaite faire un snapshot.
+	 * @param color,
+	 * 		la couleur de l'arrière-plan du calque.
+	 *
 	 * @return le snapshot du calque (sous forme d'image).
 	 */
-	public static Image makeSnapshot(Layer layer, Color color){
+	public static Image makeSnapshot(Layer layer, Color color) {
 		return makeSnapshot(layer, color, null);
 	}
 	
 	/**
 	 * Permet de faire un snapshot du calque passée en paramètre.
-	 * @param layer, le calque dont on souhaite faire un snapshot.
-	 * @param color, la couleur de l'arrière-plan du calque.
-	 * @param image, l'image sur laquelle sera enregistré le snapshot.
+	 *
+	 * @param layer,
+	 * 		le calque dont on souhaite faire un snapshot.
+	 * @param color,
+	 * 		la couleur de l'arrière-plan du calque.
+	 * @param image,
+	 * 		l'image sur laquelle sera enregistré le snapshot.
+	 *
 	 * @return le snapshot du calque (sous forme d'image).
 	 */
-	public static WritableImage makeSnapshot(Layer layer, Color color, WritableImage image){
+	public static WritableImage makeSnapshot(Layer layer, Color color, WritableImage image) {
 		params.setFill(color);
 		double opacity = layer.getOpacity();
 		layer.setOpacity(1);
@@ -49,20 +58,28 @@ public class Utils {
 	
 	/**
 	 * Efface le calque actuellement sélectionné et y dessine le contenu de l'image passée en paramètre.
-	 * @param layer, le calque sur lequel on souhaite dessiner l'image.
-	 * @param img, l'image que l0on souhaite dessiner sur le calque.
+	 *
+	 * @param layer,
+	 * 		le calque sur lequel on souhaite dessiner l'image.
+	 * @param img,
+	 * 		l'image que l0on souhaite dessiner sur le calque.
 	 */
-	public static void redrawSnapshot(Layer layer, Image img){
+	public static void redrawSnapshot(Layer layer, Image img) {
 		layer.getGraphicsContext2D().clearRect(0, 0, layer.getWidth(), layer.getHeight()); // efface le contenu du calque actuellement sélectionné
 		layer.getGraphicsContext2D().drawImage(img, 0, 0); // redessine le calque avec le contenu d'img
 	}
 	
 	/**
-	 * Retourne vrai si la valeur des deux textFields passés en paramètre sont des largeur/hauteur valides pour initialiser un projet, false sinon.
-	 * Si la largeur et/ou la hauteur est/sont invalide(s), désactive le bouton validate passé en paramètre.
-	 * @param width, le textField contenant la valeur de la largeur.
-	 * @param height, le textField contenant la valeur de la hauteur.
-	 * @param validate, le bouton de validation associé.
+	 * Retourne vrai si la valeur des deux textFields passés en paramètre sont des largeur/hauteur valides pour initialiser un projet, false sinon. Si la largeur et/ou la
+	 * hauteur est/sont invalide(s), désactive le bouton validate passé en paramètre.
+	 *
+	 * @param width,
+	 * 		le textField contenant la valeur de la largeur.
+	 * @param height,
+	 * 		le textField contenant la valeur de la hauteur.
+	 * @param validate,
+	 * 		le bouton de validation associé.
+	 *
 	 * @return vrai si la valeur des deux textFields passés en paramètre sont des largeur/hauteur valides pour initialiser un projet, false sinon.
 	 */
 	public static boolean checkWidthHeightValidity(TextField width, TextField height, Button validate) {
@@ -78,8 +95,12 @@ public class Utils {
 	/**
 	 * Retourne vrai si la valeur du textField passé en paramètre n'est pas vide et que sa valeur est plus grande que 0, false sinon. Désactive le bouton passé en
 	 * paramètre si le textField n'est pas valide.
-	 * @param textField, le textField dont on souhaite valider la valeur.
-	 * @param validate, le bouton que l'on souhaite verrouiller si la valeur du textField n'est pas valide.
+	 *
+	 * @param textField,
+	 * 		le textField dont on souhaite valider la valeur.
+	 * @param validate,
+	 * 		le bouton que l'on souhaite verrouiller si la valeur du textField n'est pas valide.
+	 *
 	 * @return vrai si la valeur du textField passé en paramètre n'est pas vide et que sa valeur est plus grande que 0, false sinon.
 	 */
 	public static boolean checkTextFieldValueGTZero(TextField textField, Button validate) {
@@ -94,7 +115,10 @@ public class Utils {
 	
 	/**
 	 * Retourne vrai si la valeur du textField passé en paramètre n'est pas vide et que sa valeur est plus grande que 0, false sinon.
-	 * @param textField, le textField dont on souhaite valider la valeur.
+	 *
+	 * @param textField,
+	 * 		le textField dont on souhaite valider la valeur.
+	 *
 	 * @return vrai si la valeur du textField passé en paramètre n'est pas vide et que sa valeur est plus grande que 0, false sinon.
 	 */
 	public static boolean checkTextFieldValueGTZero(TextField textField) {
