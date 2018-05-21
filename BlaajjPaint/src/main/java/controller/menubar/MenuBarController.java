@@ -16,7 +16,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.SaveProject;
 
+import java.awt.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 
 /**
@@ -284,7 +288,24 @@ public class MenuBarController {
 	
 	@FXML
 	public void handleHelp() {
-	
+		if(Desktop.isDesktopSupported()) {
+			InputStream jarPdf = getClass().getClassLoader().getResourceAsStream("/manuel/manuelUtilisateur.pdf");
+			try {
+				File pdfTemp = new File("manuelUtilisateurTemp.pdf");
+				// Extraction du PDF qui se situe dans l'archive
+				FileOutputStream fos = new FileOutputStream(pdfTemp);
+				while (jarPdf.available() > 0) {
+					fos.write(jarPdf.read());
+				}   // while (pdfInJar.available() > 0)
+				fos.close();
+				// Ouverture du PDF
+				Desktop.getDesktop().open(pdfTemp);
+			}   // try
+
+			catch (IOException e) {
+				System.out.println("erreur : " + e);
+			}   // catch (IOException e)
+		}
 	}
 	
 	/**
