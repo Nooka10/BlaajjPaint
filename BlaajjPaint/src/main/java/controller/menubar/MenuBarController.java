@@ -220,7 +220,7 @@ public class MenuBarController {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/ResizeLayer.fxml"));
 			Parent resizeWindow = fxmlLoader.load();
 			Stage stage = new Stage();
-			stage.setTitle("Redimensionner calque");
+			stage.setTitle("Redimensionner le calque sélectionné");
 			stage.setScene(new Scene(resizeWindow));
 			stage.show();
 		} catch (Exception e) {
@@ -488,8 +488,8 @@ public class MenuBarController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant la duplication de calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
-	 * commande.
+	 * Classe interne implémentant une commande sauvegardant la duplication du calque actuellement sélectionn et définissant l'action à effectuer en cas d'appel à undo()
+	 * ou redo() sur cette commande.
 	 */
 	private class DuplicateSave implements ICmd {
 		
@@ -497,7 +497,7 @@ public class MenuBarController {
 		private Layer newCurrentLayer;
 		
 		/**
-		 * Construit une commande sauvegardant la duplication d'un calse
+		 * Construit une commande sauvegardant la duplication du calque actuellement sélectionné.
 		 */
 		private DuplicateSave() {
 			oldCurrentLayer = Project.getInstance().getCurrentLayer();
@@ -522,7 +522,7 @@ public class MenuBarController {
 		
 		@Override
 		public String toString() {
-			return "Duplication de " + oldCurrentLayer;
+			return "Duplication du " + oldCurrentLayer;
 		}
 	}
 }

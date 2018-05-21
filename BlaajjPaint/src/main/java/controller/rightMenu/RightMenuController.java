@@ -493,7 +493,7 @@ public class RightMenuController {
 		
 		@Override
 		public String toString() {
-			return "Suppression de " + oldCurrentLayer;
+			return "Suppression du " + oldCurrentLayer;
 		}
 	}
 	
