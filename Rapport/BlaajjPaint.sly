@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
 <classDiagram>
   <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="BlaajjPaint">
+<<<<<<< HEAD
+=======
+    <association aggregation="NONE" direction="FIRST_TO_SECOND" id="87503" name="tool">
+      <role componentId="32651" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>0</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+      <role componentId="24429" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+    </association>
+>>>>>>> master
     <dependency id="87502" label="crée">
       <source>23324</source>
       <target>24891</target>
@@ -1380,40 +1397,68 @@
       <line>
         <point>
           <x>1441</x>
+<<<<<<< HEAD
           <y>51</y>
         </point>
         <point>
           <x>1661</x>
           <y>51</y>
+=======
+          <y>131</y>
+        </point>
+        <point>
+          <x>1661</x>
+          <y>131</y>
+>>>>>>> master
         </point>
       </line>
       <labelAssociation>
         <x>1520</x>
+<<<<<<< HEAD
         <y>24</y>
+=======
+        <y>104</y>
+>>>>>>> master
         <w>57</w>
         <h>17</h>
       </labelAssociation>
       <roleAssociation>
         <x>1445</x>
+<<<<<<< HEAD
         <y>55</y>
+=======
+        <y>135</y>
+>>>>>>> master
         <w>0</w>
         <h>17</h>
       </roleAssociation>
       <roleAssociation>
         <x>1625</x>
+<<<<<<< HEAD
         <y>55</y>
+=======
+        <y>135</y>
+>>>>>>> master
         <w>0</w>
         <h>17</h>
       </roleAssociation>
       <multipliciteAssociation>
         <x>1445</x>
+<<<<<<< HEAD
         <y>28</y>
+=======
+        <y>108</y>
+>>>>>>> master
         <w>8</w>
         <h>17</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
         <x>1647</x>
+<<<<<<< HEAD
         <y>28</y>
+=======
+        <y>108</y>
+>>>>>>> master
         <w>8</w>
         <h>17</h>
       </multipliciteAssociation>
@@ -1519,7 +1564,11 @@
       </line>
       <labelAssociation>
         <x>3795</x>
+<<<<<<< HEAD
         <y>897</y>
+=======
+        <y>912</y>
+>>>>>>> master
         <w>84</w>
         <h>17</h>
       </labelAssociation>
@@ -1940,11 +1989,19 @@
       <line>
         <point>
           <x>1661</x>
+<<<<<<< HEAD
           <y>81</y>
         </point>
         <point>
           <x>1441</x>
           <y>81</y>
+=======
+          <y>161</y>
+        </point>
+        <point>
+          <x>1441</x>
+          <y>161</y>
+>>>>>>> master
         </point>
       </line>
     </relationView>
@@ -3122,6 +3179,51 @@
         <h>17</h>
       </labelAssociation>
     </relationView>
+<<<<<<< HEAD
+=======
+    <relationView color="-12566464" relationId="87503">
+      <line>
+        <point>
+          <x>4141</x>
+          <y>591</y>
+        </point>
+        <point>
+          <x>3891</x>
+          <y>591</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>4020</x>
+        <y>595</y>
+        <w>26</w>
+        <h>17</h>
+      </labelAssociation>
+      <roleAssociation>
+        <x>4105</x>
+        <y>595</y>
+        <w>0</w>
+        <h>17</h>
+      </roleAssociation>
+      <roleAssociation>
+        <x>3895</x>
+        <y>595</y>
+        <w>0</w>
+        <h>17</h>
+      </roleAssociation>
+      <multipliciteAssociation>
+        <x>4113</x>
+        <y>568</y>
+        <w>23</w>
+        <h>17</h>
+      </multipliciteAssociation>
+      <multipliciteAssociation>
+        <x>3895</x>
+        <y>568</y>
+        <w>8</w>
+        <h>17</h>
+      </multipliciteAssociation>
+    </relationView>
+>>>>>>> master
     <componentView color="-2079" componentID="59646" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
         <x>3950</x>
@@ -3573,7 +3675,11 @@
     <componentView color="-2079" componentID="32651" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
         <x>4140</x>
+<<<<<<< HEAD
         <y>410</y>
+=======
+        <y>480</y>
+>>>>>>> master
         <w>230</w>
         <h>145</h>
       </geometry>
