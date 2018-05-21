@@ -132,9 +132,6 @@ public class Crop extends Tool {
 			@Override
 			public void handle(MouseEvent event) {
 				if (cropSave == null) {    // premier clic -> on set les valeurs de départ et on crée un calque temporaire qui affichera le rectangle de sélection
-					if (selectionCropLayer == null) { // à initialisé si l'outil a été utilisé
-						initCrop(); // FIXME: Est-ce vraiment utile??!
-					}
 					cropSave = new CropSave(oldCurrentLayer); // crée une sauvegarde du rognage
 					startX = event.getX();
 					startY = event.getY();
@@ -245,8 +242,7 @@ public class Crop extends Tool {
 			layerCropped.setTranslateY(translateYLayer);
 			
 			Utils.redrawSnapshot(layerCropped, undosave); // redessine le snapshot undosave sur le calque layerCropped
-			
-			// FIXME: tu fais quoi là?
+
 			// définit les dimensions et le décalage tel qu'ils étaient définit après le Crop
 			widthLayer = widthTemp;
 			heightLayer = heightTemp;
@@ -281,11 +277,8 @@ public class Crop extends Tool {
 			layerCropped.setTranslateX(translateXLayer);
 			layerCropped.setTranslateY(translateYLayer);
 			
-			//FIXME: Voir avec James si ya moyen d'utiliser Utils.redrawSnapshot()
-			
 			layerCropped.getGraphicsContext2D().drawImage(redosave, 0, 0); // redessine le snapshot redosave sur le calque layerCropped
 			
-			// FIXME: tu fais quoi là?
 			// définit les dimensions et le décalage tel qu'ils étaient définit avant le Crop
 			widthLayer = widthTemp;
 			heightLayer = heightTemp;
