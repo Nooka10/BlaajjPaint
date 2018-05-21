@@ -198,7 +198,9 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleDuplicateLayer() {
+		DuplicateSave ds = new DuplicateSave();
 		Project.getInstance().addLayer(new Layer(Project.getInstance().getCurrentLayer(), false));
+		ds.execute();
 	}
 	
 	/**
@@ -472,6 +474,45 @@ public class MenuBarController {
 		@Override
 		public String toString() {
 			return "Ouverture du projet";
+		}
+	}
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant la duplication de calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
+	 */
+	private class DuplicateSave implements ICmd {
+		
+		private Layer oldCurrentLayer;
+		private Layer newCurrentLayer;
+		
+		/**
+		 * Construit une commande sauvegardant la duplication d'un calse
+		 */
+		private DuplicateSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
+		
+		@Override
+		public void execute() {
+			newCurrentLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() {
+			Project.getInstance().removeLayer(newCurrentLayer);
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+		
+		@Override
+		public void redo() {
+			Project.getInstance().addLayer(newCurrentLayer);
+		}
+		
+		@Override
+		public String toString() {
+			return "Duplication de " + oldCurrentLayer;
 		}
 	}
 }
