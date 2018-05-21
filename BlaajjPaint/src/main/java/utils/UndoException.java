@@ -7,5 +7,7 @@ public class UndoException extends Exception {
 	/**
 	 * Constructeur de l'exception levée en cas d'erreur lors des undo/redo.
 	 */
-	public UndoException() { super(); }
+	public UndoException() {
+		super();
+	}
 }

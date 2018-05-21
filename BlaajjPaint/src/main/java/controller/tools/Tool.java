@@ -19,7 +19,7 @@ public abstract class Tool {
 	private static boolean toolHasChanged = false; // vrai lorsqu'on vient de changer d'outil
 	
 	private Cursor oldCursor;
-
+	
 	// l'évènement déclanché lorsqu'on appuie sur le bouton de la souris
 	private final EventHandler<MouseEvent> currentOnMousePressedEventHandler = createMousePressedEventHandlers();
 	// l'évènement déclanché lorsqu'on maintient le bouton de la souris enfoncé et qu'on la déplace
@@ -30,7 +30,7 @@ public abstract class Tool {
 	private final EventHandler<MouseEvent> currentOnMouseEnteredEventHandler = createMouseEnteredEventHandlers();
 	// l'évènement déclanché  lorsque la souris sort du calque
 	private final EventHandler<MouseEvent> currentOnMouseExitedEventHandler = createMouseExitedEventHandlers();
-
+	
 	// énumération contenant tous les outils gérés par le programme
 	protected enum ToolType {
 		HAND, MOVE, CROP, PIPETTE, PENCIL, ERASER, BUCKETFILL, TEXT, FILLEDRECTANGLE,
@@ -123,7 +123,7 @@ public abstract class Tool {
 	public EventHandler<MouseEvent> getCurrentOnMouseRelesedEventHandler() {
 		return currentOnMouseRelesedEventHandler;
 	}
-
+	
 	/**
 	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris entre dans le calque.
 	 *
@@ -132,13 +132,13 @@ public abstract class Tool {
 	public EventHandler<MouseEvent> getCurrentOnMouseEnteredEventHandler() {
 		return currentOnMouseEnteredEventHandler;
 	}
-
+	
 	/**
 	 * Retourne l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris sort du calque.
 	 *
 	 * @return l'évènement déclanché par l'outil actuellement sélectionné lorsque la souris sort du calque.
 	 */
-	public EventHandler<MouseEvent> getCurrentOnMouseExitedEventHandler(){
+	public EventHandler<MouseEvent> getCurrentOnMouseExitedEventHandler() {
 		return currentOnMouseExitedEventHandler;
 	}
 	
@@ -168,7 +168,7 @@ public abstract class Tool {
 	 *
 	 * @return l'évènement déclanché par cet outil lorsque la souris entre dans le calque.
 	 */
-	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -176,13 +176,13 @@ public abstract class Tool {
 			}
 		};
 	}
-
+	
 	/**
-	 *  Crée l'évènement déclanché par cet outil lorsque la souris sort du calque.
+	 * Crée l'évènement déclanché par cet outil lorsque la souris sort du calque.
 	 *
 	 * @return l'évènement déclanché par cet outil lorsque la souris sort du calque.
 	 */
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -190,9 +190,12 @@ public abstract class Tool {
 			}
 		};
 	}
+	
 	/**
 	 * Remplace le curseur de la souris par celui passé en paramètre.
-	 * @param cursor, le nouveau curseur à attribuer à la souris.
+	 *
+	 * @param cursor,
+	 * 		le nouveau curseur à attribuer à la souris.
 	 */
 	protected void changeCursor(Cursor cursor) {
 		Scene scene = MainViewController.getInstance().getMain().getPrimaryStage().getScene();

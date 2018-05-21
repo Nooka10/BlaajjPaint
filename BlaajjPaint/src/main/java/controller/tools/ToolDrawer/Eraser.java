@@ -1,6 +1,3 @@
-/*
-Author: Benoît
- */
 package controller.tools.ToolDrawer;
 
 import controller.Layer;
@@ -8,9 +5,7 @@ import controller.MainViewController;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -19,8 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import utils.Utils;
-
-import javax.rmi.CORBA.Util;
 
 /**
  * Classe implémentant l'outil <b>gomme</b> permettant d'effacer des pixels du calque à l'aide de la souris. Implémente le modèle Singleton.
@@ -42,6 +35,7 @@ public class Eraser extends ToolDrawer {
 	
 	/**
 	 * Retourne l'instance unique du singleton Eraser.
+	 *
 	 * @return l'instance unique du singleton Eraser.
 	 */
 	public static Eraser getInstance() {
@@ -64,11 +58,13 @@ public class Eraser extends ToolDrawer {
 	
 	/**
 	 * Initialise le trait de gomme. Crée un masque de suppression sur lequel l'utilisateur "dessine" les zones à effacer.
-	 * @param event, l'évènement de la souris.
+	 *
+	 * @param event,
+	 * 		l'évènement de la souris.
 	 */
-	private void startErase(MouseEvent event){
+	private void startErase(MouseEvent event) {
 		// crée un claque temporaire sur lequel on va "colorer" la zone à supprimer puis fusionner avec le calque courant pour effectuer l'effacement
-		eraserMask = new Layer((int)Project.getInstance().getCurrentLayer().getWidth(), (int)Project.getInstance().getCurrentLayer().getHeight(), true);
+		eraserMask = new Layer((int) Project.getInstance().getCurrentLayer().getWidth(), (int) Project.getInstance().getCurrentLayer().getHeight(), true);
 		eraserMaskGC = eraserMask.getGraphicsContext2D();
 		eraserMaskGC.setFill(Color.WHITE);
 		eraserMaskGC.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
@@ -109,9 +105,11 @@ public class Eraser extends ToolDrawer {
 	
 	/**
 	 * Clôt le trait de gomme et merge le calque temporaire. Toutes les zones dessinées sur le calque temporaire sont effacées sur le calque courant.
-	 * @param event, l'évènement de la souris.
+	 *
+	 * @param event,
+	 * 		l'évènement de la souris.
 	 */
-	private void closeErase(MouseEvent event){
+	private void closeErase(MouseEvent event) {
 		eraserMaskGC.closePath(); // clôt le trait de gomme
 		
 		WritableImage srcMask = new WritableImage((int) eraserMask.getWidth(), (int) eraserMask.getHeight()); // On récupère l'image du masque de suppression

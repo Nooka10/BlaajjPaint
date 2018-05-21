@@ -18,10 +18,12 @@ import java.io.InputStream;
 public class Main extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-
+	
 	/**
 	 * Initialise et affiche l'interface graphique.
-	 * @param primaryStage, la scène principale
+	 *
+	 * @param primaryStage,
+	 * 		la scène principale
 	 */
 	@Override
 	public void start(Stage primaryStage) {
@@ -32,12 +34,12 @@ public class Main extends Application {
 		
 		initRootLayout();
 	}
-
+	
 	/**
 	 * Initialise la fenêtre de base avec tous ses fxmls ainsi que tous les controllers associés.
 	 */
 	private void initRootLayout() {
-		try{
+		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setBuilderFactory(new JavaFXBuilderFactory());
 			loader.setLocation(getClass().getResource("/view/MainView.fxml"));
@@ -55,18 +57,21 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-
+	
 	/**
 	 * Permet de récupérer la scène principale.
+	 *
 	 * @return la scène principale.
 	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
-
+	
 	/**
 	 * Fonction main. Lance l'exécution du programme.
-	 * @param args - Arguments passés au programme.
+	 *
+	 * @param args
+	 * 		- Arguments passés au programme.
 	 */
 	public static void main(String[] args) {
 		launch(args);

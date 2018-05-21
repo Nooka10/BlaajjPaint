@@ -242,7 +242,7 @@ public class MenuBarController {
 	@FXML
 	public void handleMergeAllLayer() {
 		MergeAllSave mas = new MergeAllSave();
-		Layer resultLayer = new Layer(1, 1, true); // FIXME: 1,1 la taille??
+		Layer resultLayer = new Layer(1, 1, true);
 		
 		int i = 0;
 		for (Layer layer : Project.getInstance().getLayers()) {
@@ -291,7 +291,7 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleHelp() {
-		if(Desktop.isDesktopSupported()) {
+		if (Desktop.isDesktopSupported()) {
 			try {
 				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
 				File pdfTemp = new File("manuelUtilisateurTemp.pdf"); // crée un fichier temporaire

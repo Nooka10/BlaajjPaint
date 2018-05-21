@@ -26,10 +26,11 @@ public class Move extends Tool {
 	
 	/**
 	 * Retourne l'instance unique du singleton Move.
+	 *
 	 * @return l'instance unique du singleton Move.
 	 */
 	public static Move getInstance() {
-		if(toolInstance == null){
+		if (toolInstance == null) {
 			toolInstance = new Move();
 		}
 		return toolInstance;
@@ -68,9 +69,9 @@ public class Move extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
-	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -78,9 +79,9 @@ public class Move extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -100,8 +101,8 @@ public class Move extends Tool {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant le déplacement d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo()
-	 * sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant le déplacement d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
 	private class MoveSave implements ICmd {
 		private double oldXSave;

@@ -1,7 +1,6 @@
 package controller.tools;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 
 /**
  * Contrôleur associé au fichier FXML ParamCropController.fxml et gérant l'ensemble des actions associées à la barre de menus de l'outil de rognage qui apparaît dans la

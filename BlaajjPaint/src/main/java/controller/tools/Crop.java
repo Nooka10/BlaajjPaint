@@ -35,6 +35,7 @@ public class Crop extends Tool {
 	
 	/**
 	 * Retourne l'instance unique du singleton Crop.
+	 *
 	 * @return l'instance unique du singleton Crop.
 	 */
 	public static Crop getInstance() {
@@ -191,8 +192,8 @@ public class Crop extends Tool {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant le rognage d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
-	 * cette commande.
+	 * Classe interne implémentant une commande sauvegardant le rognage d'un calque et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
 	private class CropSave implements ICmd {
 		private Image undosave;
@@ -205,7 +206,9 @@ public class Crop extends Tool {
 		
 		/**
 		 * Construit une commande sauvegardant le rognage d'un calque.
-		 * @param layerToCrop, le calque que l'on souhaite rogner.
+		 *
+		 * @param layerToCrop,
+		 * 		le calque que l'on souhaite rogner.
 		 */
 		private CropSave(Layer layerToCrop) {
 			undosave = Utils.makeSnapshot(layerToCrop, Color.TRANSPARENT);

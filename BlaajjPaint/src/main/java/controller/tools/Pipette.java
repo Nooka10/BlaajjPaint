@@ -1,6 +1,3 @@
-/*
-Author: Benoît
- */
 package controller.tools;
 
 import controller.Layer;
@@ -16,8 +13,8 @@ import javafx.scene.paint.Color;
 import utils.Utils;
 
 /**
- * Classe implémentant l'outil <b>Pipette</b> permettant d'attribuer une couleur au sélecteur de couleur en sélectionnant une couleur dans l'espace de travail à
- * l'aide de la souris. Implémente le modèle Singleton.
+ * Classe implémentant l'outil <b>Pipette</b> permettant d'attribuer une couleur au sélecteur de couleur en sélectionnant une couleur dans l'espace de travail à l'aide de
+ * la souris. Implémente le modèle Singleton.
  */
 public class Pipette extends Tool {
 	private static Pipette toolInstance; // l'instance unique du singleton Hand
@@ -63,6 +60,7 @@ public class Pipette extends Tool {
 							Color color = maskReader.getColor(x, y); // on récupère la couleur du pixel sélectionné
 							if (!color.equals(Color.TRANSPARENT)) { // vrai si la couleur n'est pas transparente
 								Project.getInstance().setCurrentColor(color); // on attribue cette couleur au sélecteur de couleur
+								MainViewController.getInstance().getRightMenuController().setColorPickerColor(color);
 								break;
 							}
 						}
@@ -91,20 +89,20 @@ public class Pipette extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Image img = new Image("/cursors/pipetteCursor.png"); // TODO: A CHANGER (PAS BEAU) -> détourer en blanc
-				changeCursor(new ImageCursor(img,2,30)); // change le curseur de la souris en mode "pipette"
+				Image img = new Image("/cursors/pipetteCursor.png");
+				changeCursor(new ImageCursor(img, 2, 30)); // change le curseur de la souris en mode "pipette"
 			}
 		};
 	}
-
+	
 	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

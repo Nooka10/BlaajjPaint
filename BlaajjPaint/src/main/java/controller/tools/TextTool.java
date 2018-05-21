@@ -8,10 +8,8 @@ import controller.history.RecordCmd;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
@@ -57,7 +55,8 @@ public class TextTool extends Tool {
 	/**
 	 * Définit la police utilisée pour dessiner le texte.
 	 *
-	 * @param font, la nouvelle police à utiliser pour dessiner le texte.
+	 * @param font,
+	 * 		la nouvelle police à utiliser pour dessiner le texte.
 	 */
 	public void setFont(Font font) {
 		this.font = font;
@@ -198,9 +197,9 @@ public class TextTool extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
-	protected  EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -208,9 +207,9 @@ public class TextTool extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -220,8 +219,8 @@ public class TextTool extends Tool {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
-	 * cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'ajout d'un calque de texte et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
 	private class textSave implements ICmd {
 		private Layer oldLayerSaved;
@@ -236,7 +235,9 @@ public class TextTool extends Tool {
 		
 		/**
 		 * Définit le calque à enregistrer dans la commande.
-		 * @param layer, le calque à sauvegarder dans la commande.
+		 *
+		 * @param layer,
+		 * 		le calque à sauvegarder dans la commande.
 		 */
 		private void setLayerToSaved(Layer layer) {
 			textLayerSaved = layer;

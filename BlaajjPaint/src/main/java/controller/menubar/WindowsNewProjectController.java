@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * Contrôleur associé au fichier FXML WindowsNewProject.fxml et gérant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le
- * bouton du menu <b>Fichier -> Nouveau</b>.
+ * Contrôleur associé au fichier FXML WindowsNewProject.fxml et gérant l'ensemble des actions associées à la fenêtre ouverte lorsque l'utilisateur clique sur le bouton du
+ * menu <b>Fichier -> Nouveau</b>.
  */
 public class WindowsNewProjectController {
 	@FXML
@@ -28,7 +28,7 @@ public class WindowsNewProjectController {
 	
 	@FXML
 	private TextField heightTextField;
-
+	
 	private NewProjectSave newProjectSave;
 	
 	/**
@@ -64,12 +64,11 @@ public class WindowsNewProjectController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Créer</b>.
-	 * Crée un nouveau projet aux dimensions qui ont été indiquées par l'utilisateur puis ferme la fenêtre.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Créer</b>. Crée un nouveau projet aux dimensions qui ont été indiquées par l'utilisateur puis ferme
+	 * la fenêtre.
 	 */
 	@FXML
 	private void handleCreateNewProject() {
-		//FIXME: vérifier qu'un projet est déjà ouvert! Sinon on ferme pour rien!
 		MainViewController.getInstance().closeProject(); // ferme le projet actuellement ouvert s'il y en a un.
 		
 		int width = Integer.parseInt(this.widthTextField.getText());
@@ -85,8 +84,7 @@ public class WindowsNewProjectController {
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Annuler</b>.
-	 * Annule la création d'un nouveau projet et ferme la fenêtre.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton <b><Annuler</b>. Annule la création d'un nouveau projet et ferme la fenêtre.
 	 */
 	@FXML
 	private void handleCancel() {
@@ -95,27 +93,27 @@ public class WindowsNewProjectController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>Créer</b> et définissant l'action à effectuer en cas d'appel à undo() ou redo()
-	 * sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du bouton <b>Créer</b> et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
+	 * cette commande.
 	 */
 	private class NewProjectSave implements ICmd {
 		@Override
 		public void execute() {
 			RecordCmd.getInstance().saveCmd(this);
 		}
-
+		
 		@Override
 		public void undo() {
 			// ne fait rien
 		}
-
+		
 		@Override
 		public void redo() {
 			// ne fait rien
 		}
-
+		
 		@Override
-		public String toString(){
+		public String toString() {
 			return "Création d'un nouveau projet";
 		}
 	}

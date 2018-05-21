@@ -17,8 +17,8 @@ import javafx.stage.Stage;
 import utils.Utils;
 
 /**
- * Contrôleur associé au fichier FXML ResizeLayer.fxml et gérant l'ensemble des actions associées à la fenêtre de redimensionnement ouverte
- * lorsque l'utilisateur clique sur le menu <b>Calque -> Redimensionner</b>.
+ * Contrôleur associé au fichier FXML ResizeLayer.fxml et gérant l'ensemble des actions associées à la fenêtre de redimensionnement ouverte lorsque l'utilisateur clique
+ * sur le menu <b>Calque -> Redimensionner</b>.
  */
 public class ResizeLayerController {
 	
@@ -97,15 +97,14 @@ public class ResizeLayerController {
 		// vrai si le checkBox "Ajuster l'image" est sélectionné et que textfieldWidth n'est pas vide --> l'utilisateur ne choisi pas la hauteur
 		if (checkBoxRatio.isSelected() && !textFieldWidth.getText().isEmpty() && Integer.parseInt(textFieldWidth.getText()) != 0) {
 			// la hauteur est calculée à partir du ratio et de la largeur choisie par l'utilisateur
-				textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
+			textFieldHeight.setText(Integer.toString((int) (Math.round(Double.valueOf(textFieldWidth.getText()) / ratioImage))));
 		}
 	}
 	
 	/**
-	 * Méthode appelée lorsque l'utilisateur clique sur le bouton "Valider".
-	 * Effectue le redimensionnement si la largeur et la hauteur entrées sont valides.
-	 * Redimensionne tous les calques du projet si la checkbox "Ajuster l'image" est cochée, sinon, ne redimensionne que le calque actuellement sélectionné.
-	 * Ferme la fenêtre une fois le redimensionnement effectué.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton "Valider". Effectue le redimensionnement si la largeur et la hauteur entrées sont valides. Redimensionne
+	 * tous les calques du projet si la checkbox "Ajuster l'image" est cochée, sinon, ne redimensionne que le calque actuellement sélectionné. Ferme la fenêtre une fois
+	 * le redimensionnement effectué.
 	 */
 	@FXML
 	public void handleValidateResize() {
@@ -145,10 +144,10 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement et définissant l'action à effectuer en cas d'appel à undo() ou redo()
-	 * sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant l'action du redimensionnement et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur cette
+	 * commande.
 	 */
-	private class ResizeSave implements ICmd{
+	private class ResizeSave implements ICmd {
 		private Layer currentLayer;
 		private double oldWidth;
 		private double oldHeight;
@@ -184,7 +183,7 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void redo() {
+		public void redo() { // FIXME: voir avec Antoine si ya moyen d'utiliser Utils.redrawSnapshot()...?
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, oldWidth, oldHeight);
 			currentLayer.setWidth(newWidth);
 			currentLayer.setHeight(newHeight);

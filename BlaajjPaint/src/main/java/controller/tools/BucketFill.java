@@ -5,7 +5,6 @@ import controller.MainViewController;
 import controller.Project;
 import controller.history.ICmd;
 import controller.history.RecordCmd;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -23,11 +22,11 @@ import java.util.HashSet;
 import java.util.Stack;
 
 /**
- * Classe implémentant l'outil <b>pot de peinture</b> permettant remplir une zone de la couleur actuellement sélectionnée dans le sélecteur de couleur.
- * Implémente le modèle Singleton.
+ * Classe implémentant l'outil <b>pot de peinture</b> permettant remplir une zone de la couleur actuellement sélectionnée dans le sélecteur de couleur. Implémente le
+ * modèle Singleton.
  */
 public class BucketFill extends Tool {
-	private static BucketFill toolInstance  = null; // l'instance unique du singleton BucketFill
+	private static BucketFill toolInstance = null; // l'instance unique du singleton BucketFill
 	private FillSave currentFill; // la sauvegarde du remplissage actuel
 	
 	/**
@@ -39,15 +38,16 @@ public class BucketFill extends Tool {
 	
 	/**
 	 * Retourne l'instance unique du singleton BucketFill.
+	 *
 	 * @return l'instance unique du singleton BucketFill.
 	 */
 	public static BucketFill getInstance() {
-		if (toolInstance  == null) {
-			toolInstance  = new BucketFill();
+		if (toolInstance == null) {
+			toolInstance = new BucketFill();
 		}
-		return toolInstance ;
+		return toolInstance;
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
@@ -57,7 +57,7 @@ public class BucketFill extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseDraggedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
@@ -67,7 +67,7 @@ public class BucketFill extends Tool {
 			}
 		};
 	}
-
+	
 	@Override
 	protected EventHandler<MouseEvent> createMouseReleasedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
@@ -84,26 +84,26 @@ public class BucketFill extends Tool {
 				marked = new HashSet<>();
 				// récupération du PixelWriter -> permet d'écrire sur des pixel du graphicsContext
 				PixelWriter pixelWriter = layer.getGraphicsContext2D().getPixelWriter();
-
+				
 				// récupération du PixelReader - permet de lire les pixels sur le graphicsContext
 				WritableImage srcMask = new WritableImage((int) layer.getWidth(), (int) layer.getHeight());
 				srcMask = Utils.makeSnapshot(layer, Color.TRANSPARENT, srcMask);
 				PixelReader pixelReader = srcMask.getPixelReader();
-
+				
 				// couleur actuelle du pixel à colorer
 				Color colorSelected = pixelReader.getColor((int) Math.round(event.getX()), (int) Math.round(event.getY()));
 				// couleur dans laquelle on doit colorer le pixel
 				Color currentColor = Project.getInstance().getCurrentColor();
 				
 				stack.push(new Point2D(event.getX(), event.getY())); // ajoute à la pile le point de départ de la zone à colorer
-
+				
 				// on parcours les pixels environnant le point de départ
 				while (!stack.isEmpty()) {
 					Point2D point = stack.pop();
 					// on récupère de la position X et Y du point
 					int x = (int) Math.round(point.getX());
 					int y = (int) Math.round(point.getY());
-
+					
 					// teste si le pixel actuellement visité a la même couleur que le point de départ (et donc fait partie de la zone à colorer)
 					if (!pixelReader.getColor(x, y).equals(colorSelected)) {
 						continue; // si le pixel ne doit pas être coloré, on passe à l'itération suivante
@@ -112,7 +112,7 @@ public class BucketFill extends Tool {
 					pixelWriter.setColor(x, y, currentColor); // on colorie le pixel actuellement visité dans la couleur souhaitée
 					
 					marked.add(point); // on ajoute le point à la liste des points déjà traités
-
+					
 					// ajoute les points adjacents au point courant dans la pile des points à traiter
 					addPointToStack(x - 1, y);
 					addPointToStack(x, y - 1);
@@ -121,10 +121,10 @@ public class BucketFill extends Tool {
 				}
 				// la coloration est terminée
 				Image img = new Image("/cursors/bucketFillCursor.png");
-				changeCursor(new ImageCursor(img,0,0));
+				changeCursor(new ImageCursor(img, 0, 0));
 				currentFill.execute();
 			}
-
+			
 			/**
 			 * Ajoute un point dans la pile des points à traiter s'il n'a pas déjà été traité et qu'il n'est pas en dehors du calque.
 			 * @param x, la position du point sur l'axe X.
@@ -141,18 +141,18 @@ public class BucketFill extends Tool {
 	}
 	
 	@Override
-	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				Image img = new Image("/cursors/bucketFillCursor.png");
-				changeCursor(new ImageCursor(img,0,0));
+				changeCursor(new ImageCursor(img, 0, 0));
 			}
 		};
 	}
 	
 	@Override
-	protected EventHandler<MouseEvent> createMouseExitedEventHandlers(){
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -170,10 +170,10 @@ public class BucketFill extends Tool {
 	public void CallbackNewToolChanged() {
 		MainViewController.getInstance().getToolBarController().bucketFillTool.setSelected(true);
 	}
-
+	
 	/**
-	 * Classe interne implémentant une commande sauvegardant une utilisation du pot de peinture et définissant l'action à effectuer en cas d'appel à undo() ou redo()
-	 * sur cette commande.
+	 * Classe interne implémentant une commande sauvegardant une utilisation du pot de peinture et définissant l'action à effectuer en cas d'appel à undo() ou redo() sur
+	 * cette commande.
 	 */
 	private class FillSave implements ICmd {
 		private Image undosave;
