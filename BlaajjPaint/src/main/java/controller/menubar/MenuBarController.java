@@ -448,7 +448,7 @@ public class MenuBarController {
 		}
 		
 		public String toString() {
-			return "Import d'image";
+			return "Importation d'une image";
 		}
 	}
 	
