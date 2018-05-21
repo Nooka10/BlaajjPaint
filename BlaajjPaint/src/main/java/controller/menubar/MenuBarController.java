@@ -14,6 +14,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sun.security.krb5.internal.crypto.Des;
 import utils.SaveProject;
 
 import java.awt.*;
@@ -289,7 +290,7 @@ public class MenuBarController {
 	@FXML
 	public void handleHelp() {
 		if(Desktop.isDesktopSupported()) {
-			InputStream jarPdf = getClass().getClassLoader().getResourceAsStream("/manuel/manuelUtilisateur.pdf");
+			InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
 			try {
 				File pdfTemp = new File("manuelUtilisateurTemp.pdf");
 				// Extraction du PDF qui se situe dans l'archive
@@ -299,7 +300,12 @@ public class MenuBarController {
 				}   // while (pdfInJar.available() > 0)
 				fos.close();
 				// Ouverture du PDF
-				Desktop.getDesktop().open(pdfTemp);
+
+				if(Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(pdfTemp);
+				} else {
+					System.out.println("no supported");
+				}
 			}   // try
 
 			catch (IOException e) {
