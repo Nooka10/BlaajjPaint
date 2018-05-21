@@ -14,7 +14,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import sun.security.krb5.internal.crypto.Des;
 import utils.SaveProject;
 
 import java.awt.*;
@@ -287,30 +286,27 @@ public class MenuBarController {
 		}
 	}
 	
+	/**
+	 * Si l'opération est supportée, ouvre le manuel d'utilisateur dans le lecteur de fichier pdf par défaut de l'utilisateur.
+	 */
 	@FXML
 	public void handleHelp() {
 		if(Desktop.isDesktopSupported()) {
-			InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
 			try {
-				File pdfTemp = new File("manuelUtilisateurTemp.pdf");
-				// Extraction du PDF qui se situe dans l'archive
-				FileOutputStream fos = new FileOutputStream(pdfTemp);
+				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
+				File pdfTemp = new File("manuelUtilisateurTemp.pdf"); // crée un fichier temporaire
+				FileOutputStream fos = new FileOutputStream(pdfTemp); // lit le fichier temporaire via un flux
 				while (jarPdf.available() > 0) {
-					fos.write(jarPdf.read());
-				}   // while (pdfInJar.available() > 0)
-				fos.close();
-				// Ouverture du PDF
-
-				if(Desktop.isDesktopSupported()) {
-					Desktop.getDesktop().open(pdfTemp);
-				} else {
-					System.out.println("no supported");
+					fos.write(jarPdf.read()); // lit le fichier
 				}
-			}   // try
-
-			catch (IOException e) {
+				fos.close(); // ferme le flux du fichier temporaire
+				
+				Desktop.getDesktop().open(pdfTemp);  // ouvre le fichier pdf dans le lecteur pdf par défaut de l'utilisateur
+			} catch (IOException e) {
 				System.out.println("erreur : " + e);
-			}   // catch (IOException e)
+			}
+		} else {
+			System.out.println("La lecture du fichier pdf n'est pas supportée sur cette machine.");
 		}
 	}
 	
