@@ -36,7 +36,7 @@ public class Main extends Application {
 	/**
 	 * Initialise la fenêtre de base avec tous ses fxmls ainsi que tous les controllers associés.
 	 */
-	public void initRootLayout() {
+	private void initRootLayout() {
 		try{
 			FXMLLoader loader = new FXMLLoader();
 			loader.setBuilderFactory(new JavaFXBuilderFactory());

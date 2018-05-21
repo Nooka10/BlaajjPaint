@@ -18,12 +18,9 @@ import java.io.IOException;
  * Contrôleur associé au fichier FXML Toolbar.fxml et gérant l'ensemble des actions associées à la barre d'outils qui apparaît à gauche dans la GUI.
  */
 public class ToolBarController {
-	@FXML
-	public AnchorPane toolBar;
+	
 	@FXML
 	public ToggleButton handTool;
-	@FXML
-	public ToggleGroup ToolBarButtons;
 	@FXML
 	public ToggleButton moveTool;
 	@FXML
