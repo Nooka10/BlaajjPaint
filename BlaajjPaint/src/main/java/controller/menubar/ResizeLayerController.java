@@ -136,7 +136,7 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Méthode appelée lrosque l'utilisateur clique sur le bouton "Annuler". Annule le le redimensionnement et ferme la fenêtre.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton "Annuler". Annule le le redimensionnement et ferme la fenêtre.
 	 */
 	public void handleCancel() {
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
@@ -192,7 +192,7 @@ public class ResizeLayerController {
 		
 		@Override
 		public String toString() {
-			return "Redimensionnement de " + currentLayer.toString();
+			return "Redimensionnement du " + currentLayer.toString();
 		}
 		
 	}
