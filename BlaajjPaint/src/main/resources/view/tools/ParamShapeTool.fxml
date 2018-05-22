@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
@@ -15,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="paramShapeTools" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.Shapes.ParamShapeController">
+<HBox fx:id="paramShapeTools" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tools.Shapes.ParamShapeController">
    <children>
       <ToggleButton fx:id="emptyRect" mnemonicParsing="false" onAction="#handleEmptyRect" selected="true" text="Rectangle vide">
          <toggleGroup>
@@ -32,7 +27,7 @@
          <tooltip>
             <Tooltip text="Cliquez pour dessiner une ellipse vide." wrapText="true" />
          </tooltip></ToggleButton>
-      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="Ellipse" toggleGroup="$Forme">
+      <ToggleButton fx:id="filledEllipse" mnemonicParsing="false" onAction="#handleFilledEllipse" text="Ellipse pleine" toggleGroup="$Forme">
          <tooltip>
             <Tooltip text="Cliquez pour dessiner une ellipse pleine." wrapText="true" />
          </tooltip></ToggleButton>

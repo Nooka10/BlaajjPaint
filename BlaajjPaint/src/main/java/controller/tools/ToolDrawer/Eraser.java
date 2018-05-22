@@ -5,7 +5,9 @@ import controller.MainViewController;
 import controller.Project;
 import controller.tools.Tool;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -46,6 +48,27 @@ public class Eraser extends ToolDrawer {
 	}
 	
 	@Override
+	protected EventHandler<MouseEvent> createMouseEnteredEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Image img = new Image("/cursors/eraserCursor.png");
+				changeCursor(new ImageCursor(img, 3, 30)); // change le curseur de la souris en mode "pinceau"
+			}
+		};
+	}
+	
+	@Override
+	protected EventHandler<MouseEvent> createMouseExitedEventHandlers() {
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resetPreviousCursor(); // remet le curseur précédent
+			}
+		};
+	}
+	
+	@Override
 	public EventHandler<MouseEvent> createMousePressedEventHandlers() {
 		return new EventHandler<MouseEvent>() {
 			@Override
@@ -54,28 +77,6 @@ public class Eraser extends ToolDrawer {
 				startErase(event); // initialise le trait de gomme
 			}
 		};
-	}
-	
-	/**
-	 * Initialise le trait de gomme. Crée un masque de suppression sur lequel l'utilisateur "dessine" les zones à effacer.
-	 *
-	 * @param event,
-	 * 		l'évènement de la souris.
-	 */
-	private void startErase(MouseEvent event) {
-		// crée un claque temporaire sur lequel on va "colorer" la zone à supprimer puis fusionner avec le calque courant pour effectuer l'effacement
-		eraserMask = new Layer((int) Project.getInstance().getCurrentLayer().getWidth(), (int) Project.getInstance().getCurrentLayer().getHeight(), true);
-		eraserMaskGC = eraserMask.getGraphicsContext2D();
-		eraserMaskGC.setFill(Color.WHITE);
-		eraserMaskGC.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
-		eraserMaskGC.beginPath();
-		eraserMaskGC.setLineCap(StrokeLineCap.ROUND); // définit la forme de la gomme
-		eraserMaskGC.setLineJoin(StrokeLineJoin.ROUND);
-		
-		eraserMaskGC.setLineWidth(thickness); // définit l'épaisseur de la gomme
-		eraserMaskGC.setStroke(Color.BLACK); // définit la couleur de la gomme
-		eraserMaskGC.lineTo(event.getX(), event.getY());
-		eraserMaskGC.stroke();
 	}
 	
 	@Override
@@ -101,6 +102,28 @@ public class Eraser extends ToolDrawer {
 				currentStrike.execute();
 			}
 		};
+	}
+	
+	/**
+	 * Initialise le trait de gomme. Crée un masque de suppression sur lequel l'utilisateur "dessine" les zones à effacer.
+	 *
+	 * @param event,
+	 * 		l'évènement de la souris.
+	 */
+	private void startErase(MouseEvent event) {
+		// crée un claque temporaire sur lequel on va "colorer" la zone à supprimer puis fusionner avec le calque courant pour effectuer l'effacement
+		eraserMask = new Layer((int) Project.getInstance().getCurrentLayer().getWidth(), (int) Project.getInstance().getCurrentLayer().getHeight(), true);
+		eraserMaskGC = eraserMask.getGraphicsContext2D();
+		eraserMaskGC.setFill(Color.WHITE);
+		eraserMaskGC.fillRect(0, 0, eraserMask.getWidth(), eraserMask.getHeight());
+		eraserMaskGC.beginPath();
+		eraserMaskGC.setLineCap(StrokeLineCap.ROUND); // définit la forme de la gomme
+		eraserMaskGC.setLineJoin(StrokeLineJoin.ROUND);
+		
+		eraserMaskGC.setLineWidth(thickness); // définit l'épaisseur de la gomme
+		eraserMaskGC.setStroke(Color.BLACK); // définit la couleur de la gomme
+		eraserMaskGC.lineTo(event.getX(), event.getY());
+		eraserMaskGC.stroke();
 	}
 	
 	/**

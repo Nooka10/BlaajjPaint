@@ -18,9 +18,7 @@ import utils.SaveProject;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 
 /**
@@ -198,7 +196,9 @@ public class MenuBarController {
 	 */
 	@FXML
 	public void handleDuplicateLayer() {
+		DuplicateSave ds = new DuplicateSave();
 		Project.getInstance().addLayer(new Layer(Project.getInstance().getCurrentLayer(), false));
+		ds.execute();
 	}
 	
 	/**
@@ -218,7 +218,7 @@ public class MenuBarController {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/menubar/ResizeLayer.fxml"));
 			Parent resizeWindow = fxmlLoader.load();
 			Stage stage = new Stage();
-			stage.setTitle("Redimensionner calque");
+			stage.setTitle("Redimensionner le calque sélectionné");
 			stage.setScene(new Scene(resizeWindow));
 			stage.show();
 		} catch (Exception e) {
@@ -293,14 +293,7 @@ public class MenuBarController {
 	public void handleHelp() {
 		if (Desktop.isDesktopSupported()) {
 			try {
-				InputStream jarPdf = Thread.currentThread().getContextClassLoader().getResourceAsStream("manuel/manuelUtilisateur.pdf");
-				File pdfTemp = new File("manuelUtilisateurTemp.pdf"); // crée un fichier temporaire
-				FileOutputStream fos = new FileOutputStream(pdfTemp); // lit le fichier temporaire via un flux
-				while (jarPdf.available() > 0) {
-					fos.write(jarPdf.read()); // lit le fichier
-				}
-				fos.close(); // ferme le flux du fichier temporaire
-				
+				File pdfTemp = new File(getClass().getResource("/manuel/BlaajjPaintManuelUtilisateur.pdf").getFile().replaceAll("%20", " ")); // récupère le manuel utilisateur
 				Desktop.getDesktop().open(pdfTemp);  // ouvre le fichier pdf dans le lecteur pdf par défaut de l'utilisateur
 			} catch (IOException e) {
 				System.out.println("erreur : " + e);
@@ -472,6 +465,45 @@ public class MenuBarController {
 		@Override
 		public String toString() {
 			return "Ouverture du projet";
+		}
+	}
+	
+	/**
+	 * Classe interne implémentant une commande sauvegardant la duplication du calque actuellement sélectionn et définissant l'action à effectuer en cas d'appel à undo()
+	 * ou redo() sur cette commande.
+	 */
+	private class DuplicateSave implements ICmd {
+		
+		private Layer oldCurrentLayer;
+		private Layer newCurrentLayer;
+		
+		/**
+		 * Construit une commande sauvegardant la duplication du calque actuellement sélectionné.
+		 */
+		private DuplicateSave() {
+			oldCurrentLayer = Project.getInstance().getCurrentLayer();
+		}
+		
+		@Override
+		public void execute() {
+			newCurrentLayer = Project.getInstance().getCurrentLayer();
+			RecordCmd.getInstance().saveCmd(this);
+		}
+		
+		@Override
+		public void undo() {
+			Project.getInstance().removeLayer(newCurrentLayer);
+			Project.getInstance().setCurrentLayer(oldCurrentLayer);
+		}
+		
+		@Override
+		public void redo() {
+			Project.getInstance().addLayer(newCurrentLayer);
+		}
+		
+		@Override
+		public String toString() {
+			return "Duplication du " + oldCurrentLayer;
 		}
 	}
 }

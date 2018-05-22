@@ -136,7 +136,7 @@ public class ResizeLayerController {
 	}
 	
 	/**
-	 * Méthode appelée lrosque l'utilisateur clique sur le bouton "Annuler". Annule le le redimensionnement et ferme la fenêtre.
+	 * Méthode appelée lorsque l'utilisateur clique sur le bouton "Annuler". Annule le le redimensionnement et ferme la fenêtre.
 	 */
 	public void handleCancel() {
 		Stage stage = (Stage) validateResizeButton.getScene().getWindow();
@@ -175,7 +175,7 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void undo() { // FIXME: voir avec Antoine si ya moyen d'utiliser Utils.redrawSnapshot()...?
+		public void undo() {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, newWidth, newHeight);
 			currentLayer.setWidth(oldWidth);
 			currentLayer.setHeight(oldHeight);
@@ -183,7 +183,7 @@ public class ResizeLayerController {
 		}
 		
 		@Override
-		public void redo() { // FIXME: voir avec Antoine si ya moyen d'utiliser Utils.redrawSnapshot()...?
+		public void redo() {
 			currentLayer.getGraphicsContext2D().clearRect(0, 0, oldWidth, oldHeight);
 			currentLayer.setWidth(newWidth);
 			currentLayer.setHeight(newHeight);
@@ -192,7 +192,7 @@ public class ResizeLayerController {
 		
 		@Override
 		public String toString() {
-			return "Redimensionnement de " + currentLayer.toString();
+			return "Redimensionnement du " + currentLayer.toString();
 		}
 		
 	}
