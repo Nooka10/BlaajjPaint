@@ -113,7 +113,7 @@ public class Pipette extends Tool {
 	
 	@Override
 	public void CallbackOldToolChanged() {
-		MainViewController.getInstance().getToolBarController().textTool.setSelected(false);
+		MainViewController.getInstance().getToolBarController().pipetteTool.setSelected(false);
 		Project.getInstance().getLayers().remove(tmpLayer); // on supprime le calque temporaire
 		if (Project.getInstance().getCurrentLayer() == tmpLayer) {
 			Project.getInstance().setCurrentLayer(oldCurrentLayer);
@@ -122,7 +122,7 @@ public class Pipette extends Tool {
 	
 	@Override
 	public void CallbackNewToolChanged() {
-		MainViewController.getInstance().getToolBarController().textTool.setSelected(true);
+		MainViewController.getInstance().getToolBarController().pipetteTool.setSelected(true);
 		oldCurrentLayer = Project.getInstance().getCurrentLayer();
 		Project.getInstance().addLayer(tmpLayer);
 	}
