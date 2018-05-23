@@ -293,7 +293,7 @@ public class MenuBarController {
 	public void handleHelp() {
 		if (Desktop.isDesktopSupported()) {
 			try {
-				File pdfTemp = new File(getClass().getResource("/manuel/BlaajjPaintManuelUtilisateur.pdf").getFile().replaceAll("%20", " ")); // récupère le manuel utilisateur
+				File pdfTemp = new File(getClass().getResource("/manuel/BlaajjPaintManuelUtilisateur.pdf").getPath().replaceAll("%20", " ")); // récupère le manuel utilisateur
 				Desktop.getDesktop().open(pdfTemp);  // ouvre le fichier pdf dans le lecteur pdf par défaut de l'utilisateur
 			} catch (IOException e) {
 				System.out.println("erreur : " + e);
